@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/policy_envelope.schema.json",
+  "title": "ProCybernetica PolicyEnvelope",
+  "description": "Constraints, obligations, prohibitions, activation state, and rollback ownership for policy artifacts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "policy_id", "version", "status", "scope", "policy_type", "steward", "provenance_refs"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "policy_id": { "$ref": "#/$defs/id" },
+    "version": { "type": "string", "minLength": 1 },
+    "policy_type": { "enum": ["safety", "trust", "privacy", "resource", "lifecycle", "promotion", "retention", "explanation", "data_access", "delegation", "actuation", "regional", "review", "other"] },
+    "status": { "enum": ["draft", "candidate", "active", "deprecated", "revoked"] },
+    "scope": { "$ref": "#/$defs/string_array" },
+    "obligations": { "$ref": "#/$defs/string_array" },
+    "prohibitions": { "$ref": "#/$defs/string_array" },
+    "constraints": { "type": "object", "additionalProperties": true },
+    "risk_budget": { "type": "number", "minimum": 0, "maximum": 1 },
+    "confidence_floor": { "type": "number", "minimum": 0, "maximum": 1 },
+    "escalation_targets": { "$ref": "#/$defs/string_array" },
+    "rollback_owner": { "type": "string" },
+    "effective_start": { "$ref": "#/$defs/timestamp" },
+    "effective_end": { "$ref": "#/$defs/timestamp" },
+    "steward": { "$ref": "#/$defs/id" },
+    "provenance_refs": { "$ref": "#/$defs/string_array" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

@@ -1,41 +1,64 @@
-# Publication Boundary
+# Public-First Publication Boundary
 
-ProCybernetica is a public repository. It should be useful, rigorous, and implementation-grade without leaking operationally sensitive material.
+ProCybernetica is a public-first repository.
+
+The point of this repository is to make the blueprint inspectable, criticizable, reproducible, and buildable in public. Trust requires transparency. The default posture is therefore publication, not concealment.
+
+This document defines the narrow boundaries that protect secrets, private data, legal rights, and legitimate safety constraints without weakening the public nature of the blueprint.
+
+See also: `docs/decisions/0001-public-first-transparency.md`.
 
 ## Public by default
 
-The following belong in this repository:
+The following belong in this repository by default:
 
-- public doctrine;
-- public curriculum and textbook index;
-- public architectural summaries;
+- doctrine;
+- source-state captures;
+- blueprint provenance;
+- curriculum and textbook index;
+- architectural summaries;
 - JSON Schemas;
 - YAML profiles;
 - conformance tests;
 - reference implementation code;
-- examples with synthetic data;
+- examples and fixtures;
 - integration contracts;
 - public issue tracking;
 - adapter specifications;
-- non-secret policy examples;
-- non-sensitive dashboard schemas.
+- policy examples;
+- scoring methodology;
+- dashboard methodology;
+- public-safe evidence methodology;
+- public-safe dashboard schemas and sample payloads;
+- build plans, roadmaps, and implementation practicum material.
 
-## Keep out of this repository
+## Narrow exclusions
 
-The following do not belong in this public repository:
+The following do not belong in this public repository unless explicitly sanitized, cleared, or represented by safe examples:
 
+- credentials, tokens, keys, certificates, and secrets;
 - customer data;
 - user-private data;
-- private telemetry;
-- production credentials;
-- tokens, keys, certificates, or secrets;
-- private deployment policy;
-- non-public incident records;
-- confidential vendor data;
-- sensitive infrastructure topology;
-- live operational logs;
-- unreleased customer-specific dashboards;
-- proprietary datasets not explicitly cleared for public release.
+- live private telemetry or operational logs;
+- private deployment configuration that exposes infrastructure or security posture;
+- confidential incident records containing private or sensitive operational details;
+- third-party material we do not have the right to republish;
+- evidence artifacts that contain private data and need redaction before publication.
+
+The burden of justification is on withholding, not publishing.
+
+## Classification language
+
+Use these states for artifacts:
+
+| State | Meaning |
+| --- | --- |
+| `public` | may be committed directly |
+| `public-sanitized` | may be committed after removing private/sensitive fields |
+| `public-synthetic` | should be represented with synthetic fixtures |
+| `withheld-specific` | withheld for a named, narrow reason |
+
+Do not use vague labels such as “internal” or “private” without explaining what specific boundary applies.
 
 ## Drive corpus handling
 
@@ -44,6 +67,7 @@ Drive documents are source material for codification. They should not be modifie
 Codification means:
 
 - reading the Drive corpus;
+- preserving source-state captures in `docs/source-captures/`;
 - distilling doctrine into public documents;
 - translating implementation guidance into schemas, profiles, tests, and code;
 - preserving source references in `docs/CORPUS_INDEX.md`;
@@ -53,23 +77,27 @@ Codification does not mean:
 
 - rewriting source Drive documents casually;
 - treating the Drive archive as the production implementation;
-- copying confidential or unsuitable material into public GitHub;
+- copying secrets or private data into public GitHub;
 - claiming Drive-local artifacts have been mirrored if they have not.
 
 ## Evidence boundary
 
-Evidence artifacts should be classified before publication.
+Evidence should be public where possible.
 
-Public examples may use synthetic or sanitized evidence.
+If evidence includes private data, publish the method, schema, provenance posture, summary, synthetic fixture, or redacted form instead of suppressing the entire evidence layer.
 
-Operational evidence should remain in private or platform repositories unless explicitly cleared.
+Operational evidence should be excluded only when it contains secrets, customer/user private data, live private telemetry, or legally restricted material.
 
 ## Policy boundary
 
-Policy examples may be public. Production policy bundles should be kept in operational repositories when they reveal infrastructure, customers, users, or sensitive controls.
+Policy examples and policy doctrine should be public.
+
+Production policy bundles should be published when they are generic and safe. They should be sanitized or represented as examples when they reveal secrets, customer data, infrastructure, or sensitive controls.
 
 ## Implementation boundary
 
-The reference implementation should be real enough to run and test, but it should avoid embedding assumptions that only apply to one private deployment.
+The reference implementation should be real enough to run and test.
 
-Adapters should expose interfaces. Production bindings should live in the repositories that own those deployments.
+Deployment bindings may be represented by adapters and examples if live configuration would expose secrets or infrastructure.
+
+Interfaces, contracts, and conformance law should remain public.

@@ -1,0 +1,49 @@
+{
+  "schema_version": "0.1.0",
+  "node_id": "node:synthetic:claim-validator",
+  "node_class": "process",
+  "level": "task",
+  "embodiment": "software",
+  "lifecycle_state": "active",
+  "conformance_class": "C1-supervised-node",
+  "authority_parent": "node:synthetic:supervisor",
+  "peer_groups": ["group:synthetic:public-fixtures"],
+  "capabilities": ["capability:synthetic:validate-claim"],
+  "command_vocabulary": ["validate_claim"],
+  "observation_schema_refs": ["schemas/observation_envelope.schema.json"],
+  "status_schema_refs": ["schemas/status_envelope.schema.json"],
+  "artifact_schema_refs": ["schemas/artifact_envelope.schema.json"],
+  "policy_schema_refs": ["schemas/policy_envelope.schema.json"],
+  "memory": {
+    "immediate_experience": ["event-envelope:synthetic:ingest-001"],
+    "working_memory": ["claim:synthetic:001"],
+    "long_term_memory": [],
+    "provenance_log": ["prov:synthetic:001"],
+    "replay_log": ["replay:synthetic:slice-a-001"]
+  },
+  "world_model": {
+    "local_state_ref": "state:synthetic:claim-validator",
+    "belief_state_ref": "belief:synthetic:claim-validator",
+    "entities_relations_ref": "graph:synthetic:public-fixtures",
+    "prediction_refs": [],
+    "confidence": 0.9
+  },
+  "value_judgment": {
+    "objective_refs": ["goal:synthetic:validate-claim"],
+    "risk_model_ref": "risk:synthetic:low",
+    "trust_model_ref": "trust:synthetic:public-fixture",
+    "resource_model_ref": "resource:synthetic:none"
+  },
+  "policy_refs": ["policy:public-fixture:v0"],
+  "provenance_refs": ["prov:synthetic:001"],
+  "observability": {
+    "trace_refs": ["trace-synthetic-001"],
+    "metric_refs": ["metric:synthetic:claims_checked"],
+    "log_refs": ["log:synthetic:claim-validator"],
+    "explanation_refs": [],
+    "incident_refs": []
+  },
+  "public_release_state": "public-synthetic",
+  "created_at": "2026-04-29T00:00:00Z",
+  "updated_at": "2026-04-29T00:03:00Z"
+}

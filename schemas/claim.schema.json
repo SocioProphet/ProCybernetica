@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/claim.schema.json",
+  "title": "ProCybernetica Claim",
+  "description": "Canonical claim object for ingest, validation, truth maintenance, and justified answers.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "claim_id", "subject", "predicate", "object", "status", "ontology_ref", "schema_ref", "provenance_refs", "transaction_time"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "claim_id": { "$ref": "#/$defs/id" },
+    "subject": { "type": "string", "minLength": 1 },
+    "predicate": { "type": "string", "minLength": 1 },
+    "object": { "type": ["string", "number", "boolean", "object"] },
+    "status": { "enum": ["candidate", "validated", "derived", "hypothesis", "stale", "retracted", "contested"] },
+    "ontology_ref": { "type": "string", "minLength": 1 },
+    "schema_ref": { "type": "string", "minLength": 1 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "provenance_refs": { "$ref": "#/$defs/string_array" },
+    "derived_from": { "$ref": "#/$defs/string_array" },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "valid_time_start": { "$ref": "#/$defs/timestamp" },
+    "valid_time_end": { "$ref": "#/$defs/timestamp" },
+    "transaction_time": { "$ref": "#/$defs/timestamp" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

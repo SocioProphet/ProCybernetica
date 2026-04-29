@@ -1,0 +1,74 @@
+profile_id: procybernetica.k3_bridge_lifecycle.v0_1
+schema_version: 0.1.0
+purpose: Genesis/Inception/K3 twin bridge lifecycle for runtime twin admission and gated actuation.
+source_basis:
+  - docs/source-captures/GENESIS_INCEPTION_CAPTURE.md
+
+states:
+  - INIT_SESSION
+  - PROBE_ACCEPT
+  - INJECT_SEED
+  - SEED_PUBLISH
+  - VERIFY_TWIN
+  - TWIN_READY
+  - GATED_HOST_UPDATE
+  - QUARANTINE
+  - REVOKE
+  - ROLLBACK
+
+initial_state: INIT_SESSION
+terminal_states:
+  - REVOKE
+  - ROLLBACK
+
+transitions:
+  - from: INIT_SESSION
+    event: session_initialized
+    to: PROBE_ACCEPT
+    evidence_required: true
+  - from: PROBE_ACCEPT
+    event: providers_accepted
+    to: INJECT_SEED
+    evidence_required: true
+  - from: INJECT_SEED
+    event: seed_injected
+    to: SEED_PUBLISH
+    evidence_required: true
+  - from: SEED_PUBLISH
+    event: seed_published
+    to: VERIFY_TWIN
+    evidence_required: true
+  - from: VERIFY_TWIN
+    event: twin_verified
+    to: TWIN_READY
+    evidence_required: true
+  - from: VERIFY_TWIN
+    event: verification_failed
+    to: QUARANTINE
+    evidence_required: true
+  - from: TWIN_READY
+    event: host_update_requested
+    to: GATED_HOST_UPDATE
+    evidence_required: true
+  - from: GATED_HOST_UPDATE
+    event: host_update_complete
+    to: TWIN_READY
+    evidence_required: true
+  - from: GATED_HOST_UPDATE
+    event: policy_failed
+    to: QUARANTINE
+    evidence_required: true
+  - from: QUARANTINE
+    event: rollback_required
+    to: ROLLBACK
+    evidence_required: true
+  - from: QUARANTINE
+    event: revoke_required
+    to: REVOKE
+    evidence_required: true
+
+invariants:
+  - No external actuation before TWIN_READY and policy pass.
+  - Every state transition must emit an attestable event.
+  - Policy failures must produce quarantine, revoke, or rollback states rather than silent drops.
+  - Revoked twins must remain replayable after credentials are invalidated.

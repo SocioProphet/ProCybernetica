@@ -22,7 +22,11 @@ Do not treat early schemas or runtime scaffolding as canonical until the source 
 | ProCybernetica Volume II Prophet Architecture Specification | `docs/source-captures/PROPHET_ARCHITECTURE_SPECIFICATION_CAPTURE.md` | captured | normative architecture, repository constitutions, delegation, conformance ladder, planning allocation, EpiCybernetica |
 | ProCybernetica Volume III Executable Specification Pack and Conformance Law | `docs/source-captures/EXECUTABLE_SPECIFICATION_PACK_CAPTURE.md` | captured | machine-readable law, envelope family, conformance classes, DDL, BT semantic profile, promotion sequence |
 | ProCybernetica Volume IV Reference Implementation Kit | `docs/source-captures/REFERENCE_IMPLEMENTATION_KIT_CAPTURE.md` | captured | executable-kit skeleton, schema bundle, supervisor, replay harness, promotion gate, planner registry, smoke tests |
+| ProCybernetica Volume VI Operational Mesh and Federated Governance | `docs/source-captures/VOLUME_VI_OPERATIONAL_MESH_CAPTURE.md` | captured | identity, relationship authorization, journal convergence, benchmark admission, signed exports, operator workspace |
+| ProCybernetica Volume VII Secure Coordination and Learning Mesh | `docs/source-captures/VOLUME_VII_SECURE_COORDINATION_CAPTURE.md` | captured | transport-bound identity, policy bundles, threshold attestation, durable subject bus, learning mesh, operator workflow |
+| ProCybernetica Volume VIII Autonomic Constitution and Collective Stabilization | `docs/source-captures/VOLUME_VIII_AUTONOMIC_CONSTITUTION_CAPTURE.md` | captured | constitution governor, transparency ledger, policy conflict cases, stability reports, corpus governance, operator provenance |
 | ProCybernetica Book VIII Constitutional Control, Assurance, and Lawful Learning | `docs/source-captures/CONSTITUTIONAL_CONTROL_CAPTURE.md` | captured | promotion law, replay law, provenance law, lawful learning, hard/soft lane boundary, assurance stack |
+| ProCybernetica Book XI Implementation Practicum | `docs/source-captures/BOOK_XI_IMPLEMENTATION_PRACTICUM_CAPTURE.md` | captured | vertical slices for ingest, query, actuation, replay/promotion, and mesh coordination |
 | ProCybernetica Scoring Methodology and Data Provenance Dossier | `docs/source-captures/SCORING_METHODOLOGY_CAPTURE.md` | captured | POA/EGA scoring model, score scale, evidence registry, monitoring deltas, known limitations |
 | Dashboard Assets and Artifact Inventory | `docs/source-captures/DASHBOARD_ARTIFACT_INVENTORY_CAPTURE.md` | captured | dashboard asset set, workbook structure, intended row counts, local-vs-Drive artifact gap |
 
@@ -30,10 +34,6 @@ Do not treat early schemas or runtime scaffolding as canonical until the source 
 
 | Source | Status | Needed capture |
 | --- | --- | --- |
-| ProCybernetica Volume VI Operational Mesh and Federated Governance | indexed | federation and operational mesh capture |
-| ProCybernetica Volume VII Secure Coordination and Learning Mesh | indexed | secure coordination and learning-mesh capture |
-| ProCybernetica Volume VIII Autonomic Constitution and Collective Stabilization | indexed | stabilization/contradiction/autonomic governance capture |
-| ProCybernetica Book XI Implementation Practicum | indexed | build-practicum and implementation workflow capture |
 | Prelude B: Linear Algebra, Operators, and State | indexed | mathematical runway capture |
 | Prelude C: Dynamics, Feedback, and Stability | indexed | dynamics/feedback/stability runway capture |
 | Prelude F: Ontology, Corpus, and Semantic Contracts | indexed | ontology/corpus/semantic-contract capture |
@@ -71,8 +71,8 @@ The early runtime scaffold should be considered provisional until capture and re
 ## Immediate next capture targets
 
 1. Textbook/prelude index.
-2. Remaining mesh, federation, stabilization, and practicum volumes.
-3. Reconciliation pass across Volumes I-IV and Book VIII.
+2. Prelude captures.
+3. Reconciliation pass across captured volumes.
 4. Artifact ingestion plan for scoring/dashboard bodies.
 
 ## Known caveat

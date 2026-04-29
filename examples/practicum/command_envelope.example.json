@@ -1,0 +1,23 @@
+{
+  "schema_version": "0.1.0",
+  "command_id": "cmd:synthetic:validate-claim-001",
+  "issued_at": "2026-04-29T00:01:00Z",
+  "issuer": "node:synthetic:supervisor",
+  "receiver": "node:synthetic:claim-validator",
+  "verb": "validate_claim",
+  "objective": "Validate a synthetic candidate claim against public fixture policy.",
+  "parameters": {
+    "claim_ref": "claim:synthetic:001"
+  },
+  "constraints": {
+    "public_fixture_only": true
+  },
+  "side_effect_class": "none",
+  "max_risk": 0.05,
+  "min_confidence": 0.7,
+  "expected_artifacts": ["artifact:synthetic:validation-report-001"],
+  "policy_refs": ["policy:public-fixture:v0"],
+  "provenance_refs": ["prov:synthetic:001"],
+  "replay_required": true,
+  "notes": "Synthetic command fixture."
+}

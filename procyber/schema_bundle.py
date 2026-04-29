@@ -9,10 +9,22 @@ import jsonschema
 from .paths import SCHEMAS
 
 SCHEMA_MAP: dict[str, str] = {
-    "node_descriptor": "node_descriptor.schema.json",
+    "artifact_envelope": "artifact_envelope.schema.json",
+    "capability_descriptor": "capability_descriptor.schema.json",
+    "claim": "claim.schema.json",
+    "command_envelope": "command_envelope.schema.json",
+    "delegation_envelope": "delegation_envelope.schema.json",
     "evaluation_result": "evaluation_result.schema.json",
+    "incident_report": "incident_report.schema.json",
+    "node_descriptor": "node_descriptor.schema.json",
+    "observation_envelope": "observation_envelope.schema.json",
+    "policy_envelope": "policy_envelope.schema.json",
     "promotion_decision": "promotion_decision.schema.json",
+    "provenance_record": "provenance_record.schema.json",
     "replay_envelope": "replay_envelope.schema.json",
+    "status_envelope": "status_envelope.schema.json",
+    "trace_event": "trace_event.schema.json",
+    "transition_record": "transition_record.schema.json",
 }
 
 

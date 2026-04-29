@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/status_envelope.schema.json",
+  "title": "ProCybernetica StatusEnvelope",
+  "description": "Status emitted by a node to supervisors, peers, operators, and replay systems.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "status_id", "node_id", "emitted_at", "lifecycle_state", "health", "policy_refs"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "status_id": { "$ref": "#/$defs/id" },
+    "node_id": { "$ref": "#/$defs/id" },
+    "emitted_at": { "$ref": "#/$defs/timestamp" },
+    "lifecycle_state": { "enum": ["unconfigured", "configured", "inactive", "active", "degraded", "recovery", "quarantined", "retired", "finalized"] },
+    "phase": { "type": "string" },
+    "health": { "enum": ["ok", "warn", "error", "degraded", "quarantined", "unknown"] },
+    "health_score": { "type": "number", "minimum": 0, "maximum": 1 },
+    "fault_budget_remaining": { "type": "number", "minimum": 0 },
+    "active_goal_refs": { "$ref": "#/$defs/string_array" },
+    "current_plan_ref": { "type": "string" },
+    "last_observation_time": { "$ref": "#/$defs/timestamp" },
+    "last_action_time": { "$ref": "#/$defs/timestamp" },
+    "risk_posture": { "enum": ["normal", "elevated", "constrained", "critical", "unknown"] },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "metrics": { "type": "object", "additionalProperties": true },
+    "artifact_refs": { "$ref": "#/$defs/string_array" },
+    "incident_refs": { "$ref": "#/$defs/string_array" },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "summary": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

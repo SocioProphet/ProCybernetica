@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/incident_report.schema.json",
+  "title": "ProCybernetica IncidentReport",
+  "description": "Report for a consequential episode requiring review, evidence preservation, or remediation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "incident_id", "opened_at", "severity", "incident_type", "owner", "resolution_state", "evidence_refs", "policy_refs"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "incident_id": { "$ref": "#/$defs/id" },
+    "opened_at": { "$ref": "#/$defs/timestamp" },
+    "closed_at": { "$ref": "#/$defs/timestamp" },
+    "severity": { "enum": ["info", "low", "medium", "high", "critical"] },
+    "incident_type": { "enum": ["policy", "epistemic", "runtime", "operator", "stability", "promotion", "other"] },
+    "owner": { "$ref": "#/$defs/id" },
+    "resolution_state": { "enum": ["open", "contained", "mitigated", "resolved", "unresolved", "quarantined", "closed"] },
+    "subject_refs": { "$ref": "#/$defs/string_array" },
+    "root_cause_hypotheses": { "$ref": "#/$defs/string_array" },
+    "immediate_actions": { "$ref": "#/$defs/string_array" },
+    "evidence_refs": { "$ref": "#/$defs/string_array" },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "replay_refs": { "$ref": "#/$defs/string_array" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

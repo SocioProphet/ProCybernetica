@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1.0",
+  "artifact_id": "artifact:synthetic:ingest-001",
+  "artifact_type": "evidence",
+  "media_type": "text/markdown",
+  "created_at": "2026-04-29T00:00:00Z",
+  "producer_node": "node:synthetic:ingest-service",
+  "subject_refs": ["claim:synthetic:001"],
+  "labels": ["public-synthetic", "book-xi-slice-a"],
+  "confidence": 0.8,
+  "retention_class": "operational",
+  "policy_refs": ["policy:public-fixture:v0"],
+  "provenance_refs": ["prov:synthetic:001"],
+  "public_release_state": "public-synthetic",
+  "notes": "Synthetic artifact envelope for Book XI Slice A."
+}

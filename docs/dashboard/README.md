@@ -2,6 +2,14 @@
 
 This directory captures the dashboard blueprint and asset state for ProCybernetica scoring, evidence, drift, contradiction, and subject-profile views.
 
+## Public-first dashboard posture
+
+The dashboard should be public by default because it is part of the trust surface.
+
+Dashboard schemas, loaders, view contracts, sample payloads, evidence-shape, scoring methodology, and validation checks should be public.
+
+Raw dashboard payloads should also be public when public-safe. If raw payload rows include customer/user-private data, live private telemetry, restricted third-party material, or sensitive operational evidence, publish redacted or synthetic fixtures and preserve the full schema and validation checks.
+
 ## Captured dashboard views
 
 The dashboard starter is described as supporting:
@@ -52,11 +60,20 @@ The source notes name these next steps:
 4. add role-based sharing and customer-safe redaction;
 5. add radar/profile charts after evidence expansion.
 
-## Public/private boundary
+## Publication boundary
 
-Dashboard assets in this public repository must be public-safe. Do not commit customer data, private monitoring data, sensitive evidence URLs, or live telemetry.
+Follow `../PUBLICATION_MATRIX.md`.
 
-Use synthetic fixtures or sanitized exports until a public-release decision is made.
+Do not commit secrets or private data. Everything else should be public by default.
+
+If raw dashboard data cannot be public, publish:
+
+- dashboard export schema;
+- loader contract;
+- synthetic fixture;
+- redacted fixture;
+- row-count validation checks;
+- public methodology and provenance notes.
 
 ## Source captures
 

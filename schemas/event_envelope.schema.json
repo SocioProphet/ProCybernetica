@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/event_envelope.schema.json",
+  "title": "ProCybernetica EventEnvelope",
+  "description": "Cross-plane event record for lifecycle, memory, artifact, mission, scene, actuation, federation, and operator events.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "event_type", "event_time", "subject", "producer_node", "correlation_id", "policy_refs", "provenance_refs", "payload"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "event_id": { "$ref": "#/$defs/id" },
+    "event_type": { "type": "string", "minLength": 1 },
+    "event_family": { "enum": ["seed", "twin", "mission", "scene", "memory", "artifact", "actuation", "federation", "lifecycle", "operator", "policy", "other"] },
+    "event_time": { "$ref": "#/$defs/timestamp" },
+    "subject": { "type": "string", "minLength": 1 },
+    "producer_node": { "$ref": "#/$defs/id" },
+    "actor_ref": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "project_id": { "type": "string" },
+    "correlation_id": { "type": "string", "minLength": 1 },
+    "trace_id": { "type": "string" },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "memory_refs": { "$ref": "#/$defs/string_array" },
+    "artifact_refs": { "$ref": "#/$defs/string_array" },
+    "provenance_refs": { "$ref": "#/$defs/string_array" },
+    "payload": { "type": "object", "additionalProperties": true },
+    "public_release_state": { "enum": ["public", "public-sanitized", "public-synthetic", "withheld-specific"] },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

@@ -6,6 +6,7 @@
   "window_start": "2026-04-29T00:00:00Z",
   "window_end": "2026-04-29T00:05:00Z",
   "event_log_uri": "examples/practicum/event_envelope.example.json",
+  "determinism_class": "deterministic",
   "version_pins": {
     "schema_bundle": "0.1.0",
     "policy_bundle": "public-fixture-v0"
@@ -15,5 +16,6 @@
   "trace_refs": ["trace-synthetic-001"],
   "input_refs": ["claim:synthetic:001"],
   "expected_output_refs": ["artifact:synthetic:validation-report-001"],
+  "public_release_state": "public-synthetic",
   "notes": "Synthetic replay envelope for public constitutional-loop fixture."
 }

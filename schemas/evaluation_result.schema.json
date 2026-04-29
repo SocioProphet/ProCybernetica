@@ -5,29 +5,18 @@
   "description": "Replay, benchmark, conformance, shadow-mode, or policy evaluation result used as evidence for promotion law.",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "evaluation_id",
-    "evaluated_subject",
-    "subject_kind",
-    "suite_name",
-    "executed_at",
-    "verdict",
-    "metrics",
-    "evidence_refs",
-    "promotion_recommendation"
-  ],
+  "required": ["schema_version", "evaluation_id", "evaluated_subject", "subject_kind", "suite_name", "executed_at", "verdict", "metrics", "evidence_refs", "promotion_recommendation"],
   "properties": {
     "schema_version": { "type": "string", "minLength": 1 },
     "evaluation_id": { "$ref": "#/$defs/id" },
     "evaluated_subject": { "$ref": "#/$defs/id" },
     "subject_kind": {
-      "enum": ["node", "artifact", "policy", "model", "schema", "planner", "workflow", "deployment", "repository", "pull_request", "agent", "unknown"]
+      "enum": ["node", "artifact", "policy", "model", "schema", "planner", "workflow", "deployment", "repository", "pull_request", "agent", "claim", "capability", "unknown"]
     },
     "suite_name": { "type": "string", "minLength": 1 },
     "suite_version": { "type": "string" },
     "executed_at": { "$ref": "#/$defs/timestamp" },
-    "verdict": { "enum": ["pass", "warn", "fail", "inconclusive"] },
+    "verdict": { "enum": ["pass", "conditional-pass", "warn", "fail", "drift", "inconclusive", "manual-review"] },
     "metrics": {
       "type": "object",
       "additionalProperties": { "type": ["number", "integer", "string", "boolean"] },
@@ -58,8 +47,9 @@
     "replay_refs": { "$ref": "#/$defs/string_array" },
     "trace_refs": { "$ref": "#/$defs/string_array" },
     "promotion_recommendation": {
-      "enum": ["reject", "shadow-only", "limited-authority", "full-promotion", "quarantine"]
+      "enum": ["reject", "shadow-only", "limited-authority", "full-promotion", "quarantine", "manual-review"]
     },
+    "public_release_state": { "enum": ["public", "public-sanitized", "public-synthetic", "withheld-specific"] },
     "notes": { "type": "string" }
   },
   "$defs": {

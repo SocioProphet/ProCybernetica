@@ -5,28 +5,17 @@
   "description": "Constitutional promotion, rejection, quarantine, or authority decision for a proposal, node, artifact, policy, model, workflow, or deployment.",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "decision_id",
-    "subject_id",
-    "subject_kind",
-    "evaluation_id",
-    "decision",
-    "issued_at",
-    "issuer_node_id",
-    "policy_refs",
-    "evidence_refs"
-  ],
+  "required": ["schema_version", "decision_id", "subject_id", "subject_kind", "evaluation_id", "decision", "issued_at", "issuer_node_id", "policy_refs", "evidence_refs"],
   "properties": {
     "schema_version": { "type": "string", "minLength": 1 },
     "decision_id": { "$ref": "#/$defs/id" },
     "subject_id": { "$ref": "#/$defs/id" },
     "subject_kind": {
-      "enum": ["node", "artifact", "policy", "model", "schema", "planner", "workflow", "deployment", "repository", "pull_request", "agent", "unknown"]
+      "enum": ["node", "artifact", "policy", "model", "schema", "planner", "workflow", "deployment", "repository", "pull_request", "agent", "claim", "capability", "unknown"]
     },
     "evaluation_id": { "$ref": "#/$defs/id" },
     "decision": {
-      "enum": ["reject", "shadow-only", "limited-authority", "full-promotion", "quarantine", "rollback", "revoke"]
+      "enum": ["reject", "shadow-only", "limited-authority", "full-promotion", "quarantine", "manual-review", "rollback-required", "revoke-authority"]
     },
     "authority_scope": {
       "type": "object",
@@ -45,6 +34,7 @@
     "replay_refs": { "$ref": "#/$defs/string_array" },
     "approval_refs": { "$ref": "#/$defs/string_array" },
     "rollback_refs": { "$ref": "#/$defs/string_array" },
+    "public_release_state": { "enum": ["public", "public-sanitized", "public-synthetic", "withheld-specific"] },
     "notes": { "type": "string" }
   },
   "$defs": {

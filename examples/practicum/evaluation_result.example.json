@@ -1,0 +1,23 @@
+{
+  "schema_version": "0.1.0",
+  "evaluation_id": "eval:synthetic:slice-a-001",
+  "evaluated_subject": "claim:synthetic:001",
+  "subject_kind": "claim",
+  "suite_name": "public-fixture-claim-validation",
+  "suite_version": "0.1.0",
+  "executed_at": "2026-04-29T00:05:00Z",
+  "verdict": "conditional-pass",
+  "metrics": {
+    "pass_rate": 1.0,
+    "drift_rate": 0,
+    "policy_violation_count": 0,
+    "event_count": 1
+  },
+  "violations": [],
+  "evidence_refs": ["artifact:synthetic:ingest-001"],
+  "replay_refs": ["replay:synthetic:slice-a-001"],
+  "trace_refs": ["trace-synthetic-001"],
+  "promotion_recommendation": "shadow-only",
+  "public_release_state": "public-synthetic",
+  "notes": "Synthetic evaluation result. Conditional pass does not validate the claim as canonical truth."
+}

@@ -1,0 +1,3 @@
+subject_type,subject,watch_id,region_bucket,footprint_class,poa_score,ega_score,composite_score,evidence_confidence,scoring_basis,provisional
+lab,Synthetic Cybernetics Lab,watch:lab:synthetic-001,North America,public-research,3.8,3.4,3.6,medium,synthetic example showing public scoring row shape,true
+lab,Example Autonomous Systems Institute,watch:lab:synthetic-002,Europe,academic,4.1,3.9,4.0,high,synthetic example with stronger lifecycle and replay posture,true

@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/trace_event.schema.json",
+  "title": "ProCybernetica TraceEvent",
+  "description": "Normalized causal event for replay, telemetry, provenance, and incident reconstruction.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "event_type", "timestamp", "subject_node", "correlation_id", "policy_refs", "provenance_refs", "payload"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "event_id": { "$ref": "#/$defs/id" },
+    "event_type": { "type": "string", "minLength": 1 },
+    "timestamp": { "$ref": "#/$defs/timestamp" },
+    "subject_node": { "$ref": "#/$defs/id" },
+    "actor_id": { "type": "string" },
+    "mission_id": { "type": "string" },
+    "project_id": { "type": "string" },
+    "correlation_id": { "type": "string", "minLength": 1 },
+    "trace_id": { "type": "string" },
+    "span_id": { "type": "string" },
+    "severity": { "enum": ["debug", "info", "warn", "error", "critical"] },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "memory_refs": { "$ref": "#/$defs/string_array" },
+    "provenance_refs": { "$ref": "#/$defs/string_array" },
+    "artifact_refs": { "$ref": "#/$defs/string_array" },
+    "payload": { "type": "object", "additionalProperties": true }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

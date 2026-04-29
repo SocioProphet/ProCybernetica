@@ -11,6 +11,9 @@ ROOT = Path(__file__).resolve().parents[1]
 def test_book_xi_slice_a_public_fixtures_validate() -> None:
     bundle = SchemaBundle(ROOT / "schemas")
     cases = [
+        ("node_descriptor", ROOT / "examples/practicum/node_descriptor.example.json"),
+        ("policy_envelope", ROOT / "examples/practicum/policy_envelope.example.json"),
+        ("transition_record", ROOT / "examples/practicum/transition_record.example.json"),
         ("artifact_envelope", ROOT / "examples/practicum/artifact_envelope.example.json"),
         ("claim", ROOT / "examples/practicum/claim.example.json"),
         ("provenance_record", ROOT / "examples/practicum/provenance_record.example.json"),

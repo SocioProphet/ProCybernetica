@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "policy_id": "policy:public-fixture:v0",
+  "version": "0.1.0",
+  "policy_type": "promotion",
+  "status": "active",
+  "scope": ["public-fixture", "book-xi-slice-a", "validation-only"],
+  "obligations": ["preserve provenance", "emit replayable event", "keep candidate claims out of canonical truth until validation"],
+  "prohibitions": ["write canonical truth from synthetic fixture", "invoke external side effects"],
+  "constraints": {
+    "public_fixture_only": true,
+    "external_side_effects_allowed": false
+  },
+  "risk_budget": 0.05,
+  "confidence_floor": 0.7,
+  "escalation_targets": ["node:synthetic:operator"],
+  "rollback_owner": "node:synthetic:supervisor",
+  "effective_start": "2026-04-29T00:00:00Z",
+  "steward": "node:synthetic:policy-steward",
+  "provenance_refs": ["prov:synthetic:001"],
+  "notes": "Synthetic public fixture policy for validation-only workflows."
+}

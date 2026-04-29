@@ -2,20 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.socioprophet.org/procybernetica/node_descriptor.schema.json",
   "title": "ProCybernetica NodeDescriptor",
-  "description": "Canonical identity and constitutional contract for any ProCybernetica node embodiment.",
+  "description": "Canonical identity, lifecycle, and constitutional contract for any ProCybernetica node embodiment.",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "node_id",
-    "node_class",
-    "level",
-    "embodiment",
-    "lifecycle_state",
-    "capabilities",
-    "policy_refs",
-    "observability"
-  ],
+  "required": ["schema_version", "node_id", "node_class", "level", "embodiment", "lifecycle_state", "capabilities", "policy_refs", "observability"],
   "properties": {
     "schema_version": { "type": "string", "minLength": 1 },
     "node_id": { "$ref": "#/$defs/id" },
@@ -31,13 +21,17 @@
     "lifecycle_state": {
       "enum": ["unconfigured", "configured", "inactive", "active", "degraded", "recovery", "quarantined", "retired", "finalized"]
     },
+    "conformance_class": {
+      "enum": ["C0-schema-conformant", "C1-supervised-node", "C2-replayable-node", "C3-production-node", "C4-safety-critical-embodiment"]
+    },
     "authority_parent": { "anyOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] },
-    "peer_groups": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "peer_groups": { "$ref": "#/$defs/string_array" },
     "capabilities": { "$ref": "#/$defs/string_array" },
     "command_vocabulary": { "$ref": "#/$defs/string_array" },
     "observation_schema_refs": { "$ref": "#/$defs/string_array" },
     "status_schema_refs": { "$ref": "#/$defs/string_array" },
     "artifact_schema_refs": { "$ref": "#/$defs/string_array" },
+    "policy_schema_refs": { "$ref": "#/$defs/string_array" },
     "memory": {
       "type": "object",
       "additionalProperties": false,
@@ -84,11 +78,12 @@
         "incident_refs": { "$ref": "#/$defs/string_array" }
       }
     },
+    "public_release_state": { "enum": ["public", "public-sanitized", "public-synthetic", "withheld-specific"] },
     "created_at": { "$ref": "#/$defs/timestamp" },
     "updated_at": { "$ref": "#/$defs/timestamp" }
   },
   "$defs": {
-    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@-]+$" },
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
     "timestamp": { "type": "string", "format": "date-time" },
     "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
   }

@@ -1,0 +1,101 @@
+profile_id: procybernetica.controlplane_state_machine.v0_1
+schema_version: 0.1.0
+purpose: Lawful lifecycle transitions for ProCybernetica Fractal Nodes.
+
+states:
+  - unconfigured
+  - configured
+  - inactive
+  - active
+  - degraded
+  - recovery
+  - quarantined
+  - retired
+  - finalized
+
+initial_state: unconfigured
+terminal_states:
+  - retired
+  - finalized
+
+transitions:
+  - from: unconfigured
+    event: configure_ok
+    to: configured
+    evidence_required: true
+
+  - from: configured
+    event: admission_granted
+    to: inactive
+    evidence_required: true
+
+  - from: configured
+    event: admission_denied
+    to: quarantined
+    evidence_required: true
+
+  - from: inactive
+    event: activate_ok
+    to: active
+    evidence_required: true
+
+  - from: inactive
+    event: retire
+    to: retired
+    evidence_required: true
+
+  - from: active
+    event: health_degraded
+    to: degraded
+    evidence_required: true
+
+  - from: active
+    event: quarantine
+    to: quarantined
+    evidence_required: true
+
+  - from: active
+    event: deactivate
+    to: inactive
+    evidence_required: true
+
+  - from: degraded
+    event: recover_start
+    to: recovery
+    evidence_required: true
+
+  - from: degraded
+    event: quarantine
+    to: quarantined
+    evidence_required: true
+
+  - from: recovery
+    event: recover_ok
+    to: active
+    evidence_required: true
+
+  - from: recovery
+    event: recover_failed
+    to: quarantined
+    evidence_required: true
+
+  - from: quarantined
+    event: remediation_ok
+    to: inactive
+    evidence_required: true
+
+  - from: quarantined
+    event: revoke
+    to: retired
+    evidence_required: true
+
+  - from: retired
+    event: finalize
+    to: finalized
+    evidence_required: true
+
+invariants:
+  - No node may become active without admission evidence.
+  - No quarantined node may actuate except through remediation or evidence-preserving rollback paths.
+  - Terminal states are not reactivated.
+  - Every transition must emit a transition record.

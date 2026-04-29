@@ -67,8 +67,10 @@ GitHub repositories, pull requests, agents, tool invocations, branches, merges, 
 
 The ProCybernetica books, preludes, blueprints, and implementation practicum become a public educational and standards surface for cybernetic systems engineering.
 
-## Public/private boundary
+## Public-first trust posture
 
-This public repository should contain doctrine, schemas, profiles, reference implementation code, examples, conformance tests, and public curriculum.
+This repository is public-first. The blueprint, doctrine, captures, schemas, profiles, examples, tests, methodology, and reference implementation should be public by default.
 
-It should not contain customer data, secrets, private deployment policies, live telemetry, production credentials, or confidential operating records. Those belong in the appropriate private or operational repositories.
+The only narrow exclusions are credentials, secrets, customer/user private data, live private telemetry, sensitive deployment configuration, legally restricted third-party material, or evidence that must be sanitized before publication.
+
+The burden of justification is on withholding, not publishing. See [`docs/PUBLICATION_BOUNDARY.md`](docs/PUBLICATION_BOUNDARY.md) and [`docs/decisions/0001-public-first-transparency.md`](docs/decisions/0001-public-first-transparency.md).

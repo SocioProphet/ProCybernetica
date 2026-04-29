@@ -18,6 +18,7 @@ Do not treat early schemas or runtime scaffolding as canonical until the source 
 | --- | --- | --- | --- |
 | ProCybernetica / Prophet Ecosystem Controlplane Technical Paper | `docs/source-captures/CONTROLPLANE_TECHNICAL_PAPER_CAPTURE.md` | captured | founding doctrine, Fractal Node Contract, controlplane synthesis, design axioms, roadmap |
 | Cybernetic Agentic Genesis and Inception | `docs/source-captures/GENESIS_INCEPTION_CAPTURE.md` | captured | semantic holography, Genesis seeds, Inception runtime, K3 bridge, twin lifecycle, memory/policy/provenance architecture |
+| ProCybernetica Volume II Prophet Architecture Specification | `docs/source-captures/PROPHET_ARCHITECTURE_SPECIFICATION_CAPTURE.md` | captured | normative architecture, repository constitutions, delegation, conformance ladder, planning allocation, EpiCybernetica |
 | ProCybernetica Volume IV Reference Implementation Kit | `docs/source-captures/REFERENCE_IMPLEMENTATION_KIT_CAPTURE.md` | captured | executable-kit skeleton, schema bundle, supervisor, replay harness, promotion gate, planner registry, smoke tests |
 | ProCybernetica Book VIII Constitutional Control, Assurance, and Lawful Learning | `docs/source-captures/CONSTITUTIONAL_CONTROL_CAPTURE.md` | captured | promotion law, replay law, provenance law, lawful learning, hard/soft lane boundary, assurance stack |
 
@@ -26,7 +27,6 @@ Do not treat early schemas or runtime scaffolding as canonical until the source 
 | Source | Status | Needed capture |
 | --- | --- | --- |
 | ProCybernetica Volume I Expanded Monograph | indexed | full source-state summary and doctrine extraction |
-| ProCybernetica Volume II Prophet Architecture Specification | indexed | architecture capture and Prophet Platform mapping |
 | ProCybernetica Volume III Executable Specification Pack | indexed | conformance-law and schema/executable-spec capture |
 | ProCybernetica Volume VI Operational Mesh and Federated Governance | indexed | federation and operational mesh capture |
 | ProCybernetica Volume VII Secure Coordination and Learning Mesh | indexed | secure coordination and learning-mesh capture |
@@ -66,11 +66,11 @@ The early runtime scaffold should be considered provisional until capture and re
 
 ## Immediate next capture targets
 
-1. Volume II Prophet Architecture Specification.
-2. Volume III Executable Specification Pack.
-3. Scoring methodology and artifact inventory.
+1. Volume III Executable Specification Pack.
+2. Scoring methodology and artifact inventory.
+3. Volume I expanded monograph.
 4. Textbook/prelude index.
-5. Current-state issue backlog.
+5. Remaining mesh, federation, stabilization, and practicum volumes.
 
 ## Known caveat
 

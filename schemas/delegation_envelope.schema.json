@@ -1,0 +1,37 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/delegation_envelope.schema.json",
+  "title": "ProCybernetica DelegationEnvelope",
+  "description": "Bounded handoff token carrying scoped authority, obligations, limits, and rollback ownership.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "delegation_id", "issuer", "delegate", "scope", "authority", "issued_at", "policy_refs"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "delegation_id": { "$ref": "#/$defs/id" },
+    "issued_at": { "$ref": "#/$defs/timestamp" },
+    "expires_at": { "$ref": "#/$defs/timestamp" },
+    "issuer": { "$ref": "#/$defs/id" },
+    "delegate": { "$ref": "#/$defs/id" },
+    "scope": { "type": "string", "minLength": 1 },
+    "authority": { "enum": ["observe", "recommend", "execute-limited", "execute-full", "store-only"] },
+    "goals": { "$ref": "#/$defs/string_array" },
+    "command_prefixes": { "$ref": "#/$defs/string_array" },
+    "repositories": { "$ref": "#/$defs/string_array" },
+    "max_cost": { "type": "number", "minimum": 0 },
+    "max_risk": { "type": "number", "minimum": 0, "maximum": 1 },
+    "max_duration_s": { "type": "number", "minimum": 0 },
+    "required_artifacts": { "$ref": "#/$defs/string_array" },
+    "rollback_owner": { "type": "string" },
+    "compensation_policy": { "type": "string" },
+    "explanation_level": { "enum": ["brief", "standard", "deep", "forensic"] },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "provenance_refs": { "$ref": "#/$defs/string_array" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

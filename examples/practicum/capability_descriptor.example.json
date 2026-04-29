@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1.0",
+  "capability_id": "capability:synthetic:validate-claim",
+  "input_schema": "schemas/claim.schema.json",
+  "output_schema": "schemas/artifact_envelope.schema.json",
+  "reversible": true,
+  "approval_required": false,
+  "policy_scope": ["public-fixture", "validation-only"],
+  "external_system": "none",
+  "side_effect_class": "none",
+  "idempotency_required": true,
+  "rollback_strategy": "no side effects; discard generated report",
+  "audit_fields": ["claim_id", "policy_refs", "provenance_refs"],
+  "provenance_refs": ["prov:synthetic:001"],
+  "notes": "Synthetic capability fixture for validation-only public practicum path."
+}

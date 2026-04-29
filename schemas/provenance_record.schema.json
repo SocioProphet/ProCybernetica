@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/provenance_record.schema.json",
+  "title": "ProCybernetica ProvenanceRecord",
+  "description": "Record of source, derivation, transformation, attestation, and evidence lineage for claims, artifacts, policies, models, and events.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "provenance_id", "subject_ref", "created_at", "created_by", "source_refs", "method", "evidence_refs"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "provenance_id": { "$ref": "#/$defs/id" },
+    "subject_ref": { "type": "string", "minLength": 1 },
+    "created_at": { "$ref": "#/$defs/timestamp" },
+    "created_by": { "$ref": "#/$defs/id" },
+    "source_refs": { "$ref": "#/$defs/string_array" },
+    "method": { "type": "string", "minLength": 1 },
+    "transformation_refs": { "$ref": "#/$defs/string_array" },
+    "attestation_refs": { "$ref": "#/$defs/string_array" },
+    "evidence_refs": { "$ref": "#/$defs/string_array" },
+    "content_hash": { "type": "string" },
+    "trust_basis": { "type": "string" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

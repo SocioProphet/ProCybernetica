@@ -1,0 +1,95 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/node_descriptor.schema.json",
+  "title": "ProCybernetica NodeDescriptor",
+  "description": "Canonical identity and constitutional contract for any ProCybernetica node embodiment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "node_id",
+    "node_class",
+    "level",
+    "embodiment",
+    "lifecycle_state",
+    "capabilities",
+    "policy_refs",
+    "observability"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "node_id": { "$ref": "#/$defs/id" },
+    "node_class": {
+      "enum": ["repository", "agent", "process", "planner", "executor", "sensor", "gateway", "operator", "robot", "service", "host", "artifact_store"]
+    },
+    "level": {
+      "enum": ["strategic", "supervisory", "task", "primitive", "actuator"]
+    },
+    "embodiment": {
+      "enum": ["software", "data", "robotic", "human-interface", "hybrid", "host", "workflow"]
+    },
+    "lifecycle_state": {
+      "enum": ["unconfigured", "configured", "inactive", "active", "degraded", "recovery", "quarantined", "retired", "finalized"]
+    },
+    "authority_parent": { "anyOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }] },
+    "peer_groups": { "type": "array", "items": { "type": "string" }, "default": [] },
+    "capabilities": { "$ref": "#/$defs/string_array" },
+    "command_vocabulary": { "$ref": "#/$defs/string_array" },
+    "observation_schema_refs": { "$ref": "#/$defs/string_array" },
+    "status_schema_refs": { "$ref": "#/$defs/string_array" },
+    "artifact_schema_refs": { "$ref": "#/$defs/string_array" },
+    "memory": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "immediate_experience": { "$ref": "#/$defs/string_array" },
+        "working_memory": { "$ref": "#/$defs/string_array" },
+        "long_term_memory": { "$ref": "#/$defs/string_array" },
+        "provenance_log": { "$ref": "#/$defs/string_array" },
+        "replay_log": { "$ref": "#/$defs/string_array" }
+      }
+    },
+    "world_model": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "local_state_ref": { "type": "string" },
+        "belief_state_ref": { "type": "string" },
+        "entities_relations_ref": { "type": "string" },
+        "prediction_refs": { "$ref": "#/$defs/string_array" },
+        "confidence": { "type": "number", "minimum": 0, "maximum": 1 }
+      }
+    },
+    "value_judgment": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "objective_refs": { "$ref": "#/$defs/string_array" },
+        "risk_model_ref": { "type": "string" },
+        "trust_model_ref": { "type": "string" },
+        "resource_model_ref": { "type": "string" }
+      }
+    },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "provenance_refs": { "$ref": "#/$defs/string_array" },
+    "observability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["trace_refs", "metric_refs", "log_refs"],
+      "properties": {
+        "trace_refs": { "$ref": "#/$defs/string_array" },
+        "metric_refs": { "$ref": "#/$defs/string_array" },
+        "log_refs": { "$ref": "#/$defs/string_array" },
+        "explanation_refs": { "$ref": "#/$defs/string_array" },
+        "incident_refs": { "$ref": "#/$defs/string_array" }
+      }
+    },
+    "created_at": { "$ref": "#/$defs/timestamp" },
+    "updated_at": { "$ref": "#/$defs/timestamp" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/observation_envelope.schema.json",
+  "title": "ProCybernetica ObservationEnvelope",
+  "description": "Information-plane observation emitted by a node, sensor, repository, process, or gateway.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "observation_id", "source_node", "modality", "event_time", "ingest_time", "payload_ref", "provenance_refs", "policy_refs"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "observation_id": { "$ref": "#/$defs/id" },
+    "source_node": { "$ref": "#/$defs/id" },
+    "source_principal": { "type": "string" },
+    "modality": { "enum": ["text", "image", "audio", "telemetry", "event", "state", "artifact", "metric", "other"] },
+    "event_time": { "$ref": "#/$defs/timestamp" },
+    "ingest_time": { "$ref": "#/$defs/timestamp" },
+    "payload_ref": { "type": "string", "minLength": 1 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "freshness_horizon_s": { "type": "number", "minimum": 0 },
+    "provenance_refs": { "$ref": "#/$defs/string_array" },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

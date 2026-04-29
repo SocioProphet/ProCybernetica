@@ -4,14 +4,27 @@ This repository is the public codification surface for the existing ProCyberneti
 
 The first job of the repository is preservation and normalization. The second job is reconciliation. The third job is executable implementation.
 
+## Public-first rule
+
+This repository exists so the blueprint can be inspected, criticized, reproduced, and trusted in public.
+
+Publish by default. Sanitize only for specific narrow reasons: secrets, credentials, customer/user-private data, live private telemetry, sensitive deployment configuration, legally restricted third-party material, or evidence requiring redaction.
+
+Read:
+
+- `docs/decisions/0001-public-first-transparency.md`
+- `docs/PUBLICATION_BOUNDARY.md`
+- `docs/PUBLICATION_MATRIX.md`
+
 ## Read order
 
 Start here:
 
 1. `docs/BLUEPRINT_POSITIONING.md`
-2. `docs/CAPTURE_STATUS.md`
-3. `docs/CORPUS_INDEX.md`
-4. `AGENTS.md`
+2. `docs/BLUEPRINT_PROVENANCE.md`
+3. `docs/CAPTURE_STATUS.md`
+4. `docs/CORPUS_INDEX.md`
+5. `AGENTS.md`
 
 Then read the source captures by layer:
 
@@ -69,7 +82,9 @@ Do not begin by expanding runtime code.
 
 Do not treat provisional schema files as final.
 
-Do not ingest private scoring/dashboard data without classification and redaction review.
+Do not hide public-safe material because it is incomplete or still being reconciled.
+
+Do not ingest raw scoring/dashboard data without classification, but do publish schemas, methodology, summaries, validation checks, and public-safe fixtures.
 
 Do not overwrite source ambiguity with invented certainty.
 
@@ -81,3 +96,4 @@ Do not overwrite source ambiguity with invented certainty.
 4. Decide package naming and implementation sequence.
 5. Build the reference implementation from Volume IV and Book XI after reconciliation.
 6. Integrate Prophet Platform, Agent Plane, GitHub workflows, and SourceOS evidence.
+7. Publish public-safe scoring/dashboard artifacts or substitutes under the publication matrix.

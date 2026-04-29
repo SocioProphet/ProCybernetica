@@ -16,6 +16,7 @@ Do not treat early schemas or runtime scaffolding as canonical until the source 
 
 | Source | GitHub capture | Status | Role |
 | --- | --- | --- | --- |
+| ProCybernetica Volume I Expanded Monograph | `docs/source-captures/VOLUME_I_EXPANDED_MONOGRAPH_CAPTURE.md` | captured | lineage, design extraction, theory progression, synthesis into ProCybernetica/EpiCybernetica |
 | ProCybernetica / Prophet Ecosystem Controlplane Technical Paper | `docs/source-captures/CONTROLPLANE_TECHNICAL_PAPER_CAPTURE.md` | captured | founding doctrine, Fractal Node Contract, controlplane synthesis, design axioms, roadmap |
 | Cybernetic Agentic Genesis and Inception | `docs/source-captures/GENESIS_INCEPTION_CAPTURE.md` | captured | semantic holography, Genesis seeds, Inception runtime, K3 bridge, twin lifecycle, memory/policy/provenance architecture |
 | ProCybernetica Volume II Prophet Architecture Specification | `docs/source-captures/PROPHET_ARCHITECTURE_SPECIFICATION_CAPTURE.md` | captured | normative architecture, repository constitutions, delegation, conformance ladder, planning allocation, EpiCybernetica |
@@ -29,7 +30,6 @@ Do not treat early schemas or runtime scaffolding as canonical until the source 
 
 | Source | Status | Needed capture |
 | --- | --- | --- |
-| ProCybernetica Volume I Expanded Monograph | indexed | full source-state summary and doctrine extraction |
 | ProCybernetica Volume VI Operational Mesh and Federated Governance | indexed | federation and operational mesh capture |
 | ProCybernetica Volume VII Secure Coordination and Learning Mesh | indexed | secure coordination and learning-mesh capture |
 | ProCybernetica Volume VIII Autonomic Constitution and Collective Stabilization | indexed | stabilization/contradiction/autonomic governance capture |
@@ -70,11 +70,10 @@ The early runtime scaffold should be considered provisional until capture and re
 
 ## Immediate next capture targets
 
-1. Volume I expanded monograph.
-2. Textbook/prelude index.
-3. Remaining mesh, federation, stabilization, and practicum volumes.
-4. Reconciliation pass across Volumes II, III, IV, and Book VIII.
-5. Artifact ingestion plan for scoring/dashboard bodies.
+1. Textbook/prelude index.
+2. Remaining mesh, federation, stabilization, and practicum volumes.
+3. Reconciliation pass across Volumes I-IV and Book VIII.
+4. Artifact ingestion plan for scoring/dashboard bodies.
 
 ## Known caveat
 

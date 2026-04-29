@@ -15,6 +15,7 @@ SCHEMA_MAP: dict[str, str] = {
     "command_envelope": "command_envelope.schema.json",
     "delegation_envelope": "delegation_envelope.schema.json",
     "evaluation_result": "evaluation_result.schema.json",
+    "event_envelope": "event_envelope.schema.json",
     "incident_report": "incident_report.schema.json",
     "node_descriptor": "node_descriptor.schema.json",
     "observation_envelope": "observation_envelope.schema.json",

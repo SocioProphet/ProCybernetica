@@ -1,0 +1,16 @@
+{
+  "schema_version": "0.1.0",
+  "claim_id": "claim:synthetic:001",
+  "subject": "Synthetic Cybernetics Lab",
+  "predicate": "has_controlplane_surface",
+  "object": "public-synthetic-example",
+  "status": "candidate",
+  "ontology_ref": "ontology:procybernetica:synthetic:v0",
+  "schema_ref": "schemas/claim.schema.json",
+  "confidence": 0.72,
+  "provenance_refs": ["prov:synthetic:001"],
+  "derived_from": ["artifact:synthetic:ingest-001"],
+  "policy_refs": ["policy:public-fixture:v0"],
+  "transaction_time": "2026-04-29T00:00:00Z",
+  "notes": "Synthetic candidate claim. Confidence does not imply validation."
+}

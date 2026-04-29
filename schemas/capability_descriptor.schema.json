@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/capability_descriptor.schema.json",
+  "title": "ProCybernetica CapabilityDescriptor",
+  "description": "Descriptor for a typed capability gateway that may produce side effects under policy and approval constraints.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "capability_id", "input_schema", "reversible", "approval_required", "policy_scope", "external_system", "provenance_refs"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "capability_id": { "$ref": "#/$defs/id" },
+    "input_schema": { "type": "string", "minLength": 1 },
+    "output_schema": { "type": "string" },
+    "reversible": { "type": "boolean" },
+    "approval_required": { "type": "boolean" },
+    "policy_scope": { "$ref": "#/$defs/string_array" },
+    "external_system": { "type": "string", "minLength": 1 },
+    "side_effect_class": { "enum": ["none", "local_write", "cross_repo_write", "external_api", "deployment", "physical_actuation", "other"] },
+    "idempotency_required": { "type": "boolean", "default": true },
+    "rollback_strategy": { "type": "string" },
+    "audit_fields": { "$ref": "#/$defs/string_array" },
+    "provenance_refs": { "$ref": "#/$defs/string_array" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1.0",
+  "event_id": "event-envelope:synthetic:ingest-001",
+  "event_type": "claim.candidate.created",
+  "event_family": "memory",
+  "event_time": "2026-04-29T00:00:01Z",
+  "subject": "claim:synthetic:001",
+  "producer_node": "node:synthetic:ingest-service",
+  "actor_ref": "actor:synthetic:public-fixture",
+  "mission_id": "mission:synthetic:book-xi-slice-a",
+  "project_id": "project:procybernetica-public-fixtures",
+  "correlation_id": "corr:synthetic:001",
+  "trace_id": "trace-synthetic-001",
+  "policy_refs": ["policy:public-fixture:v0"],
+  "memory_refs": ["claim:synthetic:001"],
+  "artifact_refs": ["artifact:synthetic:ingest-001"],
+  "provenance_refs": ["prov:synthetic:001"],
+  "payload": {
+    "claim_id": "claim:synthetic:001",
+    "claim_status": "candidate",
+    "public_fixture": true
+  },
+  "public_release_state": "public-synthetic",
+  "notes": "Synthetic EventEnvelope fixture for Book XI Slice A."
+}

@@ -1,0 +1,43 @@
+profile_id: procybernetica.bt_semantic_profile.v0_1
+schema_version: 0.1.0
+purpose: Pinned behavior-tree execution semantics for ProCybernetica task and execution nodes.
+source_basis:
+  - docs/source-captures/EXECUTABLE_SPECIFICATION_PACK_CAPTURE.md
+  - docs/source-captures/PROPHET_ARCHITECTURE_SPECIFICATION_CAPTURE.md
+
+tick_model: root_to_leaf_sequential
+halt_policy: explicit_halt_required
+
+blackboard_scope:
+  default: subtree_local
+  shared_keys_require_declaration: true
+
+control_nodes:
+  sequence:
+    success: all_children_success
+    failure: first_child_failure
+  fallback:
+    success: first_child_success
+    failure: all_children_failure
+  parallel:
+    success_threshold: declared
+    failure_threshold: declared
+
+leaf_nodes:
+  must_be_idempotent_when_reentered: true
+  must_emit_status_events: true
+  leaf_action_correlation_id_required: true
+
+recovery_policy:
+  every_recovery_action_requires_policy_ref: true
+  recovery_retry_budget_required: true
+
+observability:
+  tick_trace_required: true
+  status_event_required: true
+
+invariants:
+  - Every BT leaf that invokes side effects must be idempotent or explicitly guarded against reentry.
+  - Every recovery subtree must declare retry budget and policy references.
+  - Every BT tick path must be traceable in replay with correlation identifiers.
+  - Alternative BT runtime semantics must declare a separate semantic profile.

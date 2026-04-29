@@ -1,0 +1,23 @@
+{
+  "schema_version": "0.1.0",
+  "decision_id": "promotion:synthetic:slice-a-001",
+  "subject_id": "claim:synthetic:001",
+  "subject_kind": "claim",
+  "evaluation_id": "eval:synthetic:slice-a-001",
+  "decision": "shadow-only",
+  "authority_scope": {
+    "allowed_actions": ["display_as_candidate", "request_review"],
+    "denied_actions": ["write_canonical_truth"],
+    "expires_at": "2026-04-30T00:00:00Z"
+  },
+  "reasons": ["synthetic fixture", "candidate claim has not crossed hard-lane validation"],
+  "issued_at": "2026-04-29T00:06:00Z",
+  "issuer_node_id": "node:synthetic:promotion-gate",
+  "policy_refs": ["policy:public-fixture:v0"],
+  "evidence_refs": ["artifact:synthetic:ingest-001"],
+  "replay_refs": ["replay:synthetic:slice-a-001"],
+  "approval_refs": [],
+  "rollback_refs": [],
+  "public_release_state": "public-synthetic",
+  "notes": "Synthetic promotion decision demonstrating proposal/promotion separation."
+}

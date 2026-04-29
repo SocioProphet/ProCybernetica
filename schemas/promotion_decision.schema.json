@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/promotion_decision.schema.json",
+  "title": "ProCybernetica PromotionDecision",
+  "description": "Constitutional promotion, rejection, quarantine, or authority decision for a proposal, node, artifact, policy, model, workflow, or deployment.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_id",
+    "subject_id",
+    "subject_kind",
+    "evaluation_id",
+    "decision",
+    "issued_at",
+    "issuer_node_id",
+    "policy_refs",
+    "evidence_refs"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "decision_id": { "$ref": "#/$defs/id" },
+    "subject_id": { "$ref": "#/$defs/id" },
+    "subject_kind": {
+      "enum": ["node", "artifact", "policy", "model", "schema", "planner", "workflow", "deployment", "repository", "pull_request", "agent", "unknown"]
+    },
+    "evaluation_id": { "$ref": "#/$defs/id" },
+    "decision": {
+      "enum": ["reject", "shadow-only", "limited-authority", "full-promotion", "quarantine", "rollback", "revoke"]
+    },
+    "authority_scope": {
+      "type": "object",
+      "additionalProperties": true,
+      "properties": {
+        "allowed_actions": { "$ref": "#/$defs/string_array" },
+        "denied_actions": { "$ref": "#/$defs/string_array" },
+        "expires_at": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "reasons": { "$ref": "#/$defs/string_array" },
+    "issued_at": { "$ref": "#/$defs/timestamp" },
+    "issuer_node_id": { "$ref": "#/$defs/id" },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "evidence_refs": { "$ref": "#/$defs/string_array" },
+    "replay_refs": { "$ref": "#/$defs/string_array" },
+    "approval_refs": { "$ref": "#/$defs/string_array" },
+    "rollback_refs": { "$ref": "#/$defs/string_array" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

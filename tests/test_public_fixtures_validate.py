@@ -16,6 +16,10 @@ def test_book_xi_slice_a_public_fixtures_validate() -> None:
         ("provenance_record", ROOT / "examples/practicum/provenance_record.example.json"),
         ("event_envelope", ROOT / "examples/practicum/event_envelope.example.json"),
         ("trace_event", ROOT / "examples/practicum/trace_event.example.json"),
+        ("command_envelope", ROOT / "examples/practicum/command_envelope.example.json"),
+        ("delegation_envelope", ROOT / "examples/practicum/delegation_envelope.example.json"),
+        ("status_envelope", ROOT / "examples/practicum/status_envelope.example.json"),
+        ("capability_descriptor", ROOT / "examples/practicum/capability_descriptor.example.json"),
     ]
     for schema_name, path in cases:
         bundle.validate(schema_name, load_json(path))

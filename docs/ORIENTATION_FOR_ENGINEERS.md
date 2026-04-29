@@ -12,6 +12,18 @@ Do not begin with generic agent runtime assumptions.
 
 Do not collapse the architecture into a prompt wrapper, vector store, workflow engine, or service mesh. Those are implementation substrates. The blueprint is broader and stricter.
 
+## Public-first posture
+
+This is a public-first engineering program.
+
+The doctrine, captures, schemas, profiles, examples, tests, methodology, conformance rules, and reference implementation should be public by default.
+
+Do not withhold work because it is unfinished. Mark it provisional, experimental, incomplete, or under reconciliation.
+
+Withhold or sanitize only narrow material: secrets, credentials, customer/user-private data, live private telemetry, sensitive deployment configuration, legally restricted third-party material, or evidence that needs redaction.
+
+When raw data cannot be public, publish the public-safe substitute: schema, synthetic fixture, redacted fixture, methodology, summary, validation checks, or ingestion plan.
+
 ## Core objects to understand
 
 ### Fractal Node
@@ -57,7 +69,7 @@ Follow this order:
 5. Build replay/evaluation/promotion path.
 6. Build claim/event/provenance path from Book XI.
 7. Add mesh, identity, policy bundle, attestation, and operator workflow slices.
-8. Add scoring/dashboard ingestion only after public/private review.
+8. Add scoring/dashboard ingestion after public-first classification and sanitization review.
 
 ## Current provisional areas
 
@@ -74,10 +86,12 @@ Reconcile them against:
 
 ## Definition of engineering progress
 
-Good progress means the repo becomes more self-contained, more faithful to the blueprint, more testable, and less ambiguous.
+Good progress means the repo becomes more self-contained, more faithful to the blueprint, more public, more testable, and less ambiguous.
 
-Bad progress means adding impressive code before the contracts are reconciled.
+Bad progress means adding impressive code before the contracts are reconciled, or hiding public-safe material because it is uncomfortable or incomplete.
 
-## Public safety
+## Publication safety
 
-This is a public repository. Do not commit secrets, customer data, private telemetry, live operational logs, or non-public evidence. Use synthetic fixtures or sanitized examples.
+Follow `docs/PUBLICATION_BOUNDARY.md`, `docs/PUBLICATION_MATRIX.md`, and `docs/decisions/0001-public-first-transparency.md`.
+
+Do not commit secrets or private data. Everything else should be public by default.

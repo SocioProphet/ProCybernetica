@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "transition_id": "transition:synthetic:001",
+  "node_id": "node:synthetic:claim-validator",
+  "from_state": "inactive",
+  "to_state": "active",
+  "event": "activate_ok",
+  "occurred_at": "2026-04-29T00:00:30Z",
+  "issuer_node_id": "node:synthetic:supervisor",
+  "evidence_refs": ["artifact:synthetic:ingest-001"],
+  "policy_refs": ["policy:public-fixture:v0"],
+  "replay_refs": ["replay:synthetic:slice-a-001"],
+  "notes": "Synthetic lifecycle transition showing supervised activation."
+}

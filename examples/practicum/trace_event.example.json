@@ -1,0 +1,22 @@
+{
+  "schema_version": "0.1.0",
+  "event_id": "event:synthetic:ingest-001",
+  "event_type": "claim.candidate.created",
+  "timestamp": "2026-04-29T00:00:01Z",
+  "subject_node": "node:synthetic:ingest-service",
+  "actor_id": "actor:synthetic:public-fixture",
+  "mission_id": "mission:synthetic:book-xi-slice-a",
+  "project_id": "project:procybernetica-public-fixtures",
+  "correlation_id": "corr:synthetic:001",
+  "trace_id": "trace-synthetic-001",
+  "severity": "info",
+  "policy_refs": ["policy:public-fixture:v0"],
+  "memory_refs": ["claim:synthetic:001"],
+  "provenance_refs": ["prov:synthetic:001"],
+  "artifact_refs": ["artifact:synthetic:ingest-001"],
+  "payload": {
+    "claim_id": "claim:synthetic:001",
+    "claim_status": "candidate",
+    "public_fixture": true
+  }
+}

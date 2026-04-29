@@ -14,6 +14,7 @@ def test_book_xi_slice_a_public_fixtures_validate() -> None:
         ("artifact_envelope", ROOT / "examples/practicum/artifact_envelope.example.json"),
         ("claim", ROOT / "examples/practicum/claim.example.json"),
         ("provenance_record", ROOT / "examples/practicum/provenance_record.example.json"),
+        ("event_envelope", ROOT / "examples/practicum/event_envelope.example.json"),
         ("trace_event", ROOT / "examples/practicum/trace_event.example.json"),
     ]
     for schema_name, path in cases:

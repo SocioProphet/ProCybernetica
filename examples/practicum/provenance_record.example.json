@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "provenance_id": "prov:synthetic:001",
+  "subject_ref": "claim:synthetic:001",
+  "created_at": "2026-04-29T00:00:00Z",
+  "created_by": "node:synthetic:ingest-service",
+  "source_refs": ["artifact:synthetic:ingest-001"],
+  "method": "public-synthetic-fixture",
+  "transformation_refs": ["processor:synthetic:claim-extractor"],
+  "attestation_refs": [],
+  "evidence_refs": ["artifact:synthetic:ingest-001"],
+  "trust_basis": "synthetic fixture for schema and practicum validation",
+  "notes": "Synthetic provenance record for Book XI Slice A."
+}

@@ -1,0 +1,25 @@
+{
+  "schema_version": "0.1.0",
+  "status_id": "status:synthetic:001",
+  "node_id": "node:synthetic:claim-validator",
+  "emitted_at": "2026-04-29T00:03:00Z",
+  "lifecycle_state": "active",
+  "phase": "fixture-validation",
+  "health": "ok",
+  "health_score": 1.0,
+  "fault_budget_remaining": 1.0,
+  "active_goal_refs": ["goal:synthetic:validate-claim"],
+  "current_plan_ref": "plan:synthetic:slice-a",
+  "last_observation_time": "2026-04-29T00:02:30Z",
+  "last_action_time": "2026-04-29T00:02:45Z",
+  "risk_posture": "normal",
+  "confidence": 0.9,
+  "metrics": {
+    "claims_checked": 1,
+    "policy_violations": 0
+  },
+  "artifact_refs": ["artifact:synthetic:validation-report-001"],
+  "incident_refs": [],
+  "policy_refs": ["policy:public-fixture:v0"],
+  "summary": "Synthetic status fixture for a healthy validator node."
+}

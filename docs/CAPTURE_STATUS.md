@@ -22,6 +22,8 @@ Do not treat early schemas or runtime scaffolding as canonical until the source 
 | ProCybernetica Volume III Executable Specification Pack and Conformance Law | `docs/source-captures/EXECUTABLE_SPECIFICATION_PACK_CAPTURE.md` | captured | machine-readable law, envelope family, conformance classes, DDL, BT semantic profile, promotion sequence |
 | ProCybernetica Volume IV Reference Implementation Kit | `docs/source-captures/REFERENCE_IMPLEMENTATION_KIT_CAPTURE.md` | captured | executable-kit skeleton, schema bundle, supervisor, replay harness, promotion gate, planner registry, smoke tests |
 | ProCybernetica Book VIII Constitutional Control, Assurance, and Lawful Learning | `docs/source-captures/CONSTITUTIONAL_CONTROL_CAPTURE.md` | captured | promotion law, replay law, provenance law, lawful learning, hard/soft lane boundary, assurance stack |
+| ProCybernetica Scoring Methodology and Data Provenance Dossier | `docs/source-captures/SCORING_METHODOLOGY_CAPTURE.md` | captured | POA/EGA scoring model, score scale, evidence registry, monitoring deltas, known limitations |
+| Dashboard Assets and Artifact Inventory | `docs/source-captures/DASHBOARD_ARTIFACT_INVENTORY_CAPTURE.md` | captured | dashboard asset set, workbook structure, intended row counts, local-vs-Drive artifact gap |
 
 ## Corpus indexed but not yet fully captured
 
@@ -35,19 +37,21 @@ Do not treat early schemas or runtime scaffolding as canonical until the source 
 | Prelude B: Linear Algebra, Operators, and State | indexed | mathematical runway capture |
 | Prelude C: Dynamics, Feedback, and Stability | indexed | dynamics/feedback/stability runway capture |
 | Prelude F: Ontology, Corpus, and Semantic Contracts | indexed | ontology/corpus/semantic-contract capture |
-| ProCybernetica Scoring Methodology and Data Provenance Dossier | indexed and partially summarized | scoring model, POA/EGA, evidence registry, dashboard implications capture |
-| ProCybernetica Full Scoring Mirror Status and Artifact Inventory | indexed and partially summarized | artifact inventory, local-vs-Drive gap, ingestion backlog capture |
 
 ## Codification already started
 
 The repository already contains early codification artifacts:
 
 - `README.md` — program thesis and repository role;
+- `AGENTS.md` — agent operating instructions for blueprint-capture mode;
+- `docs/BLUEPRINT_POSITIONING.md` — provenance and blueprint-positioning rule;
 - `docs/CORPUS_INDEX.md` — Drive corpus index;
 - `docs/PROGRAM_CAPTURE.md` — high-level program capture;
 - `docs/ROADMAP.md` — build roadmap derived from source corpus;
 - `docs/INTEGRATION_MAP.md` — ecosystem integration map;
 - `docs/PUBLICATION_BOUNDARY.md` — public/private boundary;
+- `docs/scoring/README.md` — scoring orientation;
+- `docs/dashboard/README.md` — dashboard orientation;
 - `schemas/` — early schema stubs;
 - `profiles/` — early lifecycle and promotion profiles;
 - `procyber/` — early reference-runtime scaffold.
@@ -66,11 +70,11 @@ The early runtime scaffold should be considered provisional until capture and re
 
 ## Immediate next capture targets
 
-1. Scoring methodology and artifact inventory.
-2. Volume I expanded monograph.
-3. Textbook/prelude index.
-4. Remaining mesh, federation, stabilization, and practicum volumes.
-5. Reconciliation pass across Volumes II, III, IV, and Book VIII.
+1. Volume I expanded monograph.
+2. Textbook/prelude index.
+3. Remaining mesh, federation, stabilization, and practicum volumes.
+4. Reconciliation pass across Volumes II, III, IV, and Book VIII.
+5. Artifact ingestion plan for scoring/dashboard bodies.
 
 ## Known caveat
 

@@ -1,0 +1,38 @@
+{
+  "schema_version": "0.1.0",
+  "generated_at": "2026-04-29T00:00:00Z",
+  "fixture_type": "public-synthetic",
+  "subjects": [
+    {
+      "subject_type": "lab",
+      "subject": "Synthetic Cybernetics Lab",
+      "watch_id": "watch:lab:synthetic-001",
+      "poa_score": 3.8,
+      "ega_score": 3.4,
+      "composite_score": 3.6,
+      "evidence_confidence": "medium",
+      "flags": ["provisional", "synthetic"]
+    }
+  ],
+  "evidence": [
+    {
+      "subject": "Synthetic Cybernetics Lab",
+      "dimension": "controlplane explicitness",
+      "score": 4,
+      "rollup": "POA",
+      "evidence_confidence": "medium",
+      "public_summary": "Synthetic example showing dashboard evidence row shape.",
+      "urls": ["https://example.org/public-controlplane-note"]
+    }
+  ],
+  "monitoring_deltas": [
+    {
+      "subject": "Synthetic Cybernetics Lab",
+      "total_change_count": 2,
+      "change_severity": "low",
+      "surface_stability_trend": "stable",
+      "contradiction_flag": false,
+      "top_risk": "none observed in synthetic fixture"
+    }
+  ]
+}

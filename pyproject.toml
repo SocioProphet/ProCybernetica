@@ -1,0 +1,29 @@
+[build-system]
+requires = ["setuptools>=69", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "procybernetica"
+version = "0.1.0a0"
+description = "Doctrine-as-code and reference implementation kit for ProCybernetica control law."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "Apache-2.0" }
+authors = [
+  { name = "SocioProphet" }
+]
+dependencies = [
+  "jsonschema>=4.21",
+  "PyYAML>=6.0"
+]
+
+[project.scripts]
+procyber = "procyber.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["procyber*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]

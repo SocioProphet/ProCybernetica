@@ -1,0 +1,64 @@
+profile_id: procybernetica.promotion_policy.example.v0_1
+schema_version: 0.1.0
+purpose: Example constitutional thresholds for promotion, quarantine, rollback, and limited authority.
+
+thresholds:
+  min_pass_rate: 0.95
+  max_drift_rate: 0.02
+  max_policy_violations: 0
+  max_critical_violations: 0
+  require_replay_refs: true
+  require_policy_refs: true
+  require_evidence_refs: true
+
+decision_rules:
+  - name: critical_violation_quarantine
+    when: critical_violation_count > 0
+    decision: quarantine
+
+  - name: policy_violation_quarantine
+    when: policy_violation_count > max_policy_violations
+    decision: quarantine
+
+  - name: pass_rate_failure
+    when: pass_rate < min_pass_rate
+    decision: quarantine
+
+  - name: drift_shadow_only
+    when: drift_rate > max_drift_rate
+    decision: shadow-only
+
+  - name: clean_full_promotion
+    when: pass_rate >= min_pass_rate and drift_rate <= max_drift_rate and policy_violation_count == 0
+    decision: full-promotion
+
+authority_budgets:
+  shadow-only:
+    may_actuate: false
+    may_write_canonical_truth: false
+    may_emit_recommendations: true
+
+  limited-authority:
+    may_actuate: true
+    requires_human_gate: true
+    may_write_canonical_truth: false
+
+  full-promotion:
+    may_actuate: true
+    requires_human_gate: false
+    may_write_canonical_truth: true
+
+  quarantine:
+    may_actuate: false
+    may_write_canonical_truth: false
+    allowed_actions:
+      - explain
+      - preserve_evidence
+      - rollback
+      - request_review
+
+invariants:
+  - No benchmark success erases a policy failure.
+  - No soft-lane output crosses into hard-lane truth without validation.
+  - No promotion occurs without evidence, replay, and policy references.
+  - Quarantine preserves evidence rather than deleting history.

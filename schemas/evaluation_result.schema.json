@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/evaluation_result.schema.json",
+  "title": "ProCybernetica EvaluationResult",
+  "description": "Replay, benchmark, conformance, shadow-mode, or policy evaluation result used as evidence for promotion law.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "evaluation_id",
+    "evaluated_subject",
+    "subject_kind",
+    "suite_name",
+    "executed_at",
+    "verdict",
+    "metrics",
+    "evidence_refs",
+    "promotion_recommendation"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "evaluation_id": { "$ref": "#/$defs/id" },
+    "evaluated_subject": { "$ref": "#/$defs/id" },
+    "subject_kind": {
+      "enum": ["node", "artifact", "policy", "model", "schema", "planner", "workflow", "deployment", "repository", "pull_request", "agent", "unknown"]
+    },
+    "suite_name": { "type": "string", "minLength": 1 },
+    "suite_version": { "type": "string" },
+    "executed_at": { "$ref": "#/$defs/timestamp" },
+    "verdict": { "enum": ["pass", "warn", "fail", "inconclusive"] },
+    "metrics": {
+      "type": "object",
+      "additionalProperties": { "type": ["number", "integer", "string", "boolean"] },
+      "properties": {
+        "pass_rate": { "type": "number", "minimum": 0, "maximum": 1 },
+        "drift_rate": { "type": "number", "minimum": 0 },
+        "policy_violation_count": { "type": "integer", "minimum": 0 },
+        "event_count": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "violations": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["violation_id", "severity", "summary"],
+        "additionalProperties": false,
+        "properties": {
+          "violation_id": { "$ref": "#/$defs/id" },
+          "severity": { "enum": ["info", "low", "medium", "high", "critical"] },
+          "summary": { "type": "string", "minLength": 1 },
+          "policy_ref": { "type": "string" },
+          "evidence_ref": { "type": "string" }
+        }
+      },
+      "default": []
+    },
+    "evidence_refs": { "$ref": "#/$defs/string_array" },
+    "replay_refs": { "$ref": "#/$defs/string_array" },
+    "trace_refs": { "$ref": "#/$defs/string_array" },
+    "promotion_recommendation": {
+      "enum": ["reject", "shadow-only", "limited-authority", "full-promotion", "quarantine"]
+    },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

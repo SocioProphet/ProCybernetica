@@ -1,0 +1,23 @@
+{
+  "schema_version": "0.1.0",
+  "delegation_id": "dlg:synthetic:001",
+  "issued_at": "2026-04-29T00:02:00Z",
+  "expires_at": "2026-04-29T01:02:00Z",
+  "issuer": "node:synthetic:supervisor",
+  "delegate": "node:synthetic:claim-validator",
+  "scope": "Validate synthetic public fixture claims only.",
+  "authority": "recommend",
+  "goals": ["validate candidate claim", "preserve provenance"],
+  "command_prefixes": ["validate_claim"],
+  "repositories": ["repo:synthetic:public-fixtures"],
+  "max_cost": 0,
+  "max_risk": 0.05,
+  "max_duration_s": 3600,
+  "required_artifacts": ["artifact:synthetic:validation-report-001"],
+  "rollback_owner": "node:synthetic:supervisor",
+  "compensation_policy": "no side effects permitted",
+  "explanation_level": "standard",
+  "policy_refs": ["policy:public-fixture:v0"],
+  "provenance_refs": ["prov:synthetic:001"],
+  "notes": "Synthetic delegation fixture."
+}

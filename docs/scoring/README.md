@@ -2,7 +2,15 @@
 
 This directory captures the scoring and evidence methodology for ProCybernetica alignment work.
 
-The scoring system is part of the blueprint. It should be preserved before it is rebuilt, re-ingested, or turned into dashboard code.
+The scoring system is part of the blueprint. It should be preserved, published, and made inspectable before it is rebuilt, re-ingested, or turned into dashboard code.
+
+## Public-first scoring posture
+
+Scoring methodology, dimensions, rubrics, evidence-shape, validation checks, and dashboard schema should be public by default.
+
+Raw scoring/evidence bodies should also be published if they are public-safe. If any row contains customer/user-private data, live private telemetry, restricted third-party material, or sensitive operational evidence, publish a sanitized row, synthetic fixture, methodology, schema, or validation summary instead.
+
+Do not treat “not yet clean” as a reason to hide the scoring system. Mark incomplete artifacts as provisional and publish the public-safe state.
 
 ## Primary concepts
 
@@ -76,6 +84,7 @@ Important caveat: the blueprint records intended and locally rebuilt heavy data 
 
 - Locate or recreate the repaired workbook/CSV/JSON artifacts.
 - Verify row counts and schema shape.
-- Decide what can be public.
-- Commit public-safe schemas and fixtures.
-- Keep private/customer-sensitive evidence out of this public repository.
+- Classify artifacts using `../PUBLICATION_MATRIX.md`.
+- Publish raw artifacts when public-safe.
+- Publish sanitized or synthetic fixtures when raw artifacts contain narrow excluded material.
+- Publish schemas, validation checks, row counts, methodology, and reproduction plans even when raw evidence cannot be published.

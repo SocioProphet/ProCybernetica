@@ -5,28 +5,18 @@
   "description": "Replay manifest for reconstructing a consequential episode under declared data, policy, version, and evidence bounds.",
   "type": "object",
   "additionalProperties": false,
-  "required": [
-    "schema_version",
-    "replay_id",
-    "subject_node",
-    "episode_kind",
-    "window_start",
-    "window_end",
-    "event_log_uri",
-    "version_pins",
-    "policy_refs",
-    "artifact_refs"
-  ],
+  "required": ["schema_version", "replay_id", "subject_node", "episode_kind", "window_start", "window_end", "event_log_uri", "version_pins", "policy_refs", "artifact_refs"],
   "properties": {
     "schema_version": { "type": "string", "minLength": 1 },
     "replay_id": { "$ref": "#/$defs/id" },
     "subject_node": { "$ref": "#/$defs/id" },
     "episode_kind": {
-      "enum": ["lifecycle", "command", "delegation", "workflow", "pull_request", "deployment", "incident", "promotion", "evaluation", "other"]
+      "enum": ["lifecycle", "command", "delegation", "workflow", "pull_request", "deployment", "incident", "promotion", "evaluation", "ingest", "query", "actuation", "mesh", "other"]
     },
     "window_start": { "$ref": "#/$defs/timestamp" },
     "window_end": { "$ref": "#/$defs/timestamp" },
     "event_log_uri": { "type": "string", "minLength": 1 },
+    "determinism_class": { "enum": ["deterministic", "best-effort", "statistical", "non-deterministic-with-pins"] },
     "version_pins": {
       "type": "object",
       "additionalProperties": { "type": "string" },
@@ -38,6 +28,7 @@
     "input_refs": { "$ref": "#/$defs/string_array" },
     "expected_output_refs": { "$ref": "#/$defs/string_array" },
     "redaction_policy_refs": { "$ref": "#/$defs/string_array" },
+    "public_release_state": { "enum": ["public", "public-sanitized", "public-synthetic", "withheld-specific"] },
     "notes": { "type": "string" }
   },
   "$defs": {

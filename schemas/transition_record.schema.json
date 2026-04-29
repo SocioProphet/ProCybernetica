@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/transition_record.schema.json",
+  "title": "ProCybernetica TransitionRecord",
+  "description": "Evidence-bearing lifecycle transition record for a ProCybernetica node or twin.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "transition_id", "node_id", "from_state", "to_state", "event", "occurred_at", "issuer_node_id", "evidence_refs", "policy_refs"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "transition_id": { "$ref": "#/$defs/id" },
+    "node_id": { "$ref": "#/$defs/id" },
+    "from_state": { "type": "string", "minLength": 1 },
+    "to_state": { "type": "string", "minLength": 1 },
+    "event": { "type": "string", "minLength": 1 },
+    "occurred_at": { "$ref": "#/$defs/timestamp" },
+    "issuer_node_id": { "$ref": "#/$defs/id" },
+    "evidence_refs": { "$ref": "#/$defs/string_array" },
+    "policy_refs": { "$ref": "#/$defs/string_array" },
+    "replay_refs": { "$ref": "#/$defs/string_array" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" },
+    "string_array": { "type": "array", "items": { "type": "string" }, "default": [] }
+  }
+}

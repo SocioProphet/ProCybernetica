@@ -1,0 +1,3 @@
+subject,watch_id,total_change_count,change_severity,repeat_pass_count,surface_stability_trend,persistent_issue_flag,contradiction_flag,top_risk
+Synthetic Cybernetics Lab,watch:lab:synthetic-001,2,low,3,stable,false,false,none observed in synthetic fixture
+Example Autonomous Systems Institute,watch:lab:synthetic-002,5,medium,2,improving,false,true,synthetic contradiction flag for dashboard testing

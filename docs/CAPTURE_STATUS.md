@@ -1,8 +1,8 @@
 # ProCybernetica Capture Status
 
-This repository is currently in source-capture mode.
+This repository is currently in source-capture and reconciliation mode.
 
-The immediate objective is to make the public GitHub repository self-contained enough to build from the existing Drive corpus. Implementation should follow capture, not precede it.
+The immediate objective is to make the public GitHub repository self-contained enough to build from the existing Drive corpus. Implementation follows capture and reconciliation.
 
 ## Capture mode rule
 
@@ -27,16 +27,17 @@ Do not treat early schemas or runtime scaffolding as canonical until the source 
 | ProCybernetica Volume VIII Autonomic Constitution and Collective Stabilization | `docs/source-captures/VOLUME_VIII_AUTONOMIC_CONSTITUTION_CAPTURE.md` | captured | constitution governor, transparency ledger, policy conflict cases, stability reports, corpus governance, operator provenance |
 | ProCybernetica Book VIII Constitutional Control, Assurance, and Lawful Learning | `docs/source-captures/CONSTITUTIONAL_CONTROL_CAPTURE.md` | captured | promotion law, replay law, provenance law, lawful learning, hard/soft lane boundary, assurance stack |
 | ProCybernetica Book XI Implementation Practicum | `docs/source-captures/BOOK_XI_IMPLEMENTATION_PRACTICUM_CAPTURE.md` | captured | vertical slices for ingest, query, actuation, replay/promotion, and mesh coordination |
+| ProCybernetica Prelude B: Linear Algebra, Operators, and State | `docs/source-captures/PRELUDE_B_LINEAR_ALGEBRA_CAPTURE.md` | captured | linear-algebraic runway for state, operators, observability, mediation, and lawful transformation |
+| ProCybernetica Prelude C: Dynamics, Feedback, and Stability | `docs/source-captures/PRELUDE_C_DYNAMICS_FEEDBACK_CAPTURE.md` | captured | dynamical-systems runway for feedback, replay, learning, stability, and collective stabilization |
+| ProCybernetica Prelude F: Ontology, Corpus, and Semantic Contracts | `docs/source-captures/PRELUDE_F_ONTOLOGY_CORPUS_SEMANTIC_CONTRACTS_CAPTURE.md` | captured | ontology, computability, semantic contracts, hard/soft lane, and SocioProphet ontology repo alignment |
 | ProCybernetica Scoring Methodology and Data Provenance Dossier | `docs/source-captures/SCORING_METHODOLOGY_CAPTURE.md` | captured | POA/EGA scoring model, score scale, evidence registry, monitoring deltas, known limitations |
 | Dashboard Assets and Artifact Inventory | `docs/source-captures/DASHBOARD_ARTIFACT_INVENTORY_CAPTURE.md` | captured | dashboard asset set, workbook structure, intended row counts, local-vs-Drive artifact gap |
 
-## Corpus indexed but not yet fully captured
+## Main capture status
 
-| Source | Status | Needed capture |
-| --- | --- | --- |
-| Prelude B: Linear Algebra, Operators, and State | indexed | mathematical runway capture |
-| Prelude C: Dynamics, Feedback, and Stability | indexed | dynamics/feedback/stability runway capture |
-| Prelude F: Ontology, Corpus, and Semantic Contracts | indexed | ontology/corpus/semantic-contract capture |
+The principal blueprint corpus and prelude runway are captured into GitHub.
+
+Known remaining capture opportunities are secondary or additive: coherence/contradiction addenda, doctrine insertion notes, merged drafts, adapter-specific notes, and later whitepapers. Those should be audited after the reconciliation pass so the repo does not confuse duplicate or superseded drafts with the primary blueprint line.
 
 ## Codification already started
 
@@ -64,16 +65,17 @@ The early runtime scaffold should be considered provisional until capture and re
 2. Reconcile doctrine across captured sources.
 3. Normalize vocabulary and canonical decisions.
 4. Freeze v0 schema names and package names.
-5. Build reference implementation from the captured Volume IV kit.
+5. Build reference implementation from the captured Volume IV kit and Book XI practicum.
 6. Add tests and conformance harness.
 7. Integrate Prophet Platform, Agent Plane, GitHub workflows, and SourceOS evidence.
 
-## Immediate next capture targets
+## Immediate next work
 
-1. Textbook/prelude index.
-2. Prelude captures.
-3. Reconciliation pass across captured volumes.
-4. Artifact ingestion plan for scoring/dashboard bodies.
+1. Create repository orientation docs: `START_HERE`, `BLUEPRINT_PROVENANCE`, and engineer orientation.
+2. Reconcile schema/profile law across Volumes II, III, IV, Genesis/Inception, Book VIII, and Book XI.
+3. Produce a v0 canonical envelope list and lifecycle/promotion enum decision record.
+4. Plan public-safe scoring/dashboard artifact ingestion.
+5. Audit secondary addenda and duplicate drafts after reconciliation.
 
 ## Known caveat
 

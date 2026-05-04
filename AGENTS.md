@@ -1,6 +1,6 @@
 # Agent Instructions
 
-This repository is in blueprint-capture and reconciliation mode.
+This repository is in blueprint-capture, estate-alignment, and reconciliation mode.
 
 ## Prime directive
 
@@ -33,8 +33,23 @@ The burden of justification is on withholding, not publishing.
 2. `docs/BLUEPRINT_PROVENANCE.md`
 3. `docs/CAPTURE_STATUS.md`
 4. `docs/CORPUS_INDEX.md`
-5. `docs/PUBLICATION_BOUNDARY.md`
-6. Relevant files under `docs/source-captures/`
+5. `docs/integration/ESTATE_ALIGNMENT_AUDIT.md`
+6. `docs/integration/RECENT_CONTRIBUTION_ALIGNMENT.md`
+7. `docs/PUBLICATION_BOUNDARY.md`
+8. Relevant files under `docs/source-captures/`
+
+## Estate-alignment rule
+
+Do not work in a vacuum.
+
+Before changing schemas, profiles, runtime code, integration docs, or agent lanes, check:
+
+- the current repository dossier routing rules;
+- `docs/integration/ESTATE_ALIGNMENT_AUDIT.md`;
+- `docs/integration/RECENT_CONTRIBUTION_ALIGNMENT.md`;
+- relevant upstream repos in SocioProphet, SourceOS-Linux, SociOS-Linux, and mdheller.
+
+If another repo already owns a contract/runtime/evidence surface, map to it. Do not fork or duplicate it unless the gap is explicit and documented.
 
 ## Operating rules
 
@@ -66,21 +81,22 @@ A good capture records:
 
 ### Reconciliation lane
 
-Normalize differences among captured sources.
+Normalize differences among captured sources and upstream estate surfaces.
 
 A good reconciliation records:
 
 - what the sources agree on;
 - where names or enums differ;
 - what should become canonical for v0;
+- what upstream repository owns the runtime, evidence, or contract surface;
 - what requires human decision;
 - what provisional repo files need correction.
 
 ### Implementation lane
 
-Implementation is allowed only after capture/reconciliation makes the target contract clear.
+Implementation is allowed only after capture/reconciliation/estate mapping makes the target contract clear.
 
-Reference implementation should follow the captured Volume IV kit, the Volume III executable specification pack, and the Book XI implementation practicum.
+Reference implementation should follow the captured Volume IV kit, the Volume III executable specification pack, Book XI implementation practicum, and estate mapping documents.
 
 ### Publication lane
 

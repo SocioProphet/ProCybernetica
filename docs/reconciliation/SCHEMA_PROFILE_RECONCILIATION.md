@@ -1,98 +1,132 @@
 # Schema and Profile Reconciliation
 
-Status: initial reconciliation seed for Codex/agent review.
+Status: estate-aware v0 reconciliation update
 
-This document compares the captured blueprint sources and recommends a canonical v0 contract surface. It is intentionally conservative: source variation is recorded before final decisions are made.
+Turn: 10 / 20
+
+This document reconciles the captured ProCybernetica blueprint with the active GitHub estate. It supersedes the initial schema seed posture by accounting for completed integration maps across AgentPlane, semantic-serdes/SHIR, ontogenesis, SourceOS/SociOS, Prophet Platform, HolographMe, Foundry/model-governance, and workstation/operator surfaces.
+
+## Governing rule
+
+ProCybernetica owns public constitutional semantics, doctrine-as-code, schema/profile interpretation, public conformance expectations, and reference-kit posture.
+
+It does not own runtime/deployment services, model lifecycle ledgers, ontology release discipline, semantic-serdes contracts, SourceOS typed contracts, AgentPlane evidence artifacts, workstation runners, terminal products, browser runtimes, or product UI implementation.
 
 ## Sources reconciled
 
 Primary source captures:
 
+- `docs/source-captures/VOLUME_I_EXPANDED_MONOGRAPH_CAPTURE.md`
+- `docs/source-captures/CONTROLPLANE_TECHNICAL_PAPER_CAPTURE.md`
+- `docs/source-captures/GENESIS_INCEPTION_CAPTURE.md`
 - `docs/source-captures/PROPHET_ARCHITECTURE_SPECIFICATION_CAPTURE.md`
 - `docs/source-captures/EXECUTABLE_SPECIFICATION_PACK_CAPTURE.md`
 - `docs/source-captures/REFERENCE_IMPLEMENTATION_KIT_CAPTURE.md`
-- `docs/source-captures/CONTROLPLANE_TECHNICAL_PAPER_CAPTURE.md`
-- `docs/source-captures/GENESIS_INCEPTION_CAPTURE.md`
 - `docs/source-captures/CONSTITUTIONAL_CONTROL_CAPTURE.md`
 - `docs/source-captures/BOOK_XI_IMPLEMENTATION_PRACTICUM_CAPTURE.md`
 - `docs/source-captures/VOLUME_VI_OPERATIONAL_MESH_CAPTURE.md`
 - `docs/source-captures/VOLUME_VII_SECURE_COORDINATION_CAPTURE.md`
 - `docs/source-captures/VOLUME_VIII_AUTONOMIC_CONSTITUTION_CAPTURE.md`
 
+Estate maps:
+
+- `docs/integration/agentplane-evidence-map.md`
+- `docs/integration/semantic-serdes-shir-map.md`
+- `docs/integration/ontogenesis-governance-map.md`
+- `docs/integration/sourceos-socios-contract-map.md`
+- `docs/integration/prophet-platform-record-map.md`
+- `docs/integration/holographme-genesis-inception-map.md`
+- `docs/integration/foundry-model-governance-map.md`
+- `docs/integration/workstation-operator-surface-map.md`
+
 ## Source agreement
 
-The captured corpus consistently agrees on these architectural requirements:
+The captured corpus and estate maps agree on these requirements:
 
-1. Every consequential participant must be represented as a node.
-2. Nodes must expose identity, lifecycle, interfaces, memory, policy, and observability surfaces.
-3. Commands and delegation are authority-bearing events, not informal messages.
-4. Artifacts, claims, policies, and model updates require provenance.
+1. Every consequential participant should be representable as a node or referenced domain object.
+2. Nodes expose identity, lifecycle, interfaces, memory, policy, and observability surfaces.
+3. Commands and delegation are authority-bearing records, not informal messages.
+4. Artifacts, claims, policies, model updates, release records, and operator actions need provenance.
 5. Replay is constitutional evidence, not only debugging.
-6. Proposals and promotions are distinct.
-7. Learned or heuristic outputs stay soft-lane until validated and promoted.
+6. Proposal and promotion are distinct.
+7. Learned, routed, inferred, or heuristic outputs stay soft-lane until validation and promotion.
 8. Repositories are governed memory organs, not passive buckets.
-9. Human/operator interventions must be typed and replayable.
-10. Public implementation must avoid private data and operational secrets.
+9. Operator interventions must be typed and replayable.
+10. Public implementation should publish public-safe schemas, examples, tests, methodology, and source-state summaries.
+11. Existing upstream repos keep ownership of their concrete contract families.
 
-## Canonical v0 envelope family
+## v0 schema disposition
 
-Recommended v0 schema family:
+### Keep in ProCybernetica v0
 
-| Canonical schema | Source basis | Purpose |
+These schemas are appropriate public constitutional surfaces in this repository.
+
+| Schema | Current status | Role |
 | --- | --- | --- |
-| `node_descriptor.schema.json` | Vol II, Vol III, Vol IV, controlplane paper | constitutional identity and admission contract |
-| `artifact_envelope.schema.json` | Vol II, Vol III, Vol IV | durable artifact/evidence record |
-| `policy_envelope.schema.json` | Vol II, Vol III, Book VIII, Vol VII | policy bundle, constraint, obligation, and activation metadata |
-| `command_envelope.schema.json` | Vol II, Vol III | typed authority-bearing command |
-| `delegation_envelope.schema.json` | Vol II, Vol III | bounded handoff token / scoped authority transfer |
-| `observation_envelope.schema.json` | Vol II, Vol III, controlplane paper | information-plane observation |
-| `status_envelope.schema.json` | Vol II, Vol III, Vol IV | node status and health report |
-| `trace_event.schema.json` | Vol IV, Book XI, Vol VI/VII | normalized causal event |
-| `transition_record.schema.json` | Vol IV, Vol III | lifecycle transition evidence |
-| `replay_envelope.schema.json` | Vol III, Vol IV, Book VIII | replay manifest and reconstruction contract |
-| `evaluation_result.schema.json` | Vol III, Vol IV, Book VIII | evaluation, benchmark, conformance, replay result |
-| `promotion_decision.schema.json` | Vol IV, Book VIII | constitutional admission/quarantine/rejection verdict |
-| `incident_report.schema.json` | Vol III, Vol IV, Volume VIII | safety, policy, epistemic, runtime, or operator incident |
-| `claim.schema.json` | Book XI, Prelude F | canonical claim object for ingest/query slices |
-| `provenance_record.schema.json` | Book XI, Book VIII, Volume VI/VII/VIII | evidence chain and source lineage |
-| `capability_descriptor.schema.json` | Book XI, Vol II | typed gateway for side effects |
-| `operator_record.schema.json` | Vol I, Vol II, Book XI | explicit state-transforming operator choice |
-| `genesis_seed.schema.json` | Genesis/Inception capture | reusable compile-time twin seed |
-| `twin_runtime_descriptor.schema.json` | Genesis/Inception capture | live runtime twin descriptor |
-| `event_envelope.schema.json` | Genesis/Inception, Book XI, Vol VI/VII | cross-plane event record |
-| `policy_conflict_case.schema.json` | Volume VIII | typed cross-domain policy conflict |
-| `stability_report.schema.json` | Volume VIII | mesh stability metrics and verdict basis |
-| `constitutional_verdict.schema.json` | Volume VIII | stable/watch/constrain/quarantine governor verdict |
-| `corpus_manifest.schema.json` | Volume VIII | governed corpus/data admission object |
-| `operator_provenance_case.schema.json` | Volume VIII | human intervention provenance |
-| `export_bundle.schema.json` | Volume VI/VII | signed export artifact and chain-of-custody |
-| `attestation_statement.schema.json` | Volume VII, Book VIII | threshold/in-toto-style statement |
-| `benchmark_corpus.schema.json` | Volume VI/VII, Book VIII | benchmark suite / learning admission corpus |
+| `node_descriptor.schema.json` | present, reconciled | constitutional identity, lifecycle, and conformance surface for nodes |
+| `artifact_envelope.schema.json` | present | generic public artifact/evidence wrapper |
+| `policy_envelope.schema.json` | present | constitutional policy reference/summary surface |
+| `command_envelope.schema.json` | present | authority-bearing command wrapper |
+| `delegation_envelope.schema.json` | present | bounded handoff / scoped authority wrapper |
+| `observation_envelope.schema.json` | present | information-plane observation wrapper |
+| `status_envelope.schema.json` | present | node status and health report |
+| `event_envelope.schema.json` | present | cross-plane event record with public release posture |
+| `trace_event.schema.json` | present | causal/replay trace event |
+| `transition_record.schema.json` | present | lifecycle transition evidence |
+| `replay_envelope.schema.json` | present, reconciled | constitutional replay manifest |
+| `evaluation_result.schema.json` | present, reconciled | evaluation / benchmark / conformance result summary |
+| `promotion_decision.schema.json` | present, reconciled | constitutional admission, quarantine, rollback, or review verdict |
+| `incident_report.schema.json` | present | review/remediation episode report |
+| `claim.schema.json` | present | public claim object for Book XI practicum and scoring/evidence surfaces |
+| `provenance_record.schema.json` | present | source/evidence lineage record |
+| `capability_descriptor.schema.json` | present | high-level capability gateway descriptor |
 
-## Current repo schema delta
+### Keep as profiles, not schemas
 
-Current repository schemas are partial:
+| Contract | Current status | Reason |
+| --- | --- | --- |
+| `controlplane_state_machine.yaml` | present | lifecycle transition law belongs in profile layer |
+| `promotion_policy.example.yaml` | present | threshold/promotion behavior belongs in profile layer |
+| `bt_semantic_profile.yaml` | present | behavior-tree runtime semantics are profile-level |
+| `k3_bridge_lifecycle.yaml` | present | Genesis/Inception transition profile, not full domain schema yet |
 
-- `node_descriptor.schema.json` exists but includes some extensions not yet reconciled with Volume III's stricter enum set.
-- `evaluation_result.schema.json` exists and is broadly aligned, but verdict and promotion recommendation enums differ from Volume III and Book VIII.
-- `promotion_decision.schema.json` exists and includes `rollback` and `revoke`, which are useful but should be checked against the promotion law versus lifecycle law boundary.
-- `replay_envelope.schema.json` exists and is broadly aligned.
+### Defer from v0
 
-Current repository is missing many canonical envelopes listed above.
+These remain valid blueprint concepts but should not be added to v0 until adapter and upstream maps stabilize.
 
-Recommendation: keep current schemas as provisional until a v0 schema cleanup issue normalizes enums and file coverage.
+| Deferred schema | Reason |
+| --- | --- |
+| `hologram.schema.json` | semantic-serdes/SHIR and ontogenesis own semantic object authority; add only after adapter design |
+| `genesis_seed.schema.json` | needs HolographMe, Agent Registry, Policy Fabric, model/router, and SourceOS alignment first |
+| `inception_request.schema.json` | same as above; should reference domain objects rather than duplicate them |
+| `twin_runtime_descriptor.schema.json` | should likely use `domain_object_ref` and avoid cloning HolographMe |
+| `policy_conflict_case.schema.json` | Volume VIII concept; wait until Policy Fabric / SourceOS policy mapping is complete |
+| `stability_report.schema.json` | Volume VIII concept; wait for conformance plan and platform eval fabric mapping |
+| `constitutional_verdict.schema.json` | may be needed later; currently `PromotionDecision` covers v0 decisions |
+| `corpus_manifest.schema.json` | SHIR/ontogenesis/model-governance-ledger own relevant corpus/semantic artifacts |
+| `operator_provenance_case.schema.json` | operator surfaces own concrete events; use EventEnvelope/ProvenanceRecord in v0 |
+| `export_bundle.schema.json` | platform, SourceOS, semantic-serdes, and AgentPlane own concrete export/receipt surfaces |
+| `attestation_statement.schema.json` | ontogenesis/AgentPlane/SourceOS/Prophet Platform own concrete attestation surfaces |
+| `benchmark_corpus.schema.json` | model-governance-ledger / platform eval fabric own benchmark/eval records |
+| `operator_record.schema.json` | covered in v0 by EventEnvelope, TraceEvent, TransitionRecord, and PromotionDecision |
 
-## Lifecycle state reconciliation
+## Upstream contract families ProCybernetica must not duplicate
 
-Source variants:
+| Upstream family | Owner | ProCybernetica action |
+| --- | --- | --- |
+| AgentPlane artifacts | `SocioProphet/agentplane` | reference RunArtifact, ReplayArtifact, PromotionArtifact, SessionArtifact, and related evidence |
+| semantic-serdes primitives | `SocioProphet/semantic-serdes` | reference Event/Context/Surface, canonical enums, agent messages, decision artifacts, replay artifacts |
+| SHIR object model | `SocioProphet/ontogenesis` and `semantic-serdes` | reference CandidateAssertion, Assertion, ProjectionLossReport, Receipt, and curation objects |
+| ontology release discipline | `SocioProphet/ontogenesis` | reference SHACL reports, ledgers, signatures, SBOMs, module registry |
+| SourceOS typed contracts | `SourceOS-Linux/sourceos-spec` | reference Policy, PolicyDecision, RunRecord, EventEnvelope, ProvenanceRecord, AgentSession, BootProofRecord, ReleaseReceipt, etc. |
+| workstation conformance | `SociOS-Linux/workstation-contracts` | reference conformance fixtures and run receipts |
+| Agent Machine runtime | `SourceOS-Linux/agent-machine` | reference AgentMachine, AgentPod, StorageReceipt, ActivationDecision, runtime evidence |
+| Prophet Platform contracts | `SocioProphet/prophet-platform` | reference EventEnvelope, EvidenceReceipt, MembraneDecision, eval records, FogStack readiness records |
+| HolographMe domain schemas | `SocioProphet/HolographMe` | reference HumanDigitalTwin, ConsentPolicy, Mission, projections, transition receipts |
+| Foundry/model governance | `functional-model-surfaces`, `model-router`, `model-governance-ledger`, `guardrail-fabric`, `sourceos-model-carry` | reference manifest, route, governance, decision, carry, and ledger records |
+| Operator products | `agent-term`, TurtleTerm, BearBrowser, source-os, socioprophet-web | reference operator/gateway events and receipts |
 
-- Controlplane paper: `unconfigured`, `inactive`, `active`, `degraded`, `recovery`, `finalized` plus quarantine in transition notes.
-- Volume II: `unconfigured`, `inactive`, `active`, `degraded`, `recovery`, `quarantined`, `finalized`.
-- Volume III: `unconfigured`, `configured`, `inactive`, `active`, `degraded`, `recovery`, `quarantined`, `retired`.
-- Volume IV: `unconfigured`, `configured`, `inactive`, `active`, `degraded`, `recovery`, `quarantined`, `retired`.
-- Genesis/Inception twin lifecycle: `draft`, `candidate`, `ready`, `executing`, `paused`, `quarantined`, `revoked`, `archived`.
-
-Recommended v0 split:
+## Canonical v0 lifecycle
 
 ### Fractal Node lifecycle
 
@@ -108,11 +142,16 @@ Use:
 - `retired`
 - `finalized`
 
-Rationale: this preserves the Volume III/IV executable sequence while retaining `finalized` from the controlplane paper as terminal archival/closure state.
+Decision: keep both `retired` and `finalized`.
+
+Rationale:
+
+- `retired` means the node no longer has operational authority.
+- `finalized` means archival closure or evidentiary finalization after retention/replay obligations are satisfied.
 
 ### Twin runtime lifecycle
 
-Use a separate profile:
+Keep separate from generic node lifecycle:
 
 - `draft`
 - `candidate`
@@ -123,11 +162,13 @@ Use a separate profile:
 - `revoked`
 - `archived`
 
-Rationale: Twin/Inception lifecycle is related but not identical to generic node lifecycle. Do not collapse them prematurely.
+Decision: do not encode this as a ProCybernetica v0 schema yet. Keep it in profile/mapping docs until Genesis/Inception schemas are designed around HolographMe and related domain objects.
 
-## Lifecycle transition event reconciliation
+## Lifecycle transition vocabulary
 
-Recommended v0 node transition events:
+Use the existing `profiles/controlplane_state_machine.yaml` vocabulary for v0 implementation. Treat alternate names from source captures as aliases in docs, not schema enums.
+
+Canonical node transition events for v0:
 
 - `configure_ok`
 - `admission_granted`
@@ -135,52 +176,37 @@ Recommended v0 node transition events:
 - `activate_ok`
 - `deactivate`
 - `health_degraded`
-- `contract_violation_or_health_drop`
 - `recover_start`
-- `recovery_started`
 - `recover_ok`
-- `recovery_verified`
 - `recover_failed`
 - `quarantine`
-- `quarantine_imposed`
 - `remediation_ok`
 - `revoke`
 - `retire`
-- `never_admitted`
-- `retirement_approved`
 - `finalize`
 
-Open decision: collapse synonymous pairs (`recover_start` vs `recovery_started`, `recover_ok` vs `recovery_verified`, `quarantine` vs `quarantine_imposed`) or preserve them as source-derived aliases.
+Recommendation: add alias metadata to `controlplane_state_machine.yaml` in Turn 11 rather than expanding enum values in schemas.
 
-Recommendation for v0 implementation: choose one canonical term per action and list aliases in profile metadata.
+## Promotion decision vocabulary
 
-## Promotion decision reconciliation
-
-Source variants:
-
-- Volume IV: `reject`, `shadow-only`, `limited-authority`, `full-promotion`, `quarantine`.
-- Book VIII: proposal versus promotion; hard/soft boundary; quarantine; rollback and lawful learning.
-- Volume III: `reject`, `shadow-only`, `limited-authority`, `full-promotion`; replay verdicts include `manual-review`.
-- Current schema: `reject`, `shadow-only`, `limited-authority`, `full-promotion`, `quarantine`, `rollback`, `revoke`.
-
-Recommended v0 `PromotionDecision.decision`:
+Current schema vocabulary is accepted for v0:
 
 - `reject`
 - `shadow-only`
 - `limited-authority`
 - `full-promotion`
 - `quarantine`
+- `manual-review`
 - `rollback-required`
 - `revoke-authority`
-- `manual-review`
 
-Rationale: `rollback` and `revoke` should remain expressible, but naming should clarify they are governance decisions, not direct actuator commands.
+Decision: keep rollback/revoke as promotion decision values for v0, but use governance phrasing (`rollback-required`, `revoke-authority`) to avoid confusing them with direct actuator commands.
 
-Open decision: whether rollback/revoke belong in `promotion_decision` or in a separate `constitutional_verdict` / `incident_response` schema.
+Potential future split: `constitutional_verdict.schema.json` may later absorb rollback/revoke/stability verdicts after Volume VIII adapter work.
 
-## Evaluation result reconciliation
+## Evaluation result vocabulary
 
-Recommended v0 `EvaluationResult.verdict`:
+Current schema vocabulary is accepted for v0:
 
 - `pass`
 - `conditional-pass`
@@ -190,7 +216,7 @@ Recommended v0 `EvaluationResult.verdict`:
 - `inconclusive`
 - `manual-review`
 
-Recommended `promotion_recommendation`:
+Promotion recommendations remain:
 
 - `reject`
 - `shadow-only`
@@ -201,92 +227,109 @@ Recommended `promotion_recommendation`:
 
 ## Conformance class reconciliation
 
-From Volume III:
+Keep the Volume III ladder in v0:
 
-- C0 schema conformant;
-- C1 supervised node;
-- C2 replayable node;
-- C3 production node;
-- C4 safety-critical embodiment.
+- `C0-schema-conformant`
+- `C1-supervised-node`
+- `C2-replayable-node`
+- `C3-production-node`
+- `C4-safety-critical-embodiment`
 
-Recommendation: preserve exactly as v0 conformance ladder.
+Map later to:
 
-## BT semantic profile reconciliation
+- functional-model-surfaces M0-M5 maturity;
+- SourceOS/SociOS conformance lanes;
+- AgentPlane run/replay evidence;
+- Prophet Platform eval fabric;
+- ontogenesis SHACL/ledger gates.
 
-Volume III pins:
+Do not collapse these ladders yet. They measure adjacent but different things.
 
-- `root_to_leaf_sequential` tick model;
-- explicit halt required;
-- subtree-local blackboard default;
-- shared keys require declaration;
-- idempotent leaf reentry;
-- leaf status events;
-- recovery action policy refs;
-- recovery retry budget;
-- tick trace required;
-- leaf action correlation ID required.
+## Current v0 fixture coverage
 
-Recommendation: create `profiles/bt_semantic_profile.yaml` from Volume III before implementation expands.
+Public synthetic fixtures currently validate through tests for:
 
-## Genesis/Inception/K3 reconciliation
+- node descriptor
+- policy envelope
+- transition record
+- artifact envelope
+- claim
+- provenance record
+- event envelope
+- trace event
+- command envelope
+- delegation envelope
+- status envelope
+- capability descriptor
+- replay envelope
+- evaluation result
+- promotion decision
 
-Genesis/Inception source defines:
+Scoring/dashboard public sample fixtures exist for:
 
-- semantic hologram substrate;
-- Genesis seed;
-- Inception binding;
-- K3 bridge states;
-- twin lifecycle;
-- cognitive mesh;
-- provider/organ adapters;
-- state-plane separation.
+- lab scoring sample CSV
+- evidence registry sample CSV
+- monitoring deltas sample CSV
+- dashboard export sample JSON
 
-Recommended v0 artifacts:
+## Runtime scaffold status
 
-- `schemas/hologram.schema.json`
-- `schemas/genesis_seed.schema.json`
-- `schemas/inception_request.schema.json`
-- `schemas/twin_runtime_descriptor.schema.json`
-- `profiles/k3_bridge_lifecycle.yaml`
+`procyber/` remains a reference validation scaffold, not a production runtime.
 
-Open decision: whether `Hologram` belongs in `schemas/` as canonical v0 or in a later semantic package after Prelude F/ontology alignment.
+Accepted v0 runtime scope:
 
-## Provisional runtime scaffold status
+- schema loading;
+- JSON payload validation;
+- public practicum report emission;
+- CI fixture checks.
 
-The `procyber/` package should be considered provisional.
+Rejected for v0 inside this repo:
 
-It may be retained as a seed, but implementation should pause until:
+- platform service runtime;
+- AgentPlane execution;
+- SourceOS runner;
+- ontology release pipeline;
+- model routing;
+- guardrail runtime;
+- UI implementation;
+- browser/terminal runtime.
 
-1. schema family is reconciled;
-2. lifecycle aliases are resolved;
-3. package naming is decided (`procyber` vs `procybernetica` vs `prophet_reference_kit`);
-4. fixtures are generated from captured examples.
+## Package naming decision
 
-Recommendation: do not expand runtime implementation until issue #2 completes review.
+Current CLI/package name `procyber` may remain for v0 validation scaffold.
 
-## Open decisions for human review
+Open future decision: rename to `procybernetica` only if packaging/release work begins. Do not block v0 conformance docs on package naming.
 
-1. Package name: `procyber`, `procybernetica`, or `prophet_reference_kit`?
-2. Should source-derived examples use `Prophet` or `ProCybernetica` names in JSON titles?
-3. Should `finalized` and `retired` both exist in node lifecycle?
-4. Should rollback/revoke be promotion decisions or incident/constitutional verdict decisions?
-5. Should `Hologram` be a v0 schema or a v0.2 semantic package?
-6. Should public repo include only schemas/docs first, with runtime in a later package, or keep reference runtime here?
-7. Which artifacts need Apache-2.0 license headers versus markdown provenance notices?
+## Schema changes still safe after estate maps
 
-## Recommended follow-up issues
+Only these schema-level changes are safe before adapter fixtures land:
 
-1. Normalize v0 schema family and remove provisional enum drift.
-2. Add missing core envelope schemas from Volume III.
-3. Add BT semantic profile from Volume III.
-4. Add K3 bridge lifecycle profile from Genesis/Inception.
-5. Add Book XI claim/event/provenance/capability schemas.
-6. Add Volume VI/VII/VIII mesh/coordination/autonomic schemas.
-7. Decide package naming and runtime location.
-8. Generate public-safe fixtures from captured examples.
+1. Add optional `external_refs` style fields only if they are generic and do not encode upstream-specific schemas.
+2. Add examples under `examples/integrations/*` referencing upstream artifact IDs.
+3. Add documentation links from existing schemas to upstream maps.
+4. Add public conformance checks that require references, not duplicated payloads.
+
+Avoid adding new large schema families until adapter backlog and conformance plan complete.
+
+## Recommended next-turn profile work
+
+Turn 11 should update profiles, not schemas:
+
+- add alias metadata to `controlplane_state_machine.yaml`;
+- clarify `promotion_policy.example.yaml` against accepted decision values;
+- ensure BT profile points to AgentPlane/SourceOS execution evidence rather than implementing BT runtime;
+- ensure K3 profile references HolographMe and future domain-object refs without cloning domain schemas.
+
+## Updated follow-up issues
+
+1. Keep issue #6 open for remaining schema cleanup, but narrow it to fixtures/docs rather than new schema families.
+2. Keep issue #7 open for profile alias and invariant normalization.
+3. Keep issue #8 open for practicum validation/report flow only.
+4. Use mapping follow-up issues #15, #16, #17 and adapter backlog later for integration fixtures.
+5. Do not open more schema-family issues until Turn 12 adapter backlog.
 
 ## Current recommendation
 
-Proceed with capture-complete, reconciliation-first posture.
+The v0 schema surface is now sufficient for public review once profile reconciliation, adapter backlog, and conformance docs land.
 
-Do not treat runtime code as canonical until the schema/profile cleanup is complete.
+Do not continue expanding schemas. Move to profiles, conformance, adapter refs, and public review checklist.

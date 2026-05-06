@@ -1,6 +1,21 @@
 profile_id: procybernetica.controlplane_state_machine.v0_1
 schema_version: 0.1.0
 purpose: Lawful lifecycle transitions for ProCybernetica Fractal Nodes.
+source_basis:
+  - docs/source-captures/CONTROLPLANE_TECHNICAL_PAPER_CAPTURE.md
+  - docs/source-captures/PROPHET_ARCHITECTURE_SPECIFICATION_CAPTURE.md
+  - docs/source-captures/EXECUTABLE_SPECIFICATION_PACK_CAPTURE.md
+  - docs/source-captures/REFERENCE_IMPLEMENTATION_KIT_CAPTURE.md
+  - docs/reconciliation/SCHEMA_PROFILE_RECONCILIATION.md
+
+ownership_boundary:
+  procybernetica_owns: lifecycle semantics, transition law, constitutional invariants
+  upstream_runtime_owners:
+    - SocioProphet/agentplane
+    - SourceOS-Linux/sourceos-spec
+    - SourceOS-Linux/agent-machine
+    - SociOS-Linux/workstation-contracts
+    - SocioProphet/prophet-platform
 
 states:
   - unconfigured
@@ -17,6 +32,22 @@ initial_state: unconfigured
 terminal_states:
   - retired
   - finalized
+
+state_meanings:
+  retired: node has no operational authority but may still have replay/retention obligations
+  finalized: archival closure after replay, retention, and evidence obligations are satisfied
+
+transition_aliases:
+  recover_start:
+    - recovery_started
+  recover_ok:
+    - recovery_verified
+  quarantine:
+    - quarantine_imposed
+  retire:
+    - retirement_approved
+  admission_denied:
+    - never_admitted
 
 transitions:
   - from: unconfigured
@@ -98,4 +129,5 @@ invariants:
   - No node may become active without admission evidence.
   - No quarantined node may actuate except through remediation or evidence-preserving rollback paths.
   - Terminal states are not reactivated.
-  - Every transition must emit a transition record.
+  - Every transition must emit a TransitionRecord or upstream equivalent evidence reference.
+  - Concrete runtime transitions may be owned by upstream repos; ProCybernetica records constitutional interpretation.

@@ -1,0 +1,61 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.ai/schemas/lawful-learning/ledger.schema.json",
+  "title": "LawfulLearningLedgerEntry",
+  "type": "object",
+  "required": [
+    "epoch",
+    "stateDigest",
+    "previousDigest",
+    "canonicalSerialization"
+  ],
+  "properties": {
+    "epoch": {
+      "type": "integer",
+      "minimum": 0
+    },
+    "stateDigest": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "previousDigest": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "pattern": "^[0-9a-f]{64}$"
+    },
+    "signature": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "canonicalSerialization": {
+      "type": "object",
+      "required": [
+        "byteOrder",
+        "dtype",
+        "fieldOrder",
+        "roundingDecimals"
+      ],
+      "properties": {
+        "byteOrder": {
+          "type": "string"
+        },
+        "dtype": {
+          "type": "string"
+        },
+        "fieldOrder": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        },
+        "roundingDecimals": {
+          "type": "integer"
+        }
+      }
+    }
+  }
+}

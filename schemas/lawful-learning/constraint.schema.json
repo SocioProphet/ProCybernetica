@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.ai/schemas/lawful-learning/constraint.schema.json",
+  "title": "LawfulConstraint",
+  "type": "object",
+  "required": [
+    "family",
+    "enforcement",
+    "supportMinimum"
+  ],
+  "properties": {
+    "family": {
+      "type": "string",
+      "enum": [
+        "monotonicity",
+        "dominance",
+        "edgeworth_complementarity",
+        "trapezoid_bounds",
+        "unimodality"
+      ]
+    },
+    "enforcement": {
+      "type": "string",
+      "enum": [
+        "hard_activation",
+        "slack_penalty",
+        "augmented_lagrangian"
+      ]
+    },
+    "supportMinimum": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "gate": {
+      "type": "string"
+    },
+    "slackPenalty": {
+      "type": "object"
+    }
+  }
+}

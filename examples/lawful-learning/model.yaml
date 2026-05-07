@@ -1,0 +1,29 @@
+model:
+  name: lawful-learning-calibrated-v0
+  spectral_modes: 22
+  spectral_normalization: top_mass_sum
+  unitary_coordinate: normalized_real_trace
+  spatial_embedding: poincare_ball
+  poincare_projection: s_over_one_plus_norm
+
+constraints:
+  monotonicity: true
+  dominance: true
+  complementarity: true
+  trapezoid_bounds: optional
+  unimodality: radial
+  enforcement: slack_penalty
+
+gates:
+  type: logistic_threshold
+  thresholds: learned_quantile
+  temperatures: tuned
+  activation_mode: slack_penalty
+  arithmetic_prior:
+    prime_even: optional
+    negative_controls: required
+
+truth:
+  lawful_admissibility: exp_negative_violation_norm
+  evidence_confidence: ledger_signature_replay_product
+  score: law_times_evidence

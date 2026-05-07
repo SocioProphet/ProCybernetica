@@ -1,0 +1,118 @@
+profile_id: procybernetica.systema.projection_loss.v0_1
+schema_version: 0.1.0
+status: candidate
+turn: 4
+purpose: >-
+  Defines how Systema records information preserved, lost, distorted, or made uncertain
+  when source material is transformed into another representation.
+source_basis:
+  - docs/evidence/SOURCE_CONFIDENCE_AND_PROJECTION_LOSS.md
+  - docs/patterns/MEMBRANE_BOUNDARIES.md
+  - docs/conformance/SYSTEMA_V0_CONFORMANCE.md
+
+projection_surfaces:
+  source_surface:
+    examples:
+      - image
+      - pdf
+      - source_card
+      - transcript
+      - code
+      - graph
+      - ontology
+      - map_layer
+      - event_log
+      - dashboard
+      - model_output
+      - memory_pack
+  target_surface:
+    examples:
+      - OCR_text
+      - summary
+      - concept_record
+      - claim
+      - embedding
+      - SHIR_projection
+      - search_result
+      - dashboard_card
+      - GAIA_layer
+      - replay_envelope
+      - public_answer
+
+transformation_types:
+  - OCR
+  - manual_transcription
+  - summarization
+  - paraphrase
+  - operational_translation
+  - ontology_mapping
+  - embedding
+  - ranking
+  - dashboard_aggregation
+  - map_projection
+  - model_inference
+  - code_generation
+  - redaction
+  - coalescing
+  - other
+
+required_fields:
+  - projection_id
+  - source_surface
+  - target_surface
+  - transformation_type
+  - preserves
+  - loses
+  - distortion_risks
+  - confidence_effect
+  - review_required
+
+mandatory_cases:
+  - public_claims
+  - promotion_decisions
+  - scoring_or_dashboard_results
+  - ontology_assertions
+  - source_quotations
+  - agent_memory
+  - GAIA_map_or_world_layers
+  - Sherlock_catalog_results
+  - runtime_or_policy_actions
+  - safety_or_trust_posture
+
+confidence_effects:
+  unchanged: confidence does not materially change
+  lowered: target is less reliable than source
+  raised_by_review: confidence increases because manual or independent review occurred
+  transformed_not_comparable: target confidence cannot be compared directly to source confidence
+  contested: projection introduced or exposed contradiction
+
+distortion_risks:
+  - OCR_hallucination
+  - summary_overreach
+  - analogy_laundering
+  - flat_map_fallacy
+  - embedding_opacity
+  - dashboard_false_confidence
+  - stale_projection
+  - vocabulary_drift
+  - redaction_context_loss
+  - causal_direction_loss
+  - minority_evidence_loss
+
+promotion_rules:
+  - name: no_public_claim_without_projection_boundary
+    rule: A projected source cannot support a public claim unless source and target surfaces are declared.
+  - name: no_dashboard_without_loss_notice
+    rule: Dashboard or score projections must disclose aggregation and uncertainty loss.
+  - name: no_embedding_as_truth
+    rule: Embedding similarity cannot promote a claim without source/evidence anchors.
+  - name: review_required_for_source_text
+    rule: OCR-to-quotation projections require manual review unless independently verified.
+
+conformance_checks:
+  - Projection source and target are declared.
+  - Preserved information is listed.
+  - Lost or distorted information is listed.
+  - Confidence effect is explicit.
+  - Review requirement is explicit.
+  - Promotion decisions cite projection-loss refs when material.

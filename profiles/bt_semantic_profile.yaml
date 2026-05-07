@@ -4,6 +4,24 @@ purpose: Pinned behavior-tree execution semantics for ProCybernetica task and ex
 source_basis:
   - docs/source-captures/EXECUTABLE_SPECIFICATION_PACK_CAPTURE.md
   - docs/source-captures/PROPHET_ARCHITECTURE_SPECIFICATION_CAPTURE.md
+  - docs/integration/agentplane-evidence-map.md
+  - docs/integration/sourceos-socios-contract-map.md
+
+ownership_boundary:
+  procybernetica_owns: BT semantic expectations, recovery invariants, replay/conformance interpretation
+  upstream_runtime_owners:
+    - SocioProphet/agentplane
+    - SourceOS-Linux/agent-machine
+    - SociOS-Linux/workstation-contracts
+    - SocioProphet/prophet-platform
+
+execution_boundary:
+  procybernetica_does_not_own: BT runtime, executor implementation, runner orchestration, task scheduler
+  required_upstream_evidence:
+    - run artifact or equivalent
+    - replay artifact or equivalent
+    - trace/event correlation
+    - policy decision reference when side effects are possible
 
 tick_model: root_to_leaf_sequential
 halt_policy: explicit_halt_required
@@ -35,9 +53,11 @@ recovery_policy:
 observability:
   tick_trace_required: true
   status_event_required: true
+  replay_reference_required_for_promotion: true
 
 invariants:
   - Every BT leaf that invokes side effects must be idempotent or explicitly guarded against reentry.
   - Every recovery subtree must declare retry budget and policy references.
   - Every BT tick path must be traceable in replay with correlation identifiers.
   - Alternative BT runtime semantics must declare a separate semantic profile.
+  - Concrete BT runtime execution belongs to the relevant runtime repository; ProCybernetica records semantic and conformance expectations.

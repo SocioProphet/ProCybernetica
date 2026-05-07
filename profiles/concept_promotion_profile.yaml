@@ -1,0 +1,122 @@
+profile_id: procybernetica.systema.concept_promotion.v0_1
+schema_version: 0.1.0
+status: candidate
+turn: 4
+purpose: >-
+  Defines how doctrine-bearing concepts move from extracted terms into reviewed,
+  operational, implementation-linked, tested, and public-standard concepts.
+source_basis:
+  - docs/source-captures/FULLER_SYNERGETICS_COMPLETION_CAPTURE.md
+  - docs/doctrine/SYNERGETIC_CYBERNETICS_ALIGNMENT.md
+  - docs/integration/SYSTEMA_PATTERN_INVENTORY_CONTROL.md
+
+lifecycle:
+  - observed_term
+  - extracted_candidate
+  - source_anchored
+  - reviewed_definition
+  - operational_definition
+  - implementation_linked
+  - tested_doctrine
+  - public_standard
+  - deprecated
+  - contested
+
+state_requirements:
+  observed_term:
+    requires:
+      - term_or_phrase
+      - observation_context
+  extracted_candidate:
+    requires:
+      - source_ref
+      - extraction_confidence
+      - candidate_definition
+  source_anchored:
+    requires:
+      - source_ref
+      - quote_boundary
+      - uncertainty_notes
+  reviewed_definition:
+    requires:
+      - manual_review
+      - aliases
+      - allowed_uses
+      - forbidden_uses
+  operational_definition:
+    requires:
+      - system_definition
+      - claim_level
+      - failure_modes
+  implementation_linked:
+    requires:
+      - owner_repo
+      - implementation_surfaces
+      - downstream_issue_or_artifact
+  tested_doctrine:
+    requires:
+      - examples_or_fixtures
+      - validation_path
+      - conformance_expectation
+  public_standard:
+    requires:
+      - downstream_adoption
+      - revision_history
+      - deprecation_policy
+  deprecated:
+    requires:
+      - replacement_or_reason
+      - effective_date
+  contested:
+    requires:
+      - contradiction_refs
+      - review_owner
+      - resolution_path
+
+canonical_fields:
+  - concept_id
+  - preferred_label
+  - aliases
+  - source_anchors
+  - definitions
+  - operational_definition
+  - claim_level
+  - allowed_uses
+  - forbidden_uses
+  - implementation_surfaces
+  - conformance_tests
+  - evidence_requirements
+  - promotion_state
+  - revision_history
+
+promotion_rules:
+  - name: no_standard_without_owner
+    rule: A concept cannot become public_standard without owner_repo and implementation_surfaces.
+  - name: no_operational_definition_without_failure_modes
+    rule: A concept cannot become operational_definition without allowed uses, forbidden uses, and failure modes.
+  - name: no_tested_doctrine_without_examples
+    rule: A concept cannot become tested_doctrine without examples, fixtures, or validation path.
+  - name: contested_blocks_standard
+    rule: Contested concepts cannot become public_standard until contradiction is resolved or bounded.
+
+first_candidate_concepts:
+  - dictionary_doctrine
+  - catalog_as_access_device
+  - words_as_industrial_tool
+  - periodic_experience
+  - membrane_doctrine
+  - sweepout_reachability
+  - triangulated_evidence
+  - tetrahedral_minimum_system
+  - tensegrity_architecture
+  - geodesic_relation
+  - projection_loss
+  - frequency_ledger
+  - jitterbug_phase_transition
+  - dymaxion_metrics
+  - entropy_accounting
+  - world_pattern_inventory
+  - livingry_classification
+  - manual_commons
+  - cybernetic_oversteer
+  - octet_truss_reuse_law

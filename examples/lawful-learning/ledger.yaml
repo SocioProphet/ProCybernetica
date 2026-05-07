@@ -1,0 +1,15 @@
+ledger:
+  hash: sha256
+  serialization:
+    canonical: true
+    fixed_byte_order: little
+    fixed_dtype: float64
+    fixed_field_order: true
+    fixed_rounding_decimals: 12
+  signatures:
+    required_for_production: true
+  replay:
+    deterministic: true
+    record_environment: true
+    record_seed: true
+    record_constraint_digest: true

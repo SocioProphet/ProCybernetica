@@ -1,0 +1,73 @@
+profile_id: procybernetica.systema.entropy_accounting.v0_1
+schema_version: 0.1.0
+status: candidate
+turn: 4
+purpose: >-
+  Defines how Systema records delivery, trust, maintenance, projection, and governance
+  drag. Entropy is the burden that reduces verified service even when output volume
+  increases.
+source_basis:
+  - docs/source-captures/FULLER_SYNERGETICS_COMPLETION_CAPTURE.md
+  - docs/doctrine/SYNERGETIC_CYBERNETICS_ANTI_PATTERNS.md
+  - docs/conformance/SYSTEMA_V0_CONFORMANCE.md
+
+entropy_sources:
+  - stale_context
+  - duplicate_schema
+  - unreviewed_claim
+  - dead_branch
+  - failed_ci_loop
+  - unresolved_contradiction
+  - orphaned_issue
+  - uncited_doctrine
+  - unowned_runtime_surface
+  - manual_review_debt
+  - projection_loss
+  - vocabulary_drift
+  - trust_exception
+  - review_churn
+  - policy_flip_flop
+  - patch_churn
+  - dependency_drag
+  - attack_surface_growth
+  - catalog_rot
+  - manual_gap
+
+required_fields:
+  - entropy_record_id
+  - subject_ref
+  - source
+  - severity
+  - evidence_refs
+  - owner_repo
+  - remediation_path
+  - measurement_window
+
+severity_scale:
+  notice: visible but not currently blocking
+  warn: material drag or review burden
+  error: blocks promotion or release readiness
+  critical: creates trust, safety, deployment, or public-claim risk
+
+rollup_formula:
+  principle: verified_service_minus_entropy_burden
+  notes: >-
+    Output volume alone is not delivery excellence. Verified service should be adjusted
+    by maintenance drag, trust drag, review drag, projection loss, stale context,
+    unresolved contradiction, and policy/attack-surface burden.
+
+promotion_rules:
+  - name: unresolved_critical_entropy_blocks_promotion
+    rule: Critical entropy blocks public standard or production promotion.
+  - name: entropy_requires_owner
+    rule: Entropy records must name an owner repo or remediation owner.
+  - name: repeated_entropy_requires_pattern
+    rule: Repeated entropy of the same source should become an anti-pattern or conformance gate.
+
+conformance_checks:
+  - Entropy source is classified.
+  - Severity is declared.
+  - Evidence refs are present.
+  - Owner repo is declared.
+  - Remediation path exists.
+  - Measurement window is declared.

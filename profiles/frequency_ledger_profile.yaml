@@ -1,0 +1,79 @@
+profile_id: procybernetica.systema.frequency_ledger.v0_1
+schema_version: 0.1.0
+status: candidate
+turn: 4
+purpose: >-
+  Defines how Systema records subdivision, resolution, cadence, scale, and comparison
+  compatibility. Frequency means declared modular subdivision, not generic repetition.
+source_basis:
+  - docs/source-captures/FULLER_SYNERGETICS_COMPLETION_CAPTURE.md
+  - docs/doctrine/SYNERGETIC_CYBERNETICS_ALIGNMENT.md
+  - docs/integration/SYSTEMA_PATTERN_INVENTORY_CONTROL.md
+
+frequency_domains:
+  retrieval:
+    fields:
+      - top_k
+      - chunk_size
+      - overlap
+      - graph_radius
+      - freshness_horizon
+  ontology:
+    fields:
+      - relation_depth
+      - module_version
+      - promotion_state
+      - shacl_gate_version
+  geospatial:
+    fields:
+      - tile_resolution
+      - h3_or_grid_resolution
+      - projection
+      - temporal_step
+      - bounding_region
+  runtime:
+    fields:
+      - event_cadence
+      - replay_window
+      - retry_limit
+      - timeout
+      - observation_window
+  proof_or_model:
+    fields:
+      - cutoff
+      - approximation_order
+      - quadrature_order
+      - sample_count
+      - validation_set
+  governance:
+    fields:
+      - review_cadence
+      - promotion_stage
+      - audit_window
+      - expiry_policy
+
+required_fields:
+  - subject_ref
+  - domain
+  - module_or_unit
+  - subdivision_or_resolution
+  - comparison_policy
+  - valid_time_or_window
+  - uncertainty
+
+comparison_rules:
+  - name: no_scale_comparison_without_frequency
+    rule: Two artifacts cannot be compared unless frequency/resolution/cadence compatibility is declared.
+  - name: no_scaleup_without_module
+    rule: Scaling claims must identify the module or unit of subdivision.
+  - name: cadence_is_part_of_truth
+    rule: Periodic or temporal claims must include observation cadence or replay window.
+  - name: projection_frequency_link
+    rule: Map/search/dashboard projections should cite both projection-loss and frequency-ledger records.
+
+conformance_checks:
+  - Frequency domain is declared.
+  - Module or subdivision unit is declared.
+  - Comparison policy is declared.
+  - Valid-time or replay window is declared where temporal.
+  - Uncertainty is declared.

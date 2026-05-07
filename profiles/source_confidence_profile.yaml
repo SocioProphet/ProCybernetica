@@ -1,0 +1,93 @@
+profile_id: procybernetica.systema.source_confidence.v0_1
+schema_version: 0.1.0
+status: candidate
+turn: 4
+purpose: >-
+  Defines how source-derived concepts, claims, quotations, diagrams, OCR fragments,
+  summaries, and operational translations are admitted into Systema without laundering
+  weak extraction into authoritative doctrine.
+source_basis:
+  - docs/evidence/SOURCE_CONFIDENCE_AND_PROJECTION_LOSS.md
+  - docs/source-captures/FULLER_SYNERGETICS_COMPLETION_CAPTURE.md
+  - docs/integration/SYSTEMA_PATTERN_INVENTORY_CONTROL.md
+
+ownership_boundary:
+  procybernetica_owns:
+    - constitutional source-confidence law
+    - profile semantics
+    - public conformance expectations
+  downstream_owners:
+    SocioProphet/ontogenesis: concept and claim ontology gates
+    SocioProphet/sherlock-search: result confidence and source display
+    SocioProphet/gaia-world-model: source/layer provenance
+    SocioProphet/agentplane: execution context and evidence confidence
+    SourceOS-Linux/sourceos-syncd: event and operator-narrative confidence
+
+confidence_levels:
+  A:
+    meaning: verified against source artifact or stable published text
+    allowed_use:
+      - load_bearing_quotation
+      - reviewed_concept_definition
+      - public_claim_support
+  B:
+    meaning: mostly usable OCR or text with review still required
+    allowed_use:
+      - provisional_paraphrase
+      - candidate_concept_support
+  C:
+    meaning: partial OCR or near-verbatim fragments
+    allowed_use:
+      - candidate_doctrine_only
+  D:
+    meaning: sparse OCR or primarily visual/diagram source
+    allowed_use:
+      - visual_anchor_only
+      - diagram_interpretation_with_uncertainty
+  E:
+    meaning: visual-only or low OCR
+    allowed_use:
+      - manual_review_required
+      - no_load_bearing_text_claim
+
+review_states:
+  - unreviewed
+  - candidate
+  - manually_reviewed
+  - independently_verified
+  - rejected
+  - contested
+
+quote_boundaries:
+  exact: exact quotation verified at sufficient confidence
+  near_verbatim: close OCR/manual transcription still subject to review
+  paraphrase: meaning-preserving restatement
+  operational_translation: system design translation from source material
+  analogy: conceptual similarity only, not proof
+  unsupported: not admissible
+
+required_fields:
+  - source_ref
+  - source_kind
+  - extraction_confidence
+  - review_state
+  - quote_boundary
+  - uncertainty_notes
+
+promotion_rules:
+  - name: no_low_confidence_authority
+    rule: confidence D or E cannot support load-bearing quotations.
+  - name: candidate_until_reviewed
+    rule: unreviewed source-derived material remains candidate doctrine.
+  - name: analogy_not_proof
+    rule: quote_boundary analogy cannot support proof-facing or hard-lane claims.
+  - name: contested_blocks_promotion
+    rule: contested material cannot promote until contradiction is resolved or bounded.
+
+conformance_checks:
+  - Every source-derived claim has a source_ref.
+  - Every source-derived claim has extraction_confidence.
+  - Every source-derived claim has review_state.
+  - Every quoted text has quote_boundary.
+  - Every non-A confidence record includes uncertainty_notes.
+  - Public claims do not rely solely on D/E source material.

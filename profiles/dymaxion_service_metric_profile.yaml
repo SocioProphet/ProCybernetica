@@ -1,0 +1,68 @@
+profile_id: procybernetica.systema.dymaxion_service_metric.v0_1
+schema_version: 0.1.0
+status: candidate
+turn: 4
+purpose: >-
+  Defines denominator-backed service metrics for Dymaxion-style claims. A claim of
+  doing more with less is not admissible unless useful verified service, baseline,
+  resource burden, uncertainty, and evidence references are explicit.
+source_basis:
+  - docs/source-captures/FULLER_SYNERGETICS_COMPLETION_CAPTURE.md
+  - docs/doctrine/SYNERGETIC_CYBERNETICS_ALIGNMENT.md
+  - docs/conformance/SYSTEMA_V0_CONFORMANCE.md
+
+required_fields:
+  - metric_id
+  - subject_ref
+  - useful_verified_service
+  - comparison_baseline
+  - denominator
+  - uncertainty
+  - evidence_refs
+  - measurement_window
+  - owner_repo
+
+denominator_fields:
+  material: optional
+  energy: optional
+  labor: optional
+  compute: optional
+  cost: optional
+  time: optional
+  review_minutes: optional
+  maintenance: optional
+  policy_exceptions: optional
+  attack_surface: optional
+  dependency_count: optional
+  trust_exceptions: optional
+  ecological_or_commons_burden: optional
+
+metric_families:
+  - verified_capability_per_dollar
+  - verified_capability_per_token
+  - verified_capability_per_watt
+  - verified_capability_per_second
+  - verified_capability_per_review_minute
+  - verified_capability_per_dependency
+  - verified_capability_per_policy_exception
+  - verified_capability_per_attack_surface
+  - verified_capability_per_trusted_artifact
+
+promotion_rules:
+  - name: no_slogan_without_denominator
+    rule: A more-with-less claim cannot promote without denominator and baseline.
+  - name: useful_service_must_be_verified
+    rule: Output volume alone is not useful verified service.
+  - name: burden_must_include_maintenance_when_material
+    rule: Maintenance, review, trust, and policy overhead must be counted when material.
+  - name: uncertainty_required
+    rule: Uncertainty must be explicit for all comparisons.
+
+conformance_checks:
+  - Useful verified service is named.
+  - Baseline is named.
+  - At least one denominator field is populated.
+  - Evidence refs are present.
+  - Measurement window is declared.
+  - Uncertainty is declared.
+  - Owner repo is declared.

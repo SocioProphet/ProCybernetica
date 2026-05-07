@@ -1,0 +1,105 @@
+profile_id: procybernetica.systema.capability_radius.v0_1
+schema_version: 0.1.0
+status: candidate
+turn: 4
+purpose: >-
+  Defines radial authority classes for agents, tools, runtimes, repositories, and sessions.
+  Capability is not a flat permission; it has sensing, action, communication, temporal,
+  and external-effect range.
+source_basis:
+  - docs/source-captures/FULLER_SYNERGETICS_COMPLETION_CAPTURE.md
+  - docs/patterns/MEMBRANE_BOUNDARIES.md
+  - docs/conformance/SYSTEMA_V0_CONFORMANCE.md
+
+radius_classes:
+  R0_observe_local:
+    can_read:
+      - current_task_context
+    can_write: []
+    can_actuate: []
+    requires:
+      - source_confidence_for_claims
+  R1_edit_local_branch:
+    can_read:
+      - current_repo
+    can_write:
+      - local_branch
+    can_actuate: []
+    requires:
+      - work_order
+      - validation_path
+  R2_cross_repo_planning:
+    can_read:
+      - selected_repos
+    can_write:
+      - issues
+      - docs
+    can_actuate: []
+    requires:
+      - owner_repo_map
+      - scope_boundary
+  R3_cross_repo_patch:
+    can_read:
+      - selected_repos
+    can_write:
+      - branches
+    can_actuate: []
+    requires:
+      - policy_gate
+      - evidence_refs
+      - replay_or_validation_path
+  R4_release_candidate:
+    can_read:
+      - release_artifacts
+    can_write:
+      - release_candidate_artifacts
+    can_actuate:
+      - staged_release_only
+    requires:
+      - promotion_decision
+      - rollback_path
+      - validation_evidence
+  R5_deployment_or_host_mutation:
+    can_read:
+      - operational_context
+    can_write:
+      - deployment_or_host_surface
+    can_actuate:
+      - deployment
+      - host_mutation
+    requires:
+      - explicit_approval
+      - replay_required
+      - rollback_required
+      - incident_path
+
+required_fields:
+  - subject_ref
+  - radius_class
+  - sensing_range
+  - action_range
+  - communication_range
+  - temporal_range
+  - external_effect_range
+  - escalation_required
+  - revocation_path
+  - policy_refs
+  - evidence_refs
+
+promotion_rules:
+  - name: no_radiusless_authority
+    rule: Agent/tool/runtime capability cannot be promoted without radius_class.
+  - name: high_radius_requires_replay
+    rule: R4 and R5 require replay or rollback evidence.
+  - name: cross_repo_requires_owner_map
+    rule: R2 and above require explicit repo/surface owner mapping.
+  - name: deployment_requires_explicit_approval
+    rule: R5 requires explicit approval and incident path.
+
+conformance_checks:
+  - Radius class is declared.
+  - Action range is bounded.
+  - Temporal range is declared.
+  - External-effect range is declared.
+  - Revocation path exists.
+  - Policy and evidence refs exist.

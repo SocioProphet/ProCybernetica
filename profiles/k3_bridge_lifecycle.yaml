@@ -1,8 +1,29 @@
 profile_id: procybernetica.k3_bridge_lifecycle.v0_1
 schema_version: 0.1.0
-purpose: Genesis/Inception/K3 twin bridge lifecycle for runtime twin admission and gated actuation.
+purpose: Genesis/Inception/K3 lifecycle profile for controlled runtime admission and gated actuation.
 source_basis:
   - docs/source-captures/GENESIS_INCEPTION_CAPTURE.md
+  - docs/integration/holographme-genesis-inception-map.md
+  - docs/reconciliation/SCHEMA_PROFILE_RECONCILIATION.md
+
+ownership_boundary:
+  procybernetica_owns: Genesis/Inception/K3 transition semantics and constitutional invariants
+  upstream_domain_owners:
+    - SocioProphet/HolographMe
+    - SocioProphet/agent-registry
+    - SocioProphet/model-governance-ledger
+    - SourceOS-Linux/sourceos-spec
+    - SocioProphet/prophet-platform
+  note: Domain-specific twin, consent, mission, identity, runtime, and registry schemas remain in owning repos.
+
+domain_object_ref_pattern:
+  purpose: Allow K3 transitions to reference domain-owned objects without cloning their schemas.
+  examples:
+    - holographme://human-digital-twin/<id>
+    - holographme://consent-policy/<id>
+    - agent-registry://agent/<id>
+    - sourceos://agent-session/<id>
+    - prophet-platform://evidence-receipt/<id>
 
 states:
   - INIT_SESSION
@@ -26,49 +47,90 @@ transitions:
     event: session_initialized
     to: PROBE_ACCEPT
     evidence_required: true
+    expected_refs:
+      - domain_object_ref
+      - policy_ref
+
   - from: PROBE_ACCEPT
     event: providers_accepted
     to: INJECT_SEED
     evidence_required: true
+    expected_refs:
+      - provider_refs
+      - policy_refs
+
   - from: INJECT_SEED
     event: seed_injected
     to: SEED_PUBLISH
     evidence_required: true
+    expected_refs:
+      - seed_ref
+      - provenance_ref
+
   - from: SEED_PUBLISH
     event: seed_published
     to: VERIFY_TWIN
     evidence_required: true
+    expected_refs:
+      - artifact_ref
+      - replay_ref
+
   - from: VERIFY_TWIN
     event: twin_verified
     to: TWIN_READY
     evidence_required: true
+    expected_refs:
+      - validation_ref
+      - policy_decision_ref
+
   - from: VERIFY_TWIN
     event: verification_failed
     to: QUARANTINE
     evidence_required: true
+    expected_refs:
+      - validation_ref
+      - failure_reason_ref
+
   - from: TWIN_READY
     event: host_update_requested
     to: GATED_HOST_UPDATE
     evidence_required: true
+    expected_refs:
+      - command_ref
+      - policy_ref
+
   - from: GATED_HOST_UPDATE
     event: host_update_complete
     to: TWIN_READY
     evidence_required: true
+    expected_refs:
+      - transition_receipt_ref
+      - provenance_ref
+
   - from: GATED_HOST_UPDATE
     event: policy_failed
     to: QUARANTINE
     evidence_required: true
+    expected_refs:
+      - policy_decision_ref
+
   - from: QUARANTINE
     event: rollback_required
     to: ROLLBACK
     evidence_required: true
+    expected_refs:
+      - rollback_ref
+
   - from: QUARANTINE
     event: revoke_required
     to: REVOKE
     evidence_required: true
+    expected_refs:
+      - revocation_ref
 
 invariants:
   - No external actuation before TWIN_READY and policy pass.
-  - Every state transition must emit an attestable event.
+  - Every state transition must emit an attestable event or upstream equivalent evidence reference.
   - Policy failures must produce quarantine, revoke, or rollback states rather than silent drops.
-  - Revoked twins must remain replayable after credentials are invalidated.
+  - Revoked domain objects must remain replayable according to their owning repository policy.
+  - K3 profiles reference domain-owned schemas; ProCybernetica does not clone domain twin or identity models.

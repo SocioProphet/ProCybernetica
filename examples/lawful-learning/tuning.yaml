@@ -1,0 +1,20 @@
+tuning:
+  method: nested_cross_validation
+  selection_rule: one_standard_error
+  reject_if:
+    max_violation_exceeds: true
+    support_below_minimum: true
+    gate_instability_exceeds: true
+    pair_count_exceeds: true
+
+search_ranges:
+  knots_per_axis: [5, 7, 10, 15]
+  lambda_tv: {distribution: log_uniform, min: 1.0e-5, max: 10.0}
+  lambda_prime: {distribution: log_uniform, min: 1.0e-4, max: 10.0}
+  lambda_even: {distribution: log_uniform, min: 1.0e-4, max: 10.0}
+  lambda_even_prime_anchor: {distribution: log_uniform, min: 1.0e-4, max: 10.0}
+  gate_temperature: {min: 0.05, max: 1.0}
+  mu_min: {min: 1.0e-3, max: 1.0}
+  mu_max: {min: 1.0, max: 1.0e3}
+  max_pair_interactions: [5, 10, 20, 40]
+  min_support: [10, 20, 30, 50]

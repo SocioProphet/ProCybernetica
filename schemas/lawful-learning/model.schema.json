@@ -1,0 +1,40 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.ai/schemas/lawful-learning/model.schema.json",
+  "title": "LawfulLearningModel",
+  "type": "object",
+  "required": [
+    "spectral_modes",
+    "unitary_coordinate",
+    "spatial_embedding",
+    "constraints",
+    "gates",
+    "truth"
+  ],
+  "properties": {
+    "spectral_modes": {
+      "type": "integer",
+      "const": 22
+    },
+    "unitary_coordinate": {
+      "type": "string"
+    },
+    "spatial_embedding": {
+      "type": "string",
+      "enum": [
+        "poincare_ball",
+        "none",
+        "other_declared"
+      ]
+    },
+    "constraints": {
+      "type": "object"
+    },
+    "gates": {
+      "type": "object"
+    },
+    "truth": {
+      "type": "object"
+    }
+  }
+}

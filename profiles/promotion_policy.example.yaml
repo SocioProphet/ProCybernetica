@@ -1,6 +1,30 @@
 profile_id: procybernetica.promotion_policy.example.v0_1
 schema_version: 0.1.0
-purpose: Example constitutional thresholds for promotion, quarantine, rollback, and limited authority.
+purpose: Example constitutional thresholds for promotion, quarantine, rollback, revocation, manual review, and limited authority.
+source_basis:
+  - docs/source-captures/CONSTITUTIONAL_CONTROL_CAPTURE.md
+  - docs/source-captures/REFERENCE_IMPLEMENTATION_KIT_CAPTURE.md
+  - docs/reconciliation/SCHEMA_PROFILE_RECONCILIATION.md
+
+ownership_boundary:
+  procybernetica_owns: promotion semantics, authority budget semantics, public conformance expectations
+  upstream_evidence_sources:
+    - SocioProphet/agentplane
+    - SocioProphet/prophet-platform
+    - SocioProphet/model-governance-ledger
+    - SocioProphet/guardrail-fabric
+    - SocioProphet/ontogenesis
+    - SourceOS-Linux/sourceos-spec
+
+accepted_decisions:
+  - reject
+  - shadow-only
+  - limited-authority
+  - full-promotion
+  - quarantine
+  - manual-review
+  - rollback-required
+  - revoke-authority
 
 thresholds:
   min_pass_rate: 0.95
@@ -12,6 +36,10 @@ thresholds:
   require_evidence_refs: true
 
 decision_rules:
+  - name: missing_required_evidence_manual_review
+    when: missing_required_evidence_refs == true
+    decision: manual-review
+
   - name: critical_violation_quarantine
     when: critical_violation_count > 0
     decision: quarantine
@@ -24,6 +52,14 @@ decision_rules:
     when: pass_rate < min_pass_rate
     decision: quarantine
 
+  - name: rollback_needed
+    when: regression_detected == true and rollback_available == true
+    decision: rollback-required
+
+  - name: revoke_needed
+    when: authority_scope_invalid == true
+    decision: revoke-authority
+
   - name: drift_shadow_only
     when: drift_rate > max_drift_rate
     decision: shadow-only
@@ -33,6 +69,11 @@ decision_rules:
     decision: full-promotion
 
 authority_budgets:
+  reject:
+    may_actuate: false
+    may_write_canonical_truth: false
+    may_emit_recommendations: false
+
   shadow-only:
     may_actuate: false
     may_write_canonical_truth: false
@@ -57,8 +98,34 @@ authority_budgets:
       - rollback
       - request_review
 
+  manual-review:
+    may_actuate: false
+    may_write_canonical_truth: false
+    allowed_actions:
+      - explain
+      - preserve_evidence
+      - request_review
+
+  rollback-required:
+    may_actuate: false
+    may_write_canonical_truth: false
+    allowed_actions:
+      - preserve_evidence
+      - initiate_rollback
+      - request_review
+
+  revoke-authority:
+    may_actuate: false
+    may_write_canonical_truth: false
+    allowed_actions:
+      - preserve_evidence
+      - revoke_grants
+      - request_review
+
 invariants:
   - No benchmark success erases a policy failure.
   - No soft-lane output crosses into hard-lane truth without validation.
   - No promotion occurs without evidence, replay, and policy references.
   - Quarantine preserves evidence rather than deleting history.
+  - Rollback and revocation decisions are governance verdicts, not direct actuator commands.
+  - Upstream evidence sources own concrete artifact schemas; ProCybernetica records constitutional interpretation.

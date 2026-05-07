@@ -1,0 +1,94 @@
+profile_id: procybernetica.systema.membrane_boundary.v0_1
+schema_version: 0.1.0
+status: candidate
+turn: 4
+purpose: >-
+  Defines how Systema records active cybernetic boundaries that admit, block,
+  transform, log, redact, witness, and revoke crossings.
+source_basis:
+  - docs/patterns/MEMBRANE_BOUNDARIES.md
+  - docs/evidence/SOURCE_CONFIDENCE_AND_PROJECTION_LOSS.md
+  - docs/conformance/SYSTEMA_V0_CONFORMANCE.md
+
+boundary_kinds:
+  - policy
+  - privacy
+  - runtime
+  - session
+  - source_projection
+  - publication
+  - network
+  - model_route
+  - map_layer
+  - evidence_export
+  - workspace_operation
+  - activation
+  - repair
+  - other
+
+required_fields:
+  - membrane_id
+  - owner_repo
+  - boundary_kind
+  - admits
+  - blocks
+  - transforms
+  - logs
+  - witnesses
+  - redacts
+  - revokes
+  - policy_refs
+  - evidence_refs
+  - failure_modes
+
+crossing_examples:
+  source_to_public_summary:
+    requires:
+      - redaction_policy
+      - source_confidence
+      - projection_loss_record
+  agent_proposal_to_branch:
+    requires:
+      - work_order
+      - policy_decision
+      - branch_evidence
+  dry_run_to_activation:
+    requires:
+      - activation_decision
+      - capability_grant
+      - replay_or_evidence_artifact
+  raw_log_to_operator_narrative:
+    requires:
+      - raw_evidence_ref
+      - coalescing_rule
+      - redaction_record
+  map_data_to_public_layer:
+    requires:
+      - source_license
+      - projection_ledger
+      - frequency_ledger
+      - uncertainty
+  model_route_to_provider:
+    requires:
+      - policy_decision
+      - route_evidence
+      - prompt_or_hash_boundary
+
+promotion_rules:
+  - name: no_silent_crossing
+    rule: Consequential membrane crossings must leave evidence.
+  - name: redaction_preserves_causal_structure
+    rule: Redaction should preserve actor, target class, policy rule, outcome, and evidence path where safe.
+  - name: activation_requires_revocation
+    rule: Runtime or agent activation membranes require revocation or rollback path.
+  - name: public_export_requires_publication_boundary
+    rule: Public exports must declare what was redacted, transformed, and witnessed.
+
+conformance_checks:
+  - Membrane ID and owner repo are declared.
+  - Admits and blocks lists are explicit.
+  - Transformations are explicit.
+  - Logs and witnesses are explicit.
+  - Redaction posture is explicit.
+  - Revocation or rollback path exists where consequential.
+  - Policy and evidence refs exist.

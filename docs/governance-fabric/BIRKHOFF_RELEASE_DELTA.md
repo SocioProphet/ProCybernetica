@@ -1,10 +1,12 @@
-# Birkhoff Release-Delta Governance
+# Birkhoff-Style Release-Delta Governance
 
 ## Purpose
 
 This document defines the operational release-delta doctrine for the Cybernetic Governance Fabric.
 
-The name is intentionally conservative: this is a Birkhoff-style decomposition doctrine for release governance, not a claim that the full Connes-Marcolli mathematical apparatus has been implemented.
+The naming is intentionally precise: this is a **Birkhoff-style release-delta decomposition**, not a claim that governance releases admit a literal mathematical Birkhoff factorization, Connes-Marcolli renormalization proof, or Hopf-algebraic theorem.
+
+The doctrine imports the discipline of decomposition, residue tracking, and recomposition. It does not import theorem status.
 
 ## Scope
 
@@ -29,7 +31,7 @@ Examples:
 
 A release diff is not a single object.
 
-It decomposes into orthogonal or semi-orthogonal components:
+It decomposes into semi-independent components:
 
 - capability delta;
 - safety delta;
@@ -42,6 +44,18 @@ It decomposes into orthogonal or semi-orthogonal components:
 - rollback delta.
 
 Promotion decisions must inspect these components separately before recomposing the release case.
+
+## Technical predicate
+
+A release-delta report satisfies the Birkhoff-style predicate when:
+
+1. each declared component has a source-state and target-state reference;
+2. each component has evidence or a declared evidence gap;
+3. unresolved residues are named explicitly;
+4. recomposition preserves component limitations and non-claims;
+5. the release decision cites the component decomposition rather than only aggregate pass/fail status.
+
+This predicate is machine-checkable at Tier 1 and formally refinable at Tier 2.
 
 ## Release-delta object
 
@@ -57,6 +71,7 @@ risk_class
 rollback_plan
 approval_chain
 non_claims
+residue_summary
 ```
 
 ## Component decomposition
@@ -107,7 +122,7 @@ The doctrine is:
 4. recompose into a release decision;
 5. preserve the decomposition in evidence.
 
-A single green test suite cannot approve a release if one component has an unresolved high-risk delta.
+A single green test suite cannot approve a release if one component has an unresolved high-risk residue.
 
 ## Release approval rule
 
@@ -119,7 +134,8 @@ A release may be promoted only if:
 - irreversible actions are approved;
 - rollback or forward-fix path is declared;
 - non-claims are preserved;
-- off-history is retained.
+- off-history is retained;
+- residues are explicitly accepted, rejected, or assigned follow-up ownership.
 
 ## Relation to M1-M5 interpretability certificates
 
@@ -129,4 +145,4 @@ It may support the safety delta, monitor delta, or publication delta, but it doe
 
 ## Non-claim boundary
 
-This document defines operational release-delta doctrine. It does not claim a mathematical Birkhoff factorization theorem for governance systems.
+This document defines operational release-delta doctrine. It does not claim a mathematical Birkhoff factorization theorem for governance systems. Any future theorem-level claim must be placed in a formal methods lane and cited separately.

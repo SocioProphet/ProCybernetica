@@ -15,6 +15,7 @@ This index captures the first doctrine bundle for the Interpretability-Backed Cy
 5. [`../release/BIRKHOFF_RELEASE_DELTA.md`](../release/BIRKHOFF_RELEASE_DELTA.md) — release-delta decomposition into counter-terms and renormalized contributions.
 6. [`../monitor/MONITOR_NETWORK_AS_QEC.md`](../monitor/MONITOR_NETWORK_AS_QEC.md) — monitor networks as error-correcting systems.
 7. [`../assurance/PCP_REPLAY_AUDIT.md`](../assurance/PCP_REPLAY_AUDIT.md) — probabilistically checkable replay and audit artifacts.
+8. [`GAP_AUDIT_AND_READINESS_MATRIX.md`](GAP_AUDIT_AND_READINESS_MATRIX.md) — post-capture hardening matrix that defines lifecycle states, enums, schema-to-invariant traceability, non-claim structure, disclosure profiles, readiness levels, MVP trace requirements, CI checks, and cross-repo dependency boundaries.
 
 ## Captured doctrine commitments
 
@@ -31,6 +32,12 @@ The bundle captures these commitments as doctrine, not loose notes:
 - release changes require delta governance;
 - authority concentration is measurable and gate-relevant;
 - public-safe assurance is publishable by default, with disciplined redaction.
+
+## Post-capture hardening
+
+The doctrine bundle is currently a captured v0.1 draft, not an executable v0 standard.
+
+The hardening matrix makes this boundary explicit. The work may not be called executable v0 until Tier 1 schemas exist, canonical enums exist, schemas map to invariants, fixtures exist, validators pass and fail correctly, MVP trace examples exist, evidence disclosure profiles exist, non-claim objects exist, readiness state is updated, and integration boundaries are recorded.
 
 ## Tier map
 
@@ -57,6 +64,12 @@ Immediate implementation target:
 - `incident_record.v1.json`
 - `privacy_evidence_classification.v1.json`
 - `authority_graph_snapshot.v1.json`
+- `artifact_lifecycle_state.v1.json`
+- `lifecycle_transition.v1.json`
+- `enums.v1.json`
+- `non_claim.v1.json`
+- `artifact_provenance.v1.json`
+- `validator_run_receipt.v1.json`
 
 ### Tier 2 — Formal foundations
 
@@ -72,12 +85,16 @@ Quantum constructor governance, counterfactual-quantum off-history, variational 
 
 ## Implementation next steps
 
-1. Add Tier 1 schema bundle under `schemas/cybernetic-governance/`.
-2. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, and invalid promotion-by-prose.
-3. Add validators under `tools/` and CI entrypoints.
-4. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry.
-5. Keep `superconscious` integration as a dependency issue only after its construction stabilizes.
+1. Add canonical enums and lifecycle schemas.
+2. Add Tier 1 schema bundle under `schemas/cybernetic-governance/` with `implements_invariants` traceability.
+3. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, and invalid promotion-by-prose.
+4. Add validators under `tools/` and CI entrypoints.
+5. Add MVP trace fixtures for allowed, blocked, and transformed actions.
+6. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry after schema names stabilize.
+7. Keep `superconscious` integration as a dependency issue only after its construction stabilizes and a concrete contract is required.
 
 ## Non-claims
 
 This bundle does not claim that all formal foundations are implemented. It captures the doctrine and research runway while preserving a week-one executable MVP: authority chain, action trace, permission scope, monitor alert, safe-completion decision, off-history evidence, evidence receipt, promotion decision, and safety case.
+
+This bundle also does not claim executable v0 status. The hardening matrix defines the required gap closure before that label is valid.

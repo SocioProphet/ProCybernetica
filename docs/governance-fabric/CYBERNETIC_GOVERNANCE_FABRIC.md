@@ -54,7 +54,9 @@ A governance fabric that asks for trust while hiding its structure fails its own
 
 ### Frontier measurable
 
-The fabric must compare itself against frontier governance targets: interpretability depth, replay assurance, cryptographic evidence, monitor independence, release-delta clarity, and incident response quality.
+The fabric measures itself against absolute governance capability targets: interpretability depth, replay assurance, cryptographic evidence, monitor independence, release-delta clarity, incident response quality, and privacy-preserving evidence quality.
+
+The scoreboard is not competitor marketing. It is a self-measurement instrument. Competitor comparison may be added later, but the primary object is absolute maturity against declared gates.
 
 ## Plane decomposition
 
@@ -104,7 +106,7 @@ Objects:
 - source lock;
 - provenance manifest;
 - proof artifact;
-- PCP replay audit;
+- PCP-style replay audit;
 - cryptographic receipt;
 - post-quantum signed receipt.
 
@@ -159,6 +161,22 @@ Objects:
 - external audit readiness;
 - limitation disclosure.
 
+## Hypergraph composition predicate
+
+The fabric is intended to become a hypergraph-style compositional governance system.
+
+At Tier 1, this is a technical predicate, not a theorem:
+
+1. each governance artifact declares typed input boundary and typed output boundary;
+2. composition is allowed only when output and input boundaries match;
+3. limitations and non-claims propagate through composition;
+4. authority paths compose only through declared delegation edges;
+5. evidence references remain resolvable after composition;
+6. off-history branches remain attached to the composed object;
+7. the composed certificate can be validated without erasing component failure modes.
+
+A future Tier 2 formalization may implement this as a hypergraph category or related monoidal process theory. This document does not claim that formalization is complete.
+
 ## Tier map
 
 ### Tier 0 — Constitutional invariants
@@ -171,15 +189,19 @@ Machine-checkable records for authority, actions, evidence, promotion, monitorin
 
 ### Tier 2 — Formal foundations
 
-Hypergraph composition, constructor-theoretic evidence, causal monitoring, Birkhoff-style release deltas, formal-methods state machines, and late-Tier-2 CP-SNARK receipts.
+Hypergraph-style governance composition, constructor-theoretic evidence tiers, causal monitoring, Birkhoff-style release deltas, formal-methods state machines, and late-Tier-2 CP-SNARK receipts.
 
 ### Tier 3 — Mathematical extensions
 
-Tensor networks, categorical authority semantics, random-matrix evidence, Fisher geometry, QEC monitor networks, PCP replay audit, post-quantum evidence integrity.
+Tensor networks, categorical authority semantics, random-matrix evidence, Fisher geometry, QEC-style monitor networks, PCP-style replay audit, post-quantum evidence integrity.
 
-### Tier 4 — Quantum/frontier extensions
+### Tier 4 — Research runway, not MVP surface
 
-Quantum constructor governance, counterfactual quantum off-history, variational policy optimization, quantum-assisted safety evaluation, holographic reconstruction, Page-curve fine-tuning audit, higher-categorical governance.
+Tier 4 is a research runway. It names future frontier directions, not week-one implementation targets.
+
+Potential directions include quantum constructor governance, counterfactual quantum off-history, variational policy optimization, quantum-assisted safety evaluation, holographic reconstruction bounds, Page-curve fine-tuning audit, and higher-categorical governance.
+
+Tier 4 artifacts require explicit promotion from research runway to active development before they may affect production governance.
 
 ## Interpretability certificate integration
 
@@ -222,3 +244,5 @@ which should validate:
 ## Non-claim boundary
 
 This document does not claim a deployed governance runtime. It defines the doctrine and architecture that subsequent schemas, CI, and runtime will implement.
+
+It also does not claim completed hypergraph-category formalization, literal mathematical Birkhoff factorization, formal PCP implementation, or Tier 4 quantum/frontier implementation. Those are staged research or formalization targets.

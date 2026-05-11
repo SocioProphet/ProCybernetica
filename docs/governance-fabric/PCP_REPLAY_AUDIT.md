@@ -1,14 +1,14 @@
-# PCP Replay Audit
+# PCP-Style Replay Audit
 
 ## Purpose
 
 This document defines the probabilistically checkable replay-audit doctrine for the Cybernetic Governance Fabric.
 
-The governance problem: full replay of long traces may be expensive, privacy-sensitive, or operationally impractical. A replay audit should allow bounded verification by checking a small randomized subset of locally constrained evidence.
+The naming is intentionally precise: this is a **PCP-style replay audit** discipline, not a claim that the current trace system implements a formal probabilistically checkable proof theorem, PCP compiler, or succinct proof system.
 
 ## Scope
 
-PCP replay audit applies to:
+PCP-style replay audit applies to:
 
 - long agent action traces;
 - release-delta evidence chains;
@@ -43,13 +43,27 @@ Examples:
 
 A verifier samples trace locations and checks local constraints.
 
-The audit does not prove every cell is correct; it gives a declared detection probability under declared assumptions.
+The audit does not prove every cell is correct. It gives a declared detection probability under declared sampling and adversary assumptions.
 
 ### Replay oracle
 
 A component that can answer local trace queries without exposing the entire trace.
 
 This may be implemented as raw trace lookup, Merkle proof, redacted evidence bundle, or future cryptographic proof.
+
+## Technical predicate
+
+A replay audit satisfies the PCP-style predicate when:
+
+1. the trace is committed;
+2. the constraint set is versioned;
+3. the sampling method is declared;
+4. sampled locations are recorded;
+5. local checks return machine-readable pass/fail results;
+6. detection probability is declared with assumptions;
+7. redactions do not remove fields required for checked constraints.
+
+This predicate is weaker than a formal PCP theorem but strong enough for Tier 1 governance CI.
 
 ## Why this matters
 
@@ -59,7 +73,7 @@ PCP-style audit gives the assurance plane statistical replay teeth: small checks
 
 ## Certificate fields
 
-A PCP replay audit certificate should record:
+A PCP-style replay audit certificate should record:
 
 ```text
 trace_commitment
@@ -75,7 +89,7 @@ replay_oracle_ref
 
 ## Acceptance rule
 
-A trace passes PCP replay audit when:
+A trace passes PCP-style replay audit when:
 
 - all sampled local constraints pass;
 - sampling seed is recorded;
@@ -89,9 +103,9 @@ If any sampled local constraint fails, the trace is not promotion-ready. The fai
 
 ## Relation to CP-SNARK receipts
 
-PCP replay audit is an assurance stepping stone.
+PCP-style replay audit is an assurance stepping stone.
 
-Late Tier 2 may add CP-SNARK evidence receipts. PCP replay remains useful even after cryptographic receipts because it is simpler, inspectable, and cheap to run during development.
+Late Tier 2 may add CP-SNARK evidence receipts. PCP-style replay remains useful even after cryptographic receipts because it is simpler, inspectable, and cheap to run during development.
 
 ## Non-claim boundary
 

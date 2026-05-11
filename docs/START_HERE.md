@@ -53,6 +53,18 @@ Then read the source captures by layer:
 
 - `docs/source-captures/CONSTITUTIONAL_CONTROL_CAPTURE.md`
 
+### Frontier cybernetic governance doctrine
+
+- `docs/cybernetic-governance/CAPTURE_INDEX.md`
+- `docs/cybernetic-governance/PROGRAM_CAPTURE.md`
+- `docs/constitutional/CONSTITUTIONAL_INVARIANTS.md`
+- `docs/foundations/CYBERNETIC_GOVERNANCE_FABRIC.md`
+- `docs/security/THREAT_MODEL.md`
+- `docs/constitutional/SEPARATION_OF_POWERS.md`
+- `docs/release/BIRKHOFF_RELEASE_DELTA.md`
+- `docs/monitor/MONITOR_NETWORK_AS_QEC.md`
+- `docs/assurance/PCP_REPLAY_AUDIT.md`
+
 ### Implementation practicum
 
 - `docs/source-captures/BOOK_XI_IMPLEMENTATION_PRACTICUM_CAPTURE.md`
@@ -76,6 +88,8 @@ The repo is in capture and reconciliation mode.
 
 The main blueprint corpus is captured. The next work is to reconcile the captured sources into a canonical v0 specification before treating schemas, profiles, or runtime files as final.
 
+The cybernetic governance doctrine bundle is also in capture and reconciliation mode. It records the frontier governance runway but does not replace the existing v0 reconciliation sequence. Its immediate implementation target is the Tier 1 schema and validator bundle described in `docs/cybernetic-governance/PROGRAM_CAPTURE.md`.
+
 ## What not to do first
 
 Do not begin by expanding runtime code.
@@ -88,6 +102,8 @@ Do not ingest raw scoring/dashboard data without classification, but do publish 
 
 Do not overwrite source ambiguity with invented certainty.
 
+Do not implement Superconscious runtime coupling from this doctrine branch while `SocioProphet/superconscious` is under construction; open dependency issues there only if a concrete integration requirement appears.
+
 ## Correct next work
 
 1. Reconcile source terminology and enums.
@@ -95,5 +111,6 @@ Do not overwrite source ambiguity with invented certainty.
 3. Produce canonical lifecycle and promotion profiles.
 4. Decide package naming and implementation sequence.
 5. Build the reference implementation from Volume IV and Book XI after reconciliation.
-6. Integrate Prophet Platform, Agent Plane, GitHub workflows, and SourceOS evidence.
-7. Publish public-safe scoring/dashboard artifacts or substitutes under the publication matrix.
+6. Add the cybernetic governance Tier 1 schemas, fixtures, and validators.
+7. Integrate Prophet Platform, Agent Plane, GitHub workflows, and SourceOS evidence.
+8. Publish public-safe scoring/dashboard artifacts or substitutes under the publication matrix.

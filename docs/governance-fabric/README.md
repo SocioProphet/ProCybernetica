@@ -37,7 +37,7 @@ Current state:
 doctrine_only
 ```
 
-No production governance runtime, cryptographic receipt system, monitor network, PCP replay prover, or SNARK receipt implementation is claimed here.
+No production governance runtime, cryptographic receipt system, monitor network, PCP-style replay prover, or SNARK receipt implementation is claimed here.
 
 ## Tier structure
 
@@ -74,11 +74,15 @@ The first implementation target is a schema-validated governance record system:
 - incident record;
 - threat-model catalog.
 
+### Tier 1.5 — Privacy-preserving evidence
+
+Evidence retention and privacy protection are reconciled through hashes, redactions, commitments, aggregates, sealed witnesses, and later zero-knowledge receipts.
+
 ### Tier 2 — Formal assurance layer
 
 Formalism becomes compositional and checkable:
 
-- hypergraph governance fabric;
+- hypergraph-style governance composition;
 - constructor-theoretic evidence tiers;
 - Birkhoff-style release-delta decomposition;
 - causal monitoring;
@@ -94,10 +98,10 @@ Formalism becomes compositional and checkable:
 - random-matrix and spectral evidence;
 - Fisher-geometric release deltas;
 - QEC-style monitor network design;
-- PCP replay audit;
+- PCP-style replay audit;
 - post-quantum receipt primitives.
 
-### Tier 4 — Quantum and frontier extensions
+### Tier 4 — Research runway
 
 - quantum constructor governance;
 - counterfactual quantum off-history;
@@ -117,6 +121,7 @@ SEPARATION_OF_POWERS.md
 BIRKHOFF_RELEASE_DELTA.md
 MONITOR_NETWORK_AS_QEC.md
 PCP_REPLAY_AUDIT.md
+PRIVACY_PRESERVING_EVIDENCE.md
 RESEARCH_RUNWAY_AI_QUANTUM.md
 ```
 

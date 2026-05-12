@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/governance-fabric/tool_permission_scope.v1.json",
+  "title": "Tier 1 Tool Permission Scope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "certificate_kind", "tool_permission_scope_id", "created_at", "execution_status", "tool_name", "permitted_capabilities", "excluded_capabilities", "irreversibility", "privacy_constraints", "ledger_entry"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "certificate_kind": {"const": "tool_permission_scope"},
+    "tool_permission_scope_id": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "execution_status": {"enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]},
+    "tool_name": {"type": "string"},
+    "permitted_capabilities": {"type": "array", "items": {"type": "string"}},
+    "excluded_capabilities": {"type": "array", "items": {"type": "string"}},
+    "irreversibility": {"type": "object", "additionalProperties": false, "required": ["may_perform_irreversible_actions", "approval_required"], "properties": {"may_perform_irreversible_actions": {"type": "boolean"}, "approval_required": {"type": "boolean"}}},
+    "privacy_constraints": {"$ref": "#/$defs/privacy"},
+    "ledger_entry": {"$ref": "#/$defs/ledger_entry"}
+  },
+  "$defs": {
+    "privacy": {"type": "object", "additionalProperties": false, "required": ["privacy_class", "evidence_mode", "minimization_rationale"], "properties": {"privacy_class": {"enum": ["P0_public", "P1_internal", "P2_sensitive", "P3_sealed", "P4_non_retainable_raw"]}, "evidence_mode": {"enum": ["raw", "redacted", "hashed", "committed", "aggregated", "sealed_witness", "zero_knowledge"]}, "minimization_rationale": {"type": "string"}}},
+    "ledger_entry": {"type": "object", "additionalProperties": false, "required": ["event_id", "event_type", "created_at"], "properties": {"event_id": {"type": "string"}, "event_type": {"type": "string"}, "created_at": {"type": "string", "format": "date-time"}}}
+  }
+}

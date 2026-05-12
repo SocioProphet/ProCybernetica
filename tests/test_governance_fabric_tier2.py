@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+import copy
+import hashlib
 import json
 from pathlib import Path
 
@@ -34,6 +36,10 @@ def validate_schema_shape(instance: dict) -> None:
     validator(SCHEMA).validate(instance)
 
 
+def sha256(value: str) -> str:
+    return hashlib.sha256(value.encode("utf-8")).hexdigest()
+
+
 def transitive_scope_closure(scopes: set[str], lattice_edges: list[dict]) -> set[str]:
     """Return all scopes supported by a set of declared scopes.
 
@@ -62,6 +68,167 @@ def supported_authority_scopes(instance: dict) -> set[str]:
         for scope in binding.get("declared_scopes", [])
     }
     return transitive_scope_closure(declared, analysis.get("scope_lattice", []))
+
+
+def interpretability_scope_lattice() -> list[dict]:
+    return [
+        {"narrower_scope": "record_model_artifact", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_sae_artifact", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_feature_artifact", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_feature_explanation", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_feature_activation_set", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_steering_intervention", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_causal_triad", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_attribution_graph", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_off_target_audit", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_manifold_baseline", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_implementability_curve", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "record_robustness_certificate", "broader_scope": "govern_interpretability_release_candidate"},
+        {"narrower_scope": "govern_interpretability_release_candidate", "broader_scope": "publish_public_interpretability_note"},
+    ]
+
+
+def build_interpretability_composition(manifest: dict) -> dict:
+    artifacts = []
+    authority_refs = []
+    scope_bindings = []
+    receipt_bindings = []
+    evidence_refs = []
+    allowed_scopes = set(manifest["composition_scope"])
+
+    for fragment in manifest["fragment_set"]:
+        artifact_id = fragment["artifact_id"]
+        artifact_sha = sha256(f"artifact:{artifact_id}")
+        declared_scope = fragment["declared_scope"]
+        allowed_scopes.add(declared_scope)
+        artifacts.append(
+            {
+                "artifact_kind": fragment["artifact_kind"],
+                "artifact_id": artifact_id,
+                "artifact_sha256": artifact_sha,
+                "schema_version": "0.1.0",
+                "execution_status": manifest["execution_status"],
+                "authority_chain_id": fragment["authority_chain_id"],
+                "non_claims": [fragment["non_claim"]],
+            }
+        )
+        authority_refs.append(
+            {
+                "authority_chain_id": fragment["authority_chain_id"],
+                "authority_chain_sha256": sha256(f"authority:{fragment['authority_chain_id']}"),
+            }
+        )
+        scope_bindings.append(
+            {
+                "constituent_artifact_id": artifact_id,
+                "declared_scopes": [declared_scope],
+            }
+        )
+        receipt_id = f"evidence-{artifact_id}"
+        receipt_sha = sha256(f"receipt:{receipt_id}")
+        receipt_bindings.append(
+            {
+                "constituent_artifact_id": artifact_id,
+                "constituent_artifact_sha256": artifact_sha,
+                "receipt_refs": [
+                    {
+                        "receipt_kind": "evidence_receipt",
+                        "receipt_id": receipt_id,
+                        "receipt_sha256": receipt_sha,
+                        "schema_version": "1.0.0",
+                    }
+                ],
+            }
+        )
+        evidence_refs.append(
+            {
+                "evidence_receipt_id": receipt_id,
+                "evidence_receipt_sha256": receipt_sha,
+            }
+        )
+
+    composition_receipt = {
+        "evidence_receipt_id": "evidence-interpretability-release-composition",
+        "evidence_receipt_sha256": sha256("receipt:interpretability-release-composition"),
+    }
+    evidence_refs.append(composition_receipt)
+
+    return {
+        "schema_version": "1.0.0",
+        "certificate_kind": "composition_certificate",
+        "composition_certificate_id": manifest["composition_certificate_id"],
+        "created_at": manifest["created_at"],
+        "execution_status": manifest["execution_status"],
+        "composition_order": 1,
+        "composition_kind": "flat_agent_composition",
+        "constituent_artifacts": artifacts,
+        "constituent_authority_chain_refs": authority_refs,
+        "composition_authority_chain_ref": {
+            "authority_chain_id": "auth-tier2-interpretability-composition",
+            "authority_chain_sha256": sha256("authority:auth-tier2-interpretability-composition"),
+        },
+        "composition_rule": {
+            "rule_id": "flat-interpretability-release-composition-rule",
+            "rule_version": "tier2-composition-rule.v1",
+            "allowed_authority_scope": sorted(allowed_scopes),
+            "status_monotonicity": "no_synthetic_or_doctrine_to_runtime_upgrade",
+            "recursive_composition_allowed": False,
+        },
+        "composed_authority_scope": manifest["composition_scope"],
+        "authority_scope_analysis": {
+            "comparison_mode": "declared_scope_lattice_v1",
+            "constituent_scope_bindings": scope_bindings,
+            "scope_lattice": interpretability_scope_lattice(),
+            "semantic_comparison_claim": {"composed_scope_must_be_supported_by_constituents": True},
+        },
+        "receipt_integration": {
+            "integration_mode": "hash_bound_reference",
+            "constituent_receipt_bindings": receipt_bindings,
+            "composition_receipt_ref": composition_receipt,
+        },
+        "propagated_non_claims": [
+            fragment["non_claim"] for fragment in manifest["fragment_set"]
+        ]
+        + [
+            "Composition is synthetic fixture only.",
+            "Does not claim runtime steering executed.",
+            "Does not claim public interpretability publication has occurred.",
+        ],
+        "resolved_non_claims": [],
+        "off_history_refs": [
+            {
+                "off_history_id": "off-history-interpretability-negative-controls",
+                "off_history_sha256": sha256("offhistory:interpretability-negative-controls"),
+            }
+        ],
+        "evidence_receipt_refs": evidence_refs,
+        "composition_domain_annotations": manifest["domain_annotations"],
+        "ledger_entry": {
+            "event_id": "composition-cert-interpretability-release-gemma-feature-789-event",
+            "event_type": "composition_certificate_recorded",
+            "created_at": manifest["created_at"],
+        },
+    }
+
+
+def apply_interpretability_mutation(instance: dict, mutation: str) -> dict:
+    mutated = copy.deepcopy(instance)
+
+    if mutation == "remove_public_note_receipt_binding":
+        mutated["receipt_integration"]["constituent_receipt_bindings"] = [
+            binding
+            for binding in mutated["receipt_integration"]["constituent_receipt_bindings"]
+            if binding["constituent_artifact_id"] != "public-interpretability-note-gemma-feature-789"
+        ]
+    elif mutation == "add_unsupported_runtime_steering_scope_allowed_by_rule":
+        mutated["composed_authority_scope"].append("runtime_steering_authority")
+        mutated["composition_rule"]["allowed_authority_scope"].append("runtime_steering_authority")
+    elif mutation == "add_runtime_steering_scope_without_rule_permission":
+        mutated["composed_authority_scope"].append("runtime_steering_authority")
+    else:
+        raise AssertionError(f"unknown interpretability mutation: {mutation}")
+
+    return mutated
 
 
 def composition_invariant_errors(instance: dict) -> list[str]:
@@ -99,6 +266,19 @@ def composition_invariant_errors(instance: dict) -> list[str]:
     supported_scopes = supported_authority_scopes(instance)
     if not composed.issubset(supported_scopes):
         errors.append("composed authority scope must be supported by constituent authority scopes")
+
+    annotations = instance.get("composition_domain_annotations", {})
+    for dependency in annotations.get("authority_dependencies", []):
+        if dependency["from_artifact_id"] not in artifact_ids or dependency["to_artifact_id"] not in artifact_ids:
+            errors.append("domain authority dependency must reference known constituent artifacts")
+    for effect in annotations.get("control_effects", []):
+        if effect["source_artifact_id"] not in artifact_ids:
+            errors.append("domain control effect must reference known source artifact")
+        if set(effect.get("bounded_by", [])) - artifact_ids:
+            errors.append("domain control effect bounds must reference known constituent artifacts")
+    for binding in annotations.get("cancellation_bindings", []):
+        if binding["trigger_artifact_id"] not in artifact_ids:
+            errors.append("domain cancellation binding must reference known trigger artifact")
 
     constituent_non_claims = {
         non_claim
@@ -155,6 +335,14 @@ def test_tier2_composition_certificate_valid_fixture() -> None:
     assert composition_invariant_errors(instance) == []
 
 
+def test_interpretability_14_fragment_composition_manifest_builds_valid_certificate() -> None:
+    manifest = load_json(FIXTURE_ROOT / "interpretability_composition_manifest.synthetic.json")
+    instance = build_interpretability_composition(manifest)
+    validate_schema_shape(instance)
+    assert len(instance["constituent_artifacts"]) == 14
+    assert composition_invariant_errors(instance) == []
+
+
 def test_negative_composite_claim_without_composition_certificate_fails_schema_or_static_gate() -> None:
     instance = load_json(FIXTURE_ROOT / "negative_composite_claim_without_composition_certificate.synthetic.json")
     # This fixture is intentionally a Tier 1 safety case, not a composition certificate.
@@ -202,9 +390,24 @@ def test_tier2_static_negative_fixtures_fail_intended_invariants(
     assert expected_error in errors
 
 
+@pytest.mark.parametrize(
+    "case",
+    load_json(FIXTURE_ROOT / "interpretability_composition_negative_cases.synthetic.json")["cases"],
+)
+def test_interpretability_composition_negative_cases_fail_intended_invariants(case: dict) -> None:
+    manifest = load_json(FIXTURE_ROOT / "interpretability_composition_manifest.synthetic.json")
+    instance = build_interpretability_composition(manifest)
+    mutated = apply_interpretability_mutation(instance, case["mutation"])
+    validate_schema_shape(mutated)
+    errors = composition_invariant_errors(mutated)
+    assert case["expected_error"] in errors
+
+
 def test_tier2_fixture_inventory_is_explicit() -> None:
     known = {
         "composition_certificate.synthetic.json",
+        "interpretability_composition_manifest.synthetic.json",
+        "interpretability_composition_negative_cases.synthetic.json",
         "negative_composite_claim_without_composition_certificate.synthetic.json",
         "negative_composition_status_boundary.synthetic.json",
         "negative_composition_missing_authority_coverage.synthetic.json",

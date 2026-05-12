@@ -21,6 +21,8 @@ tier1_schema_ci_merged: PR #31, merge commit 8746bcef68ba97c1b12c4e958d5c6fbcf30
 pr_head_ci: green
 post_merge_main_ci: unobserved_through_connector
 workflow_dispatch_available: true, commit 7e5dc07bcf7ecef8335917505568e73ab62d899f
+ci_observation_ledger_issue: #32
+ci_receipt_smoke_pr: retriggered_after_receipt_hook_fix
 runtime_executed: false
 production_governance_runtime: false
 ```
@@ -131,6 +133,8 @@ main merge commit: 8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba
 post-merge main CI: unobserved through connector
 workflow_dispatch added: 7e5dc07bcf7ecef8335917505568e73ab62d899f
 fresh push after workflow_dispatch: unobserved through connector
+receipt hook patch: e639a4d0c1aaf94e0018ae0ae0e71609fb316a96
+smoke PR: #33
 ```
 
 The workflow file declares `pull_request`, `push` on `main`, and `workflow_dispatch`. The available connector method for commit workflow runs filters to pull-request-triggered runs, so it is not a reliable observer for push-triggered `main` runs. This is recorded as an observation gap, not as a CI failure.
@@ -162,6 +166,6 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Use the GitHub Actions UI to manually verify the post-merge or post-dispatch run, or dispatch the `CI` workflow manually using the new `workflow_dispatch` trigger.
+Use PR #33 to verify that the workflow receipt job can post to issue #32, then update this status file with the observed result.
 
 Do not add Tier 2+ formal machinery until the post-merge/post-dispatch CI observation gap is closed.

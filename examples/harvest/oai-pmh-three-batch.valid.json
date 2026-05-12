@@ -1,0 +1,91 @@
+{
+  "schema_version": "procybernetica.harvest.v0",
+  "protocol": "OAI-PMH",
+  "harvest_plan": {
+    "plan_id": "harvest_plan:oai_pmh:archive_org:2003-01-01:oai_dc",
+    "endpoint_id": "endpoint:archive_org:oai",
+    "endpoint_url_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "verb": "ListRecords",
+    "metadata_prefix": "oai_dc",
+    "from": "2003-01-01",
+    "until": null,
+    "set": null,
+    "privacy_class": "public",
+    "retention_class": "normal",
+    "max_batches": 10,
+    "max_records": 1000
+  },
+  "policy_decision_ref": "policy.decision:oai_pmh_public_metadata:allow:v0",
+  "run": {
+    "run_id": "harvest_run:oai_pmh:archive_org:001",
+    "actor_id": "import_bridge:oai_pmh:archive_org",
+    "trace_id": "trace:oai_pmh:archive_org:001",
+    "root_event_id": "harvest.plan.created:oai_pmh:archive_org:001",
+    "execution_authority": "agentplane",
+    "replay_artifact_ref": "agentplane.replay:oai_pmh:archive_org:001",
+    "status": "completed"
+  },
+  "batch_receipts": [
+    {
+      "batch_id": "batch:001",
+      "event_class": "harvest.batch.sealed",
+      "request_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "response_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "record_count": 100,
+      "previous_resumption_token_hash": null,
+      "next_resumption_token_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "previous_receipt_hash": null,
+      "receipt_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+      "observed_at": "2026-05-12T02:00:00Z",
+      "classification": "public_metadata",
+      "handling_tags": ["metadata", "external", "replayable"]
+    },
+    {
+      "batch_id": "batch:002",
+      "event_class": "harvest.batch.sealed",
+      "request_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+      "response_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+      "record_count": 100,
+      "previous_resumption_token_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "next_resumption_token_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+      "previous_receipt_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+      "receipt_hash": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+      "observed_at": "2026-05-12T02:00:10Z",
+      "classification": "public_metadata",
+      "handling_tags": ["metadata", "external", "replayable"]
+    },
+    {
+      "batch_id": "batch:003",
+      "event_class": "harvest.batch.sealed",
+      "request_hash": "sha256:9999999999999999999999999999999999999999999999999999999999999999",
+      "response_hash": "sha256:abababababababababababababababababababababababababababababababab",
+      "record_count": 67,
+      "previous_resumption_token_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+      "next_resumption_token_hash": null,
+      "previous_receipt_hash": "sha256:8888888888888888888888888888888888888888888888888888888888888888",
+      "receipt_hash": "sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+      "observed_at": "2026-05-12T02:00:20Z",
+      "classification": "public_metadata",
+      "handling_tags": ["metadata", "external", "replayable"]
+    }
+  ],
+  "terminal_state": {
+    "completed": true,
+    "final_resumption_token_state": "empty",
+    "ledger_root_hash": "sha256:cdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcdcd",
+    "total_batches": 3,
+    "total_records": 267
+  },
+  "validation_report_ref": "validation.report:oai_pmh:archive_org:001",
+  "anomalies": [],
+  "promotion_decisions": [
+    {
+      "decision_id": "promotion:sherlock_index:oai_pmh:archive_org:001",
+      "target_surface": "sherlock_index",
+      "outcome": "promoted",
+      "policy_decision_ref": "policy.decision:oai_pmh_public_metadata:allow:v0",
+      "validation_report_ref": "validation.report:oai_pmh:archive_org:001",
+      "record_refs": ["record:oai:example:001", "record:oai:example:002"]
+    }
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "manifest_kind": "interpretability_composition_manifest",
+  "schema_version": "0.1.0",
+  "composition_certificate_id": "composition-cert-interpretability-release-gemma-feature-789",
+  "created_at": "2026-05-12T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "composition_scope": [
+    "govern_interpretability_release_candidate",
+    "publish_public_interpretability_note"
+  ],
+  "fragment_set": [
+    {"artifact_kind": "model_artifact", "artifact_id": "model-artifact-gemma-2-9b-it", "authority_chain_id": "auth-interpretability-model", "declared_scope": "record_model_artifact", "non_claim": "Synthetic model artifact only."},
+    {"artifact_kind": "sae_artifact", "artifact_id": "sae-artifact-gemma-scope-l20-131k-l0-81", "authority_chain_id": "auth-interpretability-sae", "declared_scope": "record_sae_artifact", "non_claim": "Synthetic SAE artifact only."},
+    {"artifact_kind": "feature_artifact", "artifact_id": "feature-artifact-gemma-feature-789", "authority_chain_id": "auth-interpretability-feature", "declared_scope": "record_feature_artifact", "non_claim": "Synthetic feature artifact only."},
+    {"artifact_kind": "feature_explanation", "artifact_id": "feature-explanation-gemma-feature-789", "authority_chain_id": "auth-interpretability-explanation", "declared_scope": "record_feature_explanation", "non_claim": "Synthetic feature explanation only."},
+    {"artifact_kind": "feature_activation_set", "artifact_id": "feature-activation-set-gemma-feature-789", "authority_chain_id": "auth-interpretability-activation", "declared_scope": "record_feature_activation_set", "non_claim": "Synthetic feature activation set only."},
+    {"artifact_kind": "steering_intervention", "artifact_id": "steering-intervention-gemma-feature-789", "authority_chain_id": "auth-interpretability-intervention", "declared_scope": "record_steering_intervention", "non_claim": "Synthetic steering intervention only; no live steering executed."},
+    {"artifact_kind": "causal_triad", "artifact_id": "causal-triad-gemma-feature-789", "authority_chain_id": "auth-interpretability-causal", "declared_scope": "record_causal_triad", "non_claim": "Synthetic causal triad only."},
+    {"artifact_kind": "attribution_graph", "artifact_id": "attribution-graph-gemma-feature-789", "authority_chain_id": "auth-interpretability-attribution", "declared_scope": "record_attribution_graph", "non_claim": "Synthetic attribution graph only."},
+    {"artifact_kind": "off_target_audit", "artifact_id": "off-target-audit-gemma-feature-789", "authority_chain_id": "auth-interpretability-off-target", "declared_scope": "record_off_target_audit", "non_claim": "Synthetic off-target audit only."},
+    {"artifact_kind": "manifold_baseline", "artifact_id": "manifold-baseline-gemma-feature-789", "authority_chain_id": "auth-interpretability-manifold", "declared_scope": "record_manifold_baseline", "non_claim": "Synthetic manifold baseline only."},
+    {"artifact_kind": "implementability_curve", "artifact_id": "implementability-curve-gemma-feature-789", "authority_chain_id": "auth-interpretability-curve", "declared_scope": "record_implementability_curve", "non_claim": "Synthetic implementability curve only."},
+    {"artifact_kind": "robustness_certificate", "artifact_id": "robustness-certificate-gemma-feature-789", "authority_chain_id": "auth-interpretability-robustness", "declared_scope": "record_robustness_certificate", "non_claim": "Synthetic robustness certificate only."},
+    {"artifact_kind": "benchmark_result", "artifact_id": "benchmark-result-gemma-feature-789", "authority_chain_id": "auth-interpretability-benchmark", "declared_scope": "govern_interpretability_release_candidate", "non_claim": "Synthetic benchmark result only."},
+    {"artifact_kind": "public_interpretability_note", "artifact_id": "public-interpretability-note-gemma-feature-789", "authority_chain_id": "auth-interpretability-public-note", "declared_scope": "publish_public_interpretability_note", "non_claim": "Synthetic public interpretability note only; not a published claim."}
+  ],
+  "domain_annotations": {
+    "authority_dependencies": [
+      {"dependency_id": "ad-interpretability-provider-boundary", "from_artifact_id": "public-interpretability-note-gemma-feature-789", "to_artifact_id": "model-artifact-gemma-2-9b-it", "dependency_kind": "source_lock_dependency"},
+      {"dependency_id": "ad-interpretability-sae-feature", "from_artifact_id": "feature-artifact-gemma-feature-789", "to_artifact_id": "sae-artifact-gemma-scope-l20-131k-l0-81", "dependency_kind": "feature_dictionary_dependency"},
+      {"dependency_id": "ad-interpretability-off-target", "from_artifact_id": "steering-intervention-gemma-feature-789", "to_artifact_id": "off-target-audit-gemma-feature-789", "dependency_kind": "safety_gate_dependency"}
+    ],
+    "control_effects": [
+      {"effect_id": "ce-steering-proposal", "source_artifact_id": "steering-intervention-gemma-feature-789", "effect_kind": "candidate_control_effect", "bounded_by": ["off-target-audit-gemma-feature-789", "benchmark-result-gemma-feature-789"]}
+    ],
+    "cancellation_bindings": [
+      {"binding_id": "cb-public-note-redaction", "trigger_artifact_id": "off-target-audit-gemma-feature-789", "cancelled_scope": "publish_public_interpretability_note", "cancellation_reason": "off_target_failure_or_receipt_redaction"}
+    ],
+    "non_claims": [
+      "Domain annotations exercise authority-dependency vocabulary without claiming runtime semantics."
+    ]
+  }
+}

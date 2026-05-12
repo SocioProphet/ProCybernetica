@@ -51,8 +51,10 @@ ProCybernetica:
     nonclaim_analysis_merge_commit: b6d1ad9bb13d812eb72baed2fff5bc7a8ce6641e
     nonclaim_analysis_ci: green_via_ci_observation_ledger
     nonclaim_analysis_ci_receipt: observed_by_exact_ledger_search
-    monitor_independence_branch: governance-fabric-tier2-monitor-independence
-    monitor_independence_pr: pending
+    monitor_independence_pr: #55
+    monitor_independence_merge_commit: 9ed2983b7ccacccb10f0ec274359a97e31d2e4a9
+    monitor_independence_ci: green_via_ci_observation_ledger
+    monitor_independence_ci_receipt: observed_by_exact_ledger_search
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -249,11 +251,11 @@ New invariants enforced:
 4. resolution records must appear in top-level `resolved_non_claims`;
 5. resolution records must cite evidence receipts declared in top-level `evidence_receipt_refs`.
 
-## Tier 2 monitor-independence branch
+## Tier 2 monitor-independence lane
 
-The branch `governance-fabric-tier2-monitor-independence` adds optional monitor-independence analysis to composition certificates.
+PR #55 merged optional monitor-independence analysis into composition certificates.
 
-Implemented on branch:
+Implemented:
 
 ```text
 composition_certificate.v1.json monitor_independence_analysis field
@@ -273,6 +275,14 @@ self-monitoring forbidden when claimed
 acyclic monitor graph required when claimed
 runtime monitor attestation: deferred
 ```
+
+New invariants enforced:
+
+1. monitor analysis must cover every constituent artifact;
+2. monitor attestations must cite declared evidence receipts;
+3. distinct monitors are required when claimed;
+4. self-monitoring is forbidden when claimed;
+5. monitor graph must be acyclic when claimed.
 
 ## CI status
 
@@ -315,6 +325,9 @@ Tier 2 authority-scope main receipt: success observed through exact CI Observati
 PR #54 head CI: green
 PR #54 merged: yes
 Tier 2 non-claim analysis main receipt: success observed through exact CI Observation Ledger search for commit b6d1ad9bb13d812eb72baed2fff5bc7a8ce6641e
+PR #55 head CI: green
+PR #55 merged: yes
+Tier 2 monitor-independence main receipt: success observed through exact CI Observation Ledger search for commit 9ed2983b7ccacccb10f0ec274359a97e31d2e4a9
 CI Observation Ledger issue: #32
 ```
 
@@ -354,6 +367,10 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Open and review the Tier 2 monitor-independence composition checks PR.
+Next Tier 2 step:
 
-Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.
+```text
+docs/governance-fabric/TIER2_COMPOSITION_INVARIANTS.md
+```
+
+This should consolidate the Tier 2 composition invariant family into a single cross-repo reference document before adding further schema machinery.

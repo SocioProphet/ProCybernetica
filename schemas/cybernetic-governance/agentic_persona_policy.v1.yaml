@@ -1,0 +1,304 @@
+schema_version: "1.0"
+schema_id: "agentic_persona_policy_v1"
+
+summary: >-
+  Persona policy schema for agentic operations. Defines objective weights,
+  hard budget constraints, agentic axes, substrategy bundles, degradation
+  ladders, telemetry requirements, and authorization boundaries.
+
+x_implements_invariants:
+  - invariant_0_1_no_hidden_authority_lane
+  - invariant_0_2_no_action_without_trace
+  - invariant_0_4_digital_typed_digestible_evidence
+  - invariant_0_7_irreversibility_requires_approval
+  - invariant_0_8_off_history_retained
+  - invariant_0_9_privacy_and_evidence_minimization
+  - invariant_0_15_frontier_claims_require_metrics
+
+definitions:
+
+  AgenticPersonaPolicy:
+    type: object
+    required:
+      - persona_id
+      - version
+      - objectives
+      - hard_constraints
+      - agentic_axes
+      - substrategy_bundle
+      - degradation_ladder
+      - telemetry_requirements
+      - authorization
+    properties:
+
+      persona_id:
+        type: string
+        description: "Canonical identifier, kebab-case. Used as foreign key in DAG node tags and AgentPlane run capsules."
+
+      version:
+        type: string
+        pattern: "^[0-9]+\\.[0-9]+\\.[0-9]+$"
+        description: "SemVer. Bump major on breaking constraint changes."
+
+      objectives:
+        description: "Weighted objective function components. Must sum to 1.0."
+        type: object
+        required:
+          - latency
+          - throughput
+          - cost_predictability
+          - correctness
+          - auditability
+          - ops_simplicity
+          - reproducibility
+          - collaboration
+        properties:
+          latency: { type: number, min: 0, max: 1 }
+          throughput: { type: number, min: 0, max: 1 }
+          cost_predictability: { type: number, min: 0, max: 1 }
+          correctness: { type: number, min: 0, max: 1 }
+          auditability: { type: number, min: 0, max: 1 }
+          ops_simplicity: { type: number, min: 0, max: 1 }
+          reproducibility: { type: number, min: 0, max: 1 }
+          collaboration: { type: number, min: 0, max: 1 }
+
+      hard_constraints:
+        type: object
+        properties:
+          budget_per_task:
+            description: "UCO vector. Task admission rejects above this."
+            type: object
+            properties:
+              tokens_in_max: { type: integer }
+              tokens_out_max: { type: integer }
+              tool_calls_max: { type: integer }
+              wall_clock_seconds_max: { type: number }
+              dollars_max: { type: number }
+
+          chance_constraints:
+            description: "Pr[cost_i > B_i] <= epsilon_i for variance-sensitive personas."
+            type: object
+            properties:
+              tokens_in:
+                type: object
+                properties:
+                  epsilon: { type: number }
+                  bound: { type: integer }
+              dollars:
+                type: object
+                properties:
+                  epsilon: { type: number }
+                  bound: { type: number }
+
+          data_class_allowlist:
+            type: array
+            items:
+              enum: [public, internal, sensitive, regulated, forensic]
+
+          allowed_regions:
+            type: array
+            items: { type: string }
+
+          retention_days:
+            type: integer
+
+          rpo_seconds: { type: integer }
+          rto_seconds: { type: integer }
+
+          max_staleness_seconds:
+            type: integer
+            description: "Bounded-staleness ceiling for cached reads."
+
+      agentic_axes:
+        type: object
+        required:
+          - autonomy_depth
+          - reversibility_tolerance
+          - plan_stability
+          - verification_mandate
+          - memory_promotion_policy
+          - model_routing_policy
+        properties:
+
+          autonomy_depth:
+            description: "Max consecutive agent steps without human checkpoint. 0 = approve every action."
+            type: integer
+
+          reversibility_tolerance:
+            enum: [none, idempotent_only, compensable, unrestricted]
+            description: >-
+              none: no external mutations; idempotent_only: writes safe to retry;
+              compensable: writes with compensating actions; unrestricted: any tool call.
+
+          plan_stability:
+            type: object
+            properties:
+              mode: { enum: [react, plan_then_execute, plan_with_revision] }
+              max_replans: { type: integer }
+
+          verification_mandate:
+            type: object
+            properties:
+              deterministic_checks: { type: boolean }
+              llm_judge_sample_rate: { type: number, min: 0, max: 1 }
+              self_consistency_k: { type: integer, min: 1 }
+              human_review_threshold:
+                type: number
+                description: "Impact score above which human review is required."
+
+          memory_promotion_policy:
+            type: object
+            properties:
+              working_to_episodic: { enum: [never, on_summarization, on_threshold] }
+              episodic_to_semantic: { enum: [never, on_completion_quality_gated, freely] }
+              cross_persona_share: { type: boolean }
+
+          model_routing_policy:
+            type: object
+            properties:
+              cascade_enabled: { type: boolean }
+              tiers:
+                type: array
+                items: { type: string }
+              escalation_threshold:
+                type: number
+                description: "Confidence below which escalation is required."
+              consistency_requirement: { enum: [pinned_model, tier_pinned, free] }
+
+      substrategy_bundle:
+        description: "Resolved substrategy IDs. Derived from objectives and agentic_axes by the chooser."
+        type: array
+        items: { type: string }
+
+      degradation_ladder:
+        description: "Ordered actions on budget approach. Each entry contains a trigger threshold and action."
+        type: array
+        items:
+          type: object
+          properties:
+            trigger:
+              type: object
+              properties:
+                metric:
+                  enum:
+                    - tokens_consumed_fraction
+                    - wall_clock_fraction
+                    - tool_calls_fraction
+                    - error_rate
+                    - loop_signal
+                threshold: { type: number }
+            action:
+              enum:
+                - drop_verification
+                - downgrade_model
+                - cap_steps_remaining
+                - terminate_partial
+                - escalate_to_human
+                - abort
+
+      telemetry_requirements:
+        type: array
+        items:
+          type: object
+          properties:
+            metric_name: { type: string }
+            granularity: { enum: [per_step, per_task, per_session, per_day] }
+            retention_days: { type: integer }
+
+      authorization:
+        type: object
+        properties:
+          can_promote_memory_to_semantic: { type: boolean }
+          can_exceed_budget_with_approval: { type: boolean }
+          approver_persona_ids:
+            type: array
+            items: { type: string }
+          audit_log_required: { type: boolean }
+
+instances:
+
+  regulated_enterprise_assistant:
+    persona_id: "regulated-enterprise-assistant"
+    version: "1.0.0"
+
+    objectives:
+      latency: 0.05
+      throughput: 0.05
+      cost_predictability: 0.15
+      correctness: 0.30
+      auditability: 0.30
+      ops_simplicity: 0.05
+      reproducibility: 0.05
+      collaboration: 0.05
+
+    hard_constraints:
+      budget_per_task:
+        tokens_in_max: 200000
+        tokens_out_max: 8000
+        tool_calls_max: 40
+        wall_clock_seconds_max: 300
+        dollars_max: 5.00
+      chance_constraints:
+        dollars:
+          epsilon: 0.01
+          bound: 8.00
+      data_class_allowlist: [internal, sensitive, regulated]
+      allowed_regions: [us-east-1, us-west-2]
+      retention_days: 2555
+      rpo_seconds: 60
+      rto_seconds: 900
+      max_staleness_seconds: 0
+
+    agentic_axes:
+      autonomy_depth: 5
+      reversibility_tolerance: compensable
+      plan_stability:
+        mode: plan_then_execute
+        max_replans: 1
+      verification_mandate:
+        deterministic_checks: true
+        llm_judge_sample_rate: 1.0
+        self_consistency_k: 3
+        human_review_threshold: 0.3
+      memory_promotion_policy:
+        working_to_episodic: on_summarization
+        episodic_to_semantic: never
+        cross_persona_share: false
+      model_routing_policy:
+        cascade_enabled: false
+        tiers: [primary_pinned]
+        escalation_threshold: null
+        consistency_requirement: pinned_model
+
+    substrategy_bundle:
+      - immutable_trajectory_log_cryptochained
+      - prefix_cache_with_breakpoints_at_section_5
+      - tool_result_canonicalization
+      - deterministic_check_first_verification
+      - self_consistency_k3_majority_vote
+      - per_data_class_memory_isolation
+      - human_in_loop_above_impact_threshold
+
+    degradation_ladder:
+      - trigger: { metric: tokens_consumed_fraction, threshold: 0.7 }
+        action: cap_steps_remaining
+      - trigger: { metric: tokens_consumed_fraction, threshold: 0.9 }
+        action: terminate_partial
+      - trigger: { metric: error_rate, threshold: 0.2 }
+        action: escalate_to_human
+      - trigger: { metric: loop_signal, threshold: 1.0 }
+        action: abort
+
+    telemetry_requirements:
+      - { metric_name: tokens_in_per_step, granularity: per_step, retention_days: 2555 }
+      - { metric_name: tokens_out_per_step, granularity: per_step, retention_days: 2555 }
+      - { metric_name: tool_call_args_hash, granularity: per_step, retention_days: 2555 }
+      - { metric_name: model_id, granularity: per_step, retention_days: 2555 }
+      - { metric_name: verification_outcome, granularity: per_step, retention_days: 2555 }
+      - { metric_name: trajectory_hash_chain, granularity: per_task, retention_days: 2555 }
+
+    authorization:
+      can_promote_memory_to_semantic: false
+      can_exceed_budget_with_approval: true
+      approver_persona_ids: [research-admin, ciso]
+      audit_log_required: true

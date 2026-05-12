@@ -36,20 +36,11 @@
     "constituent_artifacts": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/constituent_artifact"}},
     "constituent_authority_chain_refs": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/authority_ref"}},
     "composition_authority_chain_ref": {"$ref": "#/$defs/authority_ref"},
-    "composition_rule": {
-      "type": "object", "additionalProperties": false,
-      "required": ["rule_id", "rule_version", "allowed_authority_scope", "status_monotonicity", "recursive_composition_allowed"],
-      "properties": {
-        "rule_id": {"type": "string"},
-        "rule_version": {"const": "tier2-composition-rule.v1"},
-        "allowed_authority_scope": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-        "status_monotonicity": {"const": "no_synthetic_or_doctrine_to_runtime_upgrade"},
-        "recursive_composition_allowed": {"const": false}
-      }
-    },
+    "composition_rule": {"type": "object", "additionalProperties": false, "required": ["rule_id", "rule_version", "allowed_authority_scope", "status_monotonicity", "recursive_composition_allowed"], "properties": {"rule_id": {"type": "string"}, "rule_version": {"const": "tier2-composition-rule.v1"}, "allowed_authority_scope": {"type": "array", "minItems": 1, "items": {"type": "string"}}, "status_monotonicity": {"const": "no_synthetic_or_doctrine_to_runtime_upgrade"}, "recursive_composition_allowed": {"const": false}}},
     "composed_authority_scope": {"type": "array", "minItems": 1, "items": {"type": "string"}},
     "authority_scope_analysis": {"type": "object", "additionalProperties": false, "required": ["comparison_mode", "constituent_scope_bindings", "scope_lattice", "semantic_comparison_claim"], "properties": {"comparison_mode": {"const": "declared_scope_lattice_v1"}, "constituent_scope_bindings": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/constituent_scope_binding"}}, "scope_lattice": {"type": "array", "items": {"$ref": "#/$defs/scope_lattice_edge"}}, "semantic_comparison_claim": {"type": "object", "additionalProperties": false, "required": ["composed_scope_must_be_supported_by_constituents"], "properties": {"composed_scope_must_be_supported_by_constituents": {"const": true}}}}},
     "non_claim_analysis": {"$ref": "#/$defs/non_claim_analysis"},
+    "monitor_independence_analysis": {"$ref": "#/$defs/monitor_independence_analysis"},
     "receipt_integration": {"type": "object", "additionalProperties": false, "required": ["integration_mode", "constituent_receipt_bindings", "composition_receipt_ref"], "properties": {"integration_mode": {"const": "hash_bound_reference"}, "constituent_receipt_bindings": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/constituent_receipt_binding"}}, "composition_receipt_ref": {"$ref": "#/$defs/evidence_ref"}}},
     "propagated_non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
     "resolved_non_claims": {"type": "array", "items": {"type": "string"}},
@@ -67,6 +58,8 @@
     "source_non_claim": {"type": "object", "additionalProperties": false, "required": ["constituent_artifact_id", "non_claim"], "properties": {"constituent_artifact_id": {"type": "string"}, "non_claim": {"type": "string"}}},
     "non_claim_propagation_record": {"type": "object", "additionalProperties": false, "required": ["constituent_artifact_id", "non_claim", "propagated_as"], "properties": {"constituent_artifact_id": {"type": "string"}, "non_claim": {"type": "string"}, "propagated_as": {"type": "string"}}},
     "non_claim_resolution_record": {"type": "object", "additionalProperties": false, "required": ["constituent_artifact_id", "non_claim", "resolution", "evidence_receipt_ref"], "properties": {"constituent_artifact_id": {"type": "string"}, "non_claim": {"type": "string"}, "resolution": {"type": "string"}, "evidence_receipt_ref": {"$ref": "#/$defs/evidence_ref"}}},
+    "monitor_independence_analysis": {"type": "object", "additionalProperties": false, "required": ["analysis_mode", "monitor_relationships", "independence_claim"], "properties": {"analysis_mode": {"const": "declared_monitor_independence_v1"}, "monitor_relationships": {"type": "array", "minItems": 2, "items": {"$ref": "#/$defs/monitor_relationship"}}, "independence_claim": {"type": "object", "additionalProperties": false, "required": ["requires_distinct_monitors", "forbids_self_monitoring", "requires_acyclic_monitor_graph"], "properties": {"requires_distinct_monitors": {"type": "boolean"}, "forbids_self_monitoring": {"type": "boolean"}, "requires_acyclic_monitor_graph": {"type": "boolean"}}}}},
+    "monitor_relationship": {"type": "object", "additionalProperties": false, "required": ["monitor_id", "target_artifact_id", "independence_level", "evidence_receipt_ref"], "properties": {"monitor_id": {"type": "string"}, "target_artifact_id": {"type": "string"}, "independence_level": {"enum": ["unknown", "self_reported", "separate_process", "separate_authority", "external_auditor"]}, "evidence_receipt_ref": {"$ref": "#/$defs/evidence_ref"}}},
     "constituent_receipt_binding": {"type": "object", "additionalProperties": false, "required": ["constituent_artifact_id", "constituent_artifact_sha256", "receipt_refs"], "properties": {"constituent_artifact_id": {"type": "string"}, "constituent_artifact_sha256": {"$ref": "#/$defs/sha256"}, "receipt_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/receipt_ref"}}}},
     "receipt_ref": {"type": "object", "additionalProperties": false, "required": ["receipt_kind", "receipt_id", "receipt_sha256", "schema_version"], "properties": {"receipt_kind": {"enum": ["evidence_receipt", "composition_certificate"]}, "receipt_id": {"type": "string"}, "receipt_sha256": {"$ref": "#/$defs/sha256"}, "schema_version": {"type": "string"}}},
     "authority_ref": {"type": "object", "additionalProperties": false, "required": ["authority_chain_id", "authority_chain_sha256"], "properties": {"authority_chain_id": {"type": "string"}, "authority_chain_sha256": {"$ref": "#/$defs/sha256"}}},

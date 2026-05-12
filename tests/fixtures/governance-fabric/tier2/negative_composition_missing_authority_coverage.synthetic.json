@@ -48,6 +48,39 @@
     "recursive_composition_allowed": false
   },
   "composed_authority_scope": ["record_schema_artifact", "transform_completion"],
+  "receipt_integration": {
+    "integration_mode": "hash_bound_reference",
+    "constituent_receipt_bindings": [
+      {
+        "constituent_artifact_id": "action-allowed-demo",
+        "constituent_artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "receipt_refs": [
+          {
+            "receipt_kind": "evidence_receipt",
+            "receipt_id": "evidence-action-allowed-demo",
+            "receipt_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee",
+            "schema_version": "1.0.0"
+          }
+        ]
+      },
+      {
+        "constituent_artifact_id": "safe-completion-demo",
+        "constituent_artifact_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "receipt_refs": [
+          {
+            "receipt_kind": "evidence_receipt",
+            "receipt_id": "evidence-safe-completion-demo",
+            "receipt_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "schema_version": "1.0.0"
+          }
+        ]
+      }
+    ],
+    "composition_receipt_ref": {
+      "evidence_receipt_id": "evidence-composition-cert-tier2-demo",
+      "evidence_receipt_sha256": "9999999999999999999999999999999999999999999999999999999999999999"
+    }
+  },
   "propagated_non_claims": [
     "Synthetic trace only.",
     "Synthetic completion decision only."
@@ -56,8 +89,16 @@
   "off_history_refs": [],
   "evidence_receipt_refs": [
     {
-      "evidence_receipt_id": "evidence-tier1-demo",
+      "evidence_receipt_id": "evidence-action-allowed-demo",
       "evidence_receipt_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    },
+    {
+      "evidence_receipt_id": "evidence-safe-completion-demo",
+      "evidence_receipt_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+    },
+    {
+      "evidence_receipt_id": "evidence-composition-cert-tier2-demo",
+      "evidence_receipt_sha256": "9999999999999999999999999999999999999999999999999999999999999999"
     }
   ],
   "ledger_entry": {

@@ -67,6 +67,43 @@ def composition_invariant_errors(instance: dict) -> list[str]:
     if not constituent_non_claims.issubset(propagated_or_resolved):
         errors.append("composition must propagate or resolve constituent non-claims")
 
+    artifacts_by_id = {
+        item["artifact_id"]: item["artifact_sha256"]
+        for item in instance.get("constituent_artifacts", [])
+    }
+    bindings = instance.get("receipt_integration", {}).get("constituent_receipt_bindings", [])
+    bindings_by_id = {binding.get("constituent_artifact_id"): binding for binding in bindings}
+
+    missing_receipt_bindings = set(artifacts_by_id) - set(bindings_by_id)
+    if missing_receipt_bindings:
+        errors.append("composition must bind receipts for every constituent artifact")
+
+    unknown_receipt_bindings = set(bindings_by_id) - set(artifacts_by_id)
+    if unknown_receipt_bindings:
+        errors.append("composition receipt bindings must not reference unknown constituent artifacts")
+
+    for artifact_id, artifact_sha256 in artifacts_by_id.items():
+        binding = bindings_by_id.get(artifact_id)
+        if binding is not None and binding.get("constituent_artifact_sha256") != artifact_sha256:
+            errors.append("composition receipt binding hash must match constituent artifact hash")
+
+    declared_receipts = {
+        (ref["evidence_receipt_id"], ref["evidence_receipt_sha256"])
+        for ref in instance.get("evidence_receipt_refs", [])
+    }
+    integration = instance.get("receipt_integration", {})
+    expected_receipts = set()
+    for binding in bindings:
+        for receipt_ref in binding.get("receipt_refs", []):
+            if receipt_ref.get("receipt_kind") == "evidence_receipt":
+                expected_receipts.add((receipt_ref["receipt_id"], receipt_ref["receipt_sha256"]))
+    composition_receipt = integration.get("composition_receipt_ref")
+    if composition_receipt:
+        expected_receipts.add((composition_receipt["evidence_receipt_id"], composition_receipt["evidence_receipt_sha256"]))
+
+    if not expected_receipts.issubset(declared_receipts):
+        errors.append("composition evidence_receipt_refs must include all hash-bound receipt bindings")
+
     return errors
 
 
@@ -95,6 +132,18 @@ def test_negative_composite_claim_without_composition_certificate_fails_schema_o
             "negative_composition_missing_authority_coverage.synthetic.json",
             "composition must cover every constituent authority chain",
         ),
+        (
+            "negative_composition_missing_receipt_binding.synthetic.json",
+            "composition must bind receipts for every constituent artifact",
+        ),
+        (
+            "negative_composition_unknown_receipt_binding.synthetic.json",
+            "composition receipt bindings must not reference unknown constituent artifacts",
+        ),
+        (
+            "negative_composition_receipt_hash_mismatch.synthetic.json",
+            "composition receipt binding hash must match constituent artifact hash",
+        ),
     ],
 )
 def test_tier2_static_negative_fixtures_fail_intended_invariants(
@@ -113,6 +162,9 @@ def test_tier2_fixture_inventory_is_explicit() -> None:
         "negative_composite_claim_without_composition_certificate.synthetic.json",
         "negative_composition_status_boundary.synthetic.json",
         "negative_composition_missing_authority_coverage.synthetic.json",
+        "negative_composition_missing_receipt_binding.synthetic.json",
+        "negative_composition_unknown_receipt_binding.synthetic.json",
+        "negative_composition_receipt_hash_mismatch.synthetic.json",
     }
     actual = {path.name for path in FIXTURE_ROOT.glob("*.json")}
     assert actual == known

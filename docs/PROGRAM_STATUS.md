@@ -35,8 +35,10 @@ ProCybernetica:
     planning_merge_commit: a9ee2d5b9d536986f1be9308ff6c2a6396cc5ec3
     planning_ci: green_via_ci_observation_ledger
     planning_ci_receipt_run_id: 25715320769
-    first_schema_branch: governance-fabric-tier2-composition-certificate
-    schema_ci: implementation_pr_pending
+    first_schema_pr: #37
+    first_schema_merge_commit: 73d2320767eebf2df485bab94b857b15080ceff0
+    first_schema_ci: green_via_ci_observation_ledger
+    first_schema_ci_receipt: observed_by_exact_ledger_search
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -64,6 +66,7 @@ PCP_REPLAY_AUDIT.md
 PRIVACY_PRESERVING_EVIDENCE.md
 RESEARCH_RUNWAY_AI_QUANTUM.md
 TIER2_COMPOSITION_GOVERNANCE_PLAN.md
+TIER2_SCHEMA_LANE.md
 ```
 
 ## Key doctrine corrections landed
@@ -117,15 +120,11 @@ The Tier 2 planning document resolves:
 - explicit doctrine-only deferrals;
 - state block shape.
 
-## Tier 2 composition certificate branch
+## Tier 2 composition certificate schema lane
 
-The first Tier 2 implementation branch is:
+PR #37 merged the first Tier 2 implementation slice.
 
-```text
-governance-fabric-tier2-composition-certificate
-```
-
-Implemented on that branch:
+Implemented:
 
 ```text
 schemas/governance-fabric/composition_certificate.v1.json
@@ -138,7 +137,7 @@ docs/governance-fabric/TIER2_SCHEMA_LANE.md
 make governance-fabric-tier2-ci
 ```
 
-The branch implements flat v0.1 composition only:
+The schema implements flat v0.1 composition only:
 
 ```text
 composition_order: 1
@@ -155,7 +154,7 @@ Tier 1 has:
 make governance-fabric-tier1-ci
 ```
 
-Tier 2 branch adds:
+Tier 2 has:
 
 ```bash
 make governance-fabric-tier2-ci
@@ -176,10 +175,13 @@ Tier 1 main receipt: success, run_id 25714672871
 PR #35 head CI: green
 PR #35 merged: yes
 Tier 2 planning main receipt: success, run_id 25715320769
+PR #37 head CI: green
+PR #37 merged: yes
+Tier 2 composition main receipt: success observed through exact CI Observation Ledger search for commit 73d2320767eebf2df485bab94b857b15080ceff0
 CI Observation Ledger issue: #32
 ```
 
-The CI Observation Ledger converts CI state into connector-visible evidence. Issue #32 contains versioned JSON receipts posted by `github-actions[bot]` with `conclusion: success` for the relevant pull-request and push runs.
+The CI Observation Ledger converts CI state into connector-visible evidence. Issue #32 contains versioned JSON receipts posted by `github-actions[bot]` with `conclusion: success` for the relevant pull-request and push runs. For PR #37, the exact issue search for merge commit `73d2320767eebf2df485bab94b857b15080ceff0` plus `conclusion` and `success` returns the ledger issue; the full comment fetch is truncated before the receipt body in this connector view.
 
 ## Runtime status
 
@@ -210,6 +212,11 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Open and review the first Tier 2 implementation PR.
+Next Tier 2 implementation slice should choose one of:
 
-Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.
+1. authority-scope semantic comparison;
+2. non-claim propagation/resolution schema refinement;
+3. monitor-independence composition checks;
+4. composition-certificate evidence receipt integration.
+
+Do not add recursive composition, meta-governance, or formal proof machinery until flat v0.1 composition has been exercised further.

@@ -18,6 +18,7 @@ This index captures the first doctrine bundle for the Interpretability-Backed Cy
 8. [`GAP_AUDIT_AND_READINESS_MATRIX.md`](GAP_AUDIT_AND_READINESS_MATRIX.md) — post-capture hardening matrix that defines lifecycle states, enums, schema-to-invariant traceability, non-claim structure, disclosure profiles, readiness levels, MVP trace requirements, CI checks, and cross-repo dependency boundaries.
 9. [`../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md`](../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md) — reviewer-facing proof packet template for buyer, analyst, procurement, architecture, and gate reviews.
 10. [`../integrations/AGENTPLANE_CYBERNETIC_GOVERNANCE_BINDING.md`](../integrations/AGENTPLANE_CYBERNETIC_GOVERNANCE_BINDING.md) — runtime-plane contract for AgentPlane run capsules, tool grants, action dispatch, subagent delegation, off-history, operator readouts, and proof-pack exhibits.
+11. [`../foundations/QUANTUM_CYBERNETIC_DEPENDENCE_CALCULUS.md`](../foundations/QUANTUM_CYBERNETIC_DEPENDENCE_CALCULUS.md) — dependency-control calculus aligning quantum unitary-dependence theory with governed agent/runtime systems.
 
 ## Captured doctrine commitments
 
@@ -34,6 +35,12 @@ The bundle captures these commitments as doctrine, not loose notes:
 - release changes require delta governance;
 - authority concentration is measurable and gate-relevant;
 - public-safe assurance is publishable by default, with disciplined redaction.
+
+## Dependency-control calculus
+
+The quantum cybernetic dependence calculus adds the formal bridge from control propagation to governance: what can affect what, through which dependency path, under which observation partition, with which cancellation behavior, and with what feedback closure.
+
+This calculus aligns AgentPlane, PolicyFabric, TriTRPC, Ontogenesis, and SourceOS around dependency reachability, observability, shared ancestry, cancellation, off-history, and adaptive feedback.
 
 ## AgentPlane runtime binding
 
@@ -90,30 +97,37 @@ Immediate implementation target:
 - `agentplane_tool_grant.v1.json`
 - `agentplane_action_dispatch.v1.json`
 - `agentplane_subagent_delegation.v1.json`
+- `dependency_control_graph.v1.json`
+- `control_reachability_record.v1.json`
+- `observability_partition.v1.json`
+- `shared_dependency_ancestry.v1.json`
+- `dependency_cancellation_record.v1.json`
+- `adaptive_feedback_loop.v1.json`
 
 ### Tier 2 — Formal foundations
 
-Hypergraph governance, constructor-theoretic evidence, causal monitoring, Birkhoff release delta, authority-concentration metrics, cryptographic evidence receipts, supply-chain provenance, and formal-methods models.
+Hypergraph governance, constructor-theoretic evidence, causal monitoring, Birkhoff release delta, authority-concentration metrics, cryptographic evidence receipts, dependency-control calculus, supply-chain provenance, and formal-methods models.
 
 ### Tier 3 — Mathematical extensions
 
-Categorical authority semantics, tensor-network safety cases, statistical-mechanical spectral evidence, Fisher-geometric release deltas, QEC-style monitor networks, PCP replay audit, and noise-immune authority coding.
+Categorical authority semantics, tensor-network safety cases, statistical-mechanical spectral evidence, Fisher-geometric release deltas, QEC-style monitor networks, PCP replay audit, noise-immune authority coding, and transport/ontology dependency-channel analysis.
 
 ### Tier 4 — Quantum and frontier extensions
 
-Quantum constructor governance, counterfactual-quantum off-history, variational policy optimization, quantum-assisted evals, holographic reconstruction bounds, Page-curve fine-tuning audit, and higher-categorical governance.
+Quantum constructor governance, counterfactual-quantum off-history, variational policy optimization, quantum-assisted evals, holographic reconstruction bounds, Page-curve fine-tuning audit, higher-categorical governance, and quantum learning dependency analysis.
 
 ## Implementation next steps
 
 1. Add canonical enums and lifecycle schemas.
 2. Add Tier 1 schema bundle under `schemas/cybernetic-governance/` with `implements_invariants` traceability.
-3. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, invalid promotion-by-prose, and AgentPlane run capsule/tool grant/action dispatch paths.
+3. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, invalid promotion-by-prose, AgentPlane run capsule/tool grant/action dispatch paths, and dependency-control reachability/observability/cancellation paths.
 4. Add validators under `tools/` and CI entrypoints.
 5. Add MVP trace fixtures for allowed, blocked, and transformed actions.
 6. Add proof-pack manifest and disposition schemas after evidence receipt and non-claim schemas stabilize.
 7. Add AgentPlane runtime binding schemas after authority, action trace, tool permission, off-history, and evidence receipt schemas stabilize.
-8. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry after schema names stabilize.
-9. Keep `superconscious` integration as a dependency issue only after its construction stabilizes and a concrete contract is required.
+8. Add dependency-control graph schemas after core run/action/evidence schemas stabilize.
+9. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry after schema names stabilize.
+10. Keep `superconscious` integration as a dependency issue only after its construction stabilizes and a concrete contract is required.
 
 ## Non-claims
 

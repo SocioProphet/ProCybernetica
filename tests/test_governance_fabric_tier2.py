@@ -64,6 +64,20 @@ def supported_authority_scopes(instance: dict) -> set[str]:
     return transitive_scope_closure(declared, analysis.get("scope_lattice", []))
 
 
+def non_claim_pairs(records: list[dict]) -> set[tuple[str, str]]:
+    return {
+        (record["constituent_artifact_id"], record["non_claim"])
+        for record in records
+    }
+
+
+def declared_evidence_pairs(instance: dict) -> set[tuple[str, str]]:
+    return {
+        (ref["evidence_receipt_id"], ref["evidence_receipt_sha256"])
+        for ref in instance.get("evidence_receipt_refs", [])
+    }
+
+
 def composition_invariant_errors(instance: dict) -> list[str]:
     errors: list[str] = []
 
@@ -109,6 +123,45 @@ def composition_invariant_errors(instance: dict) -> list[str]:
     if not constituent_non_claims.issubset(propagated_or_resolved):
         errors.append("composition must propagate or resolve constituent non-claims")
 
+    non_claim_analysis = instance.get("non_claim_analysis")
+    if non_claim_analysis is not None:
+        source_pairs = non_claim_pairs(non_claim_analysis.get("source_non_claims", []))
+        expected_source_pairs = {
+            (item["artifact_id"], non_claim)
+            for item in instance.get("constituent_artifacts", [])
+            for non_claim in item.get("non_claims", [])
+        }
+        if source_pairs != expected_source_pairs:
+            errors.append("non_claim_analysis source_non_claims must match constituent non-claims")
+
+        propagated_pairs = non_claim_pairs(non_claim_analysis.get("propagation_records", []))
+        resolved_pairs = non_claim_pairs(non_claim_analysis.get("resolution_records", []))
+        handled_pairs = propagated_pairs | resolved_pairs
+        if not source_pairs.issubset(handled_pairs):
+            errors.append("non_claim_analysis must propagate or resolve every source non-claim")
+
+        propagated_as_values = {
+            record["propagated_as"]
+            for record in non_claim_analysis.get("propagation_records", [])
+        }
+        if not propagated_as_values.issubset(set(instance.get("propagated_non_claims", []))):
+            errors.append("non_claim_analysis propagation records must appear in propagated_non_claims")
+
+        resolution_values = {
+            record["non_claim"]
+            for record in non_claim_analysis.get("resolution_records", [])
+        }
+        if not resolution_values.issubset(set(instance.get("resolved_non_claims", []))):
+            errors.append("non_claim_analysis resolution records must appear in resolved_non_claims")
+
+        declared_receipts_for_resolution = declared_evidence_pairs(instance)
+        for record in non_claim_analysis.get("resolution_records", []):
+            receipt = record["evidence_receipt_ref"]
+            pair = (receipt["evidence_receipt_id"], receipt["evidence_receipt_sha256"])
+            if pair not in declared_receipts_for_resolution:
+                errors.append("non_claim_analysis resolutions must cite declared evidence receipts")
+                break
+
     artifacts_by_id = {
         item["artifact_id"]: item["artifact_sha256"]
         for item in instance.get("constituent_artifacts", [])
@@ -129,10 +182,7 @@ def composition_invariant_errors(instance: dict) -> list[str]:
         if binding is not None and binding.get("constituent_artifact_sha256") != artifact_sha256:
             errors.append("composition receipt binding hash must match constituent artifact hash")
 
-    declared_receipts = {
-        (ref["evidence_receipt_id"], ref["evidence_receipt_sha256"])
-        for ref in instance.get("evidence_receipt_refs", [])
-    }
+    declared_receipts = declared_evidence_pairs(instance)
     integration = instance.get("receipt_integration", {})
     expected_receipts = set()
     for binding in bindings:
@@ -190,6 +240,14 @@ def test_negative_composite_claim_without_composition_certificate_fails_schema_o
             "negative_composition_unsupported_authority_scope.synthetic.json",
             "composed authority scope must be supported by constituent authority scopes",
         ),
+        (
+            "negative_composition_unhandled_non_claim.synthetic.json",
+            "non_claim_analysis must propagate or resolve every source non-claim",
+        ),
+        (
+            "negative_composition_resolution_missing_evidence.synthetic.json",
+            "non_claim_analysis resolutions must cite declared evidence receipts",
+        ),
     ],
 )
 def test_tier2_static_negative_fixtures_fail_intended_invariants(
@@ -212,6 +270,8 @@ def test_tier2_fixture_inventory_is_explicit() -> None:
         "negative_composition_unknown_receipt_binding.synthetic.json",
         "negative_composition_receipt_hash_mismatch.synthetic.json",
         "negative_composition_unsupported_authority_scope.synthetic.json",
+        "negative_composition_unhandled_non_claim.synthetic.json",
+        "negative_composition_resolution_missing_evidence.synthetic.json",
     }
     actual = {path.name for path in FIXTURE_ROOT.glob("*.json")}
     assert actual == known

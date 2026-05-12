@@ -310,6 +310,12 @@ def test_tier2_composition_certificate_valid_fixture() -> None:
     assert composition_invariant_errors(instance) == []
 
 
+def test_tier2_evidence_freshness_positive_fixture() -> None:
+    instance = load_json(FIXTURE_ROOT / "positive_composition_evidence_freshness_all_fresh.synthetic.json")
+    validate_schema_shape(instance)
+    assert composition_invariant_errors(instance) == []
+
+
 def test_negative_composite_claim_without_composition_certificate_fails_schema_or_static_gate() -> None:
     instance = load_json(FIXTURE_ROOT / "negative_composite_claim_without_composition_certificate.synthetic.json")
     # This fixture is intentionally a Tier 1 safety case, not a composition certificate.
@@ -321,70 +327,22 @@ def test_negative_composite_claim_without_composition_certificate_fails_schema_o
 @pytest.mark.parametrize(
     ("fixture_name", "expected_error"),
     [
-        (
-            "negative_composition_status_boundary.synthetic.json",
-            "composition cannot upgrade execution_status beyond weakest constituent",
-        ),
-        (
-            "negative_composition_missing_authority_coverage.synthetic.json",
-            "composition must cover every constituent authority chain",
-        ),
-        (
-            "negative_composition_missing_receipt_binding.synthetic.json",
-            "composition must bind receipts for every constituent artifact",
-        ),
-        (
-            "negative_composition_unknown_receipt_binding.synthetic.json",
-            "composition receipt bindings must not reference unknown constituent artifacts",
-        ),
-        (
-            "negative_composition_receipt_hash_mismatch.synthetic.json",
-            "composition receipt binding hash must match constituent artifact hash",
-        ),
-        (
-            "negative_composition_unsupported_authority_scope.synthetic.json",
-            "composed authority scope must be supported by constituent authority scopes",
-        ),
-        (
-            "negative_composition_unhandled_non_claim.synthetic.json",
-            "non_claim_analysis must propagate or resolve every source non-claim",
-        ),
-        (
-            "negative_composition_resolution_missing_evidence.synthetic.json",
-            "non_claim_analysis resolutions must cite declared evidence receipts",
-        ),
-        (
-            "negative_composition_shared_monitor.synthetic.json",
-            "monitor_independence_analysis requires distinct monitors for constituent artifacts",
-        ),
-        (
-            "negative_composition_self_monitoring.synthetic.json",
-            "monitor_independence_analysis forbids self-monitoring relationships",
-        ),
-        (
-            "negative_composition_monitor_cycle.synthetic.json",
-            "monitor_independence_analysis requires an acyclic monitor graph",
-        ),
-        (
-            "negative_composition_unanalyzed_receipt.synthetic.json",
-            "evidence_freshness_analysis must cover every evidence receipt",
-        ),
-        (
-            "negative_composition_unbound_receipt_class.synthetic.json",
-            "evidence_freshness_analysis receipt classes must be declared in freshness_windows",
-        ),
-        (
-            "negative_composition_stale_evidence_claimed_fresh.synthetic.json",
-            "fresh evidence must be within declared freshness window",
-        ),
-        (
-            "negative_composition_refresh_without_evidence.synthetic.json",
-            "refreshed evidence must cite a declared refresh receipt",
-        ),
-        (
-            "negative_composition_stale_acknowledged_without_propagation.synthetic.json",
-            "stale evidence acknowledgments must cite propagated or resolved non-claims",
-        ),
+        ("negative_composition_status_boundary.synthetic.json", "composition cannot upgrade execution_status beyond weakest constituent"),
+        ("negative_composition_missing_authority_coverage.synthetic.json", "composition must cover every constituent authority chain"),
+        ("negative_composition_missing_receipt_binding.synthetic.json", "composition must bind receipts for every constituent artifact"),
+        ("negative_composition_unknown_receipt_binding.synthetic.json", "composition receipt bindings must not reference unknown constituent artifacts"),
+        ("negative_composition_receipt_hash_mismatch.synthetic.json", "composition receipt binding hash must match constituent artifact hash"),
+        ("negative_composition_unsupported_authority_scope.synthetic.json", "composed authority scope must be supported by constituent authority scopes"),
+        ("negative_composition_unhandled_non_claim.synthetic.json", "non_claim_analysis must propagate or resolve every source non-claim"),
+        ("negative_composition_resolution_missing_evidence.synthetic.json", "non_claim_analysis resolutions must cite declared evidence receipts"),
+        ("negative_composition_shared_monitor.synthetic.json", "monitor_independence_analysis requires distinct monitors for constituent artifacts"),
+        ("negative_composition_self_monitoring.synthetic.json", "monitor_independence_analysis forbids self-monitoring relationships"),
+        ("negative_composition_monitor_cycle.synthetic.json", "monitor_independence_analysis requires an acyclic monitor graph"),
+        ("negative_composition_unanalyzed_receipt.synthetic.json", "evidence_freshness_analysis must cover every evidence receipt"),
+        ("negative_composition_unbound_receipt_class.synthetic.json", "evidence_freshness_analysis receipt classes must be declared in freshness_windows"),
+        ("negative_composition_stale_evidence_claimed_fresh.synthetic.json", "fresh evidence must be within declared freshness window"),
+        ("negative_composition_refresh_without_evidence.synthetic.json", "refreshed evidence must cite a declared refresh receipt"),
+        ("negative_composition_stale_acknowledged_without_propagation.synthetic.json", "stale evidence acknowledgments must cite propagated or resolved non-claims"),
     ],
 )
 def test_tier2_static_negative_fixtures_fail_intended_invariants(
@@ -400,6 +358,7 @@ def test_tier2_static_negative_fixtures_fail_intended_invariants(
 def test_tier2_fixture_inventory_is_explicit() -> None:
     known = {
         "composition_certificate.synthetic.json",
+        "positive_composition_evidence_freshness_all_fresh.synthetic.json",
         "negative_composite_claim_without_composition_certificate.synthetic.json",
         "negative_composition_status_boundary.synthetic.json",
         "negative_composition_missing_authority_coverage.synthetic.json",

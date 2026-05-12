@@ -1,0 +1,162 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json",
+  "title": "Cybernetic Governance Canonical Enums",
+  "description": "Canonical enumerations for ProCybernetica cybernetic governance schemas.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "enum_name": { "type": "string" },
+    "value": { "type": "string" }
+  },
+  "$defs": {
+    "constitutional_invariant_id": {
+      "type": "string",
+      "enum": [
+        "invariant_0_1_no_hidden_authority_lane",
+        "invariant_0_2_no_action_without_trace",
+        "invariant_0_3_no_promotion_by_prose",
+        "invariant_0_4_digital_typed_digestible_evidence",
+        "invariant_0_5_separation_of_powers",
+        "invariant_0_6_monitor_independence",
+        "invariant_0_7_irreversibility_requires_approval",
+        "invariant_0_8_off_history_retained",
+        "invariant_0_9_privacy_and_evidence_minimization",
+        "invariant_0_10_claims_require_non_claims",
+        "invariant_0_11_release_delta_required",
+        "invariant_0_12_monitors_are_monitored",
+        "invariant_0_13_safety_case_before_frontier_promotion",
+        "invariant_0_14_public_first_redaction_disciplined_assurance",
+        "invariant_0_15_frontier_claims_require_metrics"
+      ]
+    },
+    "artifact_lifecycle_state": {
+      "type": "string",
+      "enum": [
+        "draft",
+        "captured",
+        "reconciled",
+        "schema_defined",
+        "fixture_backed",
+        "validator_backed",
+        "cross_checked",
+        "runtime_consumed",
+        "promoted",
+        "quarantined",
+        "archived"
+      ]
+    },
+    "artifact_kind": {
+      "type": "string",
+      "enum": [
+        "doctrine",
+        "schema",
+        "fixture",
+        "validator",
+        "runtime_adapter",
+        "monitor",
+        "evaluator",
+        "evidence_receipt",
+        "promotion_decision",
+        "safety_case",
+        "release_delta_report",
+        "proof_pack",
+        "policy",
+        "tool_grant",
+        "run_capsule",
+        "operator_readout",
+        "incident_record",
+        "publication_artifact",
+        "other"
+      ]
+    },
+    "severity_tier": {
+      "type": "string",
+      "enum": ["none", "info", "low", "medium", "high", "critical", "catastrophic"]
+    },
+    "autonomy_tier": {
+      "type": "string",
+      "enum": ["manual", "assistive", "supervised_agent", "delegated_agent", "bounded_autonomous", "high_autonomy", "frontier_autonomy"]
+    },
+    "evidence_tier": {
+      "type": "string",
+      "enum": [
+        "E0_raw_occurrence",
+        "E1_typed_occurrence",
+        "E2_replayable_occurrence",
+        "E3_controlled_contrast",
+        "E4_interventional_support",
+        "E5_independent_cross_check",
+        "E6_governed_signal",
+        "E7_production_control",
+        "E8_public_assurance"
+      ]
+    },
+    "reversibility_class": {
+      "type": "string",
+      "enum": [
+        "fully_reversible",
+        "mostly_reversible",
+        "partially_reversible",
+        "externally_visible",
+        "irreversible",
+        "legally_material",
+        "financially_material",
+        "privacy_material",
+        "security_material",
+        "physical_world_material"
+      ]
+    },
+    "evidence_disclosure_class": {
+      "type": "string",
+      "enum": ["public", "redacted", "private", "sealed", "privileged", "sensitive_ops", "do_not_retain"]
+    },
+    "promotion_decision": {
+      "type": "string",
+      "enum": ["allow", "allow_with_monitoring", "allow_with_degraded_autonomy", "require_more_evidence", "quarantine", "reject", "archive"]
+    },
+    "monitor_output_state": {
+      "type": "string",
+      "enum": ["pass", "fail", "missing", "inconsistent", "unknown", "degraded", "outage"]
+    },
+    "release_delta_gate_color": {
+      "type": "string",
+      "enum": ["green", "yellow", "red", "black"]
+    },
+    "incident_class": {
+      "type": "string",
+      "enum": [
+        "near_miss",
+        "policy_violation",
+        "privacy_event",
+        "security_event",
+        "monitor_failure",
+        "evidence_failure",
+        "release_regression",
+        "publication_error",
+        "authority_failure",
+        "runtime_side_effect"
+      ]
+    },
+    "readiness_level": {
+      "type": "string",
+      "enum": ["R0_named", "R1_captured", "R2_reconciled", "R3_schema_ready", "R4_fixture_ready", "R5_validator_ready", "R6_integration_ready", "R7_runtime_ready", "R8_assurance_ready", "R9_promoted"]
+    },
+    "audit_lane": {
+      "type": "string",
+      "enum": ["doctrine", "schema", "validator", "runtime", "integration", "research"]
+    },
+    "readiness_effect": {
+      "type": "string",
+      "enum": ["blocks_tier_1", "blocks_validator", "blocks_runtime", "blocks_assurance", "non_blocking_runway"]
+    },
+    "transition_decision": {
+      "type": "string",
+      "enum": ["approve", "approve_with_conditions", "hold", "reject", "quarantine", "archive"]
+    }
+  },
+  "examples": [
+    { "enum_name": "severity_tier", "value": "high" },
+    { "enum_name": "artifact_lifecycle_state", "value": "schema_defined" }
+  ]
+}

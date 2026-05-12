@@ -1,0 +1,22 @@
+{
+  "manifest_kind": "interpretability_composition_negative_cases",
+  "schema_version": "0.1.0",
+  "base_manifest": "interpretability_composition_manifest.synthetic.json",
+  "cases": [
+    {
+      "case_id": "negative_interpretability_missing_receipt_binding",
+      "mutation": "remove_public_note_receipt_binding",
+      "expected_error": "composition must bind receipts for every constituent artifact"
+    },
+    {
+      "case_id": "negative_interpretability_unsupported_authority_scope",
+      "mutation": "add_unsupported_runtime_steering_scope_allowed_by_rule",
+      "expected_error": "composed authority scope must be supported by constituent authority scopes"
+    },
+    {
+      "case_id": "negative_interpretability_composition_exceeds_allowed_scope",
+      "mutation": "add_runtime_steering_scope_without_rule_permission",
+      "expected_error": "composed authority scope exceeds allowed composition rule scope"
+    }
+  ]
+}

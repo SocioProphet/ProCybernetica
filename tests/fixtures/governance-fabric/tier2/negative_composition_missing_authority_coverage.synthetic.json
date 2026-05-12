@@ -30,6 +30,10 @@
     {
       "authority_chain_id": "auth-chain-tier1-demo-a",
       "authority_chain_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "authority_chain_id": "auth-chain-tier1-demo-c",
+      "authority_chain_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
     }
   ],
   "composition_authority_chain_ref": {

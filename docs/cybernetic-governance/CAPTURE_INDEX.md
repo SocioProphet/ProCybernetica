@@ -19,6 +19,8 @@ This index captures the first doctrine bundle for the Interpretability-Backed Cy
 9. [`../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md`](../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md) — reviewer-facing proof packet template for buyer, analyst, procurement, architecture, and gate reviews.
 10. [`../integrations/AGENTPLANE_CYBERNETIC_GOVERNANCE_BINDING.md`](../integrations/AGENTPLANE_CYBERNETIC_GOVERNANCE_BINDING.md) — runtime-plane contract for AgentPlane run capsules, tool grants, action dispatch, subagent delegation, off-history, operator readouts, and proof-pack exhibits.
 11. [`../foundations/QUANTUM_CYBERNETIC_DEPENDENCE_CALCULUS.md`](../foundations/QUANTUM_CYBERNETIC_DEPENDENCE_CALCULUS.md) — dependency-control calculus aligning quantum unitary-dependence theory with governed agent/runtime systems.
+12. [`../capability-tiers/quantum-dependency-substrate-v0.1.md`](../capability-tiers/quantum-dependency-substrate-v0.1.md) — opt-in capability-tier doctrine for dependency-control calculus.
+13. [`../bridges/BRIDGE_SCHEMAS_V1_EXECUTION_PLAN.md`](../bridges/BRIDGE_SCHEMAS_V1_EXECUTION_PLAN.md) — bridge-schema tranche for OpsHistory→Pneumachinalis, Masonmark→certificate, and certificate→Atlas composition.
 
 ## Captured doctrine commitments
 
@@ -35,6 +37,22 @@ The bundle captures these commitments as doctrine, not loose notes:
 - release changes require delta governance;
 - authority concentration is measurable and gate-relevant;
 - public-safe assurance is publishable by default, with disciplined redaction.
+
+## Capability tier doctrine
+
+The quantum dependency substrate is an opt-in capability tier, not a constitutional addition. It is invoked by reference through `schemas/capability-tier/invocation-contract.v1.json`. Absence of the invocation contract means base-architecture-only operation.
+
+The capability tier serves glass-break governance, multi-jurisdiction trust-domain composition, planetary-scale coordination, and counterfactual/contradiction adjudication. Q1–Q4 remain explicit design questions for v0.2 resolution.
+
+## Bridge-schema tranche
+
+The bridge execution plan composes the base architecture:
+
+- OpsHistory operational events map into Pneumachinalis microbeat contribution events.
+- Masonmark proofpacks specialize into M-series certificate fragments.
+- Certificate verdicts map into Atlas promotion decisions through four-valued fail-closed verdict resolution.
+
+All bridge schemas keep `capability_tier_invocation` optional and additive.
 
 ## Dependency-control calculus
 
@@ -103,10 +121,14 @@ Immediate implementation target:
 - `shared_dependency_ancestry.v1.json`
 - `dependency_cancellation_record.v1.json`
 - `adaptive_feedback_loop.v1.json`
+- `invocation-contract.v1.json`
+- `ops-history-to-pneumachinalis.v1.json`
+- `masonmark-to-certificate.v1.json`
+- `certificate-to-atlas.v1.json`
 
 ### Tier 2 — Formal foundations
 
-Hypergraph governance, constructor-theoretic evidence, causal monitoring, Birkhoff release delta, authority-concentration metrics, cryptographic evidence receipts, dependency-control calculus, supply-chain provenance, and formal-methods models.
+Hypergraph governance, constructor-theoretic evidence, causal monitoring, Birkhoff release delta, authority-concentration metrics, cryptographic evidence receipts, dependency-control calculus, supply-chain provenance, bridge schema cross-field validation, and formal-methods models.
 
 ### Tier 3 — Mathematical extensions
 
@@ -120,14 +142,16 @@ Quantum constructor governance, counterfactual-quantum off-history, variational 
 
 1. Add canonical enums and lifecycle schemas.
 2. Add Tier 1 schema bundle under `schemas/cybernetic-governance/` with `implements_invariants` traceability.
-3. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, invalid promotion-by-prose, AgentPlane run capsule/tool grant/action dispatch paths, and dependency-control reachability/observability/cancellation paths.
-4. Add validators under `tools/` and CI entrypoints.
-5. Add MVP trace fixtures for allowed, blocked, and transformed actions.
-6. Add proof-pack manifest and disposition schemas after evidence receipt and non-claim schemas stabilize.
-7. Add AgentPlane runtime binding schemas after authority, action trace, tool permission, off-history, and evidence receipt schemas stabilize.
-8. Add dependency-control graph schemas after core run/action/evidence schemas stabilize.
-9. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry after schema names stabilize.
-10. Keep `superconscious` integration as a dependency issue only after its construction stabilizes and a concrete contract is required.
+3. Add bridge schemas and cross-field validators for OpsHistory→Pneumachinalis, Masonmark→certificate, and certificate→Atlas.
+4. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, invalid promotion-by-prose, AgentPlane run capsule/tool grant/action dispatch paths, bridge positive/negative cases, and dependency-control reachability/observability/cancellation paths.
+5. Add validators under `tools/` and CI entrypoints.
+6. Add MVP trace fixtures for allowed, blocked, and transformed actions.
+7. Add proof-pack manifest and disposition schemas after evidence receipt and non-claim schemas stabilize.
+8. Add AgentPlane runtime binding schemas after authority, action trace, tool permission, off-history, and evidence receipt schemas stabilize.
+9. Add dependency-control graph schemas after core run/action/evidence schemas stabilize.
+10. Draft falsification document v1.0 covering F1.x–F8.x.
+11. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry after schema names stabilize.
+12. Keep `superconscious` integration as a dependency issue only after its construction stabilizes and a concrete contract is required.
 
 ## Non-claims
 

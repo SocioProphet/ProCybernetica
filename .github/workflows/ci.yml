@@ -57,4 +57,4 @@ jobs:
       - name: Post CI receipt to ledger issue
         env:
           GH_TOKEN: ${{ github.token }}
-        run: gh issue comment 32 --body-file receipt.md
+        run: gh issue comment 32 --repo "$GITHUB_REPOSITORY" --body-file receipt.md

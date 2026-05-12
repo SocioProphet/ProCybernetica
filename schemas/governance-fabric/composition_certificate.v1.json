@@ -26,58 +26,123 @@
     "ledger_entry"
   ],
   "properties": {
-    "schema_version": {"const": "1.0.0"},
-    "certificate_kind": {"const": "composition_certificate"},
-    "composition_certificate_id": {"type": "string"},
-    "created_at": {"type": "string", "format": "date-time"},
-    "execution_status": {"$ref": "#/$defs/execution_status"},
-    "composition_order": {"const": 1},
-    "composition_kind": {"const": "flat_agent_composition"},
+    "schema_version": {
+      "const": "1.0.0"
+    },
+    "certificate_kind": {
+      "const": "composition_certificate"
+    },
+    "composition_certificate_id": {
+      "type": "string"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "execution_status": {
+      "$ref": "#/$defs/execution_status"
+    },
+    "composition_order": {
+      "const": 1
+    },
+    "composition_kind": {
+      "enum": [
+        "flat_agent_composition",
+        "flat_interpretability_composition"
+      ]
+    },
     "constituent_artifacts": {
       "type": "array",
       "minItems": 2,
-      "items": {"$ref": "#/$defs/constituent_artifact"}
+      "items": {
+        "$ref": "#/$defs/constituent_artifact"
+      }
     },
     "constituent_authority_chain_refs": {
       "type": "array",
       "minItems": 2,
-      "items": {"$ref": "#/$defs/authority_ref"}
+      "items": {
+        "$ref": "#/$defs/authority_ref"
+      }
     },
-    "composition_authority_chain_ref": {"$ref": "#/$defs/authority_ref"},
+    "composition_authority_chain_ref": {
+      "$ref": "#/$defs/authority_ref"
+    },
     "composition_rule": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["rule_id", "rule_version", "allowed_authority_scope", "status_monotonicity", "recursive_composition_allowed"],
+      "required": [
+        "rule_id",
+        "rule_version",
+        "allowed_authority_scope",
+        "status_monotonicity",
+        "recursive_composition_allowed"
+      ],
       "properties": {
-        "rule_id": {"type": "string"},
-        "rule_version": {"const": "tier2-composition-rule.v1"},
-        "allowed_authority_scope": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-        "status_monotonicity": {"const": "no_synthetic_or_doctrine_to_runtime_upgrade"},
-        "recursive_composition_allowed": {"const": false}
+        "rule_id": {
+          "type": "string"
+        },
+        "rule_version": {
+          "const": "tier2-composition-rule.v1"
+        },
+        "allowed_authority_scope": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "status_monotonicity": {
+          "const": "no_synthetic_or_doctrine_to_runtime_upgrade"
+        },
+        "recursive_composition_allowed": {
+          "const": false
+        }
       }
     },
-    "composed_authority_scope": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "composed_authority_scope": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
     "authority_scope_analysis": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["comparison_mode", "constituent_scope_bindings", "scope_lattice", "semantic_comparison_claim"],
+      "required": [
+        "comparison_mode",
+        "constituent_scope_bindings",
+        "scope_lattice",
+        "semantic_comparison_claim"
+      ],
       "properties": {
-        "comparison_mode": {"const": "declared_scope_lattice_v1"},
+        "comparison_mode": {
+          "const": "declared_scope_lattice_v1"
+        },
         "constituent_scope_bindings": {
           "type": "array",
           "minItems": 2,
-          "items": {"$ref": "#/$defs/constituent_scope_binding"}
+          "items": {
+            "$ref": "#/$defs/constituent_scope_binding"
+          }
         },
         "scope_lattice": {
           "type": "array",
-          "items": {"$ref": "#/$defs/scope_lattice_edge"}
+          "items": {
+            "$ref": "#/$defs/scope_lattice_edge"
+          }
         },
         "semantic_comparison_claim": {
           "type": "object",
           "additionalProperties": false,
-          "required": ["composed_scope_must_be_supported_by_constituents"],
+          "required": [
+            "composed_scope_must_be_supported_by_constituents"
+          ],
           "properties": {
-            "composed_scope_must_be_supported_by_constituents": {"const": true}
+            "composed_scope_must_be_supported_by_constituents": {
+              "const": true
+            }
           }
         }
       }
@@ -85,118 +150,327 @@
     "receipt_integration": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["integration_mode", "constituent_receipt_bindings", "composition_receipt_ref"],
+      "required": [
+        "integration_mode",
+        "constituent_receipt_bindings",
+        "composition_receipt_ref"
+      ],
       "properties": {
-        "integration_mode": {"const": "hash_bound_reference"},
+        "integration_mode": {
+          "const": "hash_bound_reference"
+        },
         "constituent_receipt_bindings": {
           "type": "array",
           "minItems": 1,
-          "items": {"$ref": "#/$defs/constituent_receipt_binding"}
+          "items": {
+            "$ref": "#/$defs/constituent_receipt_binding"
+          }
         },
-        "composition_receipt_ref": {"$ref": "#/$defs/evidence_ref"}
+        "composition_receipt_ref": {
+          "$ref": "#/$defs/evidence_ref"
+        }
       }
     },
-    "propagated_non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
-    "resolved_non_claims": {"type": "array", "items": {"type": "string"}},
-    "off_history_refs": {"type": "array", "items": {"$ref": "#/$defs/off_history_ref"}},
-    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence_ref"}},
-    "ledger_entry": {"$ref": "#/$defs/ledger_entry"}
+    "propagated_non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string"
+      }
+    },
+    "resolved_non_claims": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "off_history_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/off_history_ref"
+      }
+    },
+    "evidence_receipt_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "#/$defs/evidence_ref"
+      }
+    },
+    "ledger_entry": {
+      "$ref": "#/$defs/ledger_entry"
+    }
   },
   "$defs": {
-    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
-    "execution_status": {"enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]},
+    "sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "execution_status": {
+      "enum": [
+        "doctrine_only",
+        "synthetic_fixture",
+        "runtime_partial",
+        "runtime_executed",
+        "failed"
+      ]
+    },
     "constituent_artifact": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["artifact_kind", "artifact_id", "artifact_sha256", "schema_version", "execution_status", "authority_chain_id", "non_claims"],
+      "required": [
+        "artifact_kind",
+        "artifact_id",
+        "artifact_sha256",
+        "schema_version",
+        "execution_status",
+        "authority_chain_id",
+        "non_claims"
+      ],
       "properties": {
-        "artifact_kind": {"enum": ["agent_action_trace", "safe_completion_decision", "program_certificate", "cybernetic_safety_case"]},
-        "artifact_id": {"type": "string"},
-        "artifact_sha256": {"$ref": "#/$defs/sha256"},
-        "schema_version": {"type": "string"},
-        "execution_status": {"$ref": "#/$defs/execution_status"},
-        "authority_chain_id": {"type": "string"},
-        "non_claims": {"type": "array", "items": {"type": "string"}}
+        "artifact_kind": {
+          "enum": [
+            "agent_action_trace",
+            "safe_completion_decision",
+            "program_certificate",
+            "cybernetic_safety_case",
+            "model_artifact",
+            "sae_artifact",
+            "feature_artifact",
+            "feature_explanation",
+            "feature_activation_set",
+            "steering_intervention",
+            "causal_triad",
+            "attribution_graph",
+            "off_target_audit",
+            "manifold_baseline",
+            "implementability_curve",
+            "robustness_certificate",
+            "benchmark_result",
+            "public_interpretability_note"
+          ]
+        },
+        "artifact_id": {
+          "type": "string"
+        },
+        "artifact_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "schema_version": {
+          "type": "string"
+        },
+        "execution_status": {
+          "$ref": "#/$defs/execution_status"
+        },
+        "authority_chain_id": {
+          "type": "string"
+        },
+        "source_lock_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/source_lock_ref"
+          }
+        },
+        "authority_dependency_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/authority_dependency_ref"
+          }
+        },
+        "non_claims": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "source_lock_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_lock_id",
+        "source_lock_sha256"
+      ],
+      "properties": {
+        "source_lock_id": {
+          "type": "string"
+        },
+        "source_lock_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "authority_dependency_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "authority_dependency_id",
+        "authority_dependency_sha256"
+      ],
+      "properties": {
+        "authority_dependency_id": {
+          "type": "string"
+        },
+        "authority_dependency_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       }
     },
     "constituent_scope_binding": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["constituent_artifact_id", "declared_scopes"],
+      "required": [
+        "constituent_artifact_id",
+        "declared_scopes"
+      ],
       "properties": {
-        "constituent_artifact_id": {"type": "string"},
-        "declared_scopes": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+        "constituent_artifact_id": {
+          "type": "string"
+        },
+        "declared_scopes": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
       }
     },
     "scope_lattice_edge": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["narrower_scope", "broader_scope"],
+      "required": [
+        "narrower_scope",
+        "broader_scope"
+      ],
       "properties": {
-        "narrower_scope": {"type": "string"},
-        "broader_scope": {"type": "string"}
+        "narrower_scope": {
+          "type": "string"
+        },
+        "broader_scope": {
+          "type": "string"
+        }
       }
     },
     "constituent_receipt_binding": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["constituent_artifact_id", "constituent_artifact_sha256", "receipt_refs"],
+      "required": [
+        "constituent_artifact_id",
+        "constituent_artifact_sha256",
+        "receipt_refs"
+      ],
       "properties": {
-        "constituent_artifact_id": {"type": "string"},
-        "constituent_artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "constituent_artifact_id": {
+          "type": "string"
+        },
+        "constituent_artifact_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
         "receipt_refs": {
           "type": "array",
           "minItems": 1,
-          "items": {"$ref": "#/$defs/receipt_ref"}
+          "items": {
+            "$ref": "#/$defs/receipt_ref"
+          }
         }
       }
     },
     "receipt_ref": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["receipt_kind", "receipt_id", "receipt_sha256", "schema_version"],
+      "required": [
+        "receipt_kind",
+        "receipt_id",
+        "receipt_sha256",
+        "schema_version"
+      ],
       "properties": {
-        "receipt_kind": {"enum": ["evidence_receipt", "composition_certificate"]},
-        "receipt_id": {"type": "string"},
-        "receipt_sha256": {"$ref": "#/$defs/sha256"},
-        "schema_version": {"type": "string"}
+        "receipt_kind": {
+          "enum": [
+            "evidence_receipt",
+            "composition_certificate"
+          ]
+        },
+        "receipt_id": {
+          "type": "string"
+        },
+        "receipt_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "schema_version": {
+          "type": "string"
+        }
       }
     },
     "authority_ref": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["authority_chain_id", "authority_chain_sha256"],
+      "required": [
+        "authority_chain_id",
+        "authority_chain_sha256"
+      ],
       "properties": {
-        "authority_chain_id": {"type": "string"},
-        "authority_chain_sha256": {"$ref": "#/$defs/sha256"}
+        "authority_chain_id": {
+          "type": "string"
+        },
+        "authority_chain_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       }
     },
     "evidence_ref": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["evidence_receipt_id", "evidence_receipt_sha256"],
+      "required": [
+        "evidence_receipt_id",
+        "evidence_receipt_sha256"
+      ],
       "properties": {
-        "evidence_receipt_id": {"type": "string"},
-        "evidence_receipt_sha256": {"$ref": "#/$defs/sha256"}
+        "evidence_receipt_id": {
+          "type": "string"
+        },
+        "evidence_receipt_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       }
     },
     "off_history_ref": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["off_history_id", "off_history_sha256"],
+      "required": [
+        "off_history_id",
+        "off_history_sha256"
+      ],
       "properties": {
-        "off_history_id": {"type": "string"},
-        "off_history_sha256": {"$ref": "#/$defs/sha256"}
+        "off_history_id": {
+          "type": "string"
+        },
+        "off_history_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
       }
     },
     "ledger_entry": {
       "type": "object",
       "additionalProperties": false,
-      "required": ["event_id", "event_type", "created_at"],
+      "required": [
+        "event_id",
+        "event_type",
+        "created_at"
+      ],
       "properties": {
-        "event_id": {"type": "string"},
-        "event_type": {"type": "string"},
-        "created_at": {"type": "string", "format": "date-time"}
+        "event_id": {
+          "type": "string"
+        },
+        "event_type": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
       }
     }
   }

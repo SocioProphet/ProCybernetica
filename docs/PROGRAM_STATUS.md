@@ -47,8 +47,10 @@ ProCybernetica:
     authority_scope_merge_commit: 0b28e1fe66346b49554bbf51d62454008b42bce3
     authority_scope_ci: green_via_ci_observation_ledger
     authority_scope_ci_receipt: observed_by_exact_ledger_search
-    nonclaim_analysis_branch: governance-fabric-tier2-nonclaim-analysis
-    nonclaim_analysis_pr: pending
+    nonclaim_analysis_pr: #54
+    nonclaim_analysis_merge_commit: b6d1ad9bb13d812eb72baed2fff5bc7a8ce6641e
+    nonclaim_analysis_ci: green_via_ci_observation_ledger
+    nonclaim_analysis_ci_receipt: observed_by_exact_ledger_search
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -214,11 +216,11 @@ New invariant enforced:
 
 1. composed authority scope must be supported by constituent-declared authority scopes under the declared scope lattice.
 
-## Tier 2 structured non-claim analysis branch
+## Tier 2 structured non-claim analysis lane
 
-The branch `governance-fabric-tier2-nonclaim-analysis` adds optional structured non-claim analysis to composition certificates.
+PR #54 merged optional source-bound non-claim analysis into composition certificates.
 
-Implemented on branch:
+Implemented:
 
 ```text
 composition_certificate.v1.json non_claim_analysis field
@@ -236,6 +238,14 @@ every source non-claim must be propagated or resolved
 resolutions must cite declared evidence receipts
 runtime verification of resolution evidence: deferred
 ```
+
+New invariants enforced:
+
+1. `source_non_claims` must match constituent non-claims;
+2. every source non-claim must be propagated or resolved;
+3. propagation records must appear in top-level `propagated_non_claims`;
+4. resolution records must appear in top-level `resolved_non_claims`;
+5. resolution records must cite evidence receipts declared in top-level `evidence_receipt_refs`.
 
 ## CI status
 
@@ -275,6 +285,9 @@ Tier 2 evidence receipt integration main receipt: success observed through exact
 PR #48 head CI: green
 PR #48 merged: yes
 Tier 2 authority-scope main receipt: success observed through exact CI Observation Ledger search for commit 0b28e1fe66346b49554bbf51d62454008b42bce3
+PR #54 head CI: green
+PR #54 merged: yes
+Tier 2 non-claim analysis main receipt: success observed through exact CI Observation Ledger search for commit b6d1ad9bb13d812eb72baed2fff5bc7a8ce6641e
 CI Observation Ledger issue: #32
 ```
 
@@ -313,6 +326,10 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Open and review the Tier 2 structured non-claim analysis PR.
+Next Tier 2 implementation slice:
 
-Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.
+```text
+monitor-independence composition checks
+```
+
+Do not add recursive composition, meta-governance, runtime receipt-store lookup, runtime non-claim evidence verification, or formal proof machinery until flat v0.1 composition with receipt bindings, authority-scope checks, and structured non-claim analysis has been exercised further.

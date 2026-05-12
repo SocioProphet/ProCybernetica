@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/governance-fabric/promotion_decision.v1.json",
+  "title": "Tier 1 Promotion Decision",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "certificate_kind", "promotion_decision_id", "created_at", "execution_status", "subject_ref", "from_state", "to_state", "decision", "authority_chain_ref", "evidence_receipt_refs", "non_claims", "approval_record", "ledger_entry"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "certificate_kind": {"const": "promotion_decision"},
+    "promotion_decision_id": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "execution_status": {"enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]},
+    "subject_ref": {"type": "string"},
+    "from_state": {"type": "string"},
+    "to_state": {"type": "string"},
+    "decision": {"enum": ["approved", "rejected", "blocked", "requires_more_evidence"]},
+    "authority_chain_ref": {"$ref": "#/$defs/authority_ref"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence_ref"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "approval_record": {"type": "object", "additionalProperties": false, "required": ["approved_by", "approved_at", "rationale"], "properties": {"approved_by": {"$ref": "#/$defs/actor"}, "approved_at": {"type": "string", "format": "date-time"}, "rationale": {"type": "string"}}},
+    "ledger_entry": {"$ref": "#/$defs/ledger_entry"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "actor": {"type": "object", "additionalProperties": false, "required": ["actor_id", "actor_kind"], "properties": {"actor_id": {"type": "string"}, "actor_kind": {"enum": ["human", "agent", "service", "pipeline", "organization", "role"]}}},
+    "authority_ref": {"type": "object", "additionalProperties": false, "required": ["authority_chain_id", "authority_chain_sha256"], "properties": {"authority_chain_id": {"type": "string"}, "authority_chain_sha256": {"$ref": "#/$defs/sha256"}}},
+    "evidence_ref": {"type": "object", "additionalProperties": false, "required": ["evidence_receipt_id", "evidence_receipt_sha256"], "properties": {"evidence_receipt_id": {"type": "string"}, "evidence_receipt_sha256": {"$ref": "#/$defs/sha256"}}},
+    "ledger_entry": {"type": "object", "additionalProperties": false, "required": ["event_id", "event_type", "created_at"], "properties": {"event_id": {"type": "string"}, "event_type": {"type": "string"}, "created_at": {"type": "string", "format": "date-time"}}}
+  }
+}

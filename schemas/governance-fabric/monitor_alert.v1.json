@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/governance-fabric/monitor_alert.v1.json",
+  "title": "Tier 1 Monitor Alert",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "certificate_kind", "monitor_alert_id", "created_at", "execution_status", "monitor", "alert_class", "severity", "observed_ref", "independence_level", "recommended_action", "ledger_entry"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "certificate_kind": {"const": "monitor_alert"},
+    "monitor_alert_id": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "execution_status": {"enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]},
+    "monitor": {"$ref": "#/$defs/actor"},
+    "alert_class": {"enum": ["authority_violation", "trace_missing", "tool_scope_escalation", "privacy_overcollection", "evidence_gap", "monitor_capture", "off_history_deletion", "goodhart_risk", "supply_chain_drift", "other"]},
+    "severity": {"enum": ["low", "medium", "high", "critical"]},
+    "observed_ref": {"type": "string"},
+    "independence_level": {"enum": ["unknown", "self_reported", "separate_process", "separate_authority", "external_auditor"]},
+    "recommended_action": {"type": "string"},
+    "ledger_entry": {"$ref": "#/$defs/ledger_entry"}
+  },
+  "$defs": {
+    "actor": {"type": "object", "additionalProperties": false, "required": ["actor_id", "actor_kind"], "properties": {"actor_id": {"type": "string"}, "actor_kind": {"enum": ["human", "agent", "service", "pipeline", "organization", "role"]}}},
+    "ledger_entry": {"type": "object", "additionalProperties": false, "required": ["event_id", "event_type", "created_at"], "properties": {"event_id": {"type": "string"}, "event_type": {"type": "string"}, "created_at": {"type": "string", "format": "date-time"}}}
+  }
+}

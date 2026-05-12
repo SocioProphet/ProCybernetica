@@ -1,0 +1,16 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "promotion_decision",
+  "promotion_decision_id": "promotion-release-delta-demo",
+  "created_at": "2026-05-11T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "subject_ref": "release:governance-fabric-tier1-schema-ci",
+  "from_state": "doctrine_only",
+  "to_state": "schema_ci_fixture_validated",
+  "decision": "approved",
+  "authority_chain_ref": {"authority_chain_id": "auth-chain-tier1-demo", "authority_chain_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  "evidence_receipt_refs": [{"evidence_receipt_id": "evidence-tier1-demo", "evidence_receipt_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],
+  "non_claims": ["Does not claim production governance runtime.", "Does not claim empirical model execution."],
+  "approval_record": {"approved_by": {"actor_id": "role:tier1-promoter", "actor_kind": "role"}, "approved_at": "2026-05-11T00:00:00Z", "rationale": "Synthetic fixture demonstrates evidence-backed promotion."},
+  "ledger_entry": {"event_id": "promotion-release-delta-demo-event", "event_type": "promotion_recorded", "created_at": "2026-05-11T00:00:00Z"}
+}

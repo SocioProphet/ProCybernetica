@@ -17,7 +17,8 @@ It is a sibling to `SocioProphet/superconscious`.
 
 ```text
 doctrine_complete: Tier 0 + Tier 1 doctrine spine
-schema_ci_complete: false
+tier1_schema_ci_branch: governance-fabric-tier1-schema-ci
+schema_ci_complete: pending PR/CI confirmation
 runtime_executed: false
 production_governance_runtime: false
 ```
@@ -54,58 +55,70 @@ RESEARCH_RUNWAY_AI_QUANTUM.md
 - Tier 4 is explicitly research runway, not MVP surface.
 - Privacy-preserving evidence is a Tier 1.5 bridge between retention and minimization.
 
-## Pending Tier 1 schema lane
+## Tier 1 schema CI branch
 
-Next executable work:
+The branch `governance-fabric-tier1-schema-ci` implements the first executable Governance Fabric schema lane.
 
-```text
-schemas/governance-fabric/*.v1.json
-tests/fixtures/governance-fabric/*.synthetic.json
-make governance-fabric-ci
-```
-
-Initial schema set:
+Schema set:
 
 ```text
-authority_chain.v1.json
-agent_action_trace.v1.json
-tool_permission_scope.v1.json
-monitor_alert.v1.json
-safe_completion_decision.v1.json
-off_history_evidence.v1.json
-evidence_receipt.v1.json
-promotion_decision.v1.json
-cybernetic_safety_case.v1.json
-```
-
-Worked-example fixtures:
-
-```text
-allowed_action.synthetic.json
-blocked_action.synthetic.json
-transformed_safe_completion.synthetic.json
-release_delta_promotion.synthetic.json
-safety_case.synthetic.json
-invalid_promotion_by_prose.synthetic.json
-```
-
-Composition schema pending:
-
-```text
+schemas/governance-fabric/authority_chain.v1.json
+schemas/governance-fabric/agent_action_trace.v1.json
+schemas/governance-fabric/tool_permission_scope.v1.json
+schemas/governance-fabric/monitor_alert.v1.json
+schemas/governance-fabric/safe_completion_decision.v1.json
+schemas/governance-fabric/off_history_evidence.v1.json
+schemas/governance-fabric/evidence_receipt.v1.json
+schemas/governance-fabric/promotion_decision.v1.json
+schemas/governance-fabric/cybernetic_safety_case.v1.json
 schemas/composition/program-certificate.v1.json
 ```
 
+Valid fixture set:
+
+```text
+tests/fixtures/governance-fabric/authority_chain.synthetic.json
+tests/fixtures/governance-fabric/tool_permission_scope.synthetic.json
+tests/fixtures/governance-fabric/evidence_receipt.synthetic.json
+tests/fixtures/governance-fabric/off_history_evidence.synthetic.json
+tests/fixtures/governance-fabric/monitor_alert.synthetic.json
+tests/fixtures/governance-fabric/allowed_action.synthetic.json
+tests/fixtures/governance-fabric/blocked_action.synthetic.json
+tests/fixtures/governance-fabric/transformed_safe_completion.synthetic.json
+tests/fixtures/governance-fabric/release_delta_promotion.synthetic.json
+tests/fixtures/governance-fabric/safety_case.synthetic.json
+tests/fixtures/governance-fabric/program-certificate.synthetic.json
+```
+
+Negative constitutional fixture set:
+
+```text
+tests/fixtures/governance-fabric/invalid_promotion_by_prose.synthetic.json
+tests/fixtures/governance-fabric/invalid_action_missing_authority.synthetic.json
+tests/fixtures/governance-fabric/negative_safety_case_empty_non_claims.synthetic.json
+```
+
+The negative fixtures enforce:
+
+1. no promotion by prose;
+2. no hidden authority lane;
+3. non-claims are load-bearing.
+
 ## CI status
 
-No governance-fabric CI exists yet.
-
-The next CI target should be:
+Tier 1 adds:
 
 ```bash
 make governance-fabric-ci
 ```
 
-This should validate schemas and deterministic synthetic fixtures without claiming runtime execution.
+This runs:
+
+```bash
+python -m pytest -q tests/test_governance_fabric_tier1.py
+```
+
+The repository's normal GitHub Actions CI runs `pytest -q`, so Tier 1 validation is part of the default PR path.
 
 ## Runtime status
 
@@ -115,9 +128,9 @@ No cryptographic receipt system, monitor network, PCP-style replay prover, SNARK
 
 ## Funding / execution boundary
 
-Current artifacts are doctrine-only. They make the program structurally inspectable but do not execute governance.
+Current artifacts are doctrine and deterministic schema fixtures. They make the program structurally inspectable but do not execute governance.
 
-The first fundable implementation milestone is Tier 1 schema CI plus deterministic fixtures.
+The first fundable implementation milestone after schema CI is runtime integration of action traces, evidence receipts, promotion decisions, and safety cases.
 
 ## Non-claims
 
@@ -134,6 +147,6 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Add Tier 1 governance-fabric schemas, synthetic fixtures, and `make governance-fabric-ci`.
+Merge the Tier 1 schema CI branch after CI review.
 
-Do not add Tier 2+ formal machinery until Tier 1 schema CI is green.
+Do not add Tier 2+ formal machinery until Tier 1 schema CI is green on GitHub Actions.

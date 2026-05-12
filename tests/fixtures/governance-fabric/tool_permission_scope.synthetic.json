@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "tool_permission_scope",
+  "tool_permission_scope_id": "tool-scope-github-contents-demo",
+  "created_at": "2026-05-11T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "tool_name": "github-contents-api",
+  "permitted_capabilities": ["fetch_file", "create_file_on_branch", "open_pull_request"],
+  "excluded_capabilities": ["delete_repository", "force_update_main"],
+  "irreversibility": {"may_perform_irreversible_actions": false, "approval_required": true},
+  "privacy_constraints": {"privacy_class": "P0_public", "evidence_mode": "hashed", "minimization_rationale": "Synthetic fixture uses content hashes and public paths only."},
+  "ledger_entry": {"event_id": "tool-scope-github-contents-demo-event", "event_type": "fragment_sealed", "created_at": "2026-05-11T00:00:00Z"}
+}

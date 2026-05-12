@@ -1,0 +1,17 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "agent_action_trace",
+  "action_trace_id": "action-blocked-demo",
+  "created_at": "2026-05-11T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "actor": {"actor_id": "agent:demo-governance-agent", "actor_kind": "agent"},
+  "action": {"action_type": "out_of_scope_state_change", "description": "Attempted a state change outside the declared capability scope.", "irreversibility_class": "irreversible"},
+  "authority_chain_ref": {"authority_chain_id": "auth-chain-tier1-demo", "authority_chain_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+  "tool_permission_scope_ref": {"tool_permission_scope_id": "tool-scope-github-contents-demo", "tool_permission_scope_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+  "inputs_ref": "synthetic-input",
+  "outputs_ref": "synthetic-blocked-output",
+  "decision": "blocked",
+  "evidence_refs": [{"evidence_receipt_id": "evidence-tier1-demo", "evidence_receipt_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],
+  "off_history_refs": [{"off_history_id": "off-history-blocked-action-demo", "off_history_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}],
+  "ledger_entry": {"event_id": "action-blocked-demo-event", "event_type": "trace_recorded", "created_at": "2026-05-11T00:00:00Z"}
+}

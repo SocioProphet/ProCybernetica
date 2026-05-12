@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/governance-fabric/off_history_evidence.v1.json",
+  "title": "Tier 1 Off-History Evidence",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "certificate_kind", "off_history_id", "created_at", "execution_status", "branch_kind", "blocked_or_rejected_action", "reason", "authority_chain_ref", "evidence_refs", "privacy", "ledger_entry"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "certificate_kind": {"const": "off_history_evidence"},
+    "off_history_id": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "execution_status": {"enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]},
+    "branch_kind": {"enum": ["blocked_action", "rejected_candidate", "failed_promotion", "rollback", "not_executed_counterfactual", "superseded_certificate"]},
+    "blocked_or_rejected_action": {"type": "string"},
+    "reason": {"type": "string"},
+    "authority_chain_ref": {"$ref": "#/$defs/authority_ref"},
+    "evidence_refs": {"type": "array", "items": {"$ref": "#/$defs/evidence_ref"}},
+    "privacy": {"$ref": "#/$defs/privacy"},
+    "ledger_entry": {"$ref": "#/$defs/ledger_entry"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "authority_ref": {"type": "object", "additionalProperties": false, "required": ["authority_chain_id", "authority_chain_sha256"], "properties": {"authority_chain_id": {"type": "string"}, "authority_chain_sha256": {"$ref": "#/$defs/sha256"}}},
+    "evidence_ref": {"type": "object", "additionalProperties": false, "required": ["evidence_receipt_id", "evidence_receipt_sha256"], "properties": {"evidence_receipt_id": {"type": "string"}, "evidence_receipt_sha256": {"$ref": "#/$defs/sha256"}}},
+    "privacy": {"type": "object", "additionalProperties": false, "required": ["privacy_class", "evidence_mode", "minimization_rationale"], "properties": {"privacy_class": {"enum": ["P0_public", "P1_internal", "P2_sensitive", "P3_sealed", "P4_non_retainable_raw"]}, "evidence_mode": {"enum": ["raw", "redacted", "hashed", "committed", "aggregated", "sealed_witness", "zero_knowledge"]}, "minimization_rationale": {"type": "string"}}},
+    "ledger_entry": {"type": "object", "additionalProperties": false, "required": ["event_id", "event_type", "created_at"], "properties": {"event_id": {"type": "string"}, "event_type": {"type": "string"}, "created_at": {"type": "string", "format": "date-time"}}}
+  }
+}

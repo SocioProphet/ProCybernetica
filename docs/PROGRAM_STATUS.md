@@ -2,7 +2,7 @@
 
 ## Status date
 
-2026-05-11
+2026-05-12
 
 ## Program role
 
@@ -17,8 +17,9 @@ It is a sibling to `SocioProphet/superconscious`.
 
 ```text
 doctrine_complete: Tier 0 + Tier 1 doctrine spine
-tier1_schema_ci_branch: governance-fabric-tier1-schema-ci
-schema_ci_complete: pending PR/CI confirmation
+tier1_schema_ci_merged: PR #31, merge commit 8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba
+pr_head_ci: green
+post_merge_main_ci: unobserved_through_connector
 runtime_executed: false
 production_governance_runtime: false
 ```
@@ -55,9 +56,9 @@ RESEARCH_RUNWAY_AI_QUANTUM.md
 - Tier 4 is explicitly research runway, not MVP surface.
 - Privacy-preserving evidence is a Tier 1.5 bridge between retention and minimization.
 
-## Tier 1 schema CI branch
+## Tier 1 schema CI lane
 
-The branch `governance-fabric-tier1-schema-ci` implements the first executable Governance Fabric schema lane.
+PR #31 merged the first executable Governance Fabric schema lane into `main`.
 
 Schema set:
 
@@ -120,6 +121,17 @@ python -m pytest -q tests/test_governance_fabric_tier1.py
 
 The repository's normal GitHub Actions CI runs `pytest -q`, so Tier 1 validation is part of the default PR path.
 
+Observed CI state:
+
+```text
+PR #31 head CI: green
+PR #31 merged: yes
+main merge commit: 8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba
+post-merge main CI: unobserved through connector
+```
+
+The workflow file declares both `pull_request` and `push` on `main`. The connector did not return a workflow run or combined status for the merge commit. This is recorded as an observation gap, not as a CI failure.
+
 ## Runtime status
 
 No governance runtime is claimed.
@@ -147,6 +159,6 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Merge the Tier 1 schema CI branch after CI review.
+Manually verify the post-merge GitHub Actions run for merge commit `8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba` in the Actions UI, or trigger a fresh observable run if no post-merge run exists.
 
-Do not add Tier 2+ formal machinery until Tier 1 schema CI is green on GitHub Actions.
+Do not add Tier 2+ formal machinery until the post-merge CI observation gap is closed.

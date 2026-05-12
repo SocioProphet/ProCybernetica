@@ -1,0 +1,74 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "composition_certificate",
+  "composition_certificate_id": "composition-cert-tier2-demo",
+  "created_at": "2026-05-12T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "composition_order": 1,
+  "composition_kind": "flat_agent_composition",
+  "constituent_artifacts": [
+    {
+      "artifact_kind": "agent_action_trace",
+      "artifact_id": "action-allowed-demo",
+      "artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+      "schema_version": "1.0.0",
+      "execution_status": "synthetic_fixture",
+      "authority_chain_id": "auth-chain-tier1-demo-a",
+      "non_claims": ["Synthetic trace only."]
+    },
+    {
+      "artifact_kind": "safe_completion_decision",
+      "artifact_id": "safe-completion-demo",
+      "artifact_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+      "schema_version": "1.0.0",
+      "execution_status": "synthetic_fixture",
+      "authority_chain_id": "auth-chain-tier1-demo-b",
+      "non_claims": ["Synthetic completion decision only."]
+    }
+  ],
+  "constituent_authority_chain_refs": [
+    {
+      "authority_chain_id": "auth-chain-tier1-demo-a",
+      "authority_chain_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "authority_chain_id": "auth-chain-tier1-demo-b",
+      "authority_chain_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ],
+  "composition_authority_chain_ref": {
+    "authority_chain_id": "auth-chain-tier2-composition-demo",
+    "authority_chain_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "composition_rule": {
+    "rule_id": "flat-composition-rule-demo",
+    "rule_version": "tier2-composition-rule.v1",
+    "allowed_authority_scope": ["record_schema_artifact", "transform_completion"],
+    "status_monotonicity": "no_synthetic_or_doctrine_to_runtime_upgrade",
+    "recursive_composition_allowed": false
+  },
+  "composed_authority_scope": ["record_schema_artifact", "transform_completion"],
+  "propagated_non_claims": [
+    "Synthetic trace only.",
+    "Synthetic completion decision only.",
+    "Composition is a synthetic fixture only."
+  ],
+  "resolved_non_claims": [],
+  "off_history_refs": [
+    {
+      "off_history_id": "off-history-blocked-action-demo",
+      "off_history_sha256": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"
+    }
+  ],
+  "evidence_receipt_refs": [
+    {
+      "evidence_receipt_id": "evidence-tier1-demo",
+      "evidence_receipt_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"
+    }
+  ],
+  "ledger_entry": {
+    "event_id": "composition-cert-tier2-demo-event",
+    "event_type": "composition_certificate_recorded",
+    "created_at": "2026-05-12T00:00:00Z"
+  }
+}

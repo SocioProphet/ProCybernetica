@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "composition_certificate",
+  "composition_certificate_id": "negative-composition-unsupported-authority-scope",
+  "created_at": "2026-05-12T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "composition_order": 1,
+  "composition_kind": "flat_agent_composition",
+  "constituent_artifacts": [
+    {"artifact_kind": "agent_action_trace", "artifact_id": "action-allowed-demo", "artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111", "schema_version": "1.0.0", "execution_status": "synthetic_fixture", "authority_chain_id": "auth-chain-tier1-demo-a", "non_claims": ["Synthetic trace only."]},
+    {"artifact_kind": "safe_completion_decision", "artifact_id": "safe-completion-demo", "artifact_sha256": "2222222222222222222222222222222222222222222222222222222222222222", "schema_version": "1.0.0", "execution_status": "synthetic_fixture", "authority_chain_id": "auth-chain-tier1-demo-b", "non_claims": ["Synthetic completion decision only."]}
+  ],
+  "constituent_authority_chain_refs": [
+    {"authority_chain_id": "auth-chain-tier1-demo-a", "authority_chain_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+    {"authority_chain_id": "auth-chain-tier1-demo-b", "authority_chain_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"}
+  ],
+  "composition_authority_chain_ref": {"authority_chain_id": "auth-chain-tier2-composition-demo", "authority_chain_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+  "composition_rule": {"rule_id": "flat-composition-rule-demo", "rule_version": "tier2-composition-rule.v1", "allowed_authority_scope": ["record_schema_artifact", "transform_completion", "publish_public_claim"], "status_monotonicity": "no_synthetic_or_doctrine_to_runtime_upgrade", "recursive_composition_allowed": false},
+  "composed_authority_scope": ["record_schema_artifact", "transform_completion", "publish_public_claim"],
+  "authority_scope_analysis": {"comparison_mode": "declared_scope_lattice_v1", "constituent_scope_bindings": [{"constituent_artifact_id": "action-allowed-demo", "declared_scopes": ["record_schema_artifact"]}, {"constituent_artifact_id": "safe-completion-demo", "declared_scopes": ["transform_completion"]}], "scope_lattice": [], "semantic_comparison_claim": {"composed_scope_must_be_supported_by_constituents": true}},
+  "receipt_integration": {"integration_mode": "hash_bound_reference", "constituent_receipt_bindings": [{"constituent_artifact_id": "action-allowed-demo", "constituent_artifact_sha256": "1111111111111111111111111111111111111111111111111111111111111111", "receipt_refs": [{"receipt_kind": "evidence_receipt", "receipt_id": "evidence-action-allowed-demo", "receipt_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee", "schema_version": "1.0.0"}]}, {"constituent_artifact_id": "safe-completion-demo", "constituent_artifact_sha256": "2222222222222222222222222222222222222222222222222222222222222222", "receipt_refs": [{"receipt_kind": "evidence_receipt", "receipt_id": "evidence-safe-completion-demo", "receipt_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff", "schema_version": "1.0.0"}]}], "composition_receipt_ref": {"evidence_receipt_id": "evidence-composition-cert-tier2-demo", "evidence_receipt_sha256": "9999999999999999999999999999999999999999999999999999999999999999"}},
+  "propagated_non_claims": ["Synthetic trace only.", "Synthetic completion decision only."],
+  "resolved_non_claims": [],
+  "off_history_refs": [],
+  "evidence_receipt_refs": [{"evidence_receipt_id": "evidence-action-allowed-demo", "evidence_receipt_sha256": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}, {"evidence_receipt_id": "evidence-safe-completion-demo", "evidence_receipt_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff"}, {"evidence_receipt_id": "evidence-composition-cert-tier2-demo", "evidence_receipt_sha256": "9999999999999999999999999999999999999999999999999999999999999999"}],
+  "ledger_entry": {"event_id": "negative-composition-unsupported-authority-scope-event", "event_type": "composition_certificate_recorded", "created_at": "2026-05-12T00:00:00Z"}
+}

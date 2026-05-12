@@ -4,24 +4,45 @@
 **Track:** ProCybernetica frontier governance doctrine  
 **Branch:** `cybernetic-governance-doctrine-v0-1`
 
-This index captures the first doctrine bundle for the Interpretability-Backed Cybernetic Governance Fabric. The bundle codifies the Tier 0 constitutional invariants, Tier 1 executable governance obligations, and Tier 2–4 research runway needed to make ProCybernetica a world-frontier cybernetic governance standard for agentic AI systems.
+This index captures the cybernetic-governance doctrine bundle and reconciles it against the estate-level hybrid control-plane framing from PR #49. The corrected posture is not a new centralized control plane. The major planes already exist; the missing spine is a normalized authority-dependency graph binding trust surfaces, control effects, evidence, cancellation, quarantine, recovery, and proof packaging.
 
 ## Canonical reading order
 
 1. [`../constitutional/CONSTITUTIONAL_INVARIANTS.md`](../constitutional/CONSTITUTIONAL_INVARIANTS.md) — non-negotiable governance constraints.
-2. [`../foundations/CYBERNETIC_GOVERNANCE_FABRIC.md`](../foundations/CYBERNETIC_GOVERNANCE_FABRIC.md) — full doctrine architecture and plane decomposition.
-3. [`../security/THREAT_MODEL.md`](../security/THREAT_MODEL.md) — adversaries, assets, trust boundaries, attack surfaces, and controls.
-4. [`../constitutional/SEPARATION_OF_POWERS.md`](../constitutional/SEPARATION_OF_POWERS.md) — role separation and authority-concentration controls.
-5. [`../release/BIRKHOFF_RELEASE_DELTA.md`](../release/BIRKHOFF_RELEASE_DELTA.md) — release-delta decomposition into counter-terms and renormalized contributions.
-6. [`../monitor/MONITOR_NETWORK_AS_QEC.md`](../monitor/MONITOR_NETWORK_AS_QEC.md) — monitor networks as error-correcting systems.
-7. [`../assurance/PCP_REPLAY_AUDIT.md`](../assurance/PCP_REPLAY_AUDIT.md) — probabilistically checkable replay and audit artifacts.
-8. [`GAP_AUDIT_AND_READINESS_MATRIX.md`](GAP_AUDIT_AND_READINESS_MATRIX.md) — post-capture hardening matrix that defines lifecycle states, enums, schema-to-invariant traceability, non-claim structure, disclosure profiles, readiness levels, MVP trace requirements, CI checks, and cross-repo dependency boundaries.
-9. [`../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md`](../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md) — reviewer-facing proof packet template for buyer, analyst, procurement, architecture, and gate reviews.
-10. [`../integrations/AGENTPLANE_CYBERNETIC_GOVERNANCE_BINDING.md`](../integrations/AGENTPLANE_CYBERNETIC_GOVERNANCE_BINDING.md) — runtime-plane contract for AgentPlane run capsules, tool grants, action dispatch, subagent delegation, off-history, operator readouts, and proof-pack exhibits.
+2. [`../foundations/CYBERNETIC_GOVERNANCE_FABRIC.md`](../foundations/CYBERNETIC_GOVERNANCE_FABRIC.md) — full doctrine architecture and plane decomposition, now treated as conformance language rather than centralized ownership.
+3. [`PRIOR_SYNTHESIS_RECONCILIATION.md`](PRIOR_SYNTHESIS_RECONCILIATION.md) — explicit translation from prior layer/tier framing to the corrected estate authority-dependency framing.
+4. [`../security/THREAT_MODEL.md`](../security/THREAT_MODEL.md) — adversaries, assets, trust boundaries, attack surfaces, and controls.
+5. [`../constitutional/SEPARATION_OF_POWERS.md`](../constitutional/SEPARATION_OF_POWERS.md) — role separation and authority-concentration controls.
+6. [`GAP_AUDIT_AND_READINESS_MATRIX.md`](GAP_AUDIT_AND_READINESS_MATRIX.md) — post-capture hardening matrix that defines lifecycle states, enums, schema-to-invariant traceability, non-claim structure, disclosure profiles, readiness levels, MVP trace requirements, CI checks, and cross-repo dependency boundaries.
+7. [`../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md`](../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md) — reviewer-facing proof packet template for buyer, analyst, procurement, architecture, and gate reviews.
+8. [`../integrations/AGENTPLANE_CYBERNETIC_GOVERNANCE_BINDING.md`](../integrations/AGENTPLANE_CYBERNETIC_GOVERNANCE_BINDING.md) — runtime-plane contract for AgentPlane run capsules, tool grants, action dispatch, subagent delegation, off-history, operator readouts, and proof-pack exhibits.
+9. [`../integrations/AGENTIC_OPS_CMDP_UCO_PERSONA_POLICY.md`](../integrations/AGENTIC_OPS_CMDP_UCO_PERSONA_POLICY.md) — Agentic Ops CMDP/UCO/persona-policy specialization for budgeted stochastic agent workloads.
+10. [`../integrations/ZACHMAN_AU_ENVIRONMENT_SEVEN_MODEL_ALIGNMENT.md`](../integrations/ZACHMAN_AU_ENVIRONMENT_SEVEN_MODEL_ALIGNMENT.md) — enterprise ontology, AgentUnit, Environment/Aperture, ORG/FIBO, Seven-Model, and SOA-modernization alignment.
 11. [`../foundations/QUANTUM_CYBERNETIC_DEPENDENCE_CALCULUS.md`](../foundations/QUANTUM_CYBERNETIC_DEPENDENCE_CALCULUS.md) — dependency-control calculus aligning quantum unitary-dependence theory with governed agent/runtime systems.
-12. [`../capability-tiers/quantum-dependency-substrate-v0.1.md`](../capability-tiers/quantum-dependency-substrate-v0.1.md) — opt-in capability-tier doctrine for dependency-control calculus.
-13. [`../bridges/BRIDGE_SCHEMAS_V1_EXECUTION_PLAN.md`](../bridges/BRIDGE_SCHEMAS_V1_EXECUTION_PLAN.md) — bridge-schema tranche for OpsHistory→Pneumachinalis, Masonmark→certificate, and certificate→Atlas composition.
-14. [`../falsification/unified-falsification-v1.0.md`](../falsification/unified-falsification-v1.0.md) — unified falsification document with twenty observables, three meta-observables, severity classifications, fixture coverage, and quarterly review process.
+12. [`../release/BIRKHOFF_RELEASE_DELTA.md`](../release/BIRKHOFF_RELEASE_DELTA.md) — release-delta decomposition into counter-terms and renormalized contributions.
+13. [`../monitor/MONITOR_NETWORK_AS_QEC.md`](../monitor/MONITOR_NETWORK_AS_QEC.md) — monitor networks as error-correcting systems.
+14. [`../assurance/PCP_REPLAY_AUDIT.md`](../assurance/PCP_REPLAY_AUDIT.md) — probabilistically checkable replay and audit artifacts.
+
+## Corrected estate framing
+
+PR #49 corrects the framing from greenfield architecture to estate reconciliation.
+
+| Plane | Owner repo | Role |
+|---|---|---|
+| Visible cognition/control-loop and trust surface seed | `SocioProphet/superconscious` | Declares trust surfaces and visible cognition/control loop boundaries |
+| Estate authority-dependency graph | `SocioProphet/sociosphere` | Owns topology, dependency direction, authority-dependency graph, and operator graph state |
+| Cancellation / break-glass / fail-closed law | `SocioProphet/policy-fabric` | Owns admission, inheritance, cancellation, override, revocation, and fail-closed policy semantics |
+| Evidence / replay / execution | `SocioProphet/agentplane` | Owns bounded execution, run evidence, replay, placement, and work-order lifecycle |
+| Local state-integrity / repair | `SourceOS-Linux/sourceos-syncd` | Owns local-first state integrity, degraded posture, diagnosis, repair, and host/runtime enforcement |
+| Doctrine and conformance vocabulary | `SocioProphet/ProCybernetica` | Owns reconciliation doctrine, conformance language, proof-pack linkage, and public assurance posture |
+
+The minimal shared vocabulary should be:
+
+- `AuthorityDependency`
+- `ControlEffect`
+- `CancellationBinding`
+
+Prior dependency-control schemas are useful as analytical views over this spine, not as a parallel governance universe.
 
 ## Captured doctrine commitments
 
@@ -39,51 +60,46 @@ The bundle captures these commitments as doctrine, not loose notes:
 - authority concentration is measurable and gate-relevant;
 - public-safe assurance is publishable by default, with disciplined redaction.
 
-## Unified falsification doctrine
+## Agentic Ops specialization
 
-The falsification document binds the architecture to empirical revision triggers. It specifies twenty observables across layer boundaries, reasoning operations, reputation substrate, operational events, cross-spec composition, and the capability tier, plus three meta-observables for the falsification process itself.
+Agentic Ops is a stochastic workload specialization of the UCO/persona canvas. It adds prompt-token decomposition, completion tokens, cache-read tokens, tool-call units, verification tokens, replay/checkpoint storage, and semantic-memory costs.
 
-The companion fixture directory `tests/fixtures/falsification/` contains ten synthetic trigger fixtures for single-snapshot testability. Remaining observables require continuous monitoring or periodic audits.
+The control lens is a constrained Markov decision process. Production behavior may remain deterministic: persona policy plus workload signature resolves to a substrategy bundle, admission decision, degradation ladder, and telemetry requirements.
 
-## Capability tier doctrine
+Implemented artifacts in this branch:
 
-The quantum dependency substrate is an opt-in capability tier, not a constitutional addition. It is invoked by reference through `schemas/capability-tier/invocation-contract.v1.json`. Absence of the invocation contract means base-architecture-only operation.
+- `schemas/cybernetic-governance/agentic_persona_policy.v1.yaml`
+- `tools/cybernetic_governance/agentic_persona_substrategy_chooser.py`
 
-The capability tier serves glass-break governance, multi-jurisdiction trust-domain composition, planetary-scale coordination, and counterfactual/contradiction adjudication. Q1–Q4 remain explicit design questions for v0.2 resolution.
+## Enterprise ontology and environment alignment
 
-## Bridge-schema tranche
+The Zachman-derived AgentUnit and Environment/Aperture alignment supplies the enterprise ontology over which proof packs, AgentPlane run capsules, SourceOS evidence, and SocioSphere graph nodes can be typed.
 
-The bridge execution plan composes the base architecture:
+Core primitives:
 
-- OpsHistory operational events map into Pneumachinalis microbeat contribution events.
-- Masonmark proofpacks specialize into M-series certificate fragments.
-- Certificate verdicts map into Atlas promotion decisions through four-valued fail-closed verdict resolution.
+- Artifact;
+- Capability;
+- Locale;
+- Principal;
+- Event;
+- Motive;
+- Environment;
+- Aperture;
+- RegimeModel.
 
-All bridge schemas keep `capability_tier_invocation` optional and additive.
-
-## Dependency-control calculus
-
-The quantum cybernetic dependence calculus adds the formal bridge from control propagation to governance: what can affect what, through which dependency path, under which observation partition, with which cancellation behavior, and with what feedback closure.
-
-This calculus aligns AgentPlane, PolicyFabric, TriTRPC, Ontogenesis, and SourceOS around dependency reachability, observability, shared ancestry, cancellation, off-history, and adaptive feedback.
-
-## AgentPlane runtime binding
-
-AgentPlane is the runtime plane for governed agency. It should consume ProCybernetica contracts and emit run capsules, tool grants, action dispatch records, subagent delegation records, off-history evidence, operator readouts, and proof-pack exhibits.
-
-AgentPlane does not own ProCybernetica doctrine. It consumes the doctrine as runtime law and hands events to Prophet Platform evidence/monitor APIs and SocioSphere registry/promotion orchestration.
+This is doctrine and schema runway, not a new runtime owner.
 
 ## Reviewer-facing proof packaging
 
 The proof pack template is the reviewer-facing packaging layer. It does not replace lower-level evidence receipts, action traces, release-delta reports, cybernetic safety cases, or non-claim objects. It organizes those artifacts for buyer, analyst, procurement, architecture, or gate review.
 
-The template adds product efficacy, governance/control, customer delivery/adoption, market proof, artifact manifest, redaction, upstream-aligned evidence exhibits, claim discipline, and final disposition sections.
+Proof packs should eventually cite AgentPlane run capsules, ProCybernetica safety cases, PolicyFabric decisions, SocioSphere authority-dependency graph entries, SourceOS state-integrity records, event-spine evidence, PRM observations, and ORG/FIBO identity records.
 
 ## Post-capture hardening
 
-The doctrine bundle is currently a captured v0.1 draft, not an executable v0 standard.
+The doctrine bundle is a captured v0.1 draft, not executable v0.
 
-The hardening matrix makes this boundary explicit. The work may not be called executable v0 until Tier 1 schemas exist, canonical enums exist, schemas map to invariants, fixtures exist, validators pass and fail correctly, MVP trace examples exist, evidence disclosure profiles exist, non-claim objects exist, readiness state is updated, and integration boundaries are recorded.
+The work may not be called executable v0 until Tier 1 schemas exist, canonical enums exist, schemas map to invariants, fixtures exist, validators pass and fail correctly, MVP trace examples exist, evidence disclosure profiles exist, non-claim objects exist, readiness state is updated, and integration boundaries are recorded.
 
 ## Tier map
 
@@ -91,11 +107,21 @@ The hardening matrix makes this boundary explicit. The work may not be called ex
 
 Doctrine that no future schema or runtime service may violate.
 
-### Tier 1 — Canonical schemas and validators
+### Tier 1 — Current implemented schema base
 
-Immediate implementation target:
+Implemented in this branch:
+
+- `enums.v1.json`
+- `artifact_lifecycle_state.v1.json`
+- `lifecycle_transition.v1.json`
+- `agentic_persona_policy.v1.yaml`
+
+### Tier 1 — Required next schemas
+
+Core governance:
 
 - `authority_chain.v1.json`
+- `instruction_conflict_case.v1.json`
 - `agent_action_trace.v1.json`
 - `tool_permission_scope.v1.json`
 - `environment_delta.v1.json`
@@ -110,58 +136,72 @@ Immediate implementation target:
 - `incident_record.v1.json`
 - `privacy_evidence_classification.v1.json`
 - `authority_graph_snapshot.v1.json`
-- `artifact_lifecycle_state.v1.json`
-- `lifecycle_transition.v1.json`
-- `enums.v1.json`
 - `non_claim.v1.json`
 - `artifact_provenance.v1.json`
 - `validator_run_receipt.v1.json`
-- `proof_pack_manifest.v1.json`
-- `proof_pack_disposition.v1.json`
+
+AgentPlane and Agentic Ops:
+
 - `agentplane_run_capsule.v1.json`
 - `agentplane_tool_grant.v1.json`
 - `agentplane_action_dispatch.v1.json`
 - `agentplane_subagent_delegation.v1.json`
-- `dependency_control_graph.v1.json`
-- `control_reachability_record.v1.json`
-- `observability_partition.v1.json`
-- `shared_dependency_ancestry.v1.json`
-- `dependency_cancellation_record.v1.json`
-- `adaptive_feedback_loop.v1.json`
-- `invocation-contract.v1.json`
-- `ops-history-to-pneumachinalis.v1.json`
-- `masonmark-to-certificate.v1.json`
-- `certificate-to-atlas.v1.json`
+- `agentic_uco_step_cost.v1.json`
+- `agentic_task_budget.v1.json`
+- `agentic_cmdp_trace.v1.json`
+- `agentic_degradation_event.v1.json`
+- `loop_detector_signal.v1.json`
+- `prefix_cache_prompt_plan.v1.json`
+- `agentic_post_hoc_eval.v1.json`
 
-### Tier 2 — Formal foundations
+Proof pack and enterprise ontology:
 
-Hypergraph governance, constructor-theoretic evidence, causal monitoring, Birkhoff release delta, authority-concentration metrics, cryptographic evidence receipts, dependency-control calculus, supply-chain provenance, bridge schema cross-field validation, falsification coverage validation, and formal-methods models.
+- `proof_pack_manifest.v1.json`
+- `proof_pack_disposition.v1.json`
+- `agent_unit.v1.json`
+- `aperture.v1.json`
+- `regime_model.v1.json`
+- `enterprise_event_envelope.v1.json`
+- `organization_identity_profile.v1.json`
+- `service_capability_profile.v1.json`
 
-### Tier 3 — Mathematical extensions
+Estate reconciliation:
 
-Categorical authority semantics, tensor-network safety cases, statistical-mechanical spectral evidence, Fisher-geometric release deltas, QEC-style monitor networks, PCP replay audit, noise-immune authority coding, and transport/ontology dependency-channel analysis.
+- `AuthorityDependency` schema and registry should land in SocioSphere, not ProCybernetica.
+- `ControlEffect` vocabulary should be shared by SocioSphere, PolicyFabric, AgentPlane, and SourceOS.
+- `CancellationBinding` should land in PolicyFabric.
+- AgentPlane should emit authority-dependency evidence.
+- SourceOS should bind authority dependencies to local state integrity and repair posture.
 
-### Tier 4 — Quantum and frontier extensions
+## Explicitly out of scope for this PR
 
-Quantum constructor governance, counterfactual-quantum off-history, variational policy optimization, quantum-assisted evals, holographic reconstruction bounds, Page-curve fine-tuning audit, higher-categorical governance, and quantum learning dependency analysis.
+The following are important but should land in separate PRs or repos:
+
+- M-series transition / Cairnmark-to-Stele transition doctrine;
+- unified falsification observables and fixtures;
+- bridge schema tranche for OpsHistory, Pneumachinalis, Masonmark, certificate, and Atlas;
+- capability-tier invocation contract as previously framed;
+- runtime implementation in AgentPlane, PolicyFabric, SocioSphere, SourceOS, or Superconscious.
 
 ## Implementation next steps
 
-1. Add canonical enums and lifecycle schemas.
-2. Add Tier 1 schema bundle under `schemas/cybernetic-governance/` with `implements_invariants` traceability.
-3. Add bridge schemas and cross-field validators for OpsHistory→Pneumachinalis, Masonmark→certificate, and certificate→Atlas.
-4. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, invalid promotion-by-prose, AgentPlane run capsule/tool grant/action dispatch paths, bridge positive/negative cases, dependency-control reachability/observability/cancellation paths, and falsification observable triggers.
-5. Add validators under `tools/` and CI entrypoints, including falsification coverage validation.
-6. Add MVP trace fixtures for allowed, blocked, and transformed actions.
-7. Add proof-pack manifest and disposition schemas after evidence receipt and non-claim schemas stabilize.
-8. Add AgentPlane runtime binding schemas after authority, action trace, tool permission, off-history, and evidence receipt schemas stabilize.
-9. Add dependency-control graph schemas after core run/action/evidence schemas stabilize.
-10. Implement falsification CI for markdown structure, fixture validation, CI coverage, and layer coverage.
-11. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry after schema names stabilize.
-12. Keep `superconscious` integration as a dependency issue only after its construction stabilizes and a concrete contract is required.
+1. Finish branch hygiene so this PR contains only cybernetic-governance and reconciliation artifacts.
+2. Merge or reconcile PR #49 first as the corrected estate framing.
+3. Treat this branch as the prior synthesis capture/reconciliation branch.
+4. Implement `non_claim`, `privacy_evidence_classification`, `artifact_provenance`, and `validator_run_receipt` next.
+5. Implement core authority/action/evidence schemas.
+6. Implement Agentic Ops fixtures for persona policy and substrategy chooser.
+7. Open SocioSphere authority-dependency graph issue after PR #49 lands.
+8. Open PolicyFabric cancellation binding issue after graph vocabulary stabilizes.
+9. Open AgentPlane authority-dependency evidence issue after core authority references stabilize.
+10. Keep Superconscious untouched until concrete trust-surface dependency contracts are ready.
 
 ## Non-claims
 
-This bundle does not claim that all formal foundations are implemented. It captures the doctrine and research runway while preserving a week-one executable MVP: authority chain, action trace, permission scope, monitor alert, safe-completion decision, off-history evidence, evidence receipt, promotion decision, and safety case.
+This bundle does not claim that all formal foundations are implemented.
 
-This bundle also does not claim executable v0 status. The hardening matrix defines the required gap closure before that label is valid.
+This bundle does not claim executable v0 status.
+
+This bundle does not centralize runtime ownership in ProCybernetica.
+
+This bundle captures doctrine, schema runway, and reconciliation logic so the estate can converge on a shared authority-dependency spine without erasing existing repo ownership.

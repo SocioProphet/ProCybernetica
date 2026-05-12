@@ -1,0 +1,66 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.dev/schemas/_common/v1-3-additive-fields.json",
+  "title": "v1.3 Additive Fields for M-Series Certificates",
+  "description": "Constitutional fields added to every M-series schema in the v1.3 bump. These fields support authority stratification, Cairnmark-to-Stele promotion discipline, reasoning trace separation, and cadence classification.",
+  "type": "object",
+  "required": [
+    "authority_layer",
+    "promotion_state",
+    "cadence_classification"
+  ],
+  "properties": {
+    "authority_layer": {
+      "type": "string",
+      "enum": ["institutional_truth", "grounded_schema", "commonsense_prior"],
+      "description": "Constitutional invariant CI-3. Bounded above by the lowest authority_layer in upstream evidence per cross-field validation rule authority_layer_bounded_by_inputs. Migration default for v1.2 fixtures: grounded_schema."
+    },
+    "promotion_state": {
+      "type": "string",
+      "enum": ["candidate", "promoted_stele", "rejected", "superseded"],
+      "description": "Constitutional invariant CI-4. State machine specified in Cairnmark-to-Stele transition doctrine. Migration default for v1.2 fixtures is derived from execution_status."
+    },
+    "reasoning_trace_ref": {
+      "oneOf": [
+        {
+          "type": "object",
+          "required": ["proofpack_id", "proofpack_content_sha256", "proofpack_promotion_state"],
+          "properties": {
+            "proofpack_id": {"type": "string"},
+            "proofpack_content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "proofpack_promotion_state": {
+              "type": "string",
+              "enum": ["candidate", "promoted_stele", "rejected", "superseded"]
+            },
+            "adjudication_outcome": {
+              "type": "string",
+              "enum": ["admitted", "partial", "rejected", "undecided"]
+            },
+            "adjudication_authority_layer": {
+              "type": "string",
+              "enum": ["institutional_truth", "grounded_schema"],
+              "description": "Adjudication-Plane sign-off cannot occur at commonsense_prior layer."
+            },
+            "adjudication_timestamp": {"type": "string", "format": "date-time"}
+          },
+          "additionalProperties": false
+        },
+        {"type": "null"}
+      ],
+      "description": "Per Cairnmark-to-Stele transition doctrine. Required non-null when promotion_state is promoted_stele or rejected by cross-field rule. Optional when promotion_state is candidate or superseded. Migration default for v1.2 fixtures: null."
+    },
+    "cadence_classification": {
+      "type": "string",
+      "enum": ["microbeat", "mesobeat", "macrobeat"],
+      "description": "Constitutional invariant CI-2. Specifies temporal cadence. Migration default for M-series certificates: mesobeat unless a schema-specific override applies."
+    },
+    "stele_expires_at": {
+      "oneOf": [
+        {"type": "string", "format": "date-time"},
+        {"type": "null"}
+      ],
+      "description": "Optional expiration timestamp. Default null. When set, the Stele transitions to superseded at this timestamp with no successor specified, forcing re-adjudication for continued use."
+    }
+  },
+  "additionalProperties": true
+}

@@ -19,8 +19,11 @@ It is a sibling to `SocioProphet/superconscious`.
 doctrine_complete: Tier 0 + Tier 1 doctrine spine
 tier1_schema_ci_merged: PR #31, merge commit 8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba
 pr_head_ci: green
-post_merge_main_ci: unobserved_through_connector
-workflow_dispatch_available: true, commit 7e5dc07bcf7ecef8335917505568e73ab62d899f
+tier1_main_ci: green_via_ci_observation_ledger
+ci_observation_ledger_issue: #32
+ci_observation_receipt_commit: e639a4d0c1aaf94e0018ae0ae0e71609fb316a96
+ci_observation_receipt_run_id: 25714672871
+workflow_dispatch_available: true
 runtime_executed: false
 production_governance_runtime: false
 ```
@@ -128,12 +131,16 @@ Observed CI state:
 PR #31 head CI: green
 PR #31 merged: yes
 main merge commit: 8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba
-post-merge main CI: unobserved through connector
-workflow_dispatch added: 7e5dc07bcf7ecef8335917505568e73ab62d899f
-fresh push after workflow_dispatch: unobserved through connector
+workflow_dispatch added: true
+CI Observation Ledger issue: #32
+main push receipt observed: yes
+receipt commit_sha: e639a4d0c1aaf94e0018ae0ae0e71609fb316a96
+receipt workflow_run_id: 25714672871
+receipt conclusion: success
+receipt trigger: push
 ```
 
-The workflow file declares `pull_request`, `push` on `main`, and `workflow_dispatch`. The available connector method for commit workflow runs filters to pull-request-triggered runs, so it is not a reliable observer for push-triggered `main` runs. This is recorded as an observation gap, not as a CI failure.
+The CI Observation Ledger converts CI state into connector-visible evidence. Issue #32 contains a versioned JSON receipt posted by `github-actions[bot]` with `conclusion: success` for a `push` run on `main`.
 
 ## Runtime status
 
@@ -162,6 +169,6 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Use the GitHub Actions UI to manually verify the post-merge or post-dispatch run, or dispatch the `CI` workflow manually using the new `workflow_dispatch` trigger.
+Gate 2 is closed. ProCybernetica Tier 1 schema CI is merged and connector-observed green through the CI Observation Ledger.
 
-Do not add Tier 2+ formal machinery until the post-merge/post-dispatch CI observation gap is closed.
+Tier 2 planning is now unblocked, but no Tier 2 implementation should claim runtime status until it has its own schemas, fixtures, and CI gates.

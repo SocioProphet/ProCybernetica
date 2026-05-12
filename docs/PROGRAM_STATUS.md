@@ -30,7 +30,11 @@ ProCybernetica:
     runtime_executed: false
   tier2:
     scope: governance_over_compositions
-    doctrine_complete: planning_in_progress
+    doctrine_complete: planning_merged
+    planning_pr: #35
+    planning_merge_commit: a9ee2d5b9d536986f1be9308ff6c2a6396cc5ec3
+    planning_ci: green_via_ci_observation_ledger
+    planning_ci_receipt_run_id: 25715320769
     schema_ci: not_started
     runtime_executed: false
   workflow_dispatch_available: true
@@ -58,12 +62,7 @@ MONITOR_NETWORK_AS_QEC.md
 PCP_REPLAY_AUDIT.md
 PRIVACY_PRESERVING_EVIDENCE.md
 RESEARCH_RUNWAY_AI_QUANTUM.md
-```
-
-Tier 2 planning file on this branch:
-
-```text
-docs/governance-fabric/TIER2_COMPOSITION_GOVERNANCE_PLAN.md
+TIER2_COMPOSITION_GOVERNANCE_PLAN.md
 ```
 
 ## Key doctrine corrections landed
@@ -102,6 +101,8 @@ Negative constitutional fixtures enforce:
 
 ## Tier 2 planning lane
 
+PR #35 merged the Tier 2 planning artifact.
+
 Tier 2 v0.1 scope is governance over compositions.
 
 The Tier 2 planning document resolves:
@@ -136,15 +137,14 @@ Observed CI state:
 ```text
 PR #31 head CI: green
 PR #31 merged: yes
+Tier 1 main receipt: success, run_id 25714672871
+PR #35 head CI: green
+PR #35 merged: yes
+Tier 2 planning main receipt: success, run_id 25715320769
 CI Observation Ledger issue: #32
-main push receipt observed: yes
-receipt commit_sha: e639a4d0c1aaf94e0018ae0ae0e71609fb316a96
-receipt workflow_run_id: 25714672871
-receipt conclusion: success
-receipt trigger: push
 ```
 
-The CI Observation Ledger converts CI state into connector-visible evidence. Issue #32 contains a versioned JSON receipt posted by `github-actions[bot]` with `conclusion: success` for a `push` run on `main`.
+The CI Observation Ledger converts CI state into connector-visible evidence. Issue #32 contains versioned JSON receipts posted by `github-actions[bot]` with `conclusion: success` for the relevant pull-request and push runs.
 
 ## Runtime status
 
@@ -174,6 +174,15 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Review and merge the Tier 2 composition governance planning PR.
+First Tier 2 implementation PR:
 
-The first Tier 2 implementation PR should be limited to a composition-certificate schema, positive/negative deterministic fixtures, and a Tier 2 pytest harness.
+```text
+schemas/governance-fabric/composition_certificate.v1.json
+tests/fixtures/governance-fabric/tier2/composition_certificate.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composite_claim_without_composition_certificate.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composition_upgrades_execution_status.synthetic.json
+tests/test_governance_fabric_tier2.py
+make governance-fabric-tier2-ci
+```
+
+Keep the first implementation PR limited to composition-certificate schema, positive/negative deterministic fixtures, and Tier 2 pytest harness.

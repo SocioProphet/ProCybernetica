@@ -1,0 +1,62 @@
+v1_2_to_v1_3_migration:
+  status: draft-v0.1
+  doctrine_ref: docs/doctrine/cairnmark-to-stele-transition.v1.md
+  additive_fields_ref: schemas/_common/v1-3-additive-fields.json
+
+  applies_to:
+    - schemas/m0/training-provenance.v1.2.json -> schemas/m0/training-provenance.v1.3.json
+    - schemas/m1/source-lock.v1.2.json -> schemas/m1/source-lock.v1.3.json
+    - schemas/m1/witness-card.v1.2.json -> schemas/m1/witness-card.v1.3.json
+    - schemas/m1/causal-triad.v1.2.json -> schemas/m1/causal-triad.v1.3.json
+    - schemas/m1-5/attribution-graph.v1.2.json -> schemas/m1-5/attribution-graph.v1.3.json
+    - schemas/m1/off-target-audit.v1.2.json -> schemas/m1/off-target-audit.v1.3.json
+    - schemas/m1/composite.v1.2.json -> schemas/m1/composite.v1.3.json
+    - schemas/m2/implementability.v1.2.json -> schemas/m2/implementability.v1.3.json
+    - schemas/m3/cross-layer-robustness.v1.2.json -> schemas/m3/cross-layer-robustness.v1.3.json
+    - schemas/m5/public-note.v1.2.json -> schemas/m5/public-note.v1.3.json
+    - schemas/procybernetica/safety-case.v1.0.json -> schemas/procybernetica/safety-case.v1.1.json
+
+  additive_fields:
+    - authority_layer
+    - promotion_state
+    - reasoning_trace_ref
+    - cadence_classification
+    - stele_expires_at
+
+  default_values:
+    authority_layer: grounded_schema
+    promotion_state: derived_from_execution_status
+    reasoning_trace_ref: null
+    cadence_classification: mesobeat
+    stele_expires_at: null
+
+  execution_status_to_promotion_state_mapping:
+    doctrine_only: candidate
+    synthetic_fixture: candidate
+    runtime_partial: candidate
+    runtime_executed_complete_signing: promoted_stele
+    runtime_executed_incomplete_signing: candidate
+
+  backward_compatibility:
+    v1_2_fixtures_valid_as_v1_3: true
+    migration_method: applies_defaults_automatically
+    breaking_changes: none
+
+  strict_mode:
+    purpose: >-
+      Existing v1.2 fixtures may migrate silently with defaults. New fixtures
+      committed after the v1.3 bump should run in strict mode and explicitly
+      populate v1.3 fields.
+    existing_fixtures: silent_with_defaults
+    new_fixtures: explicit_with_failures
+    validator_flag: --strict-v1-3-fields
+
+  ci_enforcement:
+    immediate: schemas validate against v1.3 with defaults
+    next_cycle: explicit fields required on new certificates
+    target_full_population: 2026-Q3
+
+  non_claims:
+    - This migration policy does not itself implement the eleven concrete v1.3 certificate schemas.
+    - This migration policy does not require direct changes to Superconscious from this ProCybernetica branch.
+    - Silent defaults preserve backward compatibility for historical fixtures only; they are not intended as a permanent authoring style.

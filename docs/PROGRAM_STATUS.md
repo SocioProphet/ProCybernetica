@@ -39,8 +39,10 @@ ProCybernetica:
     first_schema_merge_commit: 73d2320767eebf2df485bab94b857b15080ceff0
     first_schema_ci: green_via_ci_observation_ledger
     first_schema_ci_receipt: observed_by_exact_ledger_search
-    evidence_receipt_integration_branch: governance-fabric-tier2-evidence-receipts
-    evidence_receipt_integration_pr: pending
+    evidence_receipt_integration_pr: #38
+    evidence_receipt_integration_merge_commit: c3c288612a46167cb3b3a1c7f89f12faedb08962
+    evidence_receipt_integration_ci: green_via_ci_observation_ledger
+    evidence_receipt_integration_ci_receipt: observed_by_exact_ledger_search
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -148,11 +150,11 @@ recursive_composition_allowed: false
 
 No recursive composition, meta-governance, runtime orchestration, or formal proof is claimed.
 
-## Tier 2 evidence receipt integration branch
+## Tier 2 evidence receipt integration lane
 
-The branch `governance-fabric-tier2-evidence-receipts` integrates hash-bound receipt references into composition certificates.
+PR #38 merged hash-bound receipt references into composition certificates.
 
-Implemented on branch:
+Implemented:
 
 ```text
 composition_certificate.v1.json receipt_integration field
@@ -171,6 +173,13 @@ runtime receipt-store lookup: deferred
 embedded full receipt verification: deferred
 recursive composition: still false
 ```
+
+New invariants enforced:
+
+1. every constituent artifact has at least one receipt binding;
+2. receipt bindings do not reference unknown constituent artifacts;
+3. receipt binding hash matches the referenced constituent artifact hash;
+4. top-level `evidence_receipt_refs` includes all hash-bound constituent receipts and the composition certificate receipt.
 
 ## CI status
 
@@ -204,6 +213,9 @@ Tier 2 planning main receipt: success, run_id 25715320769
 PR #37 head CI: green
 PR #37 merged: yes
 Tier 2 composition main receipt: success observed through exact CI Observation Ledger search for commit 73d2320767eebf2df485bab94b857b15080ceff0
+PR #38 head CI: green
+PR #38 merged: yes
+Tier 2 evidence receipt integration main receipt: success observed through exact CI Observation Ledger search for commit c3c288612a46167cb3b3a1c7f89f12faedb08962
 CI Observation Ledger issue: #32
 ```
 
@@ -235,10 +247,15 @@ This repository currently does not claim:
 - runtime integration with `superconscious` certificates;
 - recursive Tier 2 composition;
 - Tier 2 runtime behavior;
-- runtime receipt-store lookup.
+- runtime receipt-store lookup;
+- embedded full receipt verification.
 
 ## Next bounded move
 
-Open and review the Tier 2 evidence receipt integration PR.
+Next Tier 2 implementation slice should choose one of:
 
-Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.
+1. authority-scope semantic comparison;
+2. non-claim propagation/resolution schema refinement;
+3. monitor-independence composition checks.
+
+Do not add recursive composition, meta-governance, runtime receipt-store lookup, or formal proof machinery until flat v0.1 composition with receipt bindings has been exercised further.

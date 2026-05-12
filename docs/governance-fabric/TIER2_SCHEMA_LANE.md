@@ -2,7 +2,7 @@
 
 ## Status
 
-This lane implements the first Tier 2 schema slice for Governance Fabric and two follow-up integration slices.
+This lane implements the first Tier 2 schema slice for Governance Fabric and three follow-up integration slices.
 
 Tier 2 v0.1 scope is governance over flat compositions. Recursive composition and meta-governance remain deferred.
 
@@ -25,6 +25,8 @@ tests/fixtures/governance-fabric/tier2/negative_composition_missing_receipt_bind
 tests/fixtures/governance-fabric/tier2/negative_composition_unknown_receipt_binding.synthetic.json
 tests/fixtures/governance-fabric/tier2/negative_composition_receipt_hash_mismatch.synthetic.json
 tests/fixtures/governance-fabric/tier2/negative_composition_unsupported_authority_scope.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composition_unhandled_non_claim.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composition_resolution_missing_evidence.synthetic.json
 ```
 
 Implemented test harness:
@@ -77,7 +79,7 @@ v0.1 uses the shape without enabling recursive composition.
 
 ## Authority scope comparison
 
-Composition certificates now include:
+Composition certificates include:
 
 ```text
 authority_scope_analysis
@@ -87,6 +89,19 @@ comparison_mode: declared_scope_lattice_v1
 The static harness computes supported scope from constituent declarations plus the declared lattice. A broader scope supports narrower scopes declared by the lattice. Narrower scopes do not automatically support broader scopes.
 
 This closes the laundering path where a composition rule allows a broad scope but no constituent artifact actually supports it.
+
+## Structured non-claim analysis
+
+Composition certificates may include:
+
+```text
+non_claim_analysis
+analysis_mode: explicit_propagate_or_resolve_v1
+```
+
+When present, the static harness requires every source non-claim to be explicitly propagated or resolved. Resolutions must cite declared evidence receipts.
+
+This turns non-claim propagation from a string-list comparison into a source-bound trace of what happened to each constituent limitation.
 
 ## Invariants enforced
 
@@ -178,6 +193,26 @@ Negative fixture:
 negative_composition_unsupported_authority_scope.synthetic.json
 ```
 
+### T2.11 — Every source non-claim must be handled
+
+When `non_claim_analysis` is present, every source non-claim must be propagated or resolved.
+
+Negative fixture:
+
+```text
+negative_composition_unhandled_non_claim.synthetic.json
+```
+
+### T2.12 — Non-claim resolutions require declared evidence
+
+A resolution record must cite an evidence receipt that appears in the top-level `evidence_receipt_refs` list.
+
+Negative fixture:
+
+```text
+negative_composition_resolution_missing_evidence.synthetic.json
+```
+
 ## Runtime boundary
 
 This lane is schema/fixture/static-check only.
@@ -191,11 +226,13 @@ It does not claim:
 - TLA+/Alloy/Lean verification;
 - cryptographic receipts;
 - runtime receipt-store lookup;
-- full semantic authority lattice beyond declared fixture scopes.
+- full semantic authority lattice beyond declared fixture scopes;
+- runtime verification of non-claim resolution evidence.
 
 ## Next after merge
 
-If the authority-scope semantic comparison slice merges green, the next Tier 2 implementation slice should choose one of:
+If the structured non-claim analysis slice merges green, the next Tier 2 implementation slice should be:
 
-1. non-claim propagation/resolution schema refinement;
-2. monitor-independence composition checks.
+```text
+monitor-independence composition checks
+```

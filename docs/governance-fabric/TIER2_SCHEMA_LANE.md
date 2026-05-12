@@ -2,7 +2,7 @@
 
 ## Status
 
-This lane implements the first Tier 2 schema slice for Governance Fabric and three follow-up integration slices.
+This lane implements the first Tier 2 schema slice for Governance Fabric and four follow-up integration slices.
 
 Tier 2 v0.1 scope is governance over flat compositions. Recursive composition and meta-governance remain deferred.
 
@@ -27,6 +27,9 @@ tests/fixtures/governance-fabric/tier2/negative_composition_receipt_hash_mismatc
 tests/fixtures/governance-fabric/tier2/negative_composition_unsupported_authority_scope.synthetic.json
 tests/fixtures/governance-fabric/tier2/negative_composition_unhandled_non_claim.synthetic.json
 tests/fixtures/governance-fabric/tier2/negative_composition_resolution_missing_evidence.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composition_shared_monitor.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composition_self_monitoring.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composition_monitor_cycle.synthetic.json
 ```
 
 Implemented test harness:
@@ -102,6 +105,19 @@ analysis_mode: explicit_propagate_or_resolve_v1
 When present, the static harness requires every source non-claim to be explicitly propagated or resolved. Resolutions must cite declared evidence receipts.
 
 This turns non-claim propagation from a string-list comparison into a source-bound trace of what happened to each constituent limitation.
+
+## Monitor-independence analysis
+
+Composition certificates may include:
+
+```text
+monitor_independence_analysis
+analysis_mode: declared_monitor_independence_v1
+```
+
+When present, the static harness checks monitor coverage, monitor evidence receipts, distinct monitor requirements, self-monitoring prohibition, and acyclic monitor graphs.
+
+This closes the composition path where multiple constituent artifacts appear independently monitored but share monitors, monitor themselves, or form a monitor cycle.
 
 ## Invariants enforced
 
@@ -213,6 +229,36 @@ Negative fixture:
 negative_composition_resolution_missing_evidence.synthetic.json
 ```
 
+### T2.13 — Distinct monitor requirement
+
+When `monitor_independence_analysis.independence_claim.requires_distinct_monitors` is true, distinct constituent artifacts must not share the same monitor.
+
+Negative fixture:
+
+```text
+negative_composition_shared_monitor.synthetic.json
+```
+
+### T2.14 — No self-monitoring
+
+When `monitor_independence_analysis.independence_claim.forbids_self_monitoring` is true, a monitor may not monitor an artifact with the same identifier.
+
+Negative fixture:
+
+```text
+negative_composition_self_monitoring.synthetic.json
+```
+
+### T2.15 — Acyclic monitor graph
+
+When `monitor_independence_analysis.independence_claim.requires_acyclic_monitor_graph` is true, monitor relationships must form an acyclic graph.
+
+Negative fixture:
+
+```text
+negative_composition_monitor_cycle.synthetic.json
+```
+
 ## Runtime boundary
 
 This lane is schema/fixture/static-check only.
@@ -227,12 +273,15 @@ It does not claim:
 - cryptographic receipts;
 - runtime receipt-store lookup;
 - full semantic authority lattice beyond declared fixture scopes;
-- runtime verification of non-claim resolution evidence.
+- runtime verification of non-claim resolution evidence;
+- runtime monitor independence attestation.
 
 ## Next after merge
 
-If the structured non-claim analysis slice merges green, the next Tier 2 implementation slice should be:
+If the monitor-independence composition slice merges green, the next Tier 2 step should be a consolidation doctrine document:
 
 ```text
-monitor-independence composition checks
+docs/governance-fabric/TIER2_COMPOSITION_INVARIANTS.md
 ```
+
+That document should summarize the family of Tier 2 composition invariants and become the cross-repo reference for Superconscious and future public-release composition work.

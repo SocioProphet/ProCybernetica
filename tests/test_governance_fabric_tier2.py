@@ -78,6 +78,26 @@ def declared_evidence_pairs(instance: dict) -> set[tuple[str, str]]:
     }
 
 
+def has_cycle(edges: dict[str, set[str]]) -> bool:
+    visiting: set[str] = set()
+    visited: set[str] = set()
+
+    def visit(node: str) -> bool:
+        if node in visiting:
+            return True
+        if node in visited:
+            return False
+        visiting.add(node)
+        for next_node in edges.get(node, set()):
+            if visit(next_node):
+                return True
+        visiting.remove(node)
+        visited.add(node)
+        return False
+
+    return any(visit(node) for node in edges)
+
+
 def composition_invariant_errors(instance: dict) -> list[str]:
     errors: list[str] = []
 
@@ -161,6 +181,41 @@ def composition_invariant_errors(instance: dict) -> list[str]:
             if pair not in declared_receipts_for_resolution:
                 errors.append("non_claim_analysis resolutions must cite declared evidence receipts")
                 break
+
+    monitor_analysis = instance.get("monitor_independence_analysis")
+    if monitor_analysis is not None:
+        relationships = monitor_analysis.get("monitor_relationships", [])
+        claim = monitor_analysis.get("independence_claim", {})
+        target_ids = {item["artifact_id"] for item in instance.get("constituent_artifacts", [])}
+        observed_targets = {relationship["target_artifact_id"] for relationship in relationships}
+        if target_ids - observed_targets:
+            errors.append("monitor_independence_analysis must cover every constituent artifact")
+        if observed_targets - target_ids:
+            errors.append("monitor_independence_analysis must not target unknown constituent artifacts")
+
+        declared_receipts_for_monitoring = declared_evidence_pairs(instance)
+        for relationship in relationships:
+            receipt = relationship["evidence_receipt_ref"]
+            pair = (receipt["evidence_receipt_id"], receipt["evidence_receipt_sha256"])
+            if pair not in declared_receipts_for_monitoring:
+                errors.append("monitor_independence_analysis monitor attestations must cite declared evidence receipts")
+                break
+
+        if claim.get("requires_distinct_monitors"):
+            monitors = [relationship["monitor_id"] for relationship in relationships]
+            if len(monitors) != len(set(monitors)):
+                errors.append("monitor_independence_analysis requires distinct monitors for constituent artifacts")
+
+        if claim.get("forbids_self_monitoring"):
+            if any(relationship["monitor_id"] == relationship["target_artifact_id"] for relationship in relationships):
+                errors.append("monitor_independence_analysis forbids self-monitoring relationships")
+
+        if claim.get("requires_acyclic_monitor_graph"):
+            edges: dict[str, set[str]] = {}
+            for relationship in relationships:
+                edges.setdefault(relationship["monitor_id"], set()).add(relationship["target_artifact_id"])
+            if has_cycle(edges):
+                errors.append("monitor_independence_analysis requires an acyclic monitor graph")
 
     artifacts_by_id = {
         item["artifact_id"]: item["artifact_sha256"]
@@ -248,6 +303,18 @@ def test_negative_composite_claim_without_composition_certificate_fails_schema_o
             "negative_composition_resolution_missing_evidence.synthetic.json",
             "non_claim_analysis resolutions must cite declared evidence receipts",
         ),
+        (
+            "negative_composition_shared_monitor.synthetic.json",
+            "monitor_independence_analysis requires distinct monitors for constituent artifacts",
+        ),
+        (
+            "negative_composition_self_monitoring.synthetic.json",
+            "monitor_independence_analysis forbids self-monitoring relationships",
+        ),
+        (
+            "negative_composition_monitor_cycle.synthetic.json",
+            "monitor_independence_analysis requires an acyclic monitor graph",
+        ),
     ],
 )
 def test_tier2_static_negative_fixtures_fail_intended_invariants(
@@ -272,6 +339,9 @@ def test_tier2_fixture_inventory_is_explicit() -> None:
         "negative_composition_unsupported_authority_scope.synthetic.json",
         "negative_composition_unhandled_non_claim.synthetic.json",
         "negative_composition_resolution_missing_evidence.synthetic.json",
+        "negative_composition_shared_monitor.synthetic.json",
+        "negative_composition_self_monitoring.synthetic.json",
+        "negative_composition_monitor_cycle.synthetic.json",
     }
     actual = {path.name for path in FIXTURE_ROOT.glob("*.json")}
     assert actual == known

@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "monitor_alert",
+  "monitor_alert_id": "monitor-alert-tier1-demo",
+  "created_at": "2026-05-11T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "monitor": {"actor_id": "monitor:tier1-schema-monitor", "actor_kind": "pipeline"},
+  "alert_class": "tool_scope_escalation",
+  "severity": "high",
+  "observed_ref": "off-history-blocked-action-demo",
+  "independence_level": "separate_process",
+  "recommended_action": "Block action and retain off-history evidence.",
+  "ledger_entry": {"event_id": "monitor-alert-tier1-demo-event", "event_type": "fragment_sealed", "created_at": "2026-05-11T00:00:00Z"}
+}

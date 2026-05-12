@@ -55,6 +55,8 @@ ProCybernetica:
     monitor_independence_merge_commit: 9ed2983b7ccacccb10f0ec274359a97e31d2e4a9
     monitor_independence_ci: green_via_ci_observation_ledger
     monitor_independence_ci_receipt: observed_by_exact_ledger_search
+    invariants_doctrine_branch: governance-fabric-tier2-invariants-doc
+    invariants_doctrine_pr: pending
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -83,6 +85,7 @@ PRIVACY_PRESERVING_EVIDENCE.md
 RESEARCH_RUNWAY_AI_QUANTUM.md
 TIER2_COMPOSITION_GOVERNANCE_PLAN.md
 TIER2_SCHEMA_LANE.md
+TIER2_COMPOSITION_INVARIANTS.md
 ```
 
 ## Key doctrine corrections landed
@@ -284,6 +287,27 @@ New invariants enforced:
 4. self-monitoring is forbidden when claimed;
 5. monitor graph must be acyclic when claimed.
 
+## Tier 2 composition invariants doctrine branch
+
+The branch `governance-fabric-tier2-invariants-doc` adds the canonical cross-repo reference document for the Tier 2 composition invariant family.
+
+Implemented on branch:
+
+```text
+docs/governance-fabric/TIER2_COMPOSITION_INVARIANTS.md
+```
+
+The document consolidates:
+
+- the six-element invariant pattern;
+- baseline composition certificate invariants;
+- evidence receipt integration;
+- authority scope comparison;
+- non-claim propagation;
+- monitor independence;
+- future extension candidates;
+- cross-repo references for superconscious, sociosphere, policy-fabric, and agentplane.
+
 ## CI status
 
 Tier 1 has:
@@ -367,10 +391,6 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Next Tier 2 step:
+Open and review the Tier 2 composition invariants doctrine PR.
 
-```text
-docs/governance-fabric/TIER2_COMPOSITION_INVARIANTS.md
-```
-
-This should consolidate the Tier 2 composition invariant family into a single cross-repo reference document before adding further schema machinery.
+Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.

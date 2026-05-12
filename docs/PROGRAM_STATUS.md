@@ -43,8 +43,10 @@ ProCybernetica:
     evidence_receipt_integration_merge_commit: c3c288612a46167cb3b3a1c7f89f12faedb08962
     evidence_receipt_integration_ci: green_via_ci_observation_ledger
     evidence_receipt_integration_ci_receipt: observed_by_exact_ledger_search
-    authority_scope_branch: governance-fabric-tier2-authority-scope
-    authority_scope_pr: pending
+    authority_scope_pr: #48
+    authority_scope_merge_commit: 0b28e1fe66346b49554bbf51d62454008b42bce3
+    authority_scope_ci: green_via_ci_observation_ledger
+    authority_scope_ci_receipt: observed_by_exact_ledger_search
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -183,11 +185,11 @@ New invariants enforced:
 3. receipt binding hash matches the referenced constituent artifact hash;
 4. top-level `evidence_receipt_refs` includes all hash-bound constituent receipts and the composition certificate receipt.
 
-## Tier 2 authority scope comparison branch
+## Tier 2 authority scope comparison lane
 
-The branch `governance-fabric-tier2-authority-scope` adds conservative declared-lattice authority-scope comparison to composition certificates.
+PR #48 merged conservative declared-lattice authority-scope comparison into composition certificates.
 
-Implemented on branch:
+Implemented:
 
 ```text
 composition_certificate.v1.json authority_scope_analysis field
@@ -205,6 +207,10 @@ narrower scope does not imply broader scope
 runtime scope algebra: deferred
 formal scope lattice proof: deferred
 ```
+
+New invariant enforced:
+
+1. composed authority scope must be supported by constituent-declared authority scopes under the declared scope lattice.
 
 ## CI status
 
@@ -241,6 +247,9 @@ Tier 2 composition main receipt: success observed through exact CI Observation L
 PR #38 head CI: green
 PR #38 merged: yes
 Tier 2 evidence receipt integration main receipt: success observed through exact CI Observation Ledger search for commit c3c288612a46167cb3b3a1c7f89f12faedb08962
+PR #48 head CI: green
+PR #48 merged: yes
+Tier 2 authority-scope main receipt: success observed through exact CI Observation Ledger search for commit 0b28e1fe66346b49554bbf51d62454008b42bce3
 CI Observation Ledger issue: #32
 ```
 
@@ -278,6 +287,9 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Open and review the Tier 2 authority-scope semantic comparison PR.
+Next Tier 2 implementation slice should choose one of:
 
-Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.
+1. non-claim propagation/resolution schema refinement;
+2. monitor-independence composition checks.
+
+Do not add recursive composition, meta-governance, runtime receipt-store lookup, or formal proof machinery until flat v0.1 composition with receipt bindings and authority-scope checks has been exercised further.

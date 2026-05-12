@@ -20,6 +20,7 @@ doctrine_complete: Tier 0 + Tier 1 doctrine spine
 tier1_schema_ci_merged: PR #31, merge commit 8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba
 pr_head_ci: green
 post_merge_main_ci: unobserved_through_connector
+workflow_dispatch_available: true, commit 7e5dc07bcf7ecef8335917505568e73ab62d899f
 runtime_executed: false
 production_governance_runtime: false
 ```
@@ -128,9 +129,11 @@ PR #31 head CI: green
 PR #31 merged: yes
 main merge commit: 8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba
 post-merge main CI: unobserved through connector
+workflow_dispatch added: 7e5dc07bcf7ecef8335917505568e73ab62d899f
+fresh push after workflow_dispatch: unobserved through connector
 ```
 
-The workflow file declares both `pull_request` and `push` on `main`. The connector did not return a workflow run or combined status for the merge commit. This is recorded as an observation gap, not as a CI failure.
+The workflow file declares `pull_request`, `push` on `main`, and `workflow_dispatch`. The available connector method for commit workflow runs filters to pull-request-triggered runs, so it is not a reliable observer for push-triggered `main` runs. This is recorded as an observation gap, not as a CI failure.
 
 ## Runtime status
 
@@ -159,6 +162,6 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Manually verify the post-merge GitHub Actions run for merge commit `8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba` in the Actions UI, or trigger a fresh observable run if no post-merge run exists.
+Use the GitHub Actions UI to manually verify the post-merge or post-dispatch run, or dispatch the `CI` workflow manually using the new `workflow_dispatch` trigger.
 
-Do not add Tier 2+ formal machinery until the post-merge CI observation gap is closed.
+Do not add Tier 2+ formal machinery until the post-merge/post-dispatch CI observation gap is closed.

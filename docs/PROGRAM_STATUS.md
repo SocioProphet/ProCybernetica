@@ -47,6 +47,8 @@ ProCybernetica:
     authority_scope_merge_commit: 0b28e1fe66346b49554bbf51d62454008b42bce3
     authority_scope_ci: green_via_ci_observation_ledger
     authority_scope_ci_receipt: observed_by_exact_ledger_search
+    nonclaim_analysis_branch: governance-fabric-tier2-nonclaim-analysis
+    nonclaim_analysis_pr: pending
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -212,6 +214,29 @@ New invariant enforced:
 
 1. composed authority scope must be supported by constituent-declared authority scopes under the declared scope lattice.
 
+## Tier 2 structured non-claim analysis branch
+
+The branch `governance-fabric-tier2-nonclaim-analysis` adds optional structured non-claim analysis to composition certificates.
+
+Implemented on branch:
+
+```text
+composition_certificate.v1.json non_claim_analysis field
+composition_certificate.synthetic.json with source-bound non-claim analysis
+negative_composition_unhandled_non_claim.synthetic.json
+negative_composition_resolution_missing_evidence.synthetic.json
+updated tests/test_governance_fabric_tier2.py non-claim analysis checks
+```
+
+Design posture:
+
+```text
+analysis_mode: explicit_propagate_or_resolve_v1
+every source non-claim must be propagated or resolved
+resolutions must cite declared evidence receipts
+runtime verification of resolution evidence: deferred
+```
+
 ## CI status
 
 Tier 1 has:
@@ -283,13 +308,11 @@ This repository currently does not claim:
 - Tier 2 runtime behavior;
 - runtime receipt-store lookup;
 - embedded full receipt verification;
-- full semantic authority lattice beyond declared fixture scopes.
+- full semantic authority lattice beyond declared fixture scopes;
+- runtime verification of non-claim resolution evidence.
 
 ## Next bounded move
 
-Next Tier 2 implementation slice should choose one of:
+Open and review the Tier 2 structured non-claim analysis PR.
 
-1. non-claim propagation/resolution schema refinement;
-2. monitor-independence composition checks.
-
-Do not add recursive composition, meta-governance, runtime receipt-store lookup, or formal proof machinery until flat v0.1 composition with receipt bindings and authority-scope checks has been exercised further.
+Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.

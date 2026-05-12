@@ -1,0 +1,150 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/artifact_lifecycle_state.v1.json",
+  "title": "Cybernetic Governance Artifact Lifecycle State",
+  "description": "Records the current lifecycle state of a cybernetic governance artifact.",
+  "x_implements_invariants": [
+    "invariant_0_3_no_promotion_by_prose",
+    "invariant_0_4_digital_typed_digestible_evidence",
+    "invariant_0_10_claims_require_non_claims",
+    "invariant_0_15_frontier_claims_require_metrics"
+  ],
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "artifact_id",
+    "artifact_kind",
+    "state",
+    "state_entered_at",
+    "owner",
+    "implements_invariants",
+    "allowed_next_states"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_kind": {
+      "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/artifact_kind"
+    },
+    "title": {
+      "type": "string"
+    },
+    "description": {
+      "type": "string"
+    },
+    "state": {
+      "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/artifact_lifecycle_state"
+    },
+    "state_entered_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "owner": {
+      "type": "string",
+      "minLength": 1
+    },
+    "repository": {
+      "type": "string"
+    },
+    "path": {
+      "type": "string"
+    },
+    "authority_chain_ref": {
+      "type": "string"
+    },
+    "evidence_receipt_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "non_claim_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "implements_invariants": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/constitutional_invariant_id"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "allowed_next_states": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/artifact_lifecycle_state"
+      },
+      "uniqueItems": true
+    },
+    "blockers": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "blocker_id",
+          "reason",
+          "lane"
+        ],
+        "properties": {
+          "blocker_id": {
+            "type": "string"
+          },
+          "reason": {
+            "type": "string"
+          },
+          "lane": {
+            "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/audit_lane"
+          },
+          "issue_ref": {
+            "type": "string"
+          }
+        }
+      },
+      "default": []
+    },
+    "readiness_level": {
+      "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/readiness_level"
+    }
+  },
+  "examples": [
+    {
+      "schema_version": "v1",
+      "artifact_id": "artifact:procybernetica:docs/cybernetic-governance/CAPTURE_INDEX.md",
+      "artifact_kind": "doctrine",
+      "state": "captured",
+      "state_entered_at": "2026-05-12T00:00:00Z",
+      "owner": "SocioProphet/ProCybernetica",
+      "implements_invariants": [
+        "invariant_0_15_frontier_claims_require_metrics"
+      ],
+      "allowed_next_states": [
+        "reconciled",
+        "quarantined",
+        "archived"
+      ],
+      "readiness_level": "R1_captured"
+    }
+  ]
+}

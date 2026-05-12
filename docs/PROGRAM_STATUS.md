@@ -59,6 +59,10 @@ ProCybernetica:
     invariants_doctrine_merge_commit: a8e6b47648696658b8fd1d81239953fb2e8f11f0
     invariants_doctrine_ci: green_via_ci_observation_ledger
     invariants_doctrine_ci_receipt: observed_by_exact_ledger_search
+    evidence_freshness_pr: #57
+    evidence_freshness_merge_commit: 173fc92a21e4cf1b2a785365adc992f441910488
+    evidence_freshness_ci: green_via_ci_observation_ledger
+    evidence_freshness_ci_receipt: observed_by_exact_ledger_search
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -165,22 +169,19 @@ composition_order: 1
 recursive_composition_allowed: false
 ```
 
-No recursive composition, meta-governance, runtime orchestration, or formal proof is claimed.
+## Tier 2 composition invariant lanes
 
-## Tier 2 evidence receipt integration lane
-
-PR #38 merged hash-bound receipt references into composition certificates.
-
-Implemented:
+The following Tier 2 flat-composition invariant lanes have merged green:
 
 ```text
-composition_certificate.v1.json receipt_integration field
-composition_certificate.synthetic.json with receipt bindings
-negative_composition_missing_receipt_binding.synthetic.json
-negative_composition_unknown_receipt_binding.synthetic.json
-negative_composition_receipt_hash_mismatch.synthetic.json
-updated tests/test_governance_fabric_tier2.py receipt-binding checks
+PR #38 evidence receipt integration
+PR #48 authority scope comparison
+PR #54 structured non-claim analysis
+PR #55 monitor independence
+PR #57 evidence freshness
 ```
+
+### Evidence receipt integration
 
 Design posture:
 
@@ -188,28 +189,12 @@ Design posture:
 integration_mode: hash_bound_reference
 runtime receipt-store lookup: deferred
 embedded full receipt verification: deferred
-recursive composition: still false
+recursive composition: false
 ```
 
-New invariants enforced:
+New invariants enforce receipt binding coverage, no unknown receipt bindings, artifact-hash matching, and top-level receipt declaration.
 
-1. every constituent artifact has at least one receipt binding;
-2. receipt bindings do not reference unknown constituent artifacts;
-3. receipt binding hash matches the referenced constituent artifact hash;
-4. top-level `evidence_receipt_refs` includes all hash-bound constituent receipts and the composition certificate receipt.
-
-## Tier 2 authority scope comparison lane
-
-PR #48 merged conservative declared-lattice authority-scope comparison into composition certificates.
-
-Implemented:
-
-```text
-composition_certificate.v1.json authority_scope_analysis field
-composition_certificate.synthetic.json with constituent scope bindings
-negative_composition_unsupported_authority_scope.synthetic.json
-updated tests/test_governance_fabric_tier2.py authority-scope support checks
-```
+### Authority scope comparison
 
 Design posture:
 
@@ -221,23 +206,9 @@ runtime scope algebra: deferred
 formal scope lattice proof: deferred
 ```
 
-New invariant enforced:
+New invariant: composed authority scope must be supported by constituent-declared authority scopes under the declared scope lattice.
 
-1. composed authority scope must be supported by constituent-declared authority scopes under the declared scope lattice.
-
-## Tier 2 structured non-claim analysis lane
-
-PR #54 merged optional source-bound non-claim analysis into composition certificates.
-
-Implemented:
-
-```text
-composition_certificate.v1.json non_claim_analysis field
-composition_certificate.synthetic.json with source-bound non-claim analysis
-negative_composition_unhandled_non_claim.synthetic.json
-negative_composition_resolution_missing_evidence.synthetic.json
-updated tests/test_governance_fabric_tier2.py non-claim analysis checks
-```
+### Structured non-claim analysis
 
 Design posture:
 
@@ -248,28 +219,9 @@ resolutions must cite declared evidence receipts
 runtime verification of resolution evidence: deferred
 ```
 
-New invariants enforced:
+New invariants enforce source/non-claim alignment, propagate-or-resolve completeness, and evidence-bound resolution.
 
-1. `source_non_claims` must match constituent non-claims;
-2. every source non-claim must be propagated or resolved;
-3. propagation records must appear in top-level `propagated_non_claims`;
-4. resolution records must appear in top-level `resolved_non_claims`;
-5. resolution records must cite evidence receipts declared in top-level `evidence_receipt_refs`.
-
-## Tier 2 monitor-independence lane
-
-PR #55 merged optional monitor-independence analysis into composition certificates.
-
-Implemented:
-
-```text
-composition_certificate.v1.json monitor_independence_analysis field
-composition_certificate.synthetic.json with independent monitor relationships
-negative_composition_shared_monitor.synthetic.json
-negative_composition_self_monitoring.synthetic.json
-negative_composition_monitor_cycle.synthetic.json
-updated tests/test_governance_fabric_tier2.py monitor-independence checks
-```
+### Monitor independence
 
 Design posture:
 
@@ -281,13 +233,43 @@ acyclic monitor graph required when claimed
 runtime monitor attestation: deferred
 ```
 
+New invariants enforce monitor coverage, declared monitor evidence, distinct monitors, no self-monitoring, and acyclic monitor graphs.
+
+### Evidence freshness
+
+PR #57 merged declared evidence freshness analysis into composition certificates.
+
+Implemented:
+
+```text
+composition_certificate.v1.json evidence_freshness_analysis field
+positive_composition_evidence_freshness_all_fresh.synthetic.json
+negative_composition_unanalyzed_receipt.synthetic.json
+negative_composition_unbound_receipt_class.synthetic.json
+negative_composition_stale_evidence_claimed_fresh.synthetic.json
+negative_composition_refresh_without_evidence.synthetic.json
+negative_composition_stale_acknowledged_without_propagation.synthetic.json
+updated tests/test_governance_fabric_tier2.py evidence-freshness checks
+```
+
+Design posture:
+
+```text
+analysis_mode: declared_evidence_freshness_v1
+receipt timestamps: declared values only
+freshness windows: issuer-declared
+receipt_class taxonomy: issuer-declared
+runtime timestamp verification: deferred
+transitive supersession traversal: deferred
+```
+
 New invariants enforced:
 
-1. monitor analysis must cover every constituent artifact;
-2. monitor attestations must cite declared evidence receipts;
-3. distinct monitors are required when claimed;
-4. self-monitoring is forbidden when claimed;
-5. monitor graph must be acyclic when claimed.
+1. freshness analysis must cover every top-level evidence receipt;
+2. freshness record classes must be declared in `freshness_windows`;
+3. `fresh` receipts must be within their declared class window and have internally consistent `age_seconds`;
+4. `refreshed` receipts must cite a declared refresh receipt;
+5. `acknowledged_stale` receipts must cite propagated or resolved non-claims.
 
 ## Tier 2 composition invariants doctrine lane
 
@@ -299,16 +281,7 @@ Implemented:
 docs/governance-fabric/TIER2_COMPOSITION_INVARIANTS.md
 ```
 
-The document consolidates:
-
-- the six-element invariant pattern;
-- baseline composition certificate invariants;
-- evidence receipt integration;
-- authority scope comparison;
-- non-claim propagation;
-- monitor independence;
-- future extension candidates;
-- cross-repo references for superconscious, sociosphere, policy-fabric, and agentplane.
+The document consolidates the six-element invariant pattern, current invariant catalog, future extension candidates, and cross-repo references for `superconscious`, `sociosphere`, `policy-fabric`, and `agentplane`.
 
 ## CI status
 
@@ -357,6 +330,9 @@ Tier 2 monitor-independence main receipt: success observed through exact CI Obse
 PR #56 head CI: green
 PR #56 merged: yes
 Tier 2 composition-invariants doctrine main receipt: success observed through exact CI Observation Ledger search for commit a8e6b47648696658b8fd1d81239953fb2e8f11f0
+PR #57 head CI: green
+PR #57 merged: yes
+Tier 2 evidence-freshness main receipt: success observed through exact CI Observation Ledger search for commit 173fc92a21e4cf1b2a785365adc992f441910488
 CI Observation Ledger issue: #32
 ```
 
@@ -392,12 +368,20 @@ This repository currently does not claim:
 - embedded full receipt verification;
 - full semantic authority lattice beyond declared fixture scopes;
 - runtime verification of non-claim resolution evidence;
-- runtime monitor independence attestation.
+- runtime monitor independence attestation;
+- runtime verification of timestamp authenticity;
+- transitive supersession-chain traversal;
+- policy-governed freshness windows;
+- Tier 0 receipt-class taxonomy enforcement.
 
 ## Next bounded move
 
-Evaluate the next Tier 2 invariant slice before adding schema machinery. Current candidates documented in `TIER2_COMPOSITION_INVARIANTS.md`:
+Tier 2 schema work that does not require new infrastructure is now substantially complete.
 
-1. evidence freshness analysis;
-2. constituent authority concentration analysis;
-3. scope coverage analysis.
+Next likely work should be one of:
+
+1. cross-repo Tier 2 invariant bindings for `superconscious`, `sociosphere`, `policy-fabric`, and `agentplane`;
+2. Tier 2 v2 mode design for runtime-backed verification modes;
+3. wait for dependency resolution for remaining schema candidates:
+   - constituent authority concentration requires signer/reputation substrate;
+   - scope coverage requires a comparable scope lattice definition.

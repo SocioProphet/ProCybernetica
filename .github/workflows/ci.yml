@@ -7,6 +7,10 @@ on:
       - main
   workflow_dispatch:
 
+permissions:
+  contents: read
+  issues: write
+
 jobs:
   test:
     runs-on: ubuntu-latest
@@ -26,3 +30,31 @@ jobs:
 
       - name: Run tests
         run: pytest -q
+
+  ci-observation-receipt:
+    needs: [test]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Build CI receipt
+        run: |
+          cat > receipt.md <<EOF
+          \`\`\`json
+          {
+            "ci_observation_ledger_version": "v0.1",
+            "commit_sha": "${{ github.sha }}",
+            "ref": "${{ github.ref }}",
+            "workflow_name": "${{ github.workflow }}",
+            "workflow_run_id": "${{ github.run_id }}",
+            "conclusion": "${{ needs.test.result }}",
+            "trigger": "${{ github.event_name }}",
+            "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
+            "actor": "${{ github.actor }}"
+          }
+          \`\`\`
+          EOF
+
+      - name: Post CI receipt to ledger issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh issue comment 32 --body-file receipt.md

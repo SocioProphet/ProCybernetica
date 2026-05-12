@@ -55,8 +55,10 @@ ProCybernetica:
     monitor_independence_merge_commit: 9ed2983b7ccacccb10f0ec274359a97e31d2e4a9
     monitor_independence_ci: green_via_ci_observation_ledger
     monitor_independence_ci_receipt: observed_by_exact_ledger_search
-    invariants_doctrine_branch: governance-fabric-tier2-invariants-doc
-    invariants_doctrine_pr: pending
+    invariants_doctrine_pr: #56
+    invariants_doctrine_merge_commit: a8e6b47648696658b8fd1d81239953fb2e8f11f0
+    invariants_doctrine_ci: green_via_ci_observation_ledger
+    invariants_doctrine_ci_receipt: observed_by_exact_ledger_search
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -287,11 +289,11 @@ New invariants enforced:
 4. self-monitoring is forbidden when claimed;
 5. monitor graph must be acyclic when claimed.
 
-## Tier 2 composition invariants doctrine branch
+## Tier 2 composition invariants doctrine lane
 
-The branch `governance-fabric-tier2-invariants-doc` adds the canonical cross-repo reference document for the Tier 2 composition invariant family.
+PR #56 merged the canonical cross-repo reference document for the Tier 2 composition invariant family.
 
-Implemented on branch:
+Implemented:
 
 ```text
 docs/governance-fabric/TIER2_COMPOSITION_INVARIANTS.md
@@ -352,6 +354,9 @@ Tier 2 non-claim analysis main receipt: success observed through exact CI Observ
 PR #55 head CI: green
 PR #55 merged: yes
 Tier 2 monitor-independence main receipt: success observed through exact CI Observation Ledger search for commit 9ed2983b7ccacccb10f0ec274359a97e31d2e4a9
+PR #56 head CI: green
+PR #56 merged: yes
+Tier 2 composition-invariants doctrine main receipt: success observed through exact CI Observation Ledger search for commit a8e6b47648696658b8fd1d81239953fb2e8f11f0
 CI Observation Ledger issue: #32
 ```
 
@@ -391,6 +396,8 @@ This repository currently does not claim:
 
 ## Next bounded move
 
-Open and review the Tier 2 composition invariants doctrine PR.
+Evaluate the next Tier 2 invariant slice before adding schema machinery. Current candidates documented in `TIER2_COMPOSITION_INVARIANTS.md`:
 
-Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.
+1. evidence freshness analysis;
+2. constituent authority concentration analysis;
+3. scope coverage analysis.

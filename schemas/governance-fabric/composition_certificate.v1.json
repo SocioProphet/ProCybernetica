@@ -64,7 +64,7 @@
         "integration_mode": {"const": "hash_bound_reference"},
         "constituent_receipt_bindings": {
           "type": "array",
-          "minItems": 2,
+          "minItems": 1,
           "items": {"$ref": "#/$defs/constituent_receipt_binding"}
         },
         "composition_receipt_ref": {"$ref": "#/$defs/evidence_ref"}

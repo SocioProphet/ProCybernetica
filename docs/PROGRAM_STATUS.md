@@ -16,16 +16,25 @@ It is a sibling to `SocioProphet/superconscious`.
 ## Current state
 
 ```text
-doctrine_complete: Tier 0 + Tier 1 doctrine spine
-tier1_schema_ci_merged: PR #31, merge commit 8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba
-pr_head_ci: green
-tier1_main_ci: green_via_ci_observation_ledger
-ci_observation_ledger_issue: #32
-ci_observation_receipt_commit: e639a4d0c1aaf94e0018ae0ae0e71609fb316a96
-ci_observation_receipt_run_id: 25714672871
-workflow_dispatch_available: true
-runtime_executed: false
-production_governance_runtime: false
+ProCybernetica:
+  tier0:
+    doctrine_complete: true
+    runtime_executed: false
+  tier1:
+    doctrine_complete: true
+    schema_ci: merged
+    main_ci: green_via_ci_observation_ledger
+    ci_observation_ledger_issue: #32
+    ci_observation_receipt_commit: e639a4d0c1aaf94e0018ae0ae0e71609fb316a96
+    ci_observation_receipt_run_id: 25714672871
+    runtime_executed: false
+  tier2:
+    scope: governance_over_compositions
+    doctrine_complete: planning_in_progress
+    schema_ci: not_started
+    runtime_executed: false
+  workflow_dispatch_available: true
+  production_governance_runtime: false
 ```
 
 ## Completed doctrine
@@ -49,6 +58,12 @@ MONITOR_NETWORK_AS_QEC.md
 PCP_REPLAY_AUDIT.md
 PRIVACY_PRESERVING_EVIDENCE.md
 RESEARCH_RUNWAY_AI_QUANTUM.md
+```
+
+Tier 2 planning file on this branch:
+
+```text
+docs/governance-fabric/TIER2_COMPOSITION_GOVERNANCE_PLAN.md
 ```
 
 ## Key doctrine corrections landed
@@ -79,39 +94,32 @@ schemas/governance-fabric/cybernetic_safety_case.v1.json
 schemas/composition/program-certificate.v1.json
 ```
 
-Valid fixture set:
-
-```text
-tests/fixtures/governance-fabric/authority_chain.synthetic.json
-tests/fixtures/governance-fabric/tool_permission_scope.synthetic.json
-tests/fixtures/governance-fabric/evidence_receipt.synthetic.json
-tests/fixtures/governance-fabric/off_history_evidence.synthetic.json
-tests/fixtures/governance-fabric/monitor_alert.synthetic.json
-tests/fixtures/governance-fabric/allowed_action.synthetic.json
-tests/fixtures/governance-fabric/blocked_action.synthetic.json
-tests/fixtures/governance-fabric/transformed_safe_completion.synthetic.json
-tests/fixtures/governance-fabric/release_delta_promotion.synthetic.json
-tests/fixtures/governance-fabric/safety_case.synthetic.json
-tests/fixtures/governance-fabric/program-certificate.synthetic.json
-```
-
-Negative constitutional fixture set:
-
-```text
-tests/fixtures/governance-fabric/invalid_promotion_by_prose.synthetic.json
-tests/fixtures/governance-fabric/invalid_action_missing_authority.synthetic.json
-tests/fixtures/governance-fabric/negative_safety_case_empty_non_claims.synthetic.json
-```
-
-The negative fixtures enforce:
+Negative constitutional fixtures enforce:
 
 1. no promotion by prose;
 2. no hidden authority lane;
 3. non-claims are load-bearing.
 
+## Tier 2 planning lane
+
+Tier 2 v0.1 scope is governance over compositions.
+
+The Tier 2 planning document resolves:
+
+- scope call: compositions, not meta-governance;
+- Tier 2 invariants;
+- negative-test plan;
+- Tier 1 schema extension points;
+- formal-methods in-scope/deferred split;
+- Tier 2 CI passing definition;
+- explicit doctrine-only deferrals;
+- state block shape.
+
+No Tier 2 schemas, fixtures, validators, or runtime behavior are implemented yet.
+
 ## CI status
 
-Tier 1 adds:
+Tier 1 has:
 
 ```bash
 make governance-fabric-ci
@@ -123,15 +131,11 @@ This runs:
 python -m pytest -q tests/test_governance_fabric_tier1.py
 ```
 
-The repository's normal GitHub Actions CI runs `pytest -q`, so Tier 1 validation is part of the default PR path.
-
 Observed CI state:
 
 ```text
 PR #31 head CI: green
 PR #31 merged: yes
-main merge commit: 8746bcef68ba97c1b12c4e958d5c6fbcf309e8ba
-workflow_dispatch added: true
 CI Observation Ledger issue: #32
 main push receipt observed: yes
 receipt commit_sha: e639a4d0c1aaf94e0018ae0ae0e71609fb316a96
@@ -165,10 +169,11 @@ This repository currently does not claim:
 - deployed monitor-network decoder;
 - CP-SNARK evidence receipts;
 - post-quantum receipt implementation;
-- runtime integration with `superconscious` certificates.
+- runtime integration with `superconscious` certificates;
+- Tier 2 composition schemas or validators.
 
 ## Next bounded move
 
-Gate 2 is closed. ProCybernetica Tier 1 schema CI is merged and connector-observed green through the CI Observation Ledger.
+Review and merge the Tier 2 composition governance planning PR.
 
-Tier 2 planning is now unblocked, but no Tier 2 implementation should claim runtime status until it has its own schemas, fixtures, and CI gates.
+The first Tier 2 implementation PR should be limited to a composition-certificate schema, positive/negative deterministic fixtures, and a Tier 2 pytest harness.

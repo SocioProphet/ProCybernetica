@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/governance-fabric/authority_chain.v1.json",
+  "title": "Tier 1 Authority Chain",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "certificate_kind", "authority_chain_id", "created_at", "execution_status", "authority_path", "separation_of_powers", "ledger_entry"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "certificate_kind": {"const": "authority_chain"},
+    "authority_chain_id": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "execution_status": {"enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]},
+    "authority_path": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["role", "authority_id", "actor", "scope", "decision_power"], "properties": {"role": {"enum": ["policy_author", "runtime_executor", "evaluator", "promoter", "auditor", "monitor", "meta_monitor", "emergency_authority", "publisher"]}, "authority_id": {"type": "string"}, "actor": {"$ref": "#/$defs/actor"}, "scope": {"type": "string"}, "decision_power": {"enum": ["propose", "execute", "evaluate", "approve", "promote", "audit", "monitor", "publish", "override"]}}}},
+    "separation_of_powers": {"type": "object", "additionalProperties": false, "required": ["executor_is_not_sole_evaluator", "promoter_references_evidence", "monitor_independent_from_agent"], "properties": {"executor_is_not_sole_evaluator": {"type": "boolean"}, "promoter_references_evidence": {"type": "boolean"}, "monitor_independent_from_agent": {"type": "boolean"}}},
+    "ledger_entry": {"$ref": "#/$defs/ledger_entry"}
+  },
+  "$defs": {
+    "actor": {"type": "object", "additionalProperties": false, "required": ["actor_id", "actor_kind"], "properties": {"actor_id": {"type": "string"}, "actor_kind": {"enum": ["human", "agent", "service", "pipeline", "organization", "role"]}}},
+    "ledger_entry": {"type": "object", "additionalProperties": false, "required": ["event_id", "event_type", "created_at"], "properties": {"event_id": {"type": "string"}, "event_type": {"type": "string"}, "created_at": {"type": "string", "format": "date-time"}}}
+  }
+}

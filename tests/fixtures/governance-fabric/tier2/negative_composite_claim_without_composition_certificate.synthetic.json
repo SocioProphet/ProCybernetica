@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "cybernetic_safety_case",
+  "safety_case_id": "negative-composite-claim-without-certificate",
+  "created_at": "2026-05-12T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "claim": "Synthetic composite claim relying on multiple artifacts without a composition certificate.",
+  "scope": "Tier 2 negative fixture.",
+  "evidence_receipt_refs": [
+    {
+      "evidence_receipt_id": "evidence-a",
+      "evidence_receipt_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+    },
+    {
+      "evidence_receipt_id": "evidence-b",
+      "evidence_receipt_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ],
+  "authority_chain_ref": {
+    "authority_chain_id": "auth-chain-tier1-demo",
+    "authority_chain_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+  },
+  "monitor_alert_refs": [],
+  "off_history_refs": [],
+  "non_claims": ["Synthetic fixture only."],
+  "residual_risks": ["Missing composition certificate."],
+  "ledger_entry": {
+    "event_id": "negative-composite-claim-without-certificate-event",
+    "event_type": "safety_case_recorded",
+    "created_at": "2026-05-12T00:00:00Z"
+  }
+}

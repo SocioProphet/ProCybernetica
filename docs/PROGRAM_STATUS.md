@@ -35,7 +35,8 @@ ProCybernetica:
     planning_merge_commit: a9ee2d5b9d536986f1be9308ff6c2a6396cc5ec3
     planning_ci: green_via_ci_observation_ledger
     planning_ci_receipt_run_id: 25715320769
-    schema_ci: not_started
+    first_schema_branch: governance-fabric-tier2-composition-certificate
+    schema_ci: implementation_pr_pending
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -116,20 +117,54 @@ The Tier 2 planning document resolves:
 - explicit doctrine-only deferrals;
 - state block shape.
 
-No Tier 2 schemas, fixtures, validators, or runtime behavior are implemented yet.
+## Tier 2 composition certificate branch
+
+The first Tier 2 implementation branch is:
+
+```text
+governance-fabric-tier2-composition-certificate
+```
+
+Implemented on that branch:
+
+```text
+schemas/governance-fabric/composition_certificate.v1.json
+tests/fixtures/governance-fabric/tier2/composition_certificate.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composite_claim_without_composition_certificate.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composition_status_boundary.synthetic.json
+tests/fixtures/governance-fabric/tier2/negative_composition_missing_authority_coverage.synthetic.json
+tests/test_governance_fabric_tier2.py
+docs/governance-fabric/TIER2_SCHEMA_LANE.md
+make governance-fabric-tier2-ci
+```
+
+The branch implements flat v0.1 composition only:
+
+```text
+composition_order: 1
+recursive_composition_allowed: false
+```
+
+No recursive composition, meta-governance, runtime orchestration, or formal proof is claimed.
 
 ## CI status
 
 Tier 1 has:
 
 ```bash
-make governance-fabric-ci
+make governance-fabric-tier1-ci
 ```
 
-This runs:
+Tier 2 branch adds:
 
 ```bash
-python -m pytest -q tests/test_governance_fabric_tier1.py
+make governance-fabric-tier2-ci
+```
+
+Full governance fabric CI target:
+
+```bash
+make governance-fabric-ci
 ```
 
 Observed CI state:
@@ -170,19 +205,11 @@ This repository currently does not claim:
 - CP-SNARK evidence receipts;
 - post-quantum receipt implementation;
 - runtime integration with `superconscious` certificates;
-- Tier 2 composition schemas or validators.
+- recursive Tier 2 composition;
+- Tier 2 runtime behavior.
 
 ## Next bounded move
 
-First Tier 2 implementation PR:
+Open and review the first Tier 2 implementation PR.
 
-```text
-schemas/governance-fabric/composition_certificate.v1.json
-tests/fixtures/governance-fabric/tier2/composition_certificate.synthetic.json
-tests/fixtures/governance-fabric/tier2/negative_composite_claim_without_composition_certificate.synthetic.json
-tests/fixtures/governance-fabric/tier2/negative_composition_upgrades_execution_status.synthetic.json
-tests/test_governance_fabric_tier2.py
-make governance-fabric-tier2-ci
-```
-
-Keep the first implementation PR limited to composition-certificate schema, positive/negative deterministic fixtures, and Tier 2 pytest harness.
+Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.

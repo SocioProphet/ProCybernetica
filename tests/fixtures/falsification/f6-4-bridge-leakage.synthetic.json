@@ -1,0 +1,28 @@
+{
+  "fixture_kind": "falsification-observable-trigger",
+  "observable_id": "F6.4",
+  "observable_title": "Bridge isolation fails in measurable cases",
+  "trigger_condition_met": true,
+  "evidence": {
+    "tracer_id": "tracer-marker-7f3a2e",
+    "tracer_kind": "synthetic-isolation-marker",
+    "expected_isolation": {
+      "tenant": "tenant-A",
+      "trust_domain": "human-secure-profile"
+    },
+    "actual_appearance": {
+      "tenant": "tenant-A",
+      "trust_domain": "agent-runtime-profile",
+      "context_pack_id": "ctx-pack-agent-codex-001",
+      "appeared_at": "2026-04-22T11:30:00Z"
+    },
+    "leak_path": [
+      "browser-event:human-secure-profile",
+      "ops-history-event:export-policy-gap",
+      "context-pack:agent-runtime"
+    ]
+  },
+  "revision_triggered": true,
+  "revision_severity": "S1",
+  "revision_direction_documented": "Architectural revision of the bridge layer. Re-derive trust-domain boundaries with formal isolation guarantees. The leak path indicates cross-domain propagation that should have been isolated."
+}

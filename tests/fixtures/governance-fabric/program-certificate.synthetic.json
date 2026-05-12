@@ -1,0 +1,23 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "program_certificate",
+  "program_certificate_id": "program-cert-tier1-demo",
+  "created_at": "2026-05-11T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "programs": ["superconscious", "ProCybernetica"],
+  "superconscious_certificate_refs": [
+    {
+      "fragment_id": "m2-implementability-certificate-synthetic",
+      "fragment_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+      "certificate_kind": "m2-implementability-certificate"
+    }
+  ],
+  "procybernetica_safety_case_ref": {
+    "safety_case_id": "safety-case-tier1-demo",
+    "safety_case_sha256": "9999999999999999999999999999999999999999999999999999999999999999"
+  },
+  "composition_claim": "Synthetic fixture composes a Superconscious certificate reference into a ProCybernetica safety case.",
+  "evidence_receipt_refs": [{"evidence_receipt_id": "evidence-tier1-demo", "evidence_receipt_sha256": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"}],
+  "non_claims": ["Does not claim runtime execution in either program."],
+  "ledger_entry": {"event_id": "program-cert-tier1-demo-event", "event_type": "program_certificate_recorded", "created_at": "2026-05-11T00:00:00Z"}
+}

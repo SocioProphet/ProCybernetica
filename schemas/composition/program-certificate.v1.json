@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/composition/program-certificate.v1.json",
+  "title": "Tier 1 Cross-Program Certificate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "certificate_kind", "program_certificate_id", "created_at", "execution_status", "programs", "superconscious_certificate_refs", "procybernetica_safety_case_ref", "composition_claim", "evidence_receipt_refs", "non_claims", "ledger_entry"],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "certificate_kind": {"const": "program_certificate"},
+    "program_certificate_id": {"type": "string"},
+    "created_at": {"type": "string", "format": "date-time"},
+    "execution_status": {"enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]},
+    "programs": {"type": "array", "minItems": 2, "items": {"enum": ["superconscious", "ProCybernetica"]}},
+    "superconscious_certificate_refs": {"type": "array", "minItems": 1, "items": {"type": "object", "additionalProperties": false, "required": ["fragment_id", "fragment_sha256", "certificate_kind"], "properties": {"fragment_id": {"type": "string"}, "fragment_sha256": {"$ref": "#/$defs/sha256"}, "certificate_kind": {"type": "string"}}}},
+    "procybernetica_safety_case_ref": {"type": "object", "additionalProperties": false, "required": ["safety_case_id", "safety_case_sha256"], "properties": {"safety_case_id": {"type": "string"}, "safety_case_sha256": {"$ref": "#/$defs/sha256"}}},
+    "composition_claim": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/evidence_ref"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "ledger_entry": {"$ref": "#/$defs/ledger_entry"}
+  },
+  "$defs": {
+    "sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+    "evidence_ref": {"type": "object", "additionalProperties": false, "required": ["evidence_receipt_id", "evidence_receipt_sha256"], "properties": {"evidence_receipt_id": {"type": "string"}, "evidence_receipt_sha256": {"$ref": "#/$defs/sha256"}}},
+    "ledger_entry": {"type": "object", "additionalProperties": false, "required": ["event_id", "event_type", "created_at"], "properties": {"event_id": {"type": "string"}, "event_type": {"type": "string"}, "created_at": {"type": "string", "format": "date-time"}}}
+  }
+}

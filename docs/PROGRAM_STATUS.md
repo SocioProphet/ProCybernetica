@@ -51,6 +51,8 @@ ProCybernetica:
     nonclaim_analysis_merge_commit: b6d1ad9bb13d812eb72baed2fff5bc7a8ce6641e
     nonclaim_analysis_ci: green_via_ci_observation_ledger
     nonclaim_analysis_ci_receipt: observed_by_exact_ledger_search
+    monitor_independence_branch: governance-fabric-tier2-monitor-independence
+    monitor_independence_pr: pending
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -247,6 +249,31 @@ New invariants enforced:
 4. resolution records must appear in top-level `resolved_non_claims`;
 5. resolution records must cite evidence receipts declared in top-level `evidence_receipt_refs`.
 
+## Tier 2 monitor-independence branch
+
+The branch `governance-fabric-tier2-monitor-independence` adds optional monitor-independence analysis to composition certificates.
+
+Implemented on branch:
+
+```text
+composition_certificate.v1.json monitor_independence_analysis field
+composition_certificate.synthetic.json with independent monitor relationships
+negative_composition_shared_monitor.synthetic.json
+negative_composition_self_monitoring.synthetic.json
+negative_composition_monitor_cycle.synthetic.json
+updated tests/test_governance_fabric_tier2.py monitor-independence checks
+```
+
+Design posture:
+
+```text
+analysis_mode: declared_monitor_independence_v1
+distinct monitors when claimed
+self-monitoring forbidden when claimed
+acyclic monitor graph required when claimed
+runtime monitor attestation: deferred
+```
+
 ## CI status
 
 Tier 1 has:
@@ -322,14 +349,11 @@ This repository currently does not claim:
 - runtime receipt-store lookup;
 - embedded full receipt verification;
 - full semantic authority lattice beyond declared fixture scopes;
-- runtime verification of non-claim resolution evidence.
+- runtime verification of non-claim resolution evidence;
+- runtime monitor independence attestation.
 
 ## Next bounded move
 
-Next Tier 2 implementation slice:
+Open and review the Tier 2 monitor-independence composition checks PR.
 
-```text
-monitor-independence composition checks
-```
-
-Do not add recursive composition, meta-governance, runtime receipt-store lookup, runtime non-claim evidence verification, or formal proof machinery until flat v0.1 composition with receipt bindings, authority-scope checks, and structured non-claim analysis has been exercised further.
+Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.

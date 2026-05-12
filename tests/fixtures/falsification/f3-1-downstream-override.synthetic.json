@@ -1,0 +1,34 @@
+{
+  "fixture_kind": "falsification-observable-trigger",
+  "observable_id": "F3.1",
+  "observable_title": "Downstream components silently override Atlas decisions",
+  "trigger_condition_met": true,
+  "evidence": {
+    "atlas_decision_ref": {
+      "decision_id": "atlas-decision-deny-007",
+      "decision_outcome": "deny",
+      "certificate_id": "m2-rejected-feature-789",
+      "decided_at": "2026-04-15T10:00:00Z"
+    },
+    "downstream_actions_on_denied_certificate": [
+      {
+        "component": "memory-mesh",
+        "action": "memory-writeback",
+        "action_id": "memory-write-feature-789",
+        "performed_at": "2026-04-15T10:15:00Z",
+        "policy_decision_consulted": false
+      },
+      {
+        "component": "agentplane",
+        "action": "context-hydration",
+        "action_id": "hydration-feature-789-agent-codex",
+        "performed_at": "2026-04-15T10:22:00Z",
+        "policy_decision_consulted": false
+      }
+    ],
+    "gate_bypass_count": 2
+  },
+  "revision_triggered": true,
+  "revision_severity": "S1",
+  "revision_direction_documented": "Implement explicit fail-closed wiring at every downstream component boundary. Components must consult Atlas decisions before acting; absence of admission is structural denial."
+}

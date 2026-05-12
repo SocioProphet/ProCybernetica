@@ -1,0 +1,68 @@
+{
+  "schema_version": "procybernetica.harvest.v0",
+  "protocol": "OAI-PMH",
+  "harvest_plan": {
+    "plan_id": "harvest_plan:oai_pmh:token_loop",
+    "endpoint_id": "endpoint:example:oai",
+    "endpoint_url_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "verb": "ListRecords",
+    "metadata_prefix": "oai_dc",
+    "from": "2003-01-01",
+    "until": null,
+    "set": null,
+    "privacy_class": "public",
+    "retention_class": "normal",
+    "max_batches": 10,
+    "max_records": 1000
+  },
+  "policy_decision_ref": "policy.decision:oai_pmh_public_metadata:allow:v0",
+  "run": {
+    "run_id": "harvest_run:oai_pmh:token_loop",
+    "actor_id": "import_bridge:oai_pmh:example",
+    "trace_id": "trace:oai_pmh:token_loop",
+    "root_event_id": "harvest.plan.created:oai_pmh:token_loop",
+    "execution_authority": "agentplane",
+    "replay_artifact_ref": "agentplane.replay:oai_pmh:token_loop",
+    "status": "completed"
+  },
+  "batch_receipts": [
+    {
+      "batch_id": "batch:001",
+      "event_class": "harvest.batch.sealed",
+      "request_hash": "sha256:1111111111111111111111111111111111111111111111111111111111111111",
+      "response_hash": "sha256:2222222222222222222222222222222222222222222222222222222222222222",
+      "record_count": 100,
+      "previous_resumption_token_hash": null,
+      "next_resumption_token_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "previous_receipt_hash": null,
+      "receipt_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+      "observed_at": "2026-05-12T02:00:00Z",
+      "classification": "public_metadata",
+      "handling_tags": ["metadata", "external", "replayable"]
+    },
+    {
+      "batch_id": "batch:002",
+      "event_class": "harvest.batch.sealed",
+      "request_hash": "sha256:5555555555555555555555555555555555555555555555555555555555555555",
+      "response_hash": "sha256:6666666666666666666666666666666666666666666666666666666666666666",
+      "record_count": 100,
+      "previous_resumption_token_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "next_resumption_token_hash": "sha256:3333333333333333333333333333333333333333333333333333333333333333",
+      "previous_receipt_hash": "sha256:4444444444444444444444444444444444444444444444444444444444444444",
+      "receipt_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+      "observed_at": "2026-05-12T02:00:10Z",
+      "classification": "public_metadata",
+      "handling_tags": ["metadata", "external", "replayable"]
+    }
+  ],
+  "terminal_state": {
+    "completed": true,
+    "final_resumption_token_state": "empty",
+    "ledger_root_hash": "sha256:7777777777777777777777777777777777777777777777777777777777777777",
+    "total_batches": 2,
+    "total_records": 200
+  },
+  "validation_report_ref": "validation.report:oai_pmh:token_loop",
+  "anomalies": [],
+  "promotion_decisions": []
+}

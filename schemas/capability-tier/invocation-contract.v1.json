@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.dev/schemas/capability-tier/invocation-contract.v1.json",
+  "title": "Capability Tier Invocation Contract",
+  "description": "Optional field that a base-architecture artifact carries when it opts into the quantum dependency substrate capability tier. Absence of this field means base-architecture-only operation. Presence means the artifact references capability-tier schemas and inherits the tier's commitments.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "invocation_kind",
+    "ts_invoked",
+    "invoking_artifact_ref",
+    "invocation_authority",
+    "invoked_schemas",
+    "invocation_scope",
+    "tier_obligations_acknowledged",
+    "fallback_behavior"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0.0"},
+    "invocation_kind": {"const": "capability-tier-invocation-contract"},
+    "ts_invoked": {"type": "string", "format": "date-time"},
+    "invoking_artifact_ref": {
+      "type": "object",
+      "required": ["artifact_id", "artifact_kind", "artifact_content_sha256"],
+      "properties": {
+        "artifact_id": {"type": "string"},
+        "artifact_kind": {
+          "type": "string",
+          "description": "The kind of base-architecture artifact invoking the tier."
+        },
+        "artifact_content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+      },
+      "additionalProperties": false
+    },
+    "invocation_authority": {
+      "type": "object",
+      "required": ["authority_id", "authority_kind", "authority_layer", "capability_tier_authorization"],
+      "properties": {
+        "authority_id": {"type": "string"},
+        "authority_kind": {"type": "string", "enum": ["role", "individual", "service_account", "quorum"]},
+        "authority_layer": {
+          "type": "string",
+          "enum": ["institutional_truth", "grounded_schema"],
+          "description": "Capability tier invocation cannot be authorized at commonsense_prior layer; the tier's additional commitments require at least grounded_schema authorization."
+        },
+        "capability_tier_authorization": {
+          "type": "object",
+          "required": ["authorization_id", "authorization_content_sha256", "authorization_scope"],
+          "properties": {
+            "authorization_id": {"type": "string"},
+            "authorization_content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"},
+            "authorization_scope": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "string",
+                "enum": [
+                  "glass-break-governance",
+                  "multi-jurisdiction-composition",
+                  "planetary-scale-coordination",
+                  "counterfactual-adjudication",
+                  "experimental-use"
+                ]
+              },
+              "description": "Which use case(s) this invocation falls under. experimental-use is permitted but flagged for additional review."
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "invoked_schemas": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "required": ["schema_kind", "schema_ref"],
+        "properties": {
+          "schema_kind": {
+            "type": "string",
+            "enum": [
+              "dependency_control_graph",
+              "control_reachability_record",
+              "observability_partition",
+              "shared_dependency_ancestry",
+              "dependency_cancellation_record",
+              "adaptive_feedback_loop"
+            ]
+          },
+          "schema_ref": {
+            "type": "object",
+            "required": ["instance_id", "instance_content_sha256"],
+            "properties": {
+              "instance_id": {"type": "string"},
+              "instance_content_sha256": {"type": "string", "pattern": "^[a-f0-9]{64}$"}
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "invocation_scope": {
+      "type": "object",
+      "required": ["scope_kind", "scope_value"],
+      "properties": {
+        "scope_kind": {
+          "type": "string",
+          "enum": ["per-stele", "per-tenant", "per-deployment"],
+          "description": "Granularity at which this invocation operates."
+        },
+        "scope_value": {
+          "type": "object",
+          "description": "Scope-kind-specific value. For per-stele: Stele ID. For per-tenant: tenant identifier and enabling deployment. For per-deployment: deployment identifier with explicit capability_tier_enabled flag."
+        },
+        "composition_resolution": {
+          "type": "string",
+          "enum": [
+            "this_invocation_active",
+            "this_invocation_recorded_but_inactive",
+            "this_invocation_overridden_by_finer_grain"
+          ],
+          "description": "Composition outcome when this invocation composes with opt-ins at other layers."
+        }
+      },
+      "additionalProperties": false
+    },
+    "tier_obligations_acknowledged": {
+      "type": "object",
+      "required": [
+        "f8_1_observable_acknowledged",
+        "f8_2_observable_acknowledged",
+        "f8_3_observable_acknowledged_if_loop_invoked",
+        "additional_audit_burden_acknowledged"
+      ],
+      "properties": {
+        "f8_1_observable_acknowledged": {
+          "type": "boolean",
+          "description": "Acknowledges that dependency ancestry concentration above threshold forces structural revision."
+        },
+        "f8_2_observable_acknowledged": {
+          "type": "boolean",
+          "description": "Acknowledges that contradictions must produce explicit cancellation records within configured TTL."
+        },
+        "f8_3_observable_acknowledged_if_loop_invoked": {
+          "type": ["boolean", "null"],
+          "description": "Required true if adaptive_feedback_loop is in invoked_schemas. Otherwise null permitted."
+        },
+        "additional_audit_burden_acknowledged": {
+          "type": "boolean",
+          "description": "Acknowledges that capability tier invocation increases audit burden."
+        }
+      },
+      "additionalProperties": false
+    },
+    "fallback_behavior": {
+      "type": "object",
+      "required": ["if_capability_tier_unavailable", "if_invoked_schema_invalid", "if_composition_overridden"],
+      "properties": {
+        "if_capability_tier_unavailable": {
+          "type": "string",
+          "enum": ["fail_closed_base_only", "fail_closed_no_progress", "degrade_to_base_with_logged_warning"],
+          "description": "What the artifact does if the capability tier is not available at the deployment."
+        },
+        "if_invoked_schema_invalid": {
+          "type": "string",
+          "enum": ["reject_invocation_artifact_continues_base", "reject_artifact_entirely", "log_and_continue"]
+        },
+        "if_composition_overridden": {
+          "type": "string",
+          "enum": ["operate_as_base_only", "fail_closed", "escalate_to_curator"],
+          "description": "What happens when a lower-grain invocation is overridden by tenant or deployment settings."
+        }
+      },
+      "additionalProperties": false
+    },
+    "non_claims": {
+      "type": "array",
+      "items": {"type": "string"},
+      "description": "Should include: invocation does not retroactively change the base-architecture certificate chain; invocation operates additively, not substitutively."
+    }
+  },
+  "additionalProperties": false
+}

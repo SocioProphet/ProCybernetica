@@ -2,7 +2,7 @@
 
 ## Status
 
-This lane implements the first Tier 2 schema slice for Governance Fabric and two follow-up integration slices.
+This lane implements the first Tier 2 schema slice for Governance Fabric and three follow-up integration slices.
 
 Tier 2 v0.1 scope is governance over flat compositions. Recursive composition and meta-governance remain deferred.
 
@@ -18,6 +18,8 @@ Implemented fixtures:
 
 ```text
 tests/fixtures/governance-fabric/tier2/composition_certificate.synthetic.json
+tests/fixtures/governance-fabric/tier2/interpretability_composition_manifest.synthetic.json
+tests/fixtures/governance-fabric/tier2/interpretability_composition_negative_cases.synthetic.json
 tests/fixtures/governance-fabric/tier2/negative_composite_claim_without_composition_certificate.synthetic.json
 tests/fixtures/governance-fabric/tier2/negative_composition_status_boundary.synthetic.json
 tests/fixtures/governance-fabric/tier2/negative_composition_missing_authority_coverage.synthetic.json
@@ -87,6 +89,49 @@ comparison_mode: declared_scope_lattice_v1
 The static harness computes supported scope from constituent declarations plus the declared lattice. A broader scope supports narrower scopes declared by the lattice. Narrower scopes do not automatically support broader scopes.
 
 This closes the laundering path where a composition rule allows a broad scope but no constituent artifact actually supports it.
+
+## Interpretability composition slice
+
+This lane now includes a domain-specific synthetic composition for the generalized interpretability harness. The fixture is stored as a compact manifest rather than a hand-expanded certificate. The test harness deterministically expands it into a full Tier 2 composition certificate and validates the same schema and invariants as ordinary Tier 2 certificates.
+
+The interpretability manifest composes fourteen fragments:
+
+```text
+model_artifact
+sae_artifact
+feature_artifact
+feature_explanation
+feature_activation_set
+steering_intervention
+causal_triad
+attribution_graph
+off_target_audit
+manifold_baseline
+implementability_curve
+robustness_certificate
+benchmark_result
+public_interpretability_note
+```
+
+The schema extension is intentionally narrow: these interpretability fragment kinds are added to the Tier 2 artifact-kind enum. The schema does not introduce a generic free-form artifact escape hatch.
+
+The manifest also includes optional domain annotations for:
+
+```text
+authority_dependencies
+control_effects
+cancellation_bindings
+```
+
+These annotations exercise the hybrid-control-plane vocabulary as composition metadata only. They do not claim runtime authority-dependency graph execution, runtime cancellation, or recursive composition semantics.
+
+Negative interpretability cases are mutation-driven from the same manifest:
+
+```text
+remove_public_note_receipt_binding
+add_unsupported_runtime_steering_scope_allowed_by_rule
+add_runtime_steering_scope_without_rule_permission
+```
 
 ## Invariants enforced
 
@@ -178,6 +223,12 @@ Negative fixture:
 negative_composition_unsupported_authority_scope.synthetic.json
 ```
 
+### T2.11 — Domain annotations must reference known constituents
+
+Interpretability composition annotations for authority dependencies, control effects, and cancellation bindings must reference constituent artifact IDs in the same certificate.
+
+This prevents the annotation layer from smuggling unbound external authority, control effects, or cancellation triggers into a composition certificate.
+
 ## Runtime boundary
 
 This lane is schema/fixture/static-check only.
@@ -191,11 +242,14 @@ It does not claim:
 - TLA+/Alloy/Lean verification;
 - cryptographic receipts;
 - runtime receipt-store lookup;
-- full semantic authority lattice beyond declared fixture scopes.
+- full semantic authority lattice beyond declared fixture scopes;
+- runtime authority-dependency graph execution;
+- live interpretability steering or model execution.
 
 ## Next after merge
 
-If the authority-scope semantic comparison slice merges green, the next Tier 2 implementation slice should choose one of:
+After the interpretability composition slice merges green, the next Tier 2 implementation slice should choose one of:
 
 1. non-claim propagation/resolution schema refinement;
-2. monitor-independence composition checks.
+2. monitor-independence composition checks;
+3. ProCybernetica/SocioSphere handoff for governed interpretability release reporting.

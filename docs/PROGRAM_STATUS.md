@@ -39,6 +39,8 @@ ProCybernetica:
     first_schema_merge_commit: 73d2320767eebf2df485bab94b857b15080ceff0
     first_schema_ci: green_via_ci_observation_ledger
     first_schema_ci_receipt: observed_by_exact_ledger_search
+    evidence_receipt_integration_branch: governance-fabric-tier2-evidence-receipts
+    evidence_receipt_integration_pr: pending
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -146,6 +148,30 @@ recursive_composition_allowed: false
 
 No recursive composition, meta-governance, runtime orchestration, or formal proof is claimed.
 
+## Tier 2 evidence receipt integration branch
+
+The branch `governance-fabric-tier2-evidence-receipts` integrates hash-bound receipt references into composition certificates.
+
+Implemented on branch:
+
+```text
+composition_certificate.v1.json receipt_integration field
+composition_certificate.synthetic.json with receipt bindings
+negative_composition_missing_receipt_binding.synthetic.json
+negative_composition_unknown_receipt_binding.synthetic.json
+negative_composition_receipt_hash_mismatch.synthetic.json
+updated tests/test_governance_fabric_tier2.py receipt-binding checks
+```
+
+Design posture:
+
+```text
+integration_mode: hash_bound_reference
+runtime receipt-store lookup: deferred
+embedded full receipt verification: deferred
+recursive composition: still false
+```
+
 ## CI status
 
 Tier 1 has:
@@ -181,7 +207,7 @@ Tier 2 composition main receipt: success observed through exact CI Observation L
 CI Observation Ledger issue: #32
 ```
 
-The CI Observation Ledger converts CI state into connector-visible evidence. Issue #32 contains versioned JSON receipts posted by `github-actions[bot]` with `conclusion: success` for the relevant pull-request and push runs. For PR #37, the exact issue search for merge commit `73d2320767eebf2df485bab94b857b15080ceff0` plus `conclusion` and `success` returns the ledger issue; the full comment fetch is truncated before the receipt body in this connector view.
+The CI Observation Ledger converts CI state into connector-visible evidence. Issue #32 contains versioned JSON receipts posted by `github-actions[bot]` with `conclusion: success` for the relevant pull-request and push runs.
 
 ## Runtime status
 
@@ -208,15 +234,11 @@ This repository currently does not claim:
 - post-quantum receipt implementation;
 - runtime integration with `superconscious` certificates;
 - recursive Tier 2 composition;
-- Tier 2 runtime behavior.
+- Tier 2 runtime behavior;
+- runtime receipt-store lookup.
 
 ## Next bounded move
 
-Next Tier 2 implementation slice should choose one of:
+Open and review the Tier 2 evidence receipt integration PR.
 
-1. authority-scope semantic comparison;
-2. non-claim propagation/resolution schema refinement;
-3. monitor-independence composition checks;
-4. composition-certificate evidence receipt integration.
-
-Do not add recursive composition, meta-governance, or formal proof machinery until flat v0.1 composition has been exercised further.
+Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.

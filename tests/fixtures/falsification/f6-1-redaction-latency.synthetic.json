@@ -1,0 +1,30 @@
+{
+  "fixture_kind": "falsification-observable-trigger",
+  "observable_id": "F6.1",
+  "observable_title": "Redaction propagation latency exceeds tombstone TTL",
+  "detection_window": {
+    "start": "2026-05-05T00:00:00Z",
+    "end": "2026-05-11T23:59:59Z",
+    "window_kind": "rolling-7-day"
+  },
+  "trigger_condition_met": true,
+  "evidence": {
+    "tombstones_issued": 124,
+    "tombstones_with_ttl_violation": 9,
+    "violation_rate": 0.0726,
+    "threshold": 0.05,
+    "violating_tombstones": [
+      {
+        "tombstone_id": "tombstone-pii-marker-001",
+        "issued_at": "2026-05-06T14:00:00Z",
+        "ttl_seconds": 300,
+        "propagation_completion_at": "2026-05-06T14:08:00Z",
+        "actual_propagation_seconds": 480,
+        "overshoot_seconds": 180
+      }
+    ]
+  },
+  "revision_triggered": true,
+  "revision_severity": "S1",
+  "revision_direction_documented": "Either increase redaction lane priority and ensure cascade infrastructure can meet the TTL, or extend the configured TTL with documented operational consequences."
+}

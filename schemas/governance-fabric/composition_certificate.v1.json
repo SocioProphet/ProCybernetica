@@ -17,6 +17,7 @@
     "composition_authority_chain_ref",
     "composition_rule",
     "composed_authority_scope",
+    "receipt_integration",
     "propagated_non_claims",
     "resolved_non_claims",
     "off_history_refs",
@@ -55,6 +56,20 @@
       }
     },
     "composed_authority_scope": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "receipt_integration": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["integration_mode", "constituent_receipt_bindings", "composition_receipt_ref"],
+      "properties": {
+        "integration_mode": {"const": "hash_bound_reference"},
+        "constituent_receipt_bindings": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"$ref": "#/$defs/constituent_receipt_binding"}
+        },
+        "composition_receipt_ref": {"$ref": "#/$defs/evidence_ref"}
+      }
+    },
     "propagated_non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
     "resolved_non_claims": {"type": "array", "items": {"type": "string"}},
     "off_history_refs": {"type": "array", "items": {"$ref": "#/$defs/off_history_ref"}},
@@ -76,6 +91,31 @@
         "execution_status": {"$ref": "#/$defs/execution_status"},
         "authority_chain_id": {"type": "string"},
         "non_claims": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "constituent_receipt_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["constituent_artifact_id", "constituent_artifact_sha256", "receipt_refs"],
+      "properties": {
+        "constituent_artifact_id": {"type": "string"},
+        "constituent_artifact_sha256": {"$ref": "#/$defs/sha256"},
+        "receipt_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/receipt_ref"}
+        }
+      }
+    },
+    "receipt_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["receipt_kind", "receipt_id", "receipt_sha256", "schema_version"],
+      "properties": {
+        "receipt_kind": {"enum": ["evidence_receipt", "composition_certificate"]},
+        "receipt_id": {"type": "string"},
+        "receipt_sha256": {"$ref": "#/$defs/sha256"},
+        "schema_version": {"type": "string"}
       }
     },
     "authority_ref": {

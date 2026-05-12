@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "evidence_receipt",
+  "evidence_receipt_id": "evidence-tier1-demo",
+  "created_at": "2026-05-11T00:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "evidence_kind": "schema_fixture",
+  "subject_ref": "tests/fixtures/governance-fabric/allowed_action.synthetic.json",
+  "content_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+  "privacy": {"privacy_class": "P0_public", "evidence_mode": "hashed", "minimization_rationale": "Synthetic fixture references public, non-sensitive data."},
+  "producer": {"actor_id": "ci:governance-fabric", "actor_kind": "pipeline"},
+  "counterfactuals_addressable": [{"question_id": "cf-fixture-validates", "evidence_path": "/content_hash", "answer_form": "hash_match"}],
+  "ledger_entry": {"event_id": "evidence-tier1-demo-event", "event_type": "fragment_sealed", "created_at": "2026-05-11T00:00:00Z"}
+}

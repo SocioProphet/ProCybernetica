@@ -1,0 +1,25 @@
+{
+  "fixture_kind": "falsification-observable-trigger",
+  "observable_id": "F8.3",
+  "observable_title": "Adaptive feedback loop gain unbounded",
+  "trigger_condition_met": true,
+  "evidence": {
+    "loop_id": "reputation-stake-amplification-loop-001",
+    "loop_kind": "pneumachinalis-reputation-feedback",
+    "gain_measurements": [
+      {"measured_at": "2026-04-01T00:00:00Z", "gain": 0.87},
+      {"measured_at": "2026-04-15T00:00:00Z", "gain": 1.04},
+      {"measured_at": "2026-05-01T00:00:00Z", "gain": 1.18}
+    ],
+    "stability_threshold": 1.0,
+    "consecutive_reviews_above_threshold": 2,
+    "loop_structure": {
+      "observation": "reputation",
+      "control_input": "stake_authorization",
+      "feedback_path": "stake_outcomes_update_reputation"
+    }
+  },
+  "revision_triggered": true,
+  "revision_severity": "S1",
+  "revision_direction_documented": "Damping, gain reduction, or loop-breaking with explicit external adjudication. Stake outcomes are reinforcing reputation faster than reputation decay."
+}

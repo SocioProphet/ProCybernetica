@@ -43,6 +43,8 @@ ProCybernetica:
     evidence_receipt_integration_merge_commit: c3c288612a46167cb3b3a1c7f89f12faedb08962
     evidence_receipt_integration_ci: green_via_ci_observation_ledger
     evidence_receipt_integration_ci_receipt: observed_by_exact_ledger_search
+    authority_scope_branch: governance-fabric-tier2-authority-scope
+    authority_scope_pr: pending
     runtime_executed: false
   workflow_dispatch_available: true
   production_governance_runtime: false
@@ -181,6 +183,29 @@ New invariants enforced:
 3. receipt binding hash matches the referenced constituent artifact hash;
 4. top-level `evidence_receipt_refs` includes all hash-bound constituent receipts and the composition certificate receipt.
 
+## Tier 2 authority scope comparison branch
+
+The branch `governance-fabric-tier2-authority-scope` adds conservative declared-lattice authority-scope comparison to composition certificates.
+
+Implemented on branch:
+
+```text
+composition_certificate.v1.json authority_scope_analysis field
+composition_certificate.synthetic.json with constituent scope bindings
+negative_composition_unsupported_authority_scope.synthetic.json
+updated tests/test_governance_fabric_tier2.py authority-scope support checks
+```
+
+Design posture:
+
+```text
+comparison_mode: declared_scope_lattice_v1
+broader scope supports declared narrower scopes
+narrower scope does not imply broader scope
+runtime scope algebra: deferred
+formal scope lattice proof: deferred
+```
+
 ## CI status
 
 Tier 1 has:
@@ -248,14 +273,11 @@ This repository currently does not claim:
 - recursive Tier 2 composition;
 - Tier 2 runtime behavior;
 - runtime receipt-store lookup;
-- embedded full receipt verification.
+- embedded full receipt verification;
+- full semantic authority lattice beyond declared fixture scopes.
 
 ## Next bounded move
 
-Next Tier 2 implementation slice should choose one of:
+Open and review the Tier 2 authority-scope semantic comparison PR.
 
-1. authority-scope semantic comparison;
-2. non-claim propagation/resolution schema refinement;
-3. monitor-independence composition checks.
-
-Do not add recursive composition, meta-governance, runtime receipt-store lookup, or formal proof machinery until flat v0.1 composition with receipt bindings has been exercised further.
+Merge only after PR-head CI is green and then close the main-branch CI observation through the CI Observation Ledger.

@@ -16,6 +16,7 @@ This index captures the first doctrine bundle for the Interpretability-Backed Cy
 6. [`../monitor/MONITOR_NETWORK_AS_QEC.md`](../monitor/MONITOR_NETWORK_AS_QEC.md) — monitor networks as error-correcting systems.
 7. [`../assurance/PCP_REPLAY_AUDIT.md`](../assurance/PCP_REPLAY_AUDIT.md) — probabilistically checkable replay and audit artifacts.
 8. [`GAP_AUDIT_AND_READINESS_MATRIX.md`](GAP_AUDIT_AND_READINESS_MATRIX.md) — post-capture hardening matrix that defines lifecycle states, enums, schema-to-invariant traceability, non-claim structure, disclosure profiles, readiness levels, MVP trace requirements, CI checks, and cross-repo dependency boundaries.
+9. [`../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md`](../assurance/SOCIOPROPHET_PROOF_PACK_TEMPLATE.md) — reviewer-facing proof packet template for buyer, analyst, procurement, architecture, and gate reviews.
 
 ## Captured doctrine commitments
 
@@ -32,6 +33,12 @@ The bundle captures these commitments as doctrine, not loose notes:
 - release changes require delta governance;
 - authority concentration is measurable and gate-relevant;
 - public-safe assurance is publishable by default, with disciplined redaction.
+
+## Reviewer-facing proof packaging
+
+The proof pack template is the reviewer-facing packaging layer. It does not replace lower-level evidence receipts, action traces, release-delta reports, cybernetic safety cases, or non-claim objects. It organizes those artifacts for buyer, analyst, procurement, architecture, or gate review.
+
+The template adds product efficacy, governance/control, customer delivery/adoption, market proof, artifact manifest, redaction, upstream-aligned evidence exhibits, claim discipline, and final disposition sections.
 
 ## Post-capture hardening
 
@@ -70,6 +77,8 @@ Immediate implementation target:
 - `non_claim.v1.json`
 - `artifact_provenance.v1.json`
 - `validator_run_receipt.v1.json`
+- `proof_pack_manifest.v1.json`
+- `proof_pack_disposition.v1.json`
 
 ### Tier 2 — Formal foundations
 
@@ -90,8 +99,9 @@ Quantum constructor governance, counterfactual-quantum off-history, variational 
 3. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, and invalid promotion-by-prose.
 4. Add validators under `tools/` and CI entrypoints.
 5. Add MVP trace fixtures for allowed, blocked, and transformed actions.
-6. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry after schema names stabilize.
-7. Keep `superconscious` integration as a dependency issue only after its construction stabilizes and a concrete contract is required.
+6. Add proof-pack manifest and disposition schemas after evidence receipt and non-claim schemas stabilize.
+7. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry after schema names stabilize.
+8. Keep `superconscious` integration as a dependency issue only after its construction stabilizes and a concrete contract is required.
 
 ## Non-claims
 

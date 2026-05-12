@@ -1,0 +1,23 @@
+{
+  "fixture_kind": "falsification-observable-trigger",
+  "observable_id": "F1.2",
+  "observable_title": "graphbrain-contract artifact identifiers do not survive layer surgery",
+  "trigger_condition_met": true,
+  "evidence": {
+    "source_artifact_id": "network-artifact-base-001",
+    "source_content_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+    "surgery_plan_id": "layer-surgery-plan-truncate-last-block",
+    "surgery_plan_content_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+    "expected_output_content_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+    "actual_outputs_across_replays": [
+      "3333333333333333333333333333333333333333333333333333333333333333",
+      "4444444444444444444444444444444444444444444444444444444444444444",
+      "3333333333333333333333333333333333333333333333333333333333333333"
+    ],
+    "determinism_violations": 1,
+    "total_replays": 3
+  },
+  "revision_triggered": true,
+  "revision_severity": "S1",
+  "revision_direction_documented": "Surgery plan schema must include additional manifest fields to capture nondeterminism source, or artifact identity must include explicit nondeterminism flag with documented bounds."
+}

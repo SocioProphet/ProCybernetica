@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+from datetime import datetime
 from pathlib import Path
 
 import pytest
@@ -32,6 +33,14 @@ def validator(schema_path: Path) -> Draft202012Validator:
 
 def validate_schema_shape(instance: dict) -> None:
     validator(SCHEMA).validate(instance)
+
+
+def parse_zulu(value: str) -> datetime:
+    return datetime.fromisoformat(value.replace("Z", "+00:00"))
+
+
+def evidence_pair(ref: dict) -> tuple[str, str]:
+    return (ref["evidence_receipt_id"], ref["evidence_receipt_sha256"])
 
 
 def transitive_scope_closure(scopes: set[str], lattice_edges: list[dict]) -> set[str]:
@@ -177,8 +186,7 @@ def composition_invariant_errors(instance: dict) -> list[str]:
         declared_receipts_for_resolution = declared_evidence_pairs(instance)
         for record in non_claim_analysis.get("resolution_records", []):
             receipt = record["evidence_receipt_ref"]
-            pair = (receipt["evidence_receipt_id"], receipt["evidence_receipt_sha256"])
-            if pair not in declared_receipts_for_resolution:
+            if evidence_pair(receipt) not in declared_receipts_for_resolution:
                 errors.append("non_claim_analysis resolutions must cite declared evidence receipts")
                 break
 
@@ -196,8 +204,7 @@ def composition_invariant_errors(instance: dict) -> list[str]:
         declared_receipts_for_monitoring = declared_evidence_pairs(instance)
         for relationship in relationships:
             receipt = relationship["evidence_receipt_ref"]
-            pair = (receipt["evidence_receipt_id"], receipt["evidence_receipt_sha256"])
-            if pair not in declared_receipts_for_monitoring:
+            if evidence_pair(receipt) not in declared_receipts_for_monitoring:
                 errors.append("monitor_independence_analysis monitor attestations must cite declared evidence receipts")
                 break
 
@@ -216,6 +223,49 @@ def composition_invariant_errors(instance: dict) -> list[str]:
                 edges.setdefault(relationship["monitor_id"], set()).add(relationship["target_artifact_id"])
             if has_cycle(edges):
                 errors.append("monitor_independence_analysis requires an acyclic monitor graph")
+
+    freshness_analysis = instance.get("evidence_freshness_analysis")
+    if freshness_analysis is not None:
+        declared_receipts = declared_evidence_pairs(instance)
+        records = freshness_analysis.get("receipt_freshness_records", [])
+        record_receipts = {evidence_pair(record["receipt_ref"]) for record in records}
+        if not declared_receipts.issubset(record_receipts):
+            errors.append("evidence_freshness_analysis must cover every evidence receipt")
+
+        windows = {
+            window["receipt_class"]: window["max_age_seconds"]
+            for window in freshness_analysis.get("freshness_windows", [])
+        }
+        if any(record["receipt_class"] not in windows for record in records):
+            errors.append("evidence_freshness_analysis receipt classes must be declared in freshness_windows")
+
+        claim_time = parse_zulu(freshness_analysis["composition_claim_time"])
+        for record in records:
+            computed_age = int((claim_time - parse_zulu(record["receipt_creation_time"])).total_seconds())
+            if record["age_seconds"] != computed_age:
+                errors.append("evidence_freshness_analysis age_seconds must match receipt age")
+                break
+
+        for record in records:
+            if record["status"] == "fresh" and record["receipt_class"] in windows:
+                if record["age_seconds"] > windows[record["receipt_class"]]:
+                    errors.append("fresh evidence must be within declared freshness window")
+                    break
+
+        for record in records:
+            if record["status"] == "refreshed":
+                refresh_reference = record.get("refresh_reference")
+                if refresh_reference is None or evidence_pair(refresh_reference) not in declared_receipts:
+                    errors.append("refreshed evidence must cite a declared refresh receipt")
+                    break
+
+        propagated_or_resolved = set(instance.get("propagated_non_claims", [])) | set(instance.get("resolved_non_claims", []))
+        for record in records:
+            if record["status"] == "acknowledged_stale":
+                acknowledgment = record.get("stale_acknowledgment_ref")
+                if acknowledgment is None or acknowledgment not in propagated_or_resolved:
+                    errors.append("stale evidence acknowledgments must cite propagated or resolved non-claims")
+                    break
 
     artifacts_by_id = {
         item["artifact_id"]: item["artifact_sha256"]
@@ -260,6 +310,12 @@ def test_tier2_composition_certificate_valid_fixture() -> None:
     assert composition_invariant_errors(instance) == []
 
 
+def test_tier2_evidence_freshness_positive_fixture() -> None:
+    instance = load_json(FIXTURE_ROOT / "positive_composition_evidence_freshness_all_fresh.synthetic.json")
+    validate_schema_shape(instance)
+    assert composition_invariant_errors(instance) == []
+
+
 def test_negative_composite_claim_without_composition_certificate_fails_schema_or_static_gate() -> None:
     instance = load_json(FIXTURE_ROOT / "negative_composite_claim_without_composition_certificate.synthetic.json")
     # This fixture is intentionally a Tier 1 safety case, not a composition certificate.
@@ -271,50 +327,22 @@ def test_negative_composite_claim_without_composition_certificate_fails_schema_o
 @pytest.mark.parametrize(
     ("fixture_name", "expected_error"),
     [
-        (
-            "negative_composition_status_boundary.synthetic.json",
-            "composition cannot upgrade execution_status beyond weakest constituent",
-        ),
-        (
-            "negative_composition_missing_authority_coverage.synthetic.json",
-            "composition must cover every constituent authority chain",
-        ),
-        (
-            "negative_composition_missing_receipt_binding.synthetic.json",
-            "composition must bind receipts for every constituent artifact",
-        ),
-        (
-            "negative_composition_unknown_receipt_binding.synthetic.json",
-            "composition receipt bindings must not reference unknown constituent artifacts",
-        ),
-        (
-            "negative_composition_receipt_hash_mismatch.synthetic.json",
-            "composition receipt binding hash must match constituent artifact hash",
-        ),
-        (
-            "negative_composition_unsupported_authority_scope.synthetic.json",
-            "composed authority scope must be supported by constituent authority scopes",
-        ),
-        (
-            "negative_composition_unhandled_non_claim.synthetic.json",
-            "non_claim_analysis must propagate or resolve every source non-claim",
-        ),
-        (
-            "negative_composition_resolution_missing_evidence.synthetic.json",
-            "non_claim_analysis resolutions must cite declared evidence receipts",
-        ),
-        (
-            "negative_composition_shared_monitor.synthetic.json",
-            "monitor_independence_analysis requires distinct monitors for constituent artifacts",
-        ),
-        (
-            "negative_composition_self_monitoring.synthetic.json",
-            "monitor_independence_analysis forbids self-monitoring relationships",
-        ),
-        (
-            "negative_composition_monitor_cycle.synthetic.json",
-            "monitor_independence_analysis requires an acyclic monitor graph",
-        ),
+        ("negative_composition_status_boundary.synthetic.json", "composition cannot upgrade execution_status beyond weakest constituent"),
+        ("negative_composition_missing_authority_coverage.synthetic.json", "composition must cover every constituent authority chain"),
+        ("negative_composition_missing_receipt_binding.synthetic.json", "composition must bind receipts for every constituent artifact"),
+        ("negative_composition_unknown_receipt_binding.synthetic.json", "composition receipt bindings must not reference unknown constituent artifacts"),
+        ("negative_composition_receipt_hash_mismatch.synthetic.json", "composition receipt binding hash must match constituent artifact hash"),
+        ("negative_composition_unsupported_authority_scope.synthetic.json", "composed authority scope must be supported by constituent authority scopes"),
+        ("negative_composition_unhandled_non_claim.synthetic.json", "non_claim_analysis must propagate or resolve every source non-claim"),
+        ("negative_composition_resolution_missing_evidence.synthetic.json", "non_claim_analysis resolutions must cite declared evidence receipts"),
+        ("negative_composition_shared_monitor.synthetic.json", "monitor_independence_analysis requires distinct monitors for constituent artifacts"),
+        ("negative_composition_self_monitoring.synthetic.json", "monitor_independence_analysis forbids self-monitoring relationships"),
+        ("negative_composition_monitor_cycle.synthetic.json", "monitor_independence_analysis requires an acyclic monitor graph"),
+        ("negative_composition_unanalyzed_receipt.synthetic.json", "evidence_freshness_analysis must cover every evidence receipt"),
+        ("negative_composition_unbound_receipt_class.synthetic.json", "evidence_freshness_analysis receipt classes must be declared in freshness_windows"),
+        ("negative_composition_stale_evidence_claimed_fresh.synthetic.json", "fresh evidence must be within declared freshness window"),
+        ("negative_composition_refresh_without_evidence.synthetic.json", "refreshed evidence must cite a declared refresh receipt"),
+        ("negative_composition_stale_acknowledged_without_propagation.synthetic.json", "stale evidence acknowledgments must cite propagated or resolved non-claims"),
     ],
 )
 def test_tier2_static_negative_fixtures_fail_intended_invariants(
@@ -330,6 +358,7 @@ def test_tier2_static_negative_fixtures_fail_intended_invariants(
 def test_tier2_fixture_inventory_is_explicit() -> None:
     known = {
         "composition_certificate.synthetic.json",
+        "positive_composition_evidence_freshness_all_fresh.synthetic.json",
         "negative_composite_claim_without_composition_certificate.synthetic.json",
         "negative_composition_status_boundary.synthetic.json",
         "negative_composition_missing_authority_coverage.synthetic.json",
@@ -342,6 +371,11 @@ def test_tier2_fixture_inventory_is_explicit() -> None:
         "negative_composition_shared_monitor.synthetic.json",
         "negative_composition_self_monitoring.synthetic.json",
         "negative_composition_monitor_cycle.synthetic.json",
+        "negative_composition_unanalyzed_receipt.synthetic.json",
+        "negative_composition_unbound_receipt_class.synthetic.json",
+        "negative_composition_stale_evidence_claimed_fresh.synthetic.json",
+        "negative_composition_refresh_without_evidence.synthetic.json",
+        "negative_composition_stale_acknowledged_without_propagation.synthetic.json",
     }
     actual = {path.name for path in FIXTURE_ROOT.glob("*.json")}
     assert actual == known

@@ -1,6 +1,6 @@
 # Tier 2 Composition Invariants
 
-**Status:** v1.0 doctrine. Consolidates the Tier 2 composition invariant family. Cross-repo reference document.
+**Status:** v1.1 doctrine. Consolidates the Tier 2 composition invariant family. Cross-repo reference document.
 
 **Date:** May 12, 2026
 
@@ -10,30 +10,22 @@
 
 ## 1. What this document is
 
-This document is the canonical reference for the Tier 2 composition invariant family. It does three things:
-
-1. Names the structural pattern under which Tier 2 invariants are defined, enforced, and versioned.
-2. Catalogs the currently merged invariants as instances of that pattern.
-3. Specifies how future invariants extend the catalog without breaking the existing fixture corpus.
+This document is the canonical reference for the Tier 2 composition invariant family. It names the structural pattern under which Tier 2 invariants are defined, enforced, versioned, and consumed across repos.
 
 Repos that produce Tier 2 compositions reference this document rather than re-deriving the pattern. The pattern is plane-agnostic; only the content of specific invariants is plane-specific.
 
-## 2. Why consolidation matters
+## 2. The Tier 2 composition invariant pattern
 
-Without a single reference document, the invariant pattern would be re-derived in each repo that ships a Tier 2 composition. The re-derivation risks are:
+A Tier 2 composition invariant is defined by six elements:
 
-- inconsistent invariant shapes;
-- inconsistent boundary preservation;
-- inconsistent fixture conventions;
-- inconsistent versioning.
+1. analysis field;
+2. analysis mode;
+3. structural admission requirements;
+4. positive fixtures;
+5. negative fixtures;
+6. explicit non-claims.
 
-This document fixes all four by specifying the canonical pattern once and pointing planes at it.
-
-## 3. The Tier 2 composition invariant pattern
-
-A Tier 2 composition invariant is defined by six elements.
-
-### 3.1 Analysis field
+### 2.1 Analysis field
 
 A named field on the composition certificate schema that, when present, asserts the invariant applies and provides the structural data the invariant checks operate on.
 
@@ -48,9 +40,10 @@ Examples:
 ```text
 non_claim_analysis
 monitor_independence_analysis
+evidence_freshness_analysis
 ```
 
-### 3.2 Analysis mode
+### 2.2 Analysis mode
 
 A required string field inside the analysis field declaring which version of the invariant family is being applied.
 
@@ -65,6 +58,7 @@ Examples:
 ```text
 explicit_propagate_or_resolve_v1
 declared_monitor_independence_v1
+declared_evidence_freshness_v1
 ```
 
 The descriptor prefix carries boundary semantics:
@@ -73,39 +67,9 @@ The descriptor prefix carries boundary semantics:
 - `declared_` means the invariant operates on declarations, not verified runtime behavior.
 - Future descriptors may include `verified_`, `behavioral_`, `probabilistic_`, or `time_windowed_` when their semantics differ.
 
-### 3.3 Structural admission requirements
+## 3. Catalog of merged Tier 2 invariants
 
-A set of constraints expressed in JSON Schema or cross-field validation rules.
-
-Each constraint must be named, have a clear failure-mode statement, and be fixture-testable.
-
-### 3.4 Positive fixtures
-
-Synthetic fixtures that satisfy all of the invariant's constraints. These exercise the analysis field with valid data and confirm the schema admits the composition.
-
-### 3.5 Negative fixtures
-
-Synthetic fixtures that violate specific invariant constraints. Each negative fixture targets one named constraint failure.
-
-Filename pattern:
-
-```text
-negative_composition_<violation>.synthetic.json
-```
-
-### 3.6 Explicit non-claims
-
-A non-claims list documenting what the invariant analysis does not verify. Boundary statements distinguish structural-admission checks from runtime-semantic checks.
-
-At minimum, each mode must state:
-
-```text
-No runtime verification of <invariant content> is claimed.
-```
-
-## 4. Catalog of merged Tier 2 invariants
-
-### 4.1 Composition certificate baseline
+### 3.1 Composition certificate baseline
 
 **Status:** Merged in PR #37. Commit `73d2320767eebf2df485bab94b857b15080ceff0`.
 
@@ -141,7 +105,7 @@ negative_composition_missing_authority_coverage.synthetic.json
 - No runtime orchestration is claimed.
 - No formal hypergraph proof is claimed.
 
-### 4.2 Evidence receipt integration
+### 3.2 Evidence receipt integration
 
 **Status:** Merged in PR #38. Commit `c3c288612a46167cb3b3a1c7f89f12faedb08962`.
 
@@ -171,7 +135,7 @@ negative_composition_receipt_hash_mismatch.synthetic.json
 - No runtime receipt-store lookup is claimed.
 - No embedded full receipt verification is claimed.
 
-### 4.3 Authority scope comparison
+### 3.3 Authority scope comparison
 
 **Status:** Merged in PR #48. Commit `0b28e1fe66346b49554bbf51d62454008b42bce3`.
 
@@ -201,7 +165,7 @@ negative_composition_unsupported_authority_scope.synthetic.json
 - No formal scope-lattice proof is claimed.
 - No full semantic authority lattice beyond declared fixture scopes is claimed.
 
-### 4.4 Non-claim propagation
+### 3.4 Non-claim propagation
 
 **Status:** Merged in PR #54. Commit `b6d1ad9bb13d812eb72baed2fff5bc7a8ce6641e`.
 
@@ -237,7 +201,7 @@ negative_composition_resolution_missing_evidence.synthetic.json
 
 A `verified_propagate_or_resolve_v2` mode could require evidence receipts cited in resolution to carry a `resolves_claim_refs` array enumerating which claims they assert resolution of.
 
-### 4.5 Monitor independence
+### 3.5 Monitor independence
 
 **Status:** Merged in PR #55. Commit `9ed2983b7ccacccb10f0ec274359a97e31d2e4a9`.
 
@@ -274,41 +238,71 @@ negative_composition_monitor_cycle.synthetic.json
 
 A `verified_monitor_independence_v2` mode could require runtime-backed monitor attestation evidence. A `behavioral_monitor_independence_v2` mode could add statistical independence checks across monitor outputs.
 
-## 5. Pattern guarantees
+### 3.6 Evidence freshness
 
-Each catalog entry provides four operational guarantees.
+**Status:** Branch implementation for PR #57. Pending merge.
 
-### 5.1 Schema-level enforcement
+**Analysis field:** `evidence_freshness_analysis`
 
-The invariant is encoded in the composition certificate schema and static validation harness.
+**Analysis mode:** `declared_evidence_freshness_v1`
 
-### 5.2 Negative-fixture coverage
+**Concern:** Compositions can silently consolidate stale evidence. If evidence receipt R was produced at time T_R and the composition is issued at T_C, the time delta T_C - T_R is operationally meaningful. Stale evidence may have been superseded; the composition should acknowledge or refresh it.
 
-Every named failure mode has at least one negative fixture. The negative fixtures are not documentation; they are CI-asserted failure modes.
+**Structural admission requirements:**
 
-### 5.3 Mode versioning
+1. Freshness analysis must cover every top-level `evidence_receipt_refs` entry.
+2. Every freshness record's `receipt_class` must be declared in `freshness_windows`.
+3. A receipt with status `fresh` must have `age_seconds` within its declared class freshness window, and `age_seconds` must match `composition_claim_time - receipt_creation_time`.
+4. A receipt with status `refreshed` must cite a refresh receipt present in top-level `evidence_receipt_refs`.
+5. A receipt with status `acknowledged_stale` must cite a non-claim present in top-level `propagated_non_claims` or `resolved_non_claims`.
 
-The `analysis_mode` field locks the composition to a specific version of the invariant family. Future modes can land alongside existing modes without breaking the existing fixture corpus.
+**Negative fixtures:**
 
-### 5.4 Explicit boundary
+```text
+negative_composition_unanalyzed_receipt.synthetic.json
+negative_composition_unbound_receipt_class.synthetic.json
+negative_composition_stale_evidence_claimed_fresh.synthetic.json
+negative_composition_refresh_without_evidence.synthetic.json
+negative_composition_stale_acknowledged_without_propagation.synthetic.json
+```
 
-Every analysis mode includes non-claims about what is not verified. The boundary between structural checks and runtime semantic verification is documented per mode.
+**Non-claims:**
 
-## 6. How new Tier 2 invariants enter the catalog
+- No runtime verification of timestamp authenticity is claimed. Receipt creation times are declared values; the freshness analysis verifies internal consistency only.
+- Supersession chains are not transitively traversed. A future mode may walk the full supersession chain.
+- Freshness windows are declared by the composition issuer. v1 does not verify that the window values are appropriate for the receipt class.
+- The `receipt_class` taxonomy is composition-issuer-declared in v1.
+
+**Future v2 directions:**
+
+A `verified_evidence_freshness_v2` mode could require cryptographic timestamping or transparency-log inclusion proofs. A `policy_governed_evidence_freshness_v2` mode could require freshness windows to be declared by `policy-fabric`. A `taxonomy_governed_evidence_freshness_v2` mode could require receipt classes to come from a Tier 0 enum.
+
+## 4. Pattern guarantees
+
+Each catalog entry provides four operational guarantees:
+
+1. schema-level enforcement;
+2. negative-fixture coverage;
+3. mode versioning;
+4. explicit boundary.
+
+The negative fixtures are not documentation; they are CI-asserted failure modes.
+
+## 5. How new Tier 2 invariants enter the catalog
 
 A new Tier 2 invariant is added when:
 
 1. A composition failure mode is identified that the existing catalog does not address.
 2. A PR lands a schema field, analysis mode, structural admission requirements, positive fixtures, negative fixtures, and explicit non-claims.
-3. This document is updated with the new invariant under Section 4.
+3. This document is updated with the new invariant under the catalog section.
 
 The pattern is the contract. The content varies per concern.
 
-## 7. Cross-repo references
+## 6. Cross-repo references
 
 Repos that produce Tier 2 compositions should reference this document rather than re-derive the pattern.
 
-### 7.1 superconscious
+### 6.1 superconscious
 
 The certificate program produces Tier 2 compositions at multiple levels:
 
@@ -316,21 +310,21 @@ The certificate program produces Tier 2 compositions at multiple levels:
 - M5 public note: upstream certificates composed into a publication surface.
 - Interpretability harness release bundles: multiple interpretability artifacts composed into a public claim surface.
 
-Non-claim propagation applies directly. Monitor independence applies when the composition claims independent review or monitoring.
+Non-claim propagation applies directly. Monitor independence applies when the composition claims independent review or monitoring. Evidence freshness applies wherever constituent certificates or evidence receipts are reused after their creation time.
 
-### 7.2 sociosphere
+### 6.2 sociosphere
 
-The estate authority-dependency graph is structurally a Tier 2 composition. Non-claim propagation applies to each plane's authority limits. Monitor independence applies to AuthorityDependency monitor edges.
+The estate authority-dependency graph is structurally a Tier 2 composition. Non-claim propagation applies to each plane's authority limits. Monitor independence applies to AuthorityDependency monitor edges. Evidence freshness applies to graph snapshots and source receipts.
 
-### 7.3 policy-fabric
+### 6.3 policy-fabric
 
-Cancellation bindings that compose across multiple cancellation sources are Tier 2 compositions. Non-claim propagation applies. Monitor independence applies where cancellation monitors are claimed independent from cancellation targets.
+Cancellation bindings that compose across multiple cancellation sources are Tier 2 compositions. Non-claim propagation applies. Monitor independence applies where cancellation monitors are claimed independent from cancellation targets. Evidence freshness applies to policy evidence and cancellation receipts.
 
-### 7.4 agentplane
+### 6.4 agentplane
 
-Evidence receipt compositions that aggregate evidence from multiple runs are Tier 2 compositions. Non-claim propagation applies. Monitor independence may apply when evidence aggregation involves multiple independent witnesses.
+Evidence receipt compositions that aggregate evidence from multiple runs are Tier 2 compositions. Non-claim propagation applies. Monitor independence may apply when evidence aggregation involves multiple independent witnesses. Evidence freshness applies directly to run receipts.
 
-## 8. What this document does not commit to
+## 7. What this document does not commit to
 
 This document does not commit to:
 
@@ -340,54 +334,33 @@ This document does not commit to:
 - formal proof machinery;
 - cross-tier composition involving Tier 3+ recursive composition.
 
-## 9. Open extensions
+## 8. Open extensions
 
-Three Tier 2 invariants are plausible next slices.
+Two Tier 2 invariants remain plausible next slices but require dependency resolution.
 
-### 9.1 Evidence freshness analysis
-
-**Concern:** Compositions can silently consolidate stale evidence.
-
-**Proposed analysis mode:** `declared_evidence_freshness_v1`
-
-Probable invariants:
-
-- receipts must declare creation time;
-- freshness windows per receipt class must be declared;
-- receipts older than their window must be refreshed or acknowledged in non-claims;
-- supersession chains must resolve to the latest non-superseded receipt.
-
-### 9.2 Constituent authority concentration analysis
+### 8.1 Constituent authority concentration analysis
 
 **Concern:** Authority chains across constituents may concentrate around a single signer.
 
 **Proposed analysis mode:** `declared_authority_concentration_v1`
 
-Probable invariants:
+Dependency: signer/reputation weighting substrate.
 
-- distinct signers across constituents must be counted;
-- concentration index must be computed and declared;
-- shared signers must be enumerated;
-- concentration above threshold must become a non-claim or require additional evidence.
-
-### 9.3 Scope coverage analysis
+### 8.2 Scope coverage analysis
 
 **Concern:** Compositions can claim coverage that exceeds the union of constituent scopes.
 
 **Proposed analysis mode:** `declared_scope_coverage_v1`
 
-Probable invariants:
+Dependency: comparable scope lattice definition.
 
-- composition scope must be a subset of constituent scope union unless excess scope is independently justified;
-- scope expressions must use a declared comparable lattice;
-- excess scope must be explicitly declared and evidence-bound.
-
-## 10. Status
+## 9. Status
 
 ```text
-Document version:                v1.0
+Document version:                v1.1
 Merged invariants in catalog:    5
-Future invariants documented:    3
+Branch invariants pending:       1 (evidence freshness)
+Future invariants documented:    2
 Pattern definition:              Complete for v1 declared/explicit modes
 Boundary preservation:           Explicit per invariant
 Cross-repo references:           4

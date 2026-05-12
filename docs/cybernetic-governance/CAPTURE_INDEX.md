@@ -21,6 +21,7 @@ This index captures the first doctrine bundle for the Interpretability-Backed Cy
 11. [`../foundations/QUANTUM_CYBERNETIC_DEPENDENCE_CALCULUS.md`](../foundations/QUANTUM_CYBERNETIC_DEPENDENCE_CALCULUS.md) — dependency-control calculus aligning quantum unitary-dependence theory with governed agent/runtime systems.
 12. [`../capability-tiers/quantum-dependency-substrate-v0.1.md`](../capability-tiers/quantum-dependency-substrate-v0.1.md) — opt-in capability-tier doctrine for dependency-control calculus.
 13. [`../bridges/BRIDGE_SCHEMAS_V1_EXECUTION_PLAN.md`](../bridges/BRIDGE_SCHEMAS_V1_EXECUTION_PLAN.md) — bridge-schema tranche for OpsHistory→Pneumachinalis, Masonmark→certificate, and certificate→Atlas composition.
+14. [`../falsification/unified-falsification-v1.0.md`](../falsification/unified-falsification-v1.0.md) — unified falsification document with twenty observables, three meta-observables, severity classifications, fixture coverage, and quarterly review process.
 
 ## Captured doctrine commitments
 
@@ -37,6 +38,12 @@ The bundle captures these commitments as doctrine, not loose notes:
 - release changes require delta governance;
 - authority concentration is measurable and gate-relevant;
 - public-safe assurance is publishable by default, with disciplined redaction.
+
+## Unified falsification doctrine
+
+The falsification document binds the architecture to empirical revision triggers. It specifies twenty observables across layer boundaries, reasoning operations, reputation substrate, operational events, cross-spec composition, and the capability tier, plus three meta-observables for the falsification process itself.
+
+The companion fixture directory `tests/fixtures/falsification/` contains ten synthetic trigger fixtures for single-snapshot testability. Remaining observables require continuous monitoring or periodic audits.
 
 ## Capability tier doctrine
 
@@ -128,7 +135,7 @@ Immediate implementation target:
 
 ### Tier 2 — Formal foundations
 
-Hypergraph governance, constructor-theoretic evidence, causal monitoring, Birkhoff release delta, authority-concentration metrics, cryptographic evidence receipts, dependency-control calculus, supply-chain provenance, bridge schema cross-field validation, and formal-methods models.
+Hypergraph governance, constructor-theoretic evidence, causal monitoring, Birkhoff release delta, authority-concentration metrics, cryptographic evidence receipts, dependency-control calculus, supply-chain provenance, bridge schema cross-field validation, falsification coverage validation, and formal-methods models.
 
 ### Tier 3 — Mathematical extensions
 
@@ -143,13 +150,13 @@ Quantum constructor governance, counterfactual-quantum off-history, variational 
 1. Add canonical enums and lifecycle schemas.
 2. Add Tier 1 schema bundle under `schemas/cybernetic-governance/` with `implements_invariants` traceability.
 3. Add bridge schemas and cross-field validators for OpsHistory→Pneumachinalis, Masonmark→certificate, and certificate→Atlas.
-4. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, invalid promotion-by-prose, AgentPlane run capsule/tool grant/action dispatch paths, bridge positive/negative cases, and dependency-control reachability/observability/cancellation paths.
-5. Add validators under `tools/` and CI entrypoints.
+4. Add fixtures for allowed action, blocked action, transformed safe-completion action, release-delta promotion, invalid promotion-by-prose, AgentPlane run capsule/tool grant/action dispatch paths, bridge positive/negative cases, dependency-control reachability/observability/cancellation paths, and falsification observable triggers.
+5. Add validators under `tools/` and CI entrypoints, including falsification coverage validation.
 6. Add MVP trace fixtures for allowed, blocked, and transformed actions.
 7. Add proof-pack manifest and disposition schemas after evidence receipt and non-claim schemas stabilize.
 8. Add AgentPlane runtime binding schemas after authority, action trace, tool permission, off-history, and evidence receipt schemas stabilize.
 9. Add dependency-control graph schemas after core run/action/evidence schemas stabilize.
-10. Draft falsification document v1.0 covering F1.x–F8.x.
+10. Implement falsification CI for markdown structure, fixture validation, CI coverage, and layer coverage.
 11. Open integration issues for Prophet Platform eval fabric and SocioSphere safety-case registry after schema names stabilize.
 12. Keep `superconscious` integration as a dependency issue only after its construction stabilizes and a concrete contract is required.
 

@@ -17,6 +17,7 @@
     "composition_authority_chain_ref",
     "composition_rule",
     "composed_authority_scope",
+    "authority_scope_analysis",
     "receipt_integration",
     "propagated_non_claims",
     "resolved_non_claims",
@@ -56,6 +57,31 @@
       }
     },
     "composed_authority_scope": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "authority_scope_analysis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["comparison_mode", "constituent_scope_bindings", "scope_lattice", "semantic_comparison_claim"],
+      "properties": {
+        "comparison_mode": {"const": "declared_scope_lattice_v1"},
+        "constituent_scope_bindings": {
+          "type": "array",
+          "minItems": 2,
+          "items": {"$ref": "#/$defs/constituent_scope_binding"}
+        },
+        "scope_lattice": {
+          "type": "array",
+          "items": {"$ref": "#/$defs/scope_lattice_edge"}
+        },
+        "semantic_comparison_claim": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["composed_scope_must_be_supported_by_constituents"],
+          "properties": {
+            "composed_scope_must_be_supported_by_constituents": {"const": true}
+          }
+        }
+      }
+    },
     "receipt_integration": {
       "type": "object",
       "additionalProperties": false,
@@ -91,6 +117,24 @@
         "execution_status": {"$ref": "#/$defs/execution_status"},
         "authority_chain_id": {"type": "string"},
         "non_claims": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "constituent_scope_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["constituent_artifact_id", "declared_scopes"],
+      "properties": {
+        "constituent_artifact_id": {"type": "string"},
+        "declared_scopes": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "scope_lattice_edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["narrower_scope", "broader_scope"],
+      "properties": {
+        "narrower_scope": {"type": "string"},
+        "broader_scope": {"type": "string"}
       }
     },
     "constituent_receipt_binding": {

@@ -34,6 +34,36 @@ def validate_schema_shape(instance: dict) -> None:
     validator(SCHEMA).validate(instance)
 
 
+def transitive_scope_closure(scopes: set[str], lattice_edges: list[dict]) -> set[str]:
+    """Return all scopes supported by a set of declared scopes.
+
+    A constituent that supports a broader scope also supports any narrower scope
+    declared by the lattice edge narrower_scope -> broader_scope. It does not
+    automatically support broader scopes.
+    """
+    closure = set(scopes)
+    changed = True
+    while changed:
+        changed = False
+        for edge in lattice_edges:
+            narrower = edge["narrower_scope"]
+            broader = edge["broader_scope"]
+            if broader in closure and narrower not in closure:
+                closure.add(narrower)
+                changed = True
+    return closure
+
+
+def supported_authority_scopes(instance: dict) -> set[str]:
+    analysis = instance.get("authority_scope_analysis", {})
+    declared = {
+        scope
+        for binding in analysis.get("constituent_scope_bindings", [])
+        for scope in binding.get("declared_scopes", [])
+    }
+    return transitive_scope_closure(declared, analysis.get("scope_lattice", []))
+
+
 def composition_invariant_errors(instance: dict) -> list[str]:
     errors: list[str] = []
 
@@ -57,6 +87,18 @@ def composition_invariant_errors(instance: dict) -> list[str]:
     composed = set(instance.get("composed_authority_scope", []))
     if not composed.issubset(allowed):
         errors.append("composed authority scope exceeds allowed composition rule scope")
+
+    analysis = instance.get("authority_scope_analysis", {})
+    artifact_ids = {item["artifact_id"] for item in instance.get("constituent_artifacts", [])}
+    scope_binding_ids = {binding.get("constituent_artifact_id") for binding in analysis.get("constituent_scope_bindings", [])}
+    if artifact_ids - scope_binding_ids:
+        errors.append("authority scope analysis must bind every constituent artifact")
+    if scope_binding_ids - artifact_ids:
+        errors.append("authority scope analysis must not reference unknown constituent artifacts")
+
+    supported_scopes = supported_authority_scopes(instance)
+    if not composed.issubset(supported_scopes):
+        errors.append("composed authority scope must be supported by constituent authority scopes")
 
     constituent_non_claims = {
         non_claim
@@ -144,6 +186,10 @@ def test_negative_composite_claim_without_composition_certificate_fails_schema_o
             "negative_composition_receipt_hash_mismatch.synthetic.json",
             "composition receipt binding hash must match constituent artifact hash",
         ),
+        (
+            "negative_composition_unsupported_authority_scope.synthetic.json",
+            "composed authority scope must be supported by constituent authority scopes",
+        ),
     ],
 )
 def test_tier2_static_negative_fixtures_fail_intended_invariants(
@@ -165,6 +211,7 @@ def test_tier2_fixture_inventory_is_explicit() -> None:
         "negative_composition_missing_receipt_binding.synthetic.json",
         "negative_composition_unknown_receipt_binding.synthetic.json",
         "negative_composition_receipt_hash_mismatch.synthetic.json",
+        "negative_composition_unsupported_authority_scope.synthetic.json",
     }
     actual = {path.name for path in FIXTURE_ROOT.glob("*.json")}
     assert actual == known

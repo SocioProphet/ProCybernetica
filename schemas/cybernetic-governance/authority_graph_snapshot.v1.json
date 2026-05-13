@@ -1,0 +1,49 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/authority_graph_snapshot.v1.json",
+  "title": "Authority Graph Snapshot",
+  "description": "Snapshot of authority roles, edges, concentration risks, and separation-of-powers posture for governed systems.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "authority_graph_snapshot_id", "scope_ref", "nodes", "edges", "authority_concentration_index", "separation_of_powers_status", "evidence_receipt_refs", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "authority_graph_snapshot_id": {"type": "string", "minLength": 1},
+    "scope_ref": {"type": "string", "minLength": 1},
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["node_ref", "role"],
+        "properties": {
+          "node_ref": {"type": "string"},
+          "role": {"type": "string"},
+          "autonomy_tier": {"$ref": "enums.v1.json#/$defs/autonomy_tier"}
+        }
+      }
+    },
+    "edges": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["from_ref", "to_ref", "edge_type"],
+        "properties": {
+          "from_ref": {"type": "string"},
+          "to_ref": {"type": "string"},
+          "edge_type": {"type": "string"},
+          "policy_ref": {"type": "string"}
+        }
+      }
+    },
+    "authority_concentration_index": {"type": "number", "minimum": 0},
+    "separation_of_powers_status": {"type": "string", "enum": ["satisfied", "exception_declared", "violated", "unknown"]},
+    "role_collision_refs": {"type": "array", "items": {"type": "string"}},
+    "mitigation_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "authority_graph_snapshot_id": "authority-graph:demo:1", "scope_ref": "workspace:demo", "nodes": [{"node_ref": "agent:demo", "role": "proposer", "autonomy_tier": "supervised_agent"}], "edges": [], "authority_concentration_index": 0.1, "separation_of_powers_status": "satisfied", "evidence_receipt_refs": ["receipt:demo:1"], "implements_invariants": ["invariant_0_5_separation_of_powers", "invariant_0_15_frontier_claims_require_metrics"]}]
+}

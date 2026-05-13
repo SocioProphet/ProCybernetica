@@ -1,0 +1,134 @@
+{
+  "schema_version": "1.0.0",
+  "certificate_kind": "triune_admission_pack",
+  "admission_pack_id": "triune-admission-2026-05-13-i4",
+  "created_at": "2026-05-13T13:00:00Z",
+  "execution_status": "synthetic_fixture",
+  "candidate": {
+    "cluster_member_id": "i4",
+    "cluster_name": "inception-i4",
+    "member_role": "faithful_candidate",
+    "trust_domain": "lab_airgapped",
+    "status": "dry_run"
+  },
+  "proof_pack": {
+    "event_ir_snapshot_ref": "evidence/event-ir/i4/2026-05-13T130000Z.json",
+    "proof_artifact_refs": [
+      "evidence/proofs/i4/policy-dry-run.json",
+      "evidence/proofs/i4/resource-baseline.json"
+    ],
+    "sbom_ref": "sbom/i4/spdx.json",
+    "signature_refs": [
+      "cosign://registry.local/triune/inception-i4@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    ],
+    "image_refs": [
+      "registry.local/triune/herald-agent@sha256:0000000000000000000000000000000000000000000000000000000000000000"
+    ],
+    "network_policy_ref": "examples/triune/networkpolicy/default-deny.yaml"
+  },
+  "policy_dry_run": {
+    "dry_run_id": "dry-run-i4-2026-05-13",
+    "result": "pass",
+    "checked_policies": [
+      "default-deny-networkpolicy",
+      "signed-images-required",
+      "no-privileged-pods",
+      "no-host-pid",
+      "resource-limits-required"
+    ],
+    "violations": []
+  },
+  "epsilon_gate": {
+    "schema_version": "1.0.0",
+    "certificate_kind": "triune_epsilon_gate",
+    "epsilon_gate_id": "epsilon-gate-i4-2026-05-13",
+    "created_at": "2026-05-13T13:00:00Z",
+    "execution_status": "synthetic_fixture",
+    "alpha": 0.0073,
+    "scale_limits": {
+      "micro_multiplier": 1.0,
+      "meso_multiplier": 2.0,
+      "macro_median_multiplier": 3.0,
+      "macro_p95_multiplier": 4.0
+    },
+    "measurements": [
+      {
+        "cluster_member_id": "i4",
+        "scale": "micro",
+        "epsilon": 0.0032,
+        "epsilon_hat": 0.0035,
+        "epsilon_eff": 0.0035,
+        "measured_at": "2026-05-13T12:55:00Z"
+      },
+      {
+        "cluster_member_id": "i4",
+        "scale": "meso",
+        "epsilon": 0.006,
+        "epsilon_hat": 0.0068,
+        "epsilon_eff": 0.0068,
+        "measured_at": "2026-05-13T12:56:00Z"
+      },
+      {
+        "cluster_member_id": "i4",
+        "scale": "macro",
+        "epsilon": 0.012,
+        "epsilon_hat": 0.013,
+        "epsilon_eff": 0.013,
+        "measured_at": "2026-05-13T12:57:00Z"
+      }
+    ],
+    "boundary_axes": {
+      "network_escape": {
+        "value": 0.1,
+        "threshold": 1.0
+      },
+      "privilege_drift": {
+        "value": 0.0,
+        "threshold": 1.0
+      },
+      "identity_ambiguity": {
+        "value": 0.2,
+        "threshold": 1.0
+      },
+      "lambda_b": {
+        "value": 0.18,
+        "threshold": 1.0
+      }
+    },
+    "decision": {
+      "gate_result": "pass",
+      "action": "allow",
+      "rationale": "Synthetic candidate remains under alpha-derived epsilon limits and boundary-axis thresholds."
+    },
+    "non_claims": [
+      "Synthetic fixture only; does not prove a live cluster was admitted.",
+      "No cryptographic signature verification is performed by the structural validator."
+    ],
+    "ledger_entry": {
+      "event_id": "ledger-triune-epsilon-i4-2026-05-13",
+      "event_type": "triune.epsilon_gate.synthetic",
+      "created_at": "2026-05-13T13:00:00Z"
+    }
+  },
+  "admission_decision": {
+    "status": "proposed",
+    "requested_role": "faithful_member",
+    "authority_chain_ref": "authority/host-only-signoff.v1",
+    "approvals": []
+  },
+  "reversal_plan": {
+    "rollback_action": "remove ClusterMesh peer or KubeFed member, revoke service credentials, and restore deny-all egress",
+    "quarantine_action": "move workloads to quarantine namespace and cut cross-cluster service discovery",
+    "maximum_time_to_revoke_seconds": 300
+  },
+  "non_claims": [
+    "This admission pack is synthetic and public-safe.",
+    "It does not claim production readiness or live runtime execution.",
+    "Host approval remains required before an observed candidate becomes admitted."
+  ],
+  "ledger_entry": {
+    "event_id": "ledger-triune-admission-i4-2026-05-13",
+    "event_type": "triune.admission.synthetic",
+    "created_at": "2026-05-13T13:00:00Z"
+  }
+}

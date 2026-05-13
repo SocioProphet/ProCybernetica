@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/agent_action_trace.v1.json",
+  "title": "Agent Action Trace",
+  "description": "Trace record for a governed action performed or proposed by an agent, tool, operator, workflow, or runtime node.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "trace_id", "actor_ref", "action_type", "target_ref", "authority_chain_ref", "side_effect_class", "replay_class", "evidence_receipt_refs", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "trace_id": {"type": "string", "minLength": 1},
+    "actor_ref": {"type": "string", "minLength": 1},
+    "action_type": {"type": "string", "minLength": 1},
+    "target_ref": {"type": "string", "minLength": 1},
+    "tool_or_subsystem_ref": {"type": "string"},
+    "authority_chain_ref": {"type": "string", "minLength": 1},
+    "permission_scope_ref": {"type": "string"},
+    "pre_state_ref": {"type": "string"},
+    "post_state_ref": {"type": "string"},
+    "side_effect_class": {"$ref": "enums.v1.json#/$defs/reversibility_class"},
+    "replay_class": {"type": "string", "enum": ["exact", "best_effort", "evidence_only", "non_replayable"]},
+    "monitor_alert_refs": {"type": "array", "items": {"type": "string"}},
+    "off_history_evidence_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "trace_id": "trace:demo:1", "actor_ref": "agent:demo", "action_type": "propose_patch", "target_ref": "repo:demo", "authority_chain_ref": "authority:demo:1", "side_effect_class": "mostly_reversible", "replay_class": "evidence_only", "evidence_receipt_refs": ["receipt:demo:1"], "implements_invariants": ["invariant_0_2_no_action_without_trace"]}]
+}

@@ -1,0 +1,34 @@
+name: lawful-metadata-harvest
+
+on:
+  pull_request:
+    paths:
+      - "docs/patterns/lawful-metadata-harvesting.md"
+      - "schemas/harvest/**"
+      - "examples/harvest/**"
+      - "tools/validate_lawful_metadata_harvest.py"
+      - ".github/workflows/lawful-metadata-harvest.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "docs/patterns/lawful-metadata-harvesting.md"
+      - "schemas/harvest/**"
+      - "examples/harvest/**"
+      - "tools/validate_lawful_metadata_harvest.py"
+      - ".github/workflows/lawful-metadata-harvest.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate lawful metadata harvest fixtures
+        run: python tools/validate_lawful_metadata_harvest.py

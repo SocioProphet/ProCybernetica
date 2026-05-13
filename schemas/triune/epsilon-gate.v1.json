@@ -1,0 +1,100 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/triune/epsilon-gate.v1.json",
+  "title": "Triune Epsilon Gate",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "certificate_kind",
+    "epsilon_gate_id",
+    "created_at",
+    "execution_status",
+    "alpha",
+    "scale_limits",
+    "measurements",
+    "boundary_axes",
+    "decision",
+    "non_claims",
+    "ledger_entry"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "certificate_kind": { "const": "triune_epsilon_gate" },
+    "epsilon_gate_id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "execution_status": {
+      "enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]
+    },
+    "alpha": { "type": "number", "exclusiveMinimum": 0, "default": 0.0073 },
+    "scale_limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["micro_multiplier", "meso_multiplier", "macro_median_multiplier", "macro_p95_multiplier"],
+      "properties": {
+        "micro_multiplier": { "type": "number", "exclusiveMinimum": 0 },
+        "meso_multiplier": { "type": "number", "exclusiveMinimum": 0 },
+        "macro_median_multiplier": { "type": "number", "exclusiveMinimum": 0 },
+        "macro_p95_multiplier": { "type": "number", "exclusiveMinimum": 0 }
+      }
+    },
+    "measurements": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["cluster_member_id", "scale", "epsilon", "epsilon_hat", "epsilon_eff", "measured_at"],
+        "properties": {
+          "cluster_member_id": { "type": "string" },
+          "scale": { "enum": ["micro", "meso", "macro"] },
+          "epsilon": { "type": "number", "minimum": 0 },
+          "epsilon_hat": { "type": "number", "minimum": 0 },
+          "epsilon_eff": { "type": "number", "minimum": 0 },
+          "measured_at": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "boundary_axes": {
+      "type": "object",
+      "minProperties": 1,
+      "additionalProperties": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["value", "threshold"],
+        "properties": {
+          "value": { "type": "number" },
+          "threshold": { "type": "number", "exclusiveMinimum": 0 }
+        }
+      }
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_result", "action"],
+      "properties": {
+        "gate_result": { "enum": ["pass", "warn", "fail", "freeze"] },
+        "action": { "enum": ["allow", "damp", "align", "freeze", "revert", "reject"] },
+        "rationale": { "type": "string" }
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "ledger_entry": { "$ref": "#/$defs/ledger_entry" }
+  },
+  "$defs": {
+    "ledger_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_type", "created_at"],
+      "properties": {
+        "event_id": { "type": "string" },
+        "event_type": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

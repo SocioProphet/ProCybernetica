@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/cybernetic_safety_case.v1.json",
+  "title": "Cybernetic Safety Case",
+  "description": "Structured safety case for a governed artifact, action profile, release, model-mediated workflow, or public assurance claim.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "safety_case_id", "subject_ref", "claim", "scope", "non_claims", "authority_chain_ref", "threat_model_ref", "evidence_receipt_refs", "residual_risk", "promotion_decision_ref", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "safety_case_id": {"type": "string", "minLength": 1},
+    "subject_ref": {"type": "string", "minLength": 1},
+    "claim": {"type": "string", "minLength": 1},
+    "scope": {"type": "string", "minLength": 1},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "authority_chain_ref": {"type": "string", "minLength": 1},
+    "threat_model_ref": {"type": "string", "minLength": 1},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "gates_passed": {"type": "array", "items": {"type": "string"}},
+    "gates_failed": {"type": "array", "items": {"type": "string"}},
+    "residual_risk": {"$ref": "enums.v1.json#/$defs/severity_tier"},
+    "privacy_boundary_ref": {"type": "string"},
+    "release_delta_report_ref": {"type": "string"},
+    "incident_record_refs": {"type": "array", "items": {"type": "string"}},
+    "replay_status": {"type": "string", "enum": ["exact", "best_effort", "evidence_only", "non_replayable", "unknown"]},
+    "publication_status": {"type": "string", "enum": ["not_public", "public_safe", "redacted", "sealed", "blocked"]},
+    "promotion_decision_ref": {"type": "string", "minLength": 1},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "safety_case_id": "safety-case:demo:1", "subject_ref": "artifact:demo", "claim": "Synthetic fixture validates schema shape.", "scope": "schema fixture only", "non_claims": ["Does not prove runtime behavior."], "authority_chain_ref": "authority:demo:1", "threat_model_ref": "threat-model:demo", "evidence_receipt_refs": ["receipt:demo:1"], "residual_risk": "low", "promotion_decision_ref": "promotion:demo:1", "implements_invariants": ["invariant_0_10_claims_require_non_claims", "invariant_0_13_safety_case_before_frontier_promotion"]}]
+}

@@ -18,6 +18,35 @@
     "non_claims",
     "ledger_entry"
   ],
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "epsilon_gate_passed": { "const": true }
+        },
+        "required": ["epsilon_gate_passed"]
+      },
+      "then": {
+        "required": ["dry_run_output_hash", "dry_run_evidence_ref"]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "decision": {
+            "properties": {
+              "gate_result": { "const": "pass" }
+            },
+            "required": ["gate_result"]
+          }
+        },
+        "required": ["decision"]
+      },
+      "then": {
+        "required": ["dry_run_output_hash", "dry_run_evidence_ref"]
+      }
+    }
+  ],
   "properties": {
     "schema_version": { "const": "1.0.0" },
     "certificate_kind": { "const": "triune_epsilon_gate" },
@@ -27,6 +56,20 @@
       "enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]
     },
     "alpha": { "type": "number", "exclusiveMinimum": 0, "default": 0.0073 },
+    "epsilon_gate_passed": {
+      "type": "boolean",
+      "description": "Administrative convenience flag. When true, dry_run_output_hash and dry_run_evidence_ref are required so the pass claim is hash-bound to the dry-run output."
+    },
+    "dry_run_output_hash": {
+      "type": "string",
+      "pattern": "^[a-fA-F0-9]{64}$",
+      "description": "SHA-256 or equivalent content hash of the dry-run output. Required when the epsilon gate is recorded as passed."
+    },
+    "dry_run_evidence_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Reference to the dry-run evidence artifact. Required when the epsilon gate is recorded as passed."
+    },
     "scale_limits": {
       "type": "object",
       "additionalProperties": false,

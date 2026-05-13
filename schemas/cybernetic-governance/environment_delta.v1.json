@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/environment_delta.v1.json",
+  "title": "Environment Delta",
+  "description": "Pre/post environment change record for governed actions and runtime mutations.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "environment_delta_id", "action_trace_ref", "target_ref", "delta_kind", "pre_state_ref", "post_state_ref", "reversibility_class", "evidence_receipt_refs", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "environment_delta_id": {"type": "string", "minLength": 1},
+    "action_trace_ref": {"type": "string", "minLength": 1},
+    "target_ref": {"type": "string", "minLength": 1},
+    "delta_kind": {"type": "string", "enum": ["file", "configuration", "permission", "deployment", "network", "model", "policy", "memory", "other"]},
+    "pre_state_ref": {"type": "string", "minLength": 1},
+    "post_state_ref": {"type": "string", "minLength": 1},
+    "diff_digest": {"type": "string"},
+    "reversibility_class": {"$ref": "enums.v1.json#/$defs/reversibility_class"},
+    "rollback_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "environment_delta_id": "delta:demo:1", "action_trace_ref": "trace:demo:1", "target_ref": "repo:demo", "delta_kind": "file", "pre_state_ref": "git:before", "post_state_ref": "git:after", "reversibility_class": "mostly_reversible", "evidence_receipt_refs": ["receipt:demo:1"], "implements_invariants": ["invariant_0_2_no_action_without_trace", "invariant_0_11_release_delta_required"]}]
+}

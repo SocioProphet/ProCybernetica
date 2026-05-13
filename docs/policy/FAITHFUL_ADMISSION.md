@@ -47,6 +47,22 @@ A valid pack must include:
 15. non-claims;
 16. ledger entry.
 
+## What faithful admission means structurally
+
+Faithful admission is not administrative recording. An admission pack is faithful if and only if:
+
+1. **Epsilon gate result is hash-bound.** When `epsilon_gate_passed` is `true`, or when `decision.gate_result` is `pass`, the admission pack must carry `dry_run_output_hash`: a content hash of the actual dry-run output that produced the pass result. An epsilon gate claimed as passed without this hash is an administrative record, not a faithful admission.
+
+2. **Dry-run evidence is referenced.** `dry_run_evidence_ref` must point to the evidence artifact produced by the dry-run policy check. The reference is opaque at admission time; it is not resolved during structural validation. It must still be present and non-empty.
+
+3. **Host approval is traceable.** Approved or admitted packs must carry a host approval record through `admission_decision.approvals`. The approval record must be verifiable independently of the admission pack by the later authority-verification layer.
+
+## The failure mode this prevents
+
+A component that passes an administrative gate, where an operator records `epsilon_gate_passed: true` or `decision.gate_result: pass` without the system having actually executed the dry-run policy check, would be admitted without faithful basis. The hash-binding requirement makes this structurally impossible: without the dry-run output hash and dry-run evidence reference, the validator rejects the admission pack regardless of what the epsilon-gate claim says.
+
+This follows the same discipline as Tier 2 evidence freshness invariants: evidence receipts cited in a composition must declare their creation time and class; an admission pack's epsilon-gate claim must declare its dry-run hash. In both cases, the structural requirement prevents claims from floating free of the evidence that grounds them.
+
 ## Minimum policy checks
 
 The policy dry-run must check at least:
@@ -108,6 +124,11 @@ Minimum reversal plan:
 5. record the revocation ledger entry;
 6. preserve evidence for replay.
 
-## Non-claims
+## What faithful admission does not claim
 
-Admission policy does not imply production authorization. The Triune lab is a controlled substrate for governed experimentation, defensive validation, and cybernetic infrastructure hardening. Attaching production systems, customer systems, or third-party networks requires a separate policy and explicit authorization.
+Faithful admission is a structural gate, not a semantic verification engine. These non-claims name the boundary:
+
+- It does not verify that the dry-run output hash is cryptographically authentic. Hash authenticity verification is deferred to runtime infrastructure.
+- It does not verify that the dry-run evidence artifact exists or is accessible. The reference is structurally required but not resolved at admission time.
+- It does not verify that host approval was granted by the right authority for the admission class. Authority verification is a separate governance concern.
+- It does not imply production authorization. The Triune lab is a controlled substrate for governed experimentation, defensive validation, and cybernetic infrastructure hardening. Attaching production systems, customer systems, or third-party networks requires a separate policy and explicit authorization.

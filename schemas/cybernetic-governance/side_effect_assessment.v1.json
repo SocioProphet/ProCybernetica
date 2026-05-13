@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/side_effect_assessment.v1.json",
+  "title": "Side Effect Assessment",
+  "description": "Risk, reversibility, and approval classification for a governed action or proposed action.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "assessment_id", "action_trace_ref", "reversibility_class", "severity", "approval_required", "decision", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "assessment_id": {"type": "string", "minLength": 1},
+    "action_trace_ref": {"type": "string", "minLength": 1},
+    "reversibility_class": {"$ref": "enums.v1.json#/$defs/reversibility_class"},
+    "severity": {"$ref": "enums.v1.json#/$defs/severity_tier"},
+    "approval_required": {"type": "boolean"},
+    "approval_profile_ref": {"type": "string"},
+    "rollback_ref": {"type": "string"},
+    "risk_notes": {"type": "array", "items": {"type": "string"}},
+    "decision": {"type": "string", "enum": ["allow", "allow_with_approval", "transform", "block", "quarantine"]},
+    "evidence_receipt_refs": {"type": "array", "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "assessment_id": "side-effect:demo:1", "action_trace_ref": "trace:demo:1", "reversibility_class": "externally_visible", "severity": "medium", "approval_required": true, "decision": "allow_with_approval", "implements_invariants": ["invariant_0_7_irreversibility_requires_approval"]}]
+}

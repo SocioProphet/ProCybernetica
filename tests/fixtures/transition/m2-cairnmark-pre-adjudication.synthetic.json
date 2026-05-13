@@ -1,0 +1,25 @@
+{
+  "schema_version": "1.3.0",
+  "certificate_kind": "m2-implementability",
+  "certificate_id": "m2-refusal-feature-789-v1",
+  "ts_issued": "2026-05-10T14:00:00Z",
+  "subject": {
+    "artifact_id": "gemma2-9b-refusal-feature-789",
+    "artifact_kind": "graphbrain-network-artifact",
+    "artifact_content_sha256": "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
+  },
+  "verdict_status": "undecided",
+  "behavioral_effect_magnitude": null,
+  "off_target_damage_score": null,
+  "pattern_classification": null,
+  "execution_status": "synthetic_fixture",
+  "authority_layer": "grounded_schema",
+  "promotion_state": "candidate",
+  "reasoning_trace_ref": null,
+  "cadence_classification": "mesobeat",
+  "stele_expires_at": null,
+  "non_claims": [
+    "This is a Cairnmark. Adjudication has not occurred. No production decision should be made on this certificate.",
+    "The synthetic fixture execution_status indicates doctrine-level work; runtime evidence is not yet present."
+  ]
+}

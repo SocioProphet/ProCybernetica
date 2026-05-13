@@ -1,0 +1,205 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/lifecycle_transition.v1.json",
+  "title": "Cybernetic Governance Lifecycle Transition",
+  "description": "Records a requested or completed state transition for a cybernetic governance artifact.",
+  "x_implements_invariants": [
+    "invariant_0_3_no_promotion_by_prose",
+    "invariant_0_4_digital_typed_digestible_evidence",
+    "invariant_0_10_claims_require_non_claims",
+    "invariant_0_15_frontier_claims_require_metrics"
+  ],
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "transition_id",
+    "artifact_id",
+    "from_state",
+    "to_state",
+    "requested_by",
+    "decided_at",
+    "decision",
+    "implements_invariants",
+    "required_evidence"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "v1"
+    },
+    "transition_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "artifact_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "from_state": {
+      "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/artifact_lifecycle_state"
+    },
+    "to_state": {
+      "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/artifact_lifecycle_state"
+    },
+    "requested_by": {
+      "type": "string",
+      "minLength": 1
+    },
+    "decided_by": {
+      "type": "string"
+    },
+    "decided_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "decision": {
+      "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/transition_decision"
+    },
+    "authority_chain_ref": {
+      "type": "string"
+    },
+    "required_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "evidence_receipt_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "non_claim_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true,
+      "default": []
+    },
+    "promotion_decision_ref": {
+      "type": "string"
+    },
+    "quarantine_reason": {
+      "type": "string"
+    },
+    "conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "default": []
+    },
+    "implements_invariants": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/constitutional_invariant_id"
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "to_state": {
+            "const": "promoted"
+          }
+        },
+        "required": ["to_state"]
+      },
+      "then": {
+        "required": [
+          "promotion_decision_ref",
+          "evidence_receipt_refs",
+          "non_claim_refs"
+        ]
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "to_state": {
+            "const": "quarantined"
+          }
+        },
+        "required": ["to_state"]
+      },
+      "then": {
+        "required": ["quarantine_reason"]
+      }
+    },
+    {
+      "not": {
+        "properties": {
+          "from_state": { "const": "draft" },
+          "to_state": { "const": "promoted" }
+        },
+        "required": ["from_state", "to_state"]
+      }
+    },
+    {
+      "not": {
+        "properties": {
+          "from_state": { "const": "captured" },
+          "to_state": { "const": "runtime_consumed" }
+        },
+        "required": ["from_state", "to_state"]
+      }
+    },
+    {
+      "not": {
+        "properties": {
+          "from_state": { "const": "schema_defined" },
+          "to_state": { "const": "promoted" }
+        },
+        "required": ["from_state", "to_state"]
+      }
+    },
+    {
+      "not": {
+        "properties": {
+          "from_state": { "const": "validator_backed" },
+          "to_state": { "const": "promoted" }
+        },
+        "required": ["from_state", "to_state"]
+      }
+    },
+    {
+      "not": {
+        "properties": {
+          "from_state": { "const": "quarantined" },
+          "to_state": { "const": "promoted" }
+        },
+        "required": ["from_state", "to_state"]
+      }
+    }
+  ],
+  "examples": [
+    {
+      "schema_version": "v1",
+      "transition_id": "transition:example:captured-to-reconciled",
+      "artifact_id": "artifact:example",
+      "from_state": "captured",
+      "to_state": "reconciled",
+      "requested_by": "SocioProphet/ProCybernetica",
+      "decided_by": "SocioProphet/ProCybernetica",
+      "decided_at": "2026-05-12T00:00:00Z",
+      "decision": "approve",
+      "required_evidence": [
+        "vocabulary review",
+        "scope review",
+        "conflict log"
+      ],
+      "implements_invariants": [
+        "invariant_0_4_digital_typed_digestible_evidence"
+      ]
+    }
+  ]
+}

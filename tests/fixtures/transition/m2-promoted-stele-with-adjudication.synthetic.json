@@ -1,0 +1,49 @@
+{
+  "schema_version": "1.3.0",
+  "certificate_kind": "m2-implementability",
+  "certificate_id": "m2-refusal-feature-789-v2",
+  "ts_issued": "2026-05-12T10:00:00Z",
+  "subject": {
+    "artifact_id": "gemma2-9b-refusal-feature-789",
+    "artifact_kind": "graphbrain-network-artifact",
+    "artifact_content_sha256": "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
+  },
+  "verdict_status": "admitted",
+  "behavioral_effect_magnitude": 0.78,
+  "off_target_damage_score": 0.04,
+  "pattern_classification": "pattern_a_clean",
+  "execution_status": "runtime_executed",
+  "authority_layer": "institutional_truth",
+  "promotion_state": "promoted_stele",
+  "reasoning_trace_ref": {
+    "proofpack_id": "proofpack-m2-refusal-789-adjudication-001",
+    "proofpack_content_sha256": "1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd",
+    "proofpack_promotion_state": "promoted_stele",
+    "adjudication_outcome": "admitted",
+    "adjudication_authority_layer": "institutional_truth",
+    "adjudication_timestamp": "2026-05-12T09:30:00Z"
+  },
+  "cadence_classification": "mesobeat",
+  "stele_expires_at": null,
+  "signing_authority_chain": [
+    {
+      "authority_id": "socioprophet-safety-review-board",
+      "authority_kind": "quorum",
+      "authority_layer": "institutional_truth",
+      "signed_at": "2026-05-12T10:00:00Z",
+      "signing_method": "multi_party_signature",
+      "signature_value": "sig:safety-review-2026-05-12"
+    }
+  ],
+  "authority_concentration_index": {
+    "distinct_signers": 5,
+    "total_signers": 5,
+    "reputation_weighted_index": 0.42,
+    "satisfies_hard_limit": true
+  },
+  "supersedes": "m2-refusal-feature-789-v1",
+  "non_claims": [
+    "Promotion holds at the specific model, prompt, and parameter tuple in the M2 source-lock.",
+    "Pattern A classification depends on configured thresholds; threshold changes require re-adjudication."
+  ]
+}

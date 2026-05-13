@@ -1,0 +1,20 @@
+{
+  "fixture_kind": "falsification-observable-trigger",
+  "observable_id": "F7.2",
+  "observable_title": "Authority translation produces inconsistent layers",
+  "trigger_condition_met": true,
+  "evidence": {
+    "actor_id": "agent-codex-v2",
+    "context": "interpretability.gemma2-9b",
+    "authority_layer_per_spec": {
+      "ops_history_grant": "institutional_truth",
+      "pneumachinalis_reputation_record": "grounded_schema",
+      "certificate_signing_authority": "commonsense_prior"
+    },
+    "inconsistency_pattern": "decreasing-across-specs",
+    "expected_pattern": "consistent-across-specs-or-bounded-above-by-lowest"
+  },
+  "revision_triggered": true,
+  "revision_severity": "S1",
+  "revision_direction_documented": "Implement unified authority resolution service or formally specify which spec is authoritative for each authority decision. Per CI-3, derived authority is bounded by the lowest input."
+}

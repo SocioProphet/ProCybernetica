@@ -45,6 +45,9 @@
     "created_at": "2026-05-13T13:00:00Z",
     "execution_status": "synthetic_fixture",
     "alpha": 0.0073,
+    "epsilon_gate_passed": true,
+    "dry_run_output_hash": "1111111111111111111111111111111111111111111111111111111111111111",
+    "dry_run_evidence_ref": "evidence/proofs/i4/policy-dry-run.json",
     "scale_limits": {
       "micro_multiplier": 1.0,
       "meso_multiplier": 2.0,

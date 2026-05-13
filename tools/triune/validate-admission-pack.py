@@ -2,20 +2,23 @@
 """Validate a ProCybernetica Triune admission pack.
 
 This validator is intentionally structural and invariant-focused. It does not
-verify cosign signatures, SBOM integrity, FROST signatures, or cluster runtime
-state. Those checks belong to runtime evidence adapters. This script checks
-that the admission pack is shaped correctly and that the alpha/boundary gates
-encoded in the pack are internally consistent.
+verify cosign signatures, SBOM integrity, FROST signatures, dry-run artifact
+authenticity, or cluster runtime state. Those checks belong to runtime evidence
+adapters. This script checks that the admission pack is shaped correctly and
+that the alpha/boundary gates encoded in the pack are internally consistent.
 """
 
 from __future__ import annotations
 
 import argparse
 import json
+import re
 import statistics
 import sys
 from pathlib import Path
 from typing import Any
+
+SHA256_RE = re.compile(r"^[a-fA-F0-9]{64}$")
 
 
 def load_json(path: Path) -> dict[str, Any]:
@@ -45,6 +48,31 @@ def require(condition: bool, message: str, errors: list[str]) -> None:
         errors.append(message)
 
 
+def gate_claims_pass(gate: dict[str, Any]) -> bool:
+    decision = gate.get("decision", {})
+    decision_pass = isinstance(decision, dict) and decision.get("gate_result") == "pass"
+    return gate.get("epsilon_gate_passed") is True or decision_pass
+
+
+def validate_hash_binding(gate: dict[str, Any], errors: list[str]) -> None:
+    if not gate_claims_pass(gate):
+        return
+
+    dry_run_output_hash = gate.get("dry_run_output_hash")
+    dry_run_evidence_ref = gate.get("dry_run_evidence_ref")
+
+    require(
+        isinstance(dry_run_output_hash, str) and bool(SHA256_RE.fullmatch(dry_run_output_hash)),
+        "epsilon_gate.dry_run_output_hash must be a 64-character hex hash when the gate claims pass",
+        errors,
+    )
+    require(
+        isinstance(dry_run_evidence_ref, str) and bool(dry_run_evidence_ref.strip()),
+        "epsilon_gate.dry_run_evidence_ref must be present when the gate claims pass",
+        errors,
+    )
+
+
 def validate_epsilon_gate(gate: dict[str, Any], errors: list[str]) -> None:
     alpha = gate.get("alpha")
     limits = gate.get("scale_limits", {})
@@ -52,6 +80,8 @@ def validate_epsilon_gate(gate: dict[str, Any], errors: list[str]) -> None:
 
     require(isinstance(alpha, (int, float)) and alpha > 0, "epsilon_gate.alpha must be positive", errors)
     require(isinstance(measurements, list) and len(measurements) > 0, "epsilon_gate.measurements must be non-empty", errors)
+
+    validate_hash_binding(gate, errors)
 
     if not isinstance(alpha, (int, float)) or alpha <= 0 or not isinstance(measurements, list):
         return

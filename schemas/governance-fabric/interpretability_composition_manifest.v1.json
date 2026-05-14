@@ -1,0 +1,134 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/governance-fabric/interpretability_composition_manifest.v1.json",
+  "title": "Interpretability Composition Manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "manifest_kind",
+    "schema_version",
+    "composition_certificate_id",
+    "created_at",
+    "execution_status",
+    "composition_scope",
+    "fragment_set",
+    "domain_annotations",
+    "non_claims"
+  ],
+  "properties": {
+    "manifest_kind": { "const": "interpretability_composition_manifest" },
+    "schema_version": { "const": "1.0.0" },
+    "composition_certificate_id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "execution_status": { "const": "synthetic_fixture" },
+    "composition_scope": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "fragment_set": {
+      "type": "array",
+      "minItems": 14,
+      "maxItems": 14,
+      "items": { "$ref": "#/$defs/fragment" }
+    },
+    "domain_annotations": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["authority_dependencies", "control_effects", "cancellation_bindings", "non_claims"],
+      "properties": {
+        "authority_dependencies": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/authority_dependency" }
+        },
+        "control_effects": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/control_effect" }
+        },
+        "cancellation_bindings": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/cancellation_binding" }
+        },
+        "non_claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    }
+  },
+  "$defs": {
+    "artifact_kind": {
+      "enum": [
+        "model_artifact",
+        "sae_artifact",
+        "feature_artifact",
+        "feature_explanation",
+        "feature_activation_set",
+        "steering_intervention",
+        "causal_triad",
+        "attribution_graph",
+        "off_target_audit",
+        "manifold_baseline",
+        "implementability_curve",
+        "robustness_certificate",
+        "benchmark_result",
+        "public_interpretability_note"
+      ]
+    },
+    "fragment": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["artifact_kind", "artifact_id", "authority_chain_id", "declared_scope", "non_claim"],
+      "properties": {
+        "artifact_kind": { "$ref": "#/$defs/artifact_kind" },
+        "artifact_id": { "type": "string", "minLength": 1 },
+        "authority_chain_id": { "type": "string", "minLength": 1 },
+        "declared_scope": { "type": "string", "minLength": 1 },
+        "non_claim": { "type": "string", "minLength": 1 }
+      }
+    },
+    "authority_dependency": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dependency_id", "from_artifact_id", "to_artifact_id", "dependency_kind"],
+      "properties": {
+        "dependency_id": { "type": "string", "minLength": 1 },
+        "from_artifact_id": { "type": "string", "minLength": 1 },
+        "to_artifact_id": { "type": "string", "minLength": 1 },
+        "dependency_kind": { "type": "string", "minLength": 1 }
+      }
+    },
+    "control_effect": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["effect_id", "source_artifact_id", "effect_kind", "bounded_by"],
+      "properties": {
+        "effect_id": { "type": "string", "minLength": 1 },
+        "source_artifact_id": { "type": "string", "minLength": 1 },
+        "effect_kind": { "type": "string", "minLength": 1 },
+        "bounded_by": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "cancellation_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_id", "trigger_artifact_id", "cancelled_scope", "cancellation_reason"],
+      "properties": {
+        "binding_id": { "type": "string", "minLength": 1 },
+        "trigger_artifact_id": { "type": "string", "minLength": 1 },
+        "cancelled_scope": { "type": "string", "minLength": 1 },
+        "cancellation_reason": { "type": "string", "minLength": 1 }
+      }
+    }
+  }
+}

@@ -1,0 +1,223 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/triune/admission-pack.v1.json",
+  "title": "Triune Faithful Admission Pack",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "certificate_kind",
+    "admission_pack_id",
+    "created_at",
+    "execution_status",
+    "candidate",
+    "proof_pack",
+    "policy_dry_run",
+    "epsilon_gate",
+    "admission_decision",
+    "reversal_plan",
+    "non_claims",
+    "ledger_entry"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "certificate_kind": { "const": "triune_admission_pack" },
+    "admission_pack_id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "execution_status": {
+      "enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cluster_member_id", "cluster_name", "member_role", "trust_domain", "status"],
+      "properties": {
+        "cluster_member_id": { "type": "string" },
+        "cluster_name": { "type": "string" },
+        "member_role": { "enum": ["inception", "faithful_candidate", "faithful_member"] },
+        "trust_domain": { "enum": ["lab_airgapped", "dev", "staging", "production", "unknown"] },
+        "status": { "enum": ["observed", "candidate", "dry_run", "proposed", "approved", "admitted", "quarantined", "revoked", "rejected"] }
+      }
+    },
+    "proof_pack": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_ir_snapshot_ref", "proof_artifact_refs", "sbom_ref", "signature_refs", "image_refs", "network_policy_ref"],
+      "properties": {
+        "event_ir_snapshot_ref": { "type": "string" },
+        "proof_artifact_refs": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "sbom_ref": { "type": "string" },
+        "signature_refs": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "image_refs": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "network_policy_ref": { "type": "string" }
+      }
+    },
+    "policy_dry_run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dry_run_id", "result", "checked_policies", "violations"],
+      "properties": {
+        "dry_run_id": { "type": "string" },
+        "result": { "enum": ["pass", "warn", "fail"] },
+        "checked_policies": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "violations": { "type": "array", "items": { "type": "string" } }
+      }
+    },
+    "epsilon_gate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["schema_version", "certificate_kind", "epsilon_gate_id", "created_at", "execution_status", "alpha", "scale_limits", "measurements", "boundary_axes", "decision", "non_claims", "ledger_entry"],
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "epsilon_gate_passed": { "const": true }
+            },
+            "required": ["epsilon_gate_passed"]
+          },
+          "then": {
+            "required": ["dry_run_output_hash", "dry_run_evidence_ref"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "decision": {
+                "properties": {
+                  "gate_result": { "const": "pass" }
+                },
+                "required": ["gate_result"]
+              }
+            },
+            "required": ["decision"]
+          },
+          "then": {
+            "required": ["dry_run_output_hash", "dry_run_evidence_ref"]
+          }
+        }
+      ],
+      "properties": {
+        "schema_version": { "const": "1.0.0" },
+        "certificate_kind": { "const": "triune_epsilon_gate" },
+        "epsilon_gate_id": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" },
+        "execution_status": { "enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"] },
+        "alpha": { "type": "number", "exclusiveMinimum": 0 },
+        "epsilon_gate_passed": {
+          "type": "boolean",
+          "description": "Administrative convenience flag. When true, dry_run_output_hash and dry_run_evidence_ref are required so the pass claim is hash-bound to the dry-run output."
+        },
+        "dry_run_output_hash": {
+          "type": "string",
+          "pattern": "^[a-fA-F0-9]{64}$",
+          "description": "SHA-256 or equivalent content hash of the dry-run output. Required when the epsilon gate is recorded as passed."
+        },
+        "dry_run_evidence_ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Reference to the dry-run evidence artifact. Required when the epsilon gate is recorded as passed."
+        },
+        "scale_limits": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["micro_multiplier", "meso_multiplier", "macro_median_multiplier", "macro_p95_multiplier"],
+          "properties": {
+            "micro_multiplier": { "type": "number", "exclusiveMinimum": 0 },
+            "meso_multiplier": { "type": "number", "exclusiveMinimum": 0 },
+            "macro_median_multiplier": { "type": "number", "exclusiveMinimum": 0 },
+            "macro_p95_multiplier": { "type": "number", "exclusiveMinimum": 0 }
+          }
+        },
+        "measurements": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["cluster_member_id", "scale", "epsilon", "epsilon_hat", "epsilon_eff", "measured_at"],
+            "properties": {
+              "cluster_member_id": { "type": "string" },
+              "scale": { "enum": ["micro", "meso", "macro"] },
+              "epsilon": { "type": "number", "minimum": 0 },
+              "epsilon_hat": { "type": "number", "minimum": 0 },
+              "epsilon_eff": { "type": "number", "minimum": 0 },
+              "measured_at": { "type": "string", "format": "date-time" }
+            }
+          }
+        },
+        "boundary_axes": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["value", "threshold"],
+            "properties": {
+              "value": { "type": "number" },
+              "threshold": { "type": "number", "exclusiveMinimum": 0 }
+            }
+          }
+        },
+        "decision": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["gate_result", "action"],
+          "properties": {
+            "gate_result": { "enum": ["pass", "warn", "fail", "freeze"] },
+            "action": { "enum": ["allow", "damp", "align", "freeze", "revert", "reject"] },
+            "rationale": { "type": "string" }
+          }
+        },
+        "non_claims": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+        "ledger_entry": { "$ref": "#/$defs/ledger_entry" }
+      }
+    },
+    "admission_decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["status", "requested_role", "authority_chain_ref", "approvals"],
+      "properties": {
+        "status": { "enum": ["proposed", "approved", "admitted", "rejected", "quarantined", "revoked"] },
+        "requested_role": { "enum": ["triune_core", "faithful_member", "observer"] },
+        "authority_chain_ref": { "type": "string" },
+        "approvals": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": ["approved_by", "approved_at", "approval_kind"],
+            "properties": {
+              "approved_by": { "type": "string" },
+              "approved_at": { "type": "string", "format": "date-time" },
+              "approval_kind": { "enum": ["host", "delegated_operator", "automation"] }
+            }
+          }
+        }
+      }
+    },
+    "reversal_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["rollback_action", "quarantine_action", "maximum_time_to_revoke_seconds"],
+      "properties": {
+        "rollback_action": { "type": "string" },
+        "quarantine_action": { "type": "string" },
+        "maximum_time_to_revoke_seconds": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "non_claims": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "ledger_entry": { "$ref": "#/$defs/ledger_entry" }
+  },
+  "$defs": {
+    "ledger_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_type", "created_at"],
+      "properties": {
+        "event_id": { "type": "string" },
+        "event_type": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

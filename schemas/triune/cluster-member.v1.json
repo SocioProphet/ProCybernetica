@@ -1,0 +1,131 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/triune/cluster-member.v1.json",
+  "title": "Triune Cluster Member",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "certificate_kind",
+    "cluster_member_id",
+    "created_at",
+    "execution_status",
+    "cluster_name",
+    "member_role",
+    "trust_domain",
+    "status",
+    "control_plane",
+    "networking",
+    "policy_baseline",
+    "safety_status",
+    "non_claims",
+    "ledger_entry"
+  ],
+  "properties": {
+    "schema_version": { "const": "1.0.0" },
+    "certificate_kind": { "const": "triune_cluster_member" },
+    "cluster_member_id": { "type": "string", "minLength": 1 },
+    "created_at": { "type": "string", "format": "date-time" },
+    "execution_status": {
+      "enum": ["doctrine_only", "synthetic_fixture", "runtime_partial", "runtime_executed", "failed"]
+    },
+    "cluster_name": { "type": "string", "minLength": 1 },
+    "member_role": {
+      "enum": ["genesys", "twin_bastion", "inception", "triune_core", "faithful_candidate", "faithful_member", "observer"]
+    },
+    "trust_domain": {
+      "enum": ["lab_airgapped", "dev", "staging", "production", "unknown"]
+    },
+    "status": {
+      "enum": ["observed", "candidate", "dry_run", "proposed", "approved", "admitted", "quarantined", "revoked", "rejected"]
+    },
+    "endpoints": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "api_server_ref": { "type": "string" },
+        "kubeconfig_secret_ref": { "type": "string" },
+        "observability_ref": { "type": "string" }
+      }
+    },
+    "control_plane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kubernetes_distribution", "version", "node_count", "shared_fate_boundary"],
+      "properties": {
+        "kubernetes_distribution": { "enum": ["k3s", "k8s", "kind", "microk8s", "other"] },
+        "version": { "type": "string" },
+        "node_count": { "type": "integer", "minimum": 1 },
+        "shared_fate_boundary": { "enum": ["per_vm_control_plane", "bastion_host", "external_cluster", "unknown"] }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cni", "default_deny", "federation_mode"],
+      "properties": {
+        "cni": { "enum": ["cilium", "calico", "flannel", "other", "unknown"] },
+        "default_deny": { "type": "boolean" },
+        "hubble_enabled": { "type": "boolean" },
+        "federation_mode": { "enum": ["none", "cilium_clustermesh", "kubefed", "herald_multi_kubeconfig", "other"] }
+      }
+    },
+    "policy_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["admission_controller", "privileged_pods_allowed", "host_pid_allowed", "signed_images_required", "resource_limits_required"],
+      "properties": {
+        "admission_controller": { "enum": ["gatekeeper", "kyverno", "both", "none", "unknown"] },
+        "privileged_pods_allowed": { "type": "boolean" },
+        "host_pid_allowed": { "type": "boolean" },
+        "signed_images_required": { "type": "boolean" },
+        "resource_limits_required": { "type": "boolean" }
+      }
+    },
+    "governance_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "admission_pack_id": { "type": "string" },
+        "epsilon_gate_id": { "type": "string" },
+        "promotion_decision_id": { "type": "string" },
+        "sourceos_contract_ref": { "type": "string" },
+        "agentplane_artifact_ref": { "type": "string" },
+        "sociosphere_dashboard_ref": { "type": "string" }
+      }
+    },
+    "safety_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_result", "epsilon_eff", "boundary_axes", "lambda_b"],
+      "properties": {
+        "gate_result": { "enum": ["pass", "warn", "fail", "freeze", "unknown"] },
+        "epsilon_eff": { "type": "number", "minimum": 0 },
+        "boundary_axes": {
+          "type": "object",
+          "minProperties": 1,
+          "additionalProperties": { "type": "number" }
+        },
+        "lambda_b": { "type": "number", "minimum": 0 }
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string" }
+    },
+    "ledger_entry": { "$ref": "#/$defs/ledger_entry" }
+  },
+  "$defs": {
+    "ledger_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_id", "event_type", "created_at"],
+      "properties": {
+        "event_id": { "type": "string" },
+        "event_type": { "type": "string" },
+        "created_at": { "type": "string", "format": "date-time" }
+      }
+    }
+  }
+}

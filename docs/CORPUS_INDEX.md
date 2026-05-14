@@ -117,6 +117,21 @@ Codification target:
 
 ## Operational mesh and governance
 
+### Triune Inception VM Lab Blueprint
+
+Chat source: `Pasted text(177).txt` supplied by Michael Heller on 2026-05-13
+
+Role: lab substrate blueprint for `genesys`, twin bastion hosts, per-VM k3s Inception clusters, three-cluster Triune formation, and faithful admission through proof packs, policy dry-runs, epsilon gates, boundary-axis checks, host approval, and ledgered reversal.
+
+Codification target:
+
+- `docs/source-captures/TRIUNE_INCEPTION_VM_BLUEPRINT_CAPTURE.md`
+- `docs/runbooks/TRIUNE_BRINGUP.md`
+- `docs/policy/FAITHFUL_ADMISSION.md`
+- `schemas/triune/*.v1.json`
+- `examples/triune/admission-pack.synthetic.json`
+- `tools/triune/validate-admission-pack.py`
+
 ### ProCybernetica Volume VI: Operational Mesh and Federated Governance
 
 Drive source: `ProCybernetica_Volume_VI_Operational_Mesh_and_Federated_Governance.pdf`

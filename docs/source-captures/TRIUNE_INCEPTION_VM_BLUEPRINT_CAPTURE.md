@@ -110,6 +110,30 @@ The v0 validator enforces those invariants structurally for admission packs. It 
 
 Boundary axes are intentionally schema-flexible because the active risk axes may change by lab, but every axis must have a numeric `value` and positive `threshold`.
 
+## PR #64 hardening alignment
+
+PR #64 raised the implementation bar for new governance lanes: schemas, fixtures, validators, and CI should be traceable back to constitutional invariants rather than existing as isolated contract files. The Triune lane is therefore reviewed against these explicit invariants.
+
+### Schema-to-invariant traceability
+
+| Triune schema | Protected invariants | Enforcement surface |
+| --- | --- | --- |
+| `schemas/triune/cluster-member.v1.json` | no hidden authority lane; digital typed digestible evidence; separation of powers / authority concentration; off-history retained | strict member identity, closed role/status enums, policy baseline, governance references, safety status, non-claims, ledger entry |
+| `schemas/triune/epsilon-gate.v1.json` | no promotion by prose alone; digital typed digestible evidence; irreversibility requires approval or stronger gate; safety case before frontier promotion | alpha/scale limits, boundary-axis thresholds, hash-bound dry-run evidence for pass claims, explicit non-claims, ledger entry |
+| `schemas/triune/admission-pack.v1.json` | no hidden authority lane; no action without trace; no promotion by prose alone; digital typed digestible evidence; irreversibility requires approval or stronger gate; off-history retained | candidate identity, proof pack, policy dry-run, embedded epsilon gate, approval record, reversal plan, non-claims, ledger entry |
+
+### Enum discipline
+
+Triune v0 uses closed enums only. Unknown or future values must be introduced through schema revision, not silently accepted in v0 examples. The only intentionally flexible surfaces are `boundary_axes` and opaque reference strings, because labs may need different risk-axis names and downstream evidence-store identifiers.
+
+### Fixture discipline
+
+The canonical admission fixture is synthetic and must stay marked with `execution_status: synthetic_fixture`. The fixture is not runtime evidence and may not be used to claim a live Triune deployment. The test suite validates the fixture shape, the validator pass path, and the negative epsilon-gate bypass path.
+
+### CI expectation
+
+`make triune-ci` runs the Triune admission validation tests. The repository-level `test` target remains the full-suite gate. The Triune target is a lane-specific operator entrypoint, not a replacement for the full repository CI.
+
 ## Estate alignment
 
 ProCybernetica owns the public doctrine, schemas, synthetic fixtures, and conformance law for this lab substrate.

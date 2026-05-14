@@ -1,0 +1,133 @@
+{
+  "assessment_id": "CCA-EXAMPLE-0001",
+  "version": "v1",
+  "publication_state": "public-synthetic",
+  "subject": "Synthetic metadata anomaly review",
+  "scope": {
+    "system_or_domain": "synthetic://procybernetica/examples/metadata-review",
+    "time_window": "synthetic fixed window",
+    "assessment_question": "Do the observed synthetic anomalies justify coordinated-compromise attribution or only preservation and review?"
+  },
+  "observed_facts": [
+    {
+      "id": "obs-001",
+      "kind": "diagnostic",
+      "statement": "A synthetic metadata index contains repeated update events during the review window.",
+      "source_class": "public-synthetic"
+    },
+    {
+      "id": "obs-002",
+      "kind": "event",
+      "statement": "A synthetic workflow emitted warnings from one indexing pipeline.",
+      "source_class": "public-synthetic"
+    },
+    {
+      "id": "obs-003",
+      "kind": "artifact",
+      "statement": "No independent public evidence source is attached to this example fixture.",
+      "source_class": "public-synthetic"
+    }
+  ],
+  "derived_facts": [
+    {
+      "id": "drv-001",
+      "statement": "The repeated update events are all derived from the same synthetic index source.",
+      "transform": "group_by(source_class, pipeline_id)",
+      "input_refs": ["obs-001", "obs-002"]
+    }
+  ],
+  "interpretations": [
+    {
+      "id": "int-001",
+      "statement": "The cluster may indicate normal index churn, configuration drift, or suspicious activity, but the fixture does not discriminate among those explanations.",
+      "confidence": "low",
+      "alternative_explanations": [
+        "normal indexing churn",
+        "local configuration drift",
+        "automation side effect",
+        "coordinated adversarial action"
+      ]
+    }
+  ],
+  "hypotheses": [
+    {
+      "id": "h-normal-churn",
+      "statement": "The events reflect normal metadata/indexing churn.",
+      "status": "live",
+      "would_increase_likelihood": [
+        "matching baseline rates for the same indexer",
+        "vendor or platform documentation explaining the event pattern"
+      ],
+      "would_decrease_likelihood": [
+        "independent evidence of unauthorized control",
+        "the same pattern appearing across unrelated evidence pipelines with no shared cause"
+      ]
+    },
+    {
+      "id": "h-config-drift",
+      "statement": "The events reflect local configuration drift or automation side effects.",
+      "status": "live",
+      "would_increase_likelihood": [
+        "recent local configuration change",
+        "matching warnings in automation logs"
+      ],
+      "would_decrease_likelihood": [
+        "clean configuration replay",
+        "independent forensic evidence inconsistent with local automation"
+      ]
+    },
+    {
+      "id": "h-coordinated-compromise",
+      "statement": "The events reflect coordinated adversarial compromise.",
+      "status": "unsupported",
+      "would_increase_likelihood": [
+        "independent corroboration from unrelated sources",
+        "evidence of unauthorized access or command execution",
+        "known infrastructure or actor indicators tied to the same window"
+      ],
+      "would_decrease_likelihood": [
+        "baseline parity with normal index churn",
+        "single-pipeline common-cause explanation",
+        "absence of unauthorized access evidence"
+      ]
+    }
+  ],
+  "denominator_model": {
+    "state": "unknown",
+    "description": "The example fixture has no calibrated denominator for normal synthetic metadata update frequency.",
+    "probabilistic_escalation_allowed": false
+  },
+  "dependency_model": {
+    "known_dependencies": [
+      "obs-001 and obs-002 are treated as dependent because both originate from one synthetic indexing pipeline"
+    ],
+    "independent_corroboration_claimed": false,
+    "independence_rationale": "No independent corroboration is claimed in this public-synthetic fixture."
+  },
+  "discriminating_evidence": [],
+  "missing_evidence": [
+    "calibrated baseline for the synthetic indexer",
+    "independent corroboration from unrelated evidence sources",
+    "authorization trace or access-control evidence",
+    "loss matrix grounded in a real operational context"
+  ],
+  "loss_matrix": {
+    "harm_if_true": "high",
+    "harm_if_false_positive": "moderate",
+    "reversibility": "reversible",
+    "rationale": "Preservation and review are reversible; public attribution would carry higher false-positive harm and is not licensed by the evidence."
+  },
+  "recommendation": {
+    "class": "preserve",
+    "truth_claim": "hypothesis_only",
+    "rationale": "Preserve the synthetic record and request more evidence if needed. Do not escalate to coordinated-compromise attribution."
+  },
+  "prohibited_conclusions": [
+    "Do not claim actor attribution.",
+    "Do not claim coordinated compromise.",
+    "Do not claim independent corroboration from repeated observations in one pipeline.",
+    "Do not treat mitigation or preservation as proof of the suspicious hypothesis."
+  ],
+  "claim_boundary": "This example demonstrates assessment discipline only. It does not describe a live system, real incident, real actor, or production telemetry.",
+  "redaction_boundary": "The fixture is public-synthetic and contains no private logs, credentials, customer data, user-private evidence, or live telemetry."
+}

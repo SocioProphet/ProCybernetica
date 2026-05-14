@@ -1,0 +1,212 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/procybernetica/schemas/coordinated-compromise-assessment.v1.schema.json",
+  "title": "Coordinated Compromise Assessment",
+  "description": "Public-safe assessment contract for suspicious, coordinated-compromise, influence, or epistemic-threat hypotheses. The schema separates observation, derivation, interpretation, hypothesis, loss, recommendation, and prohibited conclusions.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "assessment_id",
+    "version",
+    "publication_state",
+    "subject",
+    "scope",
+    "observed_facts",
+    "hypotheses",
+    "denominator_model",
+    "dependency_model",
+    "discriminating_evidence",
+    "missing_evidence",
+    "loss_matrix",
+    "recommendation",
+    "prohibited_conclusions",
+    "claim_boundary",
+    "redaction_boundary"
+  ],
+  "properties": {
+    "assessment_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9._:-]+$"
+    },
+    "version": {
+      "const": "v1"
+    },
+    "publication_state": {
+      "type": "string",
+      "enum": ["public", "public-sanitized", "public-synthetic", "withheld-specific"]
+    },
+    "subject": {
+      "type": "string",
+      "minLength": 1
+    },
+    "scope": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["system_or_domain", "time_window", "assessment_question"],
+      "properties": {
+        "system_or_domain": {"type": "string", "minLength": 1},
+        "time_window": {"type": "string", "minLength": 1},
+        "assessment_question": {"type": "string", "minLength": 1}
+      }
+    },
+    "observed_facts": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/evidence_item"}
+    },
+    "derived_facts": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/derived_fact"},
+      "default": []
+    },
+    "interpretations": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/interpretation"},
+      "default": []
+    },
+    "hypotheses": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"$ref": "#/$defs/hypothesis"}
+    },
+    "denominator_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["state", "description", "probabilistic_escalation_allowed"],
+      "properties": {
+        "state": {"type": "string", "enum": ["calibrated", "bounded", "unknown"]},
+        "description": {"type": "string", "minLength": 1},
+        "probabilistic_escalation_allowed": {"type": "boolean"}
+      }
+    },
+    "dependency_model": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["known_dependencies", "independent_corroboration_claimed"],
+      "properties": {
+        "known_dependencies": {
+          "type": "array",
+          "items": {"type": "string"}
+        },
+        "independent_corroboration_claimed": {"type": "boolean"},
+        "independence_rationale": {"type": "string"}
+      }
+    },
+    "discriminating_evidence": {
+      "type": "array",
+      "items": {"$ref": "#/$defs/discriminating_evidence"}
+    },
+    "missing_evidence": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "loss_matrix": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["harm_if_true", "harm_if_false_positive", "reversibility", "rationale"],
+      "properties": {
+        "harm_if_true": {"type": "string", "enum": ["low", "moderate", "high", "severe"]},
+        "harm_if_false_positive": {"type": "string", "enum": ["low", "moderate", "high", "severe"]},
+        "reversibility": {"type": "string", "enum": ["reversible", "partially_reversible", "irreversible"]},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "recommendation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["class", "truth_claim", "rationale"],
+      "properties": {
+        "class": {
+          "type": "string",
+          "enum": [
+            "observe",
+            "preserve",
+            "mitigate_dominant_strategy",
+            "request_review",
+            "escalate_security_review",
+            "escalate_incident",
+            "hold_claim",
+            "revise_doctrine"
+          ]
+        },
+        "truth_claim": {
+          "type": "string",
+          "enum": ["none", "hypothesis_only", "supported", "confirmed"]
+        },
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    },
+    "prohibited_conclusions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "minLength": 1}
+    },
+    "claim_boundary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "redaction_boundary": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "evidence_item": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "kind", "statement", "source_class"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+        "kind": {"type": "string", "enum": ["observed_fact", "document", "event", "diagnostic", "statement", "artifact"]},
+        "statement": {"type": "string", "minLength": 1},
+        "source_class": {"type": "string", "enum": ["public", "public-sanitized", "public-synthetic", "withheld-specific"]}
+      }
+    },
+    "derived_fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "transform", "input_refs"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+        "statement": {"type": "string", "minLength": 1},
+        "transform": {"type": "string", "minLength": 1},
+        "input_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+      }
+    },
+    "interpretation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "confidence", "alternative_explanations"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+        "statement": {"type": "string", "minLength": 1},
+        "confidence": {"type": "string", "enum": ["low", "moderate", "high"]},
+        "alternative_explanations": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "hypothesis": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "statement", "status", "would_increase_likelihood", "would_decrease_likelihood"],
+      "properties": {
+        "id": {"type": "string", "pattern": "^[A-Za-z0-9._:-]+$"},
+        "statement": {"type": "string", "minLength": 1},
+        "status": {"type": "string", "enum": ["live", "disfavored", "unsupported", "supported", "confirmed"]},
+        "would_increase_likelihood": {"type": "array", "items": {"type": "string"}},
+        "would_decrease_likelihood": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "discriminating_evidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_ref", "favors_hypothesis", "against_alternatives", "rationale"],
+      "properties": {
+        "evidence_ref": {"type": "string"},
+        "favors_hypothesis": {"type": "string"},
+        "against_alternatives": {"type": "array", "items": {"type": "string"}},
+        "rationale": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

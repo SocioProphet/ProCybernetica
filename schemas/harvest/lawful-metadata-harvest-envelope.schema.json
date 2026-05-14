@@ -1,0 +1,185 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/harvest/lawful-metadata-harvest-envelope.schema.json",
+  "title": "LawfulMetadataHarvestEnvelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "protocol",
+    "harvest_plan",
+    "policy_decision_ref",
+    "run",
+    "batch_receipts",
+    "terminal_state",
+    "validation_report_ref",
+    "promotion_decisions"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "procybernetica.harvest.v0"
+    },
+    "protocol": {
+      "type": "string",
+      "enum": ["OAI-PMH", "generic_metadata_harvest"]
+    },
+    "harvest_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "plan_id",
+        "endpoint_id",
+        "endpoint_url_hash",
+        "verb",
+        "metadata_prefix",
+        "privacy_class",
+        "retention_class",
+        "max_batches",
+        "max_records"
+      ],
+      "properties": {
+        "plan_id": { "type": "string", "minLength": 1 },
+        "endpoint_id": { "type": "string", "minLength": 1 },
+        "endpoint_url_hash": { "$ref": "#/$defs/sha256_ref" },
+        "verb": { "type": "string", "enum": ["Identify", "ListMetadataFormats", "ListSets", "ListIdentifiers", "ListRecords", "GetRecord"] },
+        "metadata_prefix": { "type": ["string", "null"] },
+        "from": { "type": ["string", "null"] },
+        "until": { "type": ["string", "null"] },
+        "set": { "type": ["string", "null"] },
+        "privacy_class": { "type": "string", "enum": ["public", "personal", "work", "confidential", "regulated", "secret"] },
+        "retention_class": { "type": "string", "enum": ["ephemeral", "normal", "retained", "legal_hold"] },
+        "max_batches": { "type": "integer", "minimum": 1 },
+        "max_records": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "policy_decision_ref": { "type": "string", "minLength": 1 },
+    "run": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["run_id", "actor_id", "trace_id", "root_event_id", "execution_authority", "status"],
+      "properties": {
+        "run_id": { "type": "string", "minLength": 1 },
+        "actor_id": { "type": "string", "minLength": 1 },
+        "trace_id": { "type": "string", "minLength": 1 },
+        "root_event_id": { "type": "string", "minLength": 1 },
+        "execution_authority": { "type": "string", "minLength": 1 },
+        "replay_artifact_ref": { "type": ["string", "null"] },
+        "status": { "type": "string", "enum": ["planned", "running", "completed", "failed", "cancelled"] }
+      }
+    },
+    "batch_receipts": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/batch_receipt" }
+    },
+    "terminal_state": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["completed", "final_resumption_token_state", "ledger_root_hash", "total_batches", "total_records"],
+      "properties": {
+        "completed": { "type": "boolean" },
+        "final_resumption_token_state": { "type": "string", "enum": ["empty", "absent", "not_applicable", "unknown"] },
+        "ledger_root_hash": { "$ref": "#/$defs/sha256_ref" },
+        "total_batches": { "type": "integer", "minimum": 1 },
+        "total_records": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "validation_report_ref": { "type": "string", "minLength": 1 },
+    "anomalies": {
+      "type": "array",
+      "default": [],
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["code", "severity", "evidence_ref"],
+        "properties": {
+          "code": {
+            "type": "string",
+            "enum": [
+              "bad_resumption_token",
+              "expired_resumption_token",
+              "resumption_token_loop",
+              "missing_final_empty_token",
+              "unexpected_empty_batch",
+              "record_count_regression",
+              "response_hash_mismatch_on_replay",
+              "endpoint_identity_changed",
+              "metadata_prefix_changed",
+              "deleted_record_without_policy",
+              "overscope_attempt",
+              "unbounded_harvest_blocked",
+              "rate_limit_or_throttle_detected",
+              "non_monotone_datestamp_observed",
+              "cursor_semantics_overassumed",
+              "suspicious_tokenized_pagination_pattern"
+            ]
+          },
+          "severity": { "type": "string", "enum": ["info", "notice", "warning", "error", "critical"] },
+          "evidence_ref": { "type": "string", "minLength": 1 },
+          "notes": { "type": ["string", "null"] }
+        }
+      }
+    },
+    "promotion_decisions": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/promotion_decision" }
+    }
+  },
+  "$defs": {
+    "sha256_ref": {
+      "type": "string",
+      "pattern": "^sha256:[a-fA-F0-9]{64}$"
+    },
+    "batch_receipt": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "batch_id",
+        "event_class",
+        "request_hash",
+        "response_hash",
+        "record_count",
+        "previous_receipt_hash",
+        "receipt_hash",
+        "observed_at",
+        "classification",
+        "handling_tags"
+      ],
+      "properties": {
+        "batch_id": { "type": "string", "minLength": 1 },
+        "event_class": { "type": "string", "const": "harvest.batch.sealed" },
+        "request_hash": { "$ref": "#/$defs/sha256_ref" },
+        "response_hash": { "$ref": "#/$defs/sha256_ref" },
+        "record_count": { "type": "integer", "minimum": 0 },
+        "previous_resumption_token_hash": { "type": ["string", "null"], "pattern": "^(sha256:[a-fA-F0-9]{64})?$" },
+        "next_resumption_token_hash": { "type": ["string", "null"], "pattern": "^(sha256:[a-fA-F0-9]{64})?$" },
+        "previous_receipt_hash": { "type": ["string", "null"], "pattern": "^(sha256:[a-fA-F0-9]{64})?$" },
+        "receipt_hash": { "$ref": "#/$defs/sha256_ref" },
+        "observed_at": { "type": "string", "format": "date-time" },
+        "classification": { "type": "string", "enum": ["public_metadata", "internal_metadata", "sensitive_metadata", "unknown"] },
+        "handling_tags": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    },
+    "promotion_decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["decision_id", "target_surface", "outcome", "policy_decision_ref", "validation_report_ref", "record_refs"],
+      "properties": {
+        "decision_id": { "type": "string", "minLength": 1 },
+        "target_surface": { "type": "string", "enum": ["sourceos_state", "memory_mesh", "knowledge_graph", "gaia", "prophet_platform", "sherlock_index", "none"] },
+        "outcome": { "type": "string", "enum": ["promoted", "denied", "deferred"] },
+        "policy_decision_ref": { "type": "string", "minLength": 1 },
+        "validation_report_ref": { "type": "string", "minLength": 1 },
+        "record_refs": {
+          "type": "array",
+          "items": { "type": "string", "minLength": 1 }
+        }
+      }
+    }
+  }
+}

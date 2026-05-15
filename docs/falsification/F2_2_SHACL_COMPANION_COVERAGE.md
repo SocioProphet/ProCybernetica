@@ -61,4 +61,4 @@ The non-SHACL layer remains required for:
 
 ## Non-claims
 
-This addendum does not claim runtime SHACL enforcement, production RDF validation, Rego implementation, Atlas runtime admission, Masonmark adjudication, or certificate promotion authority. It records companion-shape coverage and the fallback validation boundary for F2.2.
+This addendum does not claim runtime SHACL enforcement, production RDF validation, Rego implementation, Atlas runtime admission, Masonmark adjudication, or certificate promotion authority. It explicitly does not claim Rego implementation. It records companion-shape coverage and the fallback validation boundary for F2.2.

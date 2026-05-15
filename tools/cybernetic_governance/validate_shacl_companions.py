@@ -90,20 +90,22 @@ def validate() -> dict[str, Any]:
     results: list[dict[str, Any]] = []
 
     for shape in sorted(REQUIRED_CERTIFICATE_SHAPES):
+        shape_present = shape_is_declared(shape, cert_text)
         results.append(
             {
                 "check_id": f"certificate-shape:{shape}",
-                "passed": shape_is_declared(shape, cert_text),
-                "diagnostics": [] if shape_is_declared(shape, cert_text) else [f"missing {shape}"],
+                "passed": shape_present,
+                "diagnostics": [] if shape_present else [f"missing {shape}"],
             }
         )
 
     for shape in sorted(REQUIRED_BRIDGE_SHAPES):
+        shape_present = shape_is_declared(shape, bridge_text)
         results.append(
             {
                 "check_id": f"bridge-shape:{shape}",
-                "passed": shape_is_declared(shape, bridge_text),
-                "diagnostics": [] if shape_is_declared(shape, bridge_text) else [f"missing {shape}"],
+                "passed": shape_present,
+                "diagnostics": [] if shape_present else [f"missing {shape}"],
             }
         )
 
@@ -139,7 +141,8 @@ def validate() -> dict[str, Any]:
     f2_fixture_records = fixture.get("fixtures", [])
     f2_covered = any(
         record.get("observable_id") == "F2.2"
-        and record.get("expected_result") == "covered_with_shacl_plus_non_shacl_fallback"
+        and record.get("expected_result") == "pass"
+        and record.get("coverage_status") == "covered_with_shacl_plus_non_shacl_fallback"
         for record in f2_fixture_records
         if isinstance(record, dict)
     )

@@ -1,0 +1,267 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/procybernetica/mfel/hypothesis.schema.json",
+  "title": "MFEL Hypothesis",
+  "description": "Evidence-bound hypothesis record for metadata-forensics and epistemic-threat analysis. Unsupported actor attribution is structurally invalid.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "hypothesis_id",
+    "layer",
+    "statement",
+    "risk_level",
+    "subject_scope",
+    "status",
+    "supporting_evidence",
+    "redaction_boundary",
+    "prohibited_conclusions",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "mfel.hypothesis.v1"
+    },
+    "hypothesis_id": {
+      "type": "string",
+      "pattern": "^hyp-[A-Za-z0-9._:-]+$"
+    },
+    "layer": {
+      "const": "hypothesis"
+    },
+    "statement": {
+      "type": "string",
+      "minLength": 1
+    },
+    "risk_level": {
+      "enum": [
+        "low",
+        "moderate",
+        "suspicious",
+        "high"
+      ]
+    },
+    "subject_scope": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "enum": [
+        "live",
+        "disfavored",
+        "unsupported",
+        "supported",
+        "rejected"
+      ]
+    },
+    "supporting_evidence": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/evidence_ref"
+      }
+    },
+    "negative_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "missing_evidence": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "alternative_explanations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "actor_attribution": {
+      "$ref": "#/$defs/actor_attribution"
+    },
+    "redaction_boundary": {
+      "$ref": "#/$defs/redaction_boundary"
+    },
+    "prohibited_conclusions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "properties": {
+          "risk_level": {
+            "enum": [
+              "suspicious",
+              "high"
+            ]
+          }
+        },
+        "required": [
+          "risk_level"
+        ]
+      },
+      "then": {
+        "required": [
+          "negative_evidence",
+          "missing_evidence"
+        ],
+        "properties": {
+          "negative_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          },
+          "missing_evidence": {
+            "type": "array",
+            "minItems": 1,
+            "items": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        }
+      }
+    }
+  ],
+  "$defs": {
+    "evidence_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "ref_id",
+        "layer",
+        "relation"
+      ],
+      "properties": {
+        "ref_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "layer": {
+          "enum": [
+            "observed_fact",
+            "derived_fact",
+            "interpretation",
+            "evidence_graph"
+          ]
+        },
+        "relation": {
+          "enum": [
+            "supports",
+            "weakens",
+            "contextualizes",
+            "requires_review"
+          ]
+        }
+      }
+    },
+    "actor_attribution": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "actor_label",
+        "attribution_basis",
+        "confidence_bound",
+        "evidence_refs",
+        "non_claims"
+      ],
+      "properties": {
+        "actor_label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "attribution_basis": {
+          "enum": [
+            "self_identification",
+            "public_documented_source",
+            "forensic_indicator_corroborated",
+            "analyst_hypothesis_only",
+            "none"
+          ]
+        },
+        "confidence_bound": {
+          "enum": [
+            "low",
+            "moderate",
+            "high",
+            "unknown"
+          ]
+        },
+        "evidence_refs": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        },
+        "non_claims": {
+          "type": "array",
+          "minItems": 1,
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "redaction_boundary": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "classification",
+        "private_evidence_policy",
+        "public_substitute"
+      ],
+      "properties": {
+        "classification": {
+          "enum": [
+            "public",
+            "public-sanitized",
+            "public-synthetic"
+          ]
+        },
+        "private_evidence_policy": {
+          "type": "string",
+          "minLength": 1
+        },
+        "public_substitute": {
+          "enum": [
+            "method",
+            "schema",
+            "sanitized_summary",
+            "synthetic_fixture",
+            "redacted_excerpt",
+            "none"
+          ]
+        },
+        "withheld_fields": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    }
+  }
+}

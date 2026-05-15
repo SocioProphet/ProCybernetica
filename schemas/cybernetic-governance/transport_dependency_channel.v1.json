@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/transport_dependency_channel.v1.json",
+  "title": "Transport Dependency Channel",
+  "description": "Typed transport/delegation channel preserving authority, observability, trace, retry, and evidence references across service or agent boundaries.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "transport_channel_id", "channel_kind", "source_ref", "target_ref", "authority_chain_ref", "agent_action_trace_ref", "evidence_receipt_refs", "observability_partition_ref"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "transport_channel_id": {"type": "string", "minLength": 1},
+    "channel_kind": {"enum": ["subagent_delegation", "tritrpc_call", "policy_decision", "sourceos_sync", "github_workflow", "runtime_tool_call", "proof_pack_publication", "other"]},
+    "source_ref": {"type": "string", "minLength": 1},
+    "target_ref": {"type": "string", "minLength": 1},
+    "authority_preserved": {"type": "boolean"},
+    "trace_preserved": {"type": "boolean"},
+    "retry_semantics": {"enum": ["none", "idempotent", "non_idempotent", "bounded", "unknown"]},
+    "authority_chain_ref": {"type": "string", "minLength": 1},
+    "agent_action_trace_ref": {"type": "string", "minLength": 1},
+    "tool_permission_scope_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "observability_partition_ref": {"type": "string", "minLength": 1},
+    "non_claims": {"type": "array", "items": {"type": "string"}}
+  }
+}

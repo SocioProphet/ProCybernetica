@@ -84,4 +84,8 @@ Public score slices must not claim ownership over Ontogenesis, model-governance,
 
 ## Non-claims
 
-This tranche does not implement Ontogenesis validation, Foundry/model-governance runtime, model routing, guardrail runtime, SourceOS model carry, AgentPlane runtime, terminal runtime, browser runtime, workstation runner, dashboard runtime, or UI implementation. It records public-synthetic adapter fixtures and conformance expectations only.
+This tranche does not implement Ontogenesis validation, Foundry/model-governance runtime, model routing, guardrail runtime, SourceOS model carry, AgentPlane runtime, terminal runtime, browser runtime, workstation runner, dashboard runtime, or UI implementation.
+
+This tranche does not implement terminal, browser, workstation, or UI runtime.
+
+It records public-synthetic adapter fixtures and conformance expectations only.

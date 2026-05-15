@@ -1,0 +1,23 @@
+# Public-synthetic Triune NetworkPolicy example.
+#
+# This file is an example manifest only. It is not evidence of a live Triune
+# deployment, does not claim that a cluster applied this policy, and does not
+# authorize production use without downstream runtime validation and operator
+# approval.
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny
+  namespace: redlab
+  labels:
+    app.kubernetes.io/name: triune-default-deny-example
+    app.kubernetes.io/part-of: procybernetica-triune
+  annotations:
+    procybernetica.socioprophet.ai/publication-state: public-synthetic
+    procybernetica.socioprophet.ai/runtime-claim: none
+    procybernetica.socioprophet.ai/source-issue: "#69"
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress

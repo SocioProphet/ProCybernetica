@@ -103,7 +103,8 @@ def test_f2_2_fixture_marker_records_coverage_status() -> None:
     assert len(records) == 1
     record = records[0]
     assert record["observable_id"] == "F2.2"
-    assert record["expected_result"] == "covered_with_shacl_plus_non_shacl_fallback"
+    assert record["expected_result"] == "pass"
+    assert record["coverage_status"] == "covered_with_shacl_plus_non_shacl_fallback"
     assert "shacl/certificates/certificate-family-v1.3.shacl.ttl" in record["shacl_shape_refs"]
     assert "shacl/bridges/bridge-schemas-v1.shacl.ttl" in record["shacl_shape_refs"]
 

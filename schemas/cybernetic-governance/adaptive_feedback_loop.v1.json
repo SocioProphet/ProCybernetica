@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/adaptive_feedback_loop.v1.json",
+  "title": "Adaptive Feedback Loop",
+  "description": "Record of monitor/evidence feedback that changes future control scope, policy threshold, tool grant, release gate, or authority boundary.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "feedback_loop_id", "dependency_graph_ref", "feedback_state", "input_observable_refs", "updated_control_refs", "evidence_receipt_refs", "safety_case_ref"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "feedback_loop_id": {"type": "string", "minLength": 1},
+    "dependency_graph_ref": {"type": "string", "minLength": 1},
+    "feedback_state": {"enum": ["open_loop", "closed_loop", "proposed", "blocked", "deferred", "unknown"]},
+    "input_observable_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "monitor_alert_refs": {"type": "array", "items": {"type": "string"}},
+    "updated_control_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "updated_policy_refs": {"type": "array", "items": {"type": "string"}},
+    "updated_tool_permission_scope_refs": {"type": "array", "items": {"type": "string"}},
+    "release_delta_report_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "safety_case_ref": {"type": "string", "minLength": 1},
+    "diagnosis": {"type": "string"}
+  }
+}

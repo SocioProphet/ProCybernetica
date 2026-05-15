@@ -1,0 +1,28 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/agentic_degradation_event.v1.json",
+  "title": "Agentic Degradation Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "degradation_event_id", "cmdp_trace_ref", "trigger", "action", "reason", "evidence_receipt_refs"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "degradation_event_id": {"type": "string", "minLength": 1},
+    "cmdp_trace_ref": {"type": "string", "minLength": 1},
+    "trigger": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["metric", "threshold", "observed_value"],
+      "properties": {
+        "metric": {"enum": ["tokens_consumed_fraction", "wall_clock_fraction", "tool_calls_fraction", "error_rate", "loop_signal"]},
+        "threshold": {"type": "number"},
+        "observed_value": {"type": "number"}
+      }
+    },
+    "action": {"enum": ["drop_verification", "downgrade_model", "cap_steps_remaining", "terminate_partial", "escalate_to_human", "abort"]},
+    "reason": {"type": "string", "minLength": 1},
+    "authority_chain_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "items": {"type": "string"}, "default": []}
+  }
+}

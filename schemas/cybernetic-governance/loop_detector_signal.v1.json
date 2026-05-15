@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/loop_detector_signal.v1.json",
+  "title": "Loop Detector Signal",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "loop_signal_id", "cmdp_trace_ref", "signal_kind", "threshold", "observed_value", "derived_from_autonomy_depth", "evidence_receipt_refs"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "loop_signal_id": {"type": "string", "minLength": 1},
+    "cmdp_trace_ref": {"type": "string", "minLength": 1},
+    "signal_kind": {"enum": ["repeated_tool_args", "repeated_state_hash", "no_progress", "repeated_validator_failure", "unchanged_replan"]},
+    "threshold": {"type": "integer", "minimum": 1},
+    "observed_value": {"type": "integer", "minimum": 0},
+    "derived_from_autonomy_depth": {"type": "integer", "minimum": 0},
+    "rationale": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "items": {"type": "string"}, "default": []}
+  }
+}

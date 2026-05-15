@@ -1,0 +1,68 @@
+{
+  "fixture_set_version": "agentic-ops.workload-signatures.v1",
+  "publication_state": "public-synthetic",
+  "workloads": [
+    {
+      "workload_id": "workload:single-shot-public",
+      "scenario": "interactive_qa",
+      "data_class": "public",
+      "expected_trajectory_length": 1,
+      "expected_tool_calls": 0,
+      "read_write_ratio": 1.0,
+      "hotness_skew": 0.2,
+      "sensitivity_class": "public"
+    },
+    {
+      "workload_id": "workload:regulated-plan-then-execute",
+      "scenario": "plan_then_execute",
+      "data_class": "regulated",
+      "expected_trajectory_length": 15,
+      "expected_tool_calls": 8,
+      "read_write_ratio": 0.7,
+      "hotness_skew": 0.4,
+      "sensitivity_class": "regulated"
+    },
+    {
+      "workload_id": "workload:react-exploration-public",
+      "scenario": "react_exploration",
+      "data_class": "public",
+      "expected_trajectory_length": 9,
+      "expected_tool_calls": 15,
+      "read_write_ratio": 0.5,
+      "hotness_skew": 0.6,
+      "sensitivity_class": "public"
+    },
+    {
+      "workload_id": "workload:multi-agent-internal",
+      "scenario": "multi_agent_pipeline",
+      "data_class": "internal",
+      "expected_trajectory_length": 24,
+      "expected_tool_calls": 40,
+      "read_write_ratio": 0.6,
+      "hotness_skew": 0.8,
+      "sensitivity_class": "internal"
+    },
+    {
+      "workload_id": "workload:long-horizon-internal",
+      "scenario": "long_horizon_assistant",
+      "data_class": "internal",
+      "expected_trajectory_length": 60,
+      "expected_tool_calls": 50,
+      "read_write_ratio": 0.9,
+      "hotness_skew": 0.85,
+      "sensitivity_class": "internal",
+      "expected_substrategy_contains": "prefix_cache_with_section_breakpoints"
+    },
+    {
+      "workload_id": "workload:budget-overflow-tool-calls",
+      "scenario": "multi_agent_pipeline",
+      "data_class": "regulated",
+      "expected_trajectory_length": 8,
+      "expected_tool_calls": 400,
+      "read_write_ratio": 0.5,
+      "hotness_skew": 0.2,
+      "sensitivity_class": "regulated",
+      "expected_rejection_contains": "expected tool calls"
+    }
+  ]
+}

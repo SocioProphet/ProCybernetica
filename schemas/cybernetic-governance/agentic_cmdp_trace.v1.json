@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/agentic_cmdp_trace.v1.json",
+  "title": "Agentic CMDP Trace",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cmdp_trace_id", "persona_policy_ref", "workload_signature_ref", "steps", "budget_outcome", "evidence_receipt_refs"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "cmdp_trace_id": {"type": "string", "minLength": 1},
+    "persona_policy_ref": {"type": "string", "minLength": 1},
+    "workload_signature_ref": {"type": "string", "minLength": 1},
+    "steps": {"type": "array", "items": {"type": "string"}},
+    "budget_outcome": {"enum": ["within_budget", "degraded", "overflow_rejected", "human_escalated", "aborted"]},
+    "degradation_event_refs": {"type": "array", "items": {"type": "string"}},
+    "loop_detector_signal_refs": {"type": "array", "items": {"type": "string"}},
+    "post_hoc_eval_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "proof_pack_exhibit_refs": {"type": "array", "items": {"type": "string"}},
+    "non_claims": {"type": "array", "items": {"type": "string"}, "default": []}
+  }
+}

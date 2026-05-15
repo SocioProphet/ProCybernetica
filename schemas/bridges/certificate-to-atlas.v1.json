@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/bridges/certificate-to-atlas.v1.json",
+  "title": "Certificate to Atlas Bridge",
+  "description": "Bridge record mapping certificate projection state to Atlas admission disposition without implementing Atlas runtime.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "bridge_id",
+    "certificate_ref",
+    "certificate_family",
+    "promotion_state",
+    "pattern_class",
+    "atlas_disposition",
+    "evidence_receipt_refs",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "bridge_id": {"type": "string", "minLength": 1},
+    "certificate_ref": {"type": "string", "minLength": 1},
+    "certificate_family": {"enum": ["M0", "M1A", "M1B", "M1C", "M1_5", "M1D", "M1", "M2", "M3", "M5", "safety_case"]},
+    "promotion_state": {"enum": ["candidate", "promoted_stele", "rejected", "superseded", "undecided"]},
+    "pattern_class": {"enum": ["pattern_a", "pattern_b", "pattern_c", "unknown"]},
+    "atlas_disposition": {"enum": ["admit", "deny", "review_required"]},
+    "fail_closed": {"type": "boolean"},
+    "authority_chain_ref": {"type": "string"},
+    "reasoning_trace_ref": {"type": "string"},
+    "capability_tier_invocation": {"type": "object"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

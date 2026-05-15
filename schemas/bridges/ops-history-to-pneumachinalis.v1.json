@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/bridges/ops-history-to-pneumachinalis.v1.json",
+  "title": "OpsHistory to Pneumachinalis Bridge",
+  "description": "Bridge record mapping an OpsHistory actor/action entry to a Pneumachinalis microbeat without claiming runtime ingestion.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "bridge_id",
+    "ops_history_ref",
+    "actor_kind",
+    "action_ref",
+    "pneumachinalis_microbeat",
+    "evidence_receipt_refs",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "bridge_id": {"type": "string", "minLength": 1},
+    "ops_history_ref": {"type": "string", "minLength": 1},
+    "actor_kind": {"enum": ["machine", "service", "agent", "human", "unknown"]},
+    "actor_ref": {"type": "string"},
+    "action_ref": {"type": "string", "minLength": 1},
+    "pneumachinalis_microbeat": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["microbeat_id", "microbeat_kind", "target_ref", "reputation_effect"],
+      "properties": {
+        "microbeat_id": {"type": "string", "minLength": 1},
+        "microbeat_kind": {"enum": ["operational", "reputation", "evidence", "safety", "unknown"]},
+        "target_ref": {"type": "string", "minLength": 1},
+        "reputation_effect": {"enum": ["none", "positive", "negative", "review_required"]}
+      }
+    },
+    "consent_evidence_ref": {"type": "string"},
+    "authority_chain_ref": {"type": "string"},
+    "agent_action_trace_ref": {"type": "string"},
+    "capability_tier_invocation": {"type": "object"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

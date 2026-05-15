@@ -1,0 +1,47 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.procybernetica.local/procybernetica/reindex-operation.v0.1.schema.json",
+  "title": "ProCybernetica Reindex Operation v0.1",
+  "description": "Structural reindex-operation artifact for governance contexts. This schema does not assert functoriality or coherence; it requires coherence_status to be explicitly not-asserted.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "reindex_operation_id",
+    "source_base_context_ref",
+    "target_base_context_ref",
+    "source_fiber_ref",
+    "target_fiber_ref",
+    "base_morphism_ref",
+    "operation_kind",
+    "coherence_status",
+    "theorem_audit_refs"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "reindex_operation_id": {"type": "string", "minLength": 1},
+    "source_base_context_ref": {"type": "string", "minLength": 1},
+    "target_base_context_ref": {"type": "string", "minLength": 1},
+    "source_fiber_ref": {"type": "string", "minLength": 1},
+    "target_fiber_ref": {"type": "string", "minLength": 1},
+    "base_morphism_ref": {"type": "string", "minLength": 1},
+    "operation_kind": {
+      "type": "string",
+      "enum": ["restriction", "transfer", "refinement", "review_boundary_change", "context_projection"]
+    },
+    "coherence_status": {"const": "not-asserted"},
+    "coherence_non_claim": {
+      "type": "string",
+      "minLength": 1,
+      "default": "This structural reindex record does not assert functoriality, composition law, or cleavage coherence."
+    },
+    "related_cleavage_operation_ref": {"type": ["string", "null"]},
+    "evidence_ref": {"type": ["string", "null"]},
+    "theorem_audit_refs": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["TBD-GROT", "TBD-CLEV", "TBD-GNF"]},
+      "default": []
+    },
+    "non_claims": {"type": "array", "items": {"type": "string"}, "default": []}
+  }
+}

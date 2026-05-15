@@ -127,4 +127,6 @@ ProCybernetica does not own the civic ontology, runtime execution, public-value 
 
 ProCybernetica does not own runtime execution.
 
+ProCybernetica does not own public-value scoring.
+
 ProCybernetica supplies assurance evidence, risk/control doctrine, validation fixtures, and public conformance expectations.

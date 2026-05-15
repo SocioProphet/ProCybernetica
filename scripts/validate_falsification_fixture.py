@@ -49,11 +49,11 @@ def fail(message: str) -> None:
 
 def extract_json_block(path: Path) -> dict[str, Any]:
     text = path.read_text(encoding="utf-8")
-    match = re.search(r"```json\s*(\{.*?\})\s*```", text, flags=re.DOTALL)
+    match = re.search(r"```json\s*\n(?P<payload>.*?)\n```", text, flags=re.DOTALL)
     if not match:
         fail(f"{path} does not contain a JSON code block")
     try:
-        return json.loads(match.group(1))
+        return json.loads(match.group("payload"))
     except json.JSONDecodeError as exc:
         fail(f"{path} contains malformed JSON: {exc}")
 

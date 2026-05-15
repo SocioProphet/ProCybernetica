@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/assurance/proof_pack_redaction_status.v1.json",
+  "title": "Proof Pack Redaction Status",
+  "description": "Redaction and handling control record for reviewer-facing proof-pack artifacts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "redaction_status_id", "classification", "handling_controls", "private_data_present", "public_substitute", "reviewer_visibility", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "redaction_status_id": {"type": "string", "minLength": 1},
+    "classification": {"enum": ["public", "public_synthetic", "public_sanitized", "withheld", "sealed"]},
+    "handling_controls": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "private_data_present": {"type": "boolean"},
+    "public_substitute": {"enum": ["none", "synthetic_fixture", "sanitized_summary", "redacted_excerpt", "method_only", "withheld"]},
+    "reviewer_visibility": {"enum": ["full", "redacted", "summary_only", "withheld"]},
+    "evidence_receipt_refs": {"type": "array", "items": {"type": "string"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

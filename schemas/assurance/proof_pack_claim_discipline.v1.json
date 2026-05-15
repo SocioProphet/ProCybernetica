@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/assurance/proof_pack_claim_discipline.v1.json",
+  "title": "Proof Pack Claim Discipline",
+  "description": "Claim discipline record for reviewer-facing proof packs, including evidence level and excluded claims.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "claim_discipline_id", "claimed_level", "evidence_level_proven", "evidence_refs", "known_excluded_claims", "verdict", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "claim_discipline_id": {"type": "string", "minLength": 1},
+    "claimed_level": {"enum": ["demo_readiness", "mvp_parity", "deployment_parity", "production_parity", "regulated_readiness"]},
+    "evidence_level_proven": {"enum": ["none", "synthetic", "pilot", "deployment", "production", "regulated"]},
+    "evidence_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "known_excluded_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "verdict": {"enum": ["supported", "partially_supported", "unsupported", "overclaim", "review_required"]},
+    "evidence_receipt_refs": {"type": "array", "items": {"type": "string"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

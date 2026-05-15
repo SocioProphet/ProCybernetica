@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/assurance/proof_pack_artifact_entry.v1.json",
+  "title": "Proof Pack Artifact Entry",
+  "description": "Reviewer-facing artifact manifest entry that cites lower-level governed evidence without becoming a raw evidence store.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "artifact_entry_id", "lane", "artifact_type", "title", "owner", "location_ref", "redaction_status_ref", "evidence_refs", "reviewer_note", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "artifact_entry_id": {"type": "string", "minLength": 1},
+    "lane": {"enum": ["product_efficacy", "governance_control", "customer_delivery_adoption", "market_proof", "upstream_aligned_exhibit", "redaction_handling", "reviewer_disposition"]},
+    "artifact_type": {"type": "string", "minLength": 1},
+    "title": {"type": "string", "minLength": 1},
+    "evaluation_window": {"type": "string"},
+    "owner": {"type": "string", "minLength": 1},
+    "location_ref": {"type": "string", "minLength": 1},
+    "redaction_status_ref": {"type": "string", "minLength": 1},
+    "evidence_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/evidence_ref"}
+    },
+    "reviewer_note": {"type": "string", "minLength": 1},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "$defs": {
+    "evidence_ref": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_kind", "ref"],
+      "properties": {
+        "evidence_kind": {"enum": ["evidence_receipt", "release_delta_report", "cybernetic_safety_case", "artifact_provenance", "agentplane_proof_pack_exhibit", "agentplane_run_capsule", "operator_readout", "bridge_record", "certificate", "evaluation_result", "other"]},
+        "ref": {"type": "string", "minLength": 1},
+        "digest_ref": {"type": "string"}
+      }
+    }
+  }
+}

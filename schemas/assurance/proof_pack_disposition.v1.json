@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/assurance/proof_pack_disposition.v1.json",
+  "title": "Proof Pack Disposition",
+  "description": "Final reviewer disposition for a proof pack, preserving provenance, scorecard, redaction, and excluded-claim boundaries.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "disposition_id", "proof_pack_ref", "scorecard_ref", "final_disposition", "rationale", "reviewer_ref", "evidence_receipt_refs", "known_excluded_claims", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "disposition_id": {"type": "string", "minLength": 1},
+    "proof_pack_ref": {"type": "string", "minLength": 1},
+    "scorecard_ref": {"type": "string", "minLength": 1},
+    "final_disposition": {"enum": ["accept", "conditional_accept", "hold", "reject"]},
+    "rationale": {"type": "string", "minLength": 1},
+    "reviewer_ref": {"type": "string", "minLength": 1},
+    "promotion_decision_ref": {"type": "string"},
+    "certificate_ref": {"type": "string"},
+    "authority_chain_ref": {"type": "string"},
+    "scorecard_snapshot_digest": {"type": "string"},
+    "redaction_status_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "known_excluded_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/instruction_conflict_case.v1.json",
+  "title": "Instruction Conflict Case",
+  "description": "Records competing instructions and the authority-aware resolution used by a governed node.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "conflict_case_id", "subject_ref", "instruction_refs", "authority_chain_ref", "resolution", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "conflict_case_id": {"type": "string", "minLength": 1},
+    "subject_ref": {"type": "string", "minLength": 1},
+    "instruction_refs": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+    "authority_chain_ref": {"type": "string", "minLength": 1},
+    "resolution": {"type": "string", "enum": ["higher_authority_prevails", "blocked", "transformed", "requires_operator_review", "quarantined"]},
+    "winning_instruction_ref": {"type": "string"},
+    "ignored_instruction_refs": {"type": "array", "items": {"type": "string"}},
+    "off_history_evidence_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "conflict_case_id": "conflict:demo:1", "subject_ref": "action:demo:1", "instruction_refs": ["instruction:system", "instruction:tool-output"], "authority_chain_ref": "authority:demo:1", "resolution": "higher_authority_prevails", "ignored_instruction_refs": ["instruction:tool-output"], "implements_invariants": ["invariant_0_1_no_hidden_authority_lane", "invariant_0_8_off_history_retained"]}]
+}

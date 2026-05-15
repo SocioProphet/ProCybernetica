@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/off_history_evidence.v1.json",
+  "title": "Off-History Evidence",
+  "description": "Evidence for proposed, blocked, transformed, sandboxed, downgraded, or refused actions that did not execute on the main path.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "off_history_evidence_id", "proposed_action_ref", "disposition", "reason", "authority_chain_ref", "evidence_receipt_refs", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "off_history_evidence_id": {"type": "string", "minLength": 1},
+    "proposed_action_ref": {"type": "string", "minLength": 1},
+    "disposition": {"type": "string", "enum": ["blocked", "transformed", "sandboxed", "downgraded", "refused", "withheld"]},
+    "reason": {"type": "string", "minLength": 1},
+    "authority_chain_ref": {"type": "string", "minLength": 1},
+    "policy_ref": {"type": "string"},
+    "predicted_side_effect_class": {"$ref": "enums.v1.json#/$defs/reversibility_class"},
+    "safe_alternative_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "off_history_evidence_id": "off-history:demo:1", "proposed_action_ref": "action:demo:blocked", "disposition": "blocked", "reason": "missing approval", "authority_chain_ref": "authority:demo:1", "evidence_receipt_refs": ["receipt:demo:1"], "implements_invariants": ["invariant_0_8_off_history_retained"]}]
+}

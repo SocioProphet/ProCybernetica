@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/privacy_evidence_classification.v1.json",
+  "title": "Privacy Evidence Classification",
+  "description": "Disclosure, retention, and redaction classification for evidence used by governance artifacts.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "privacy_evidence_classification_id", "evidence_ref", "disclosure_class", "retention_policy", "redaction_required", "reason", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "privacy_evidence_classification_id": {"type": "string", "minLength": 1},
+    "evidence_ref": {"type": "string", "minLength": 1},
+    "disclosure_class": {"$ref": "enums.v1.json#/$defs/evidence_disclosure_class"},
+    "retention_policy": {"type": "string", "enum": ["retain_public", "retain_redacted", "retain_private", "retain_sealed", "hash_only", "do_not_retain"]},
+    "redaction_required": {"type": "boolean"},
+    "reason": {"type": "string", "minLength": 1},
+    "redaction_ref": {"type": "string"},
+    "review_authority_ref": {"type": "string"},
+    "evidence_receipt_ref": {"type": "string"},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "privacy_evidence_classification_id": "privacy:demo:1", "evidence_ref": "receipt:demo:1", "disclosure_class": "public", "retention_policy": "retain_public", "redaction_required": false, "reason": "synthetic public fixture", "implements_invariants": ["invariant_0_9_privacy_and_evidence_minimization", "invariant_0_14_public_first_redaction_disciplined_assurance"]}]
+}

@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/meta_monitor_report.v1.json",
+  "title": "Meta Monitor Report",
+  "description": "Report evaluating calibration, health, drift, and tamper posture of a monitor.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "meta_monitor_report_id", "monitor_ref", "report_state", "calibration_status", "evidence_receipt_refs", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "meta_monitor_report_id": {"type": "string", "minLength": 1},
+    "monitor_ref": {"type": "string", "minLength": 1},
+    "report_state": {"$ref": "enums.v1.json#/$defs/monitor_output_state"},
+    "calibration_status": {"type": "string", "enum": ["current", "stale", "failed", "not_applicable", "unknown"]},
+    "drift_status": {"type": "string", "enum": ["none_detected", "possible", "confirmed", "unknown"]},
+    "active_sham_fixture_ref": {"type": "string"},
+    "held_out_fixture_ref": {"type": "string"},
+    "tamper_evidence_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "meta_monitor_report_id": "meta-monitor:demo:1", "monitor_ref": "monitor:policy", "report_state": "pass", "calibration_status": "current", "evidence_receipt_refs": ["receipt:demo:1"], "implements_invariants": ["invariant_0_12_monitors_are_monitored"]}]
+}

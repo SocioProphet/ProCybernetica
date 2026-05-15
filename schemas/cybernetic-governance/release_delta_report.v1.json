@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/release_delta_report.v1.json",
+  "title": "Release Delta Report",
+  "description": "Governance record for a material change to a model, policy, prompt, tool permission, schema, monitor, dataset, runtime, or deployment profile.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "release_delta_report_id", "subject_ref", "change_kind", "prior_ref", "target_ref", "gate_color", "evidence_receipt_refs", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "release_delta_report_id": {"type": "string", "minLength": 1},
+    "subject_ref": {"type": "string", "minLength": 1},
+    "change_kind": {"type": "string", "enum": ["model", "prompt", "policy", "monitor", "tool_permission", "schema", "dataset", "runtime", "deployment", "evaluator", "memory_policy", "other"]},
+    "prior_ref": {"type": "string", "minLength": 1},
+    "target_ref": {"type": "string", "minLength": 1},
+    "delta_summary": {"type": "string"},
+    "gate_color": {"$ref": "enums.v1.json#/$defs/release_delta_gate_color"},
+    "counter_term_refs": {"type": "array", "items": {"type": "string"}},
+    "non_renormalizable_change": {"type": "boolean"},
+    "monitor_alert_refs": {"type": "array", "items": {"type": "string"}},
+    "safety_case_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "release_delta_report_id": "release-delta:demo:1", "subject_ref": "schema:demo", "change_kind": "schema", "prior_ref": "commit:before", "target_ref": "commit:after", "gate_color": "green", "non_renormalizable_change": false, "evidence_receipt_refs": ["receipt:demo:1"], "implements_invariants": ["invariant_0_11_release_delta_required"]}]
+}

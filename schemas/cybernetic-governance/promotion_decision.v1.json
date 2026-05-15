@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/promotion_decision.v1.json",
+  "title": "Promotion Decision",
+  "description": "Machine-readable decision to promote, hold, quarantine, reject, or archive a governed artifact, claim, release, or action profile.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "promotion_decision_id", "subject_ref", "prior_state", "target_state", "decision", "authority_chain_ref", "evidence_receipt_refs", "non_claims", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "promotion_decision_id": {"type": "string", "minLength": 1},
+    "subject_ref": {"type": "string", "minLength": 1},
+    "prior_state": {"$ref": "enums.v1.json#/$defs/artifact_lifecycle_state"},
+    "target_state": {"$ref": "enums.v1.json#/$defs/artifact_lifecycle_state"},
+    "decision": {"$ref": "enums.v1.json#/$defs/promotion_decision"},
+    "gate_ref": {"type": "string"},
+    "authority_chain_ref": {"type": "string", "minLength": 1},
+    "risk_movement": {"type": "string", "enum": ["reduced", "unchanged", "increased", "unknown"]},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "conditions": {"type": "array", "items": {"type": "string"}},
+    "blocked_by_refs": {"type": "array", "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"$ref": "enums.v1.json#/$defs/constitutional_invariant_id"}}
+  },
+  "examples": [{"schema_version": "1.0", "promotion_decision_id": "promotion:demo:1", "subject_ref": "artifact:demo", "prior_state": "fixture_backed", "target_state": "validator_backed", "decision": "allow_with_monitoring", "authority_chain_ref": "authority:demo:1", "risk_movement": "unchanged", "evidence_receipt_refs": ["receipt:demo:1"], "non_claims": ["Synthetic fixture does not prove runtime behavior."], "implements_invariants": ["invariant_0_3_no_promotion_by_prose", "invariant_0_10_claims_require_non_claims"]}]
+}

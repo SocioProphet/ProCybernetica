@@ -1,0 +1,214 @@
+{
+  "fixture_set_version": "bridges.v1",
+  "publication_state": "public-synthetic",
+  "fixtures": [
+    {
+      "fixture_id": "bridge-positive-opshistory-machine-to-microbeat",
+      "category": "opshistory-machine-actor-to-pneumachinalis-microbeat",
+      "target_schema": "ops-history-to-pneumachinalis.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "bridge_id": "bridge:ops-history:pneuma:machine:1",
+        "ops_history_ref": "opshistory:fixture:machine-action",
+        "actor_kind": "machine",
+        "actor_ref": "machine:fixture:runner",
+        "action_ref": "action:fixture:ci-run",
+        "pneumachinalis_microbeat": {
+          "microbeat_id": "microbeat:fixture:machine-operational",
+          "microbeat_kind": "operational",
+          "target_ref": "machine:fixture:runner",
+          "reputation_effect": "none"
+        },
+        "authority_chain_ref": "authority:fixture:machine-action",
+        "agent_action_trace_ref": "trace:fixture:machine-action",
+        "capability_tier_invocation": {"tier": "optional-reference", "invocation_ref": "capability:fixture:machine-action"},
+        "evidence_receipt_refs": ["receipt:fixture:machine-action"],
+        "non_claims": ["Synthetic fixture does not claim live OpsHistory ingestion."]
+      }
+    },
+    {
+      "fixture_id": "bridge-positive-masonmark-proofpack-to-m2-pattern-a",
+      "category": "masonmark-proofpack-to-m2-pattern-a-certificate",
+      "target_schema": "masonmark-to-certificate.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "bridge_id": "bridge:masonmark:m2:pattern-a:1",
+        "masonmark_proofpack_ref": "masonmark:proofpack:fixture:pattern-a",
+        "proofpack_state": "verified",
+        "pattern_class": "pattern_a",
+        "certificate_projection": {
+          "certificate_ref": "certificate:M2:fixture:pattern-a",
+          "certificate_family": "M2",
+          "promotion_state": "promoted_stele",
+          "verdict": "allow"
+        },
+        "verifier_scores": {"soundness": 0.94, "traceability": 0.91, "non_claim_integrity": 0.98},
+        "reasoning_trace_ref": "reasoning:fixture:m2-pattern-a",
+        "authority_chain_ref": "authority:fixture:masonmark-pattern-a",
+        "capability_tier_invocation": {"tier": "optional-reference", "invocation_ref": "capability:fixture:masonmark-pattern-a"},
+        "evidence_receipt_refs": ["receipt:fixture:masonmark-pattern-a"],
+        "non_claims": ["Synthetic fixture does not adjudicate a live proofpack."]
+      }
+    },
+    {
+      "fixture_id": "bridge-positive-m2-pattern-a-to-atlas-admit",
+      "category": "m2-pattern-a-certificate-to-atlas-admit",
+      "target_schema": "certificate-to-atlas.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "bridge_id": "bridge:certificate:atlas:admit:1",
+        "certificate_ref": "certificate:M2:fixture:pattern-a",
+        "certificate_family": "M2",
+        "promotion_state": "promoted_stele",
+        "pattern_class": "pattern_a",
+        "atlas_disposition": "admit",
+        "fail_closed": false,
+        "authority_chain_ref": "authority:fixture:atlas-admit",
+        "reasoning_trace_ref": "reasoning:fixture:atlas-admit",
+        "capability_tier_invocation": {"tier": "optional-reference", "invocation_ref": "capability:fixture:atlas-admit"},
+        "evidence_receipt_refs": ["receipt:fixture:atlas-admit"],
+        "non_claims": ["Synthetic fixture does not execute Atlas admission runtime."]
+      }
+    },
+    {
+      "fixture_id": "bridge-positive-undecided-certificate-to-atlas-deny",
+      "category": "undecided-certificate-to-atlas-deny-fail-closed",
+      "target_schema": "certificate-to-atlas.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "bridge_id": "bridge:certificate:atlas:undecided-deny:1",
+        "certificate_ref": "certificate:M2:fixture:undecided",
+        "certificate_family": "M2",
+        "promotion_state": "undecided",
+        "pattern_class": "unknown",
+        "atlas_disposition": "deny",
+        "fail_closed": true,
+        "authority_chain_ref": "authority:fixture:atlas-deny",
+        "reasoning_trace_ref": "reasoning:fixture:atlas-deny",
+        "evidence_receipt_refs": ["receipt:fixture:atlas-deny"],
+        "non_claims": ["Undecided certificates fail closed in this bridge fixture."]
+      }
+    },
+    {
+      "fixture_id": "bridge-negative-human-reputation-without-consent",
+      "category": "human-actor-reputation-microbeat-without-consent",
+      "target_schema": "ops-history-to-pneumachinalis.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "human_actor_requires_consent_for_reputation_microbeat",
+      "payload": {
+        "schema_version": "1.0",
+        "bridge_id": "bridge:ops-history:pneuma:human-invalid:1",
+        "ops_history_ref": "opshistory:fixture:human-action",
+        "actor_kind": "human",
+        "actor_ref": "human:fixture:redacted",
+        "action_ref": "action:fixture:human-action",
+        "pneumachinalis_microbeat": {
+          "microbeat_id": "microbeat:fixture:human-reputation",
+          "microbeat_kind": "reputation",
+          "target_ref": "human:fixture:redacted",
+          "reputation_effect": "negative"
+        },
+        "authority_chain_ref": "authority:fixture:human-action",
+        "agent_action_trace_ref": "trace:fixture:human-action",
+        "evidence_receipt_refs": ["receipt:fixture:human-action"],
+        "non_claims": ["Invalid fixture: human reputation microbeat lacks consent evidence."]
+      }
+    },
+    {
+      "fixture_id": "bridge-negative-candidate-proofpack-to-promoted-stele",
+      "category": "candidate-proofpack-mapped-to-promoted-stele",
+      "target_schema": "masonmark-to-certificate.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "promotion_state_strict_inheritance",
+      "payload": {
+        "schema_version": "1.0",
+        "bridge_id": "bridge:masonmark:invalid-candidate-promoted:1",
+        "masonmark_proofpack_ref": "masonmark:proofpack:fixture:candidate",
+        "proofpack_state": "candidate",
+        "pattern_class": "pattern_a",
+        "certificate_projection": {
+          "certificate_ref": "certificate:M2:fixture:invalid-candidate-promoted",
+          "certificate_family": "M2",
+          "promotion_state": "promoted_stele",
+          "verdict": "allow"
+        },
+        "verifier_scores": {"soundness": 0.90, "traceability": 0.90, "non_claim_integrity": 0.90},
+        "reasoning_trace_ref": "reasoning:fixture:invalid-candidate-promoted",
+        "authority_chain_ref": "authority:fixture:invalid-candidate-promoted",
+        "evidence_receipt_refs": ["receipt:fixture:invalid-candidate-promoted"],
+        "non_claims": ["Invalid fixture: candidate proofpack cannot directly promote to Stele."]
+      }
+    },
+    {
+      "fixture_id": "bridge-negative-low-verifier-scores-allow",
+      "category": "verifier-scores-inconsistent-with-verdict",
+      "target_schema": "masonmark-to-certificate.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "verifier_scores_consistent_with_verdict",
+      "payload": {
+        "schema_version": "1.0",
+        "bridge_id": "bridge:masonmark:invalid-low-score-allow:1",
+        "masonmark_proofpack_ref": "masonmark:proofpack:fixture:low-score",
+        "proofpack_state": "verified",
+        "pattern_class": "pattern_a",
+        "certificate_projection": {
+          "certificate_ref": "certificate:M2:fixture:low-score",
+          "certificate_family": "M2",
+          "promotion_state": "promoted_stele",
+          "verdict": "allow"
+        },
+        "verifier_scores": {"soundness": 0.40, "traceability": 0.95, "non_claim_integrity": 0.95},
+        "reasoning_trace_ref": "reasoning:fixture:low-score",
+        "authority_chain_ref": "authority:fixture:low-score",
+        "evidence_receipt_refs": ["receipt:fixture:low-score"],
+        "non_claims": ["Invalid fixture: allow verdict conflicts with low verifier score."]
+      }
+    },
+    {
+      "fixture_id": "bridge-negative-undecided-admits",
+      "category": "undecided-certificate-admits",
+      "target_schema": "certificate-to-atlas.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "undecided_fails_closed_to_deny",
+      "payload": {
+        "schema_version": "1.0",
+        "bridge_id": "bridge:certificate:atlas:invalid-undecided-admit:1",
+        "certificate_ref": "certificate:M2:fixture:undecided-invalid",
+        "certificate_family": "M2",
+        "promotion_state": "undecided",
+        "pattern_class": "unknown",
+        "atlas_disposition": "admit",
+        "fail_closed": false,
+        "authority_chain_ref": "authority:fixture:invalid-undecided-admit",
+        "reasoning_trace_ref": "reasoning:fixture:invalid-undecided-admit",
+        "evidence_receipt_refs": ["receipt:fixture:invalid-undecided-admit"],
+        "non_claims": ["Invalid fixture: undecided certificates must fail closed."]
+      }
+    },
+    {
+      "fixture_id": "bridge-negative-pattern-c-admits",
+      "category": "pattern-c-admits",
+      "target_schema": "certificate-to-atlas.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "pattern_c_always_denies",
+      "payload": {
+        "schema_version": "1.0",
+        "bridge_id": "bridge:certificate:atlas:invalid-pattern-c-admit:1",
+        "certificate_ref": "certificate:M2:fixture:pattern-c-invalid",
+        "certificate_family": "M2",
+        "promotion_state": "promoted_stele",
+        "pattern_class": "pattern_c",
+        "atlas_disposition": "admit",
+        "fail_closed": false,
+        "authority_chain_ref": "authority:fixture:invalid-pattern-c-admit",
+        "reasoning_trace_ref": "reasoning:fixture:invalid-pattern-c-admit",
+        "evidence_receipt_refs": ["receipt:fixture:invalid-pattern-c-admit"],
+        "non_claims": ["Invalid fixture: Pattern C must deny."]
+      }
+    }
+  ]
+}

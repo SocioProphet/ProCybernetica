@@ -1,0 +1,53 @@
+{
+  "schema_version": "0.1.0",
+  "substrate_id": "example-governance-substrate",
+  "description": "Valid fixture demonstrating token intersection invariant.",
+  "embedding": {
+    "full_substrate_ref": "W:example",
+    "embedding_statement": "W_gov -> W",
+    "token_invariant": "T_tokens subset Pi cap C"
+  },
+  "spheres": [
+    {
+      "sphere_id": "sphere:workspace",
+      "durable_state_ref": "S_dur:workspace"
+    }
+  ],
+  "tokens": [
+    {
+      "token_id": "token:read-workspace-policy-a",
+      "projection_role": {
+        "scoped_authority_kind": "read",
+        "sphere_target": "sphere:workspace",
+        "projection_ref": "Pi:workspace-read"
+      },
+      "admissibility_role": {
+        "policy_constraint_ref": "policy:workspace-a",
+        "constraint_kind": "read-admit",
+        "admissibility_predicate": "subject.role in policy.allowed_roles"
+      },
+      "attestation_refs": [
+        "attest:token-issued"
+      ]
+    }
+  ],
+  "policies": [
+    {
+      "policy_id": "policy:workspace-a",
+      "constraint_ref": "C:workspace-a"
+    }
+  ],
+  "attestations": [
+    {
+      "attestation_id": "attest:token-issued",
+      "evidence_ref": "E:event-001"
+    }
+  ],
+  "retention_rules": [
+    {
+      "retention_id": "retain:workspace-a",
+      "policy_ref": "policy:workspace-a",
+      "theta_ref": "Theta:default"
+    }
+  ]
+}

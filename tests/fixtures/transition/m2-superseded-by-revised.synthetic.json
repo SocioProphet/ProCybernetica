@@ -9,7 +9,7 @@
     "artifact_kind": "graphbrain-network-artifact",
     "artifact_content_sha256": "abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234abcd1234"
   },
-  "verdict_status": "admitted",
+  "verdict_status": "superseded",
   "behavioral_effect_magnitude": 0.78,
   "off_target_damage_score": 0.04,
   "pattern_classification": "pattern_a_clean",

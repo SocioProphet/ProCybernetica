@@ -10,7 +10,7 @@ from jsonschema import Draft202012Validator
 ROOT = Path(__file__).resolve().parents[1]
 SCHEMA_DIR = ROOT / "schemas" / "cybernetic-governance"
 VALIDATOR = ROOT / "tools" / "cybernetic_governance" / "validate_dependency_control.py"
-FIXTURE = ROOT / "tests" / "fixtures" / "dependency-control" / "dependency-control-fixtures.synthetic.json"
+FIXTURE_DIR = ROOT / "tests" / "fixtures" / "dependency-control"
 
 SCHEMA_FILES = [
     "dependency_control_graph.v1.json",
@@ -50,7 +50,7 @@ def load_json(path: Path) -> dict:
 
 def run_validator() -> dict:
     result = subprocess.run(
-        [sys.executable, str(VALIDATOR), str(FIXTURE), "--json"],
+        [sys.executable, str(VALIDATOR), str(FIXTURE_DIR), "--json"],
         cwd=ROOT,
         text=True,
         capture_output=True,
@@ -69,7 +69,8 @@ def test_dependency_control_schemas_are_valid_draft_2020_12() -> None:
 def test_dependency_control_fixture_validator_passes() -> None:
     payload = run_validator()
     assert payload["passed"] is True
-    assert payload["fixture_count"] == 8
+    assert payload["fixture_file_count"] == 2
+    assert payload["fixture_count"] == 12
     assert all(result["passed"] for result in payload["results"])
 
 
@@ -77,6 +78,12 @@ def test_dependency_control_fixture_categories_are_complete() -> None:
     payload = run_validator()
     observed = {result["category"] for result in payload["results"]}
     assert REQUIRED_CATEGORIES <= observed
+
+
+def test_dependency_control_all_schema_targets_have_fixture_coverage() -> None:
+    payload = run_validator()
+    observed_targets = {result["target_schema"] for result in payload["results"]}
+    assert set(SCHEMA_FILES) <= observed_targets
 
 
 def test_dependency_control_fixture_answers_all_calculus_questions() -> None:
@@ -92,10 +99,7 @@ def test_dependency_control_fixture_answers_all_calculus_questions() -> None:
 def test_dependency_control_output_maps_to_safety_cases_when_required() -> None:
     payload = run_validator()
     for result in payload["results"]:
-        if result["target_schema"] not in {
-            "transport_dependency_channel.v1.json",
-            "ontology_dependency_delta.v1.json",
-        }:
+        if result["target_schema"] != "transport_dependency_channel.v1.json":
             assert result["safety_case_ref"], result
 
 

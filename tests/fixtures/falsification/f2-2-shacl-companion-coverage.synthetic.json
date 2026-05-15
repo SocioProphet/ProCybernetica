@@ -1,0 +1,33 @@
+{
+  "fixture_set_version": "v1",
+  "publication_state": "public-synthetic",
+  "description": "Synthetic F2.2 coverage marker for SHACL companion shapes over certificate and bridge schemas. This fixture records repository-local coverage only; it does not claim runtime SHACL enforcement.",
+  "fixtures": [
+    {
+      "fixture_id": "fix-f2-2-certificate-and-bridge-shacl-coverage",
+      "observable_id": "F2.2",
+      "fixture_kind": "coverage_marker",
+      "expected_result": "covered_with_shacl_plus_non_shacl_fallback",
+      "public_state": "public-synthetic",
+      "condition": "Certificate and bridge schemas have SHACL companion coverage or explicit non-SHACL fallback status.",
+      "shacl_shape_refs": [
+        "shacl/certificates/certificate-family-v1.3.shacl.ttl",
+        "shacl/bridges/bridge-schemas-v1.shacl.ttl"
+      ],
+      "fallback_validator_refs": [
+        "tools/cybernetic_governance/validate_certificate_v13.py",
+        "tools/cybernetic_governance/validate_bridges.py",
+        "tools/cybernetic_governance/validate_shacl_companions.py"
+      ],
+      "coverage_doc_refs": [
+        "docs/shacl/CERTIFICATE_AND_BRIDGE_SHACL_COVERAGE.md",
+        "docs/falsification/F2_2_SHACL_COMPANION_COVERAGE.md"
+      ],
+      "non_claims": [
+        "This fixture does not claim runtime SHACL enforcement.",
+        "This fixture does not claim Rego implementation.",
+        "This fixture does not adjudicate certificates or bridge records."
+      ]
+    }
+  ]
+}

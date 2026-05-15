@@ -18,7 +18,7 @@ from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_DIR = ROOT / "schemas" / "cybernetic-governance"
-DEFAULT_FIXTURE = ROOT / "tests" / "fixtures" / "dependency-control" / "dependency-control-fixtures.synthetic.json"
+DEFAULT_FIXTURE_PATH = ROOT / "tests" / "fixtures" / "dependency-control"
 
 SCHEMA_FILES = [
     "dependency_control_graph.v1.json",
@@ -59,8 +59,13 @@ def schema_errors(schema: dict[str, Any], payload: dict[str, Any]) -> list[str]:
     return [error.message for error in sorted(validator.iter_errors(payload), key=str)]
 
 
-def validate_fixture_set(path: Path) -> dict[str, Any]:
-    schemas = load_schemas()
+def fixture_files(path: Path) -> list[Path]:
+    if path.is_dir():
+        return sorted(path.glob("*.json"))
+    return [path]
+
+
+def validate_fixture_set(path: Path, schemas: dict[str, dict[str, Any]]) -> dict[str, Any]:
     fixture_set = load_json(path)
     results = []
     overall_pass = True
@@ -79,16 +84,13 @@ def validate_fixture_set(path: Path) -> dict[str, Any]:
 
         if target_schema not in schemas:
             diagnostics.append(f"unknown target schema: {target_schema}")
-            schema_failure = True
         else:
-            schema_messages = schema_errors(schemas[target_schema], payload)
-            schema_failure = bool(schema_messages)
-            diagnostics.extend(schema_messages)
+            diagnostics.extend(schema_errors(schemas[target_schema], payload))
 
         if not payload.get("evidence_receipt_refs"):
             diagnostics.append("payload must map to evidence_receipt_refs")
 
-        if not payload.get("safety_case_ref") and target_schema not in {"transport_dependency_channel.v1.json", "ontology_dependency_delta.v1.json"}:
+        if not payload.get("safety_case_ref") and target_schema not in {"transport_dependency_channel.v1.json"}:
             diagnostics.append("payload must map to safety_case_ref")
 
         actual_result = "fail" if diagnostics else "pass"
@@ -111,7 +113,6 @@ def validate_fixture_set(path: Path) -> dict[str, Any]:
         )
 
     return {
-        "validator": "dependency_control_calculus.validator.v1",
         "fixture_file": str(path.relative_to(ROOT)),
         "passed": overall_pass,
         "fixture_count": len(fixture_set.get("fixtures", [])),
@@ -119,13 +120,31 @@ def validate_fixture_set(path: Path) -> dict[str, Any]:
     }
 
 
+def validate_path(path: Path) -> dict[str, Any]:
+    schemas = load_schemas()
+    files = fixture_files(path)
+    fixture_sets = [validate_fixture_set(file, schemas) for file in files]
+    results = [result for fixture_set in fixture_sets for result in fixture_set["results"]]
+    passed = all(fixture_set["passed"] for fixture_set in fixture_sets)
+
+    return {
+        "validator": "dependency_control_calculus.validator.v1",
+        "fixture_path": str(path.relative_to(ROOT)),
+        "passed": passed,
+        "fixture_file_count": len(files),
+        "fixture_count": len(results),
+        "fixture_sets": fixture_sets,
+        "results": results,
+    }
+
+
 def main(argv: list[str] | None = None) -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("fixture", nargs="?", type=Path, default=DEFAULT_FIXTURE)
+    parser.add_argument("fixture", nargs="?", type=Path, default=DEFAULT_FIXTURE_PATH)
     parser.add_argument("--json", action="store_true")
     args = parser.parse_args(argv)
 
-    result = validate_fixture_set(args.fixture)
+    result = validate_path(args.fixture)
     print(json.dumps(result, indent=2, sort_keys=True))
     if not args.json:
         if result["passed"]:

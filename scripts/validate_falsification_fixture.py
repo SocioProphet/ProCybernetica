@@ -78,12 +78,21 @@ def validate_legacy_trigger_fixture(path: Path, payload: dict[str, Any], known_i
     missing = REQUIRED_LEGACY_TRIGGER_FIELDS - set(payload)
     if missing:
         fail(f"{path} legacy trigger fixture missing required fields: {sorted(missing)}")
-    if payload["fixture_kind"] != "falsification-observable-trigger":
-        fail(f"{path} has unsupported legacy fixture_kind {payload['fixture_kind']!r}")
-    if payload["observable_id"] not in known_ids:
-        fail(f"{path} references unknown observable_id {payload['observable_id']}")
+    fixture_kind = payload["fixture_kind"]
+    observable_id = payload["observable_id"]
+    if fixture_kind == "falsification-observable-trigger":
+        if observable_id not in known_ids:
+            fail(f"{path} references unknown observable_id {observable_id}")
+    elif fixture_kind == "falsification-meta-observable-trigger":
+        if not re.fullmatch(r"M\.\d+", observable_id):
+            fail(f"{path} has invalid meta observable_id {observable_id}")
+    else:
+        fail(f"{path} has unsupported legacy fixture_kind {fixture_kind!r}")
+
     if "detection_window" in payload and not isinstance(payload["detection_window"], dict):
         fail(f"{path} detection_window must be an object when present")
+    if "detection_period" in payload and not isinstance(payload["detection_period"], dict):
+        fail(f"{path} detection_period must be an object when present")
     if not isinstance(payload["evidence"], dict):
         fail(f"{path} evidence must be an object")
     if not isinstance(payload["trigger_condition_met"], bool):
@@ -99,7 +108,10 @@ def validate_fixture_file(path: Path, known_ids: set[str]) -> int:
     except json.JSONDecodeError as exc:
         fail(f"{path} contains malformed JSON: {exc}")
 
-    if payload.get("fixture_kind") == "falsification-observable-trigger":
+    if payload.get("fixture_kind") in {
+        "falsification-observable-trigger",
+        "falsification-meta-observable-trigger",
+    }:
         return validate_legacy_trigger_fixture(path, payload, known_ids)
 
     if payload.get("fixture_set_version") != "v1":

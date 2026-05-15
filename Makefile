@@ -1,4 +1,4 @@
-.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci cybernetic-governance-fixtures cybernetic-governance-ci dependency-control-fixtures dependency-control-ci
+.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci cybernetic-governance-fixtures cybernetic-governance-ci dependency-control-fixtures dependency-control-ci agentic-ops-fixtures agentic-ops-ci
 
 test:
 	python -m pytest -q
@@ -34,3 +34,8 @@ dependency-control-fixtures:
 	python tools/cybernetic_governance/validate_dependency_control.py
 
 dependency-control-ci: dependency-control-fixtures
+
+agentic-ops-fixtures:
+	python tools/cybernetic_governance/validate_agentic_ops.py
+
+agentic-ops-ci: agentic-ops-fixtures

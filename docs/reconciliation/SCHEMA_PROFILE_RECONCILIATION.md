@@ -333,3 +333,187 @@ Turn 11 should update profiles, not schemas:
 The v0 schema surface is now sufficient for public review once profile reconciliation, adapter backlog, and conformance docs land.
 
 Do not continue expanding schemas. Move to profiles, conformance, adapter refs, and public review checklist.
+
+---
+
+## 2026-05-15 branch and schema-family reconciliation addendum
+
+Status: post-falsification-CI branch-audit addendum  
+Issue: #2  
+Scope: retained branch disposition, schema-family unblock criteria, and supersession decisions
+
+### Purpose
+
+This addendum records reconciliation findings from the branch cleanup and post-#45 validation pass. It prevents cleanup and implementation work from erasing branch-local schema work that is not yet represented by the current v0 reconciliation surface.
+
+The addendum does not implement new schemas, validators, profiles, runtime services, or integration adapters. It records what is captured, what is superseded, what remains stranded, and what decisions are required before blocked schema issues can move.
+
+### Branch disposition as schema evidence
+
+| Branch | Disposition | Reconciliation meaning |
+| --- | --- | --- |
+| `work/falsification-ci-45` | safe delete after merge | Falsification coverage registry, owners registry, validators, fixtures, tests, and Makefile targets are on `main`. |
+| `work/evidence-escalation-standard-58` | safe delete after merge | Evidence and escalation standard, coordinated-compromise schema, and public-synthetic example are on `main`. |
+| `work/unified-falsification-v1-44` | safe delete after merge | Unified falsification doctrine is on `main`. |
+| `work/epistemic-governance-binding-42` | safe delete after merge | Epistemic Governance doctrine binding is on `main`. |
+| `work/triune-default-deny-networkpolicy-69` | safe delete after merge | Triune default-deny NetworkPolicy example is on `main`. |
+| `work/oai-pmh-lawful-harvest` | safe delete after content-equivalence audit | PR #59 landed the lawful metadata harvesting contract; all changed files audited as content-equivalent to `main`. |
+| `work/interpretability-tier2-composition-v0-1-clean` | safe delete after content-equivalence audit | Standalone interpretability composition manifest schema, fixtures, and tests are on `main`. |
+| `capture/triune-inception-lab-v0-1-clean` | safe delete after content-equivalence audit | Clean Triune capture is on `main`; `Makefile` is superseded by newer `main` additions while retaining `triune-ci`. |
+| `capture/triune-inception-lab` | superseded by clean Triune branch | Older fixture used local-looking paths and a not-yet-present network-policy path. Clean branch intentionally replaced those with opaque `synthetic://` references and explicit synthetic non-claims. |
+| `cybernetic-governance-tier1-schemas` | retain | Contains unique #26-relevant schemas under `schemas/cybernetic-governance/`; not equivalent to merged `schemas/governance-fabric/` Tier 1 lane. |
+| `work/interpretability-tier2-composition` | retain | Closed-unmerged PR #53 branch mutates `composition_certificate.v1.json` directly with interpretability artifact kinds and domain annotations. Not equivalent to standalone manifest path on `main`. |
+| `work/interpretability-tier2-composition-v0` | retain | Same design family as PR #53: direct `composition_certificate.v1.json` mutation. Must be resolved together with PR #53 branch. |
+| `cybernetic-governance-doctrine-v0-1` | retain until full audit completes | Multiple high-risk samples are content-equivalent on `main`, but the branch has a 71-commit surface and requires file-by-file equivalence before deletion. |
+
+### Namespace conflict: `governance-fabric` versus `cybernetic-governance`
+
+The repository currently has two adjacent schema families that must not be silently merged by assumption:
+
+| Family | Current status | Meaning |
+| --- | --- | --- |
+| `schemas/governance-fabric/*` | merged executable lane | Existing Tier 1/Tier 2 validation surface, Makefile targets, fixtures, and CI coverage. |
+| `schemas/cybernetic-governance/*` | partial and branch-retained | Constitutional-governance schema namespace tied to #26 and the PR #25 doctrine bundle. |
+
+Decision for now: keep both concepts distinct until #26 is reconciled.
+
+The `governance-fabric` lane is the current executable validation lane. The `cybernetic-governance` lane is the candidate constitutional-governance object namespace requested by #26. The branch `cybernetic-governance-tier1-schemas` must be retained because it contains the exact #26 file family, but those schemas must not be promoted merely by branch existence.
+
+#### Required #26 decision
+
+#26 must choose one of these paths before implementation continues:
+
+1. Promote `schemas/cybernetic-governance/*` as the canonical Tier 1 constitutional-governance namespace and map it to `governance-fabric` fixtures.
+2. Retire `schemas/cybernetic-governance/*` in favor of `schemas/governance-fabric/*`, with an explicit supersession note for every #26 schema name.
+3. Keep both namespaces but define a stable mapping: `cybernetic-governance` for constitutional object law, `governance-fabric` for executable test harness and composition lanes.
+
+Default recommendation: choose path 3 unless a maintainer decides the namespace split is too costly. It preserves source intent while avoiding a destructive rename of the already-working validation lane.
+
+### Interpretability composition fork
+
+Two retained branches preserve an unresolved design alternative:
+
+- `work/interpretability-tier2-composition`
+- `work/interpretability-tier2-composition-v0`
+
+Both directly mutate `schemas/governance-fabric/composition_certificate.v1.json` to admit interpretability artifact kinds such as `model_artifact`, `sae_artifact`, `feature_artifact`, `feature_explanation`, `feature_activation_set`, `steering_intervention`, `causal_triad`, `attribution_graph`, `off_target_audit`, `manifold_baseline`, `implementability_curve`, `robustness_certificate`, `benchmark_result`, and `public_interpretability_note`.
+
+The later clean lane on `main` instead adds a standalone schema:
+
+```text
+schemas/governance-fabric/interpretability_composition_manifest.v1.json
+```
+
+Decision for now: the standalone manifest path is the active path on `main`; the direct `composition_certificate.v1.json` mutation is not adopted.
+
+The retained branches should not be deleted until a supersession decision is recorded. The needed decision is whether interpretability composition should remain a domain-specific manifest that can be cited by composition certificates, or whether the base composition certificate must be generalized to include interpretability artifact kinds directly.
+
+Default recommendation: retain the standalone manifest path. Do not widen `composition_certificate.v1.json` until a concrete consumer proves that a single base certificate must enumerate interpretability artifact kinds directly.
+
+### Certificate-family status after #47 audit
+
+#47 remains blocked for schema-bump work. The issue names M0-M5 certificate-family schemas and asks for additive v1.3 fields:
+
+- `authority_layer`
+- `promotion_state`
+- `reasoning_trace_ref`
+- `cadence_classification`
+
+Current status:
+
+- transition fixtures with v1.3-style fields exist under `tests/fixtures/transition/`;
+- the named base certificate-family schemas are not yet discoverable as canonical schema files on `main`;
+- F4.1-F4.3 falsification observables are now registered by #45, but F4.2 cannot become schema-testable until certificate-family schemas exist or are explicitly deferred.
+
+Decision for now: #47 doctrine can proceed separately, but the schema bump remains blocked until the certificate-family schema locations and owner boundaries are resolved.
+
+Default recommendation: create or update a certificate-family index before mutating schemas. That index should identify whether M0-M5 belong primarily to ProCybernetica, functional-model-surfaces, model-governance-ledger, or a bridge layer.
+
+### Capability-tier and bridge status
+
+#43 and #46 remain blocked by certificate-family and bridge-path uncertainty.
+
+#43 references `docs/bridges/BRIDGE_SCHEMAS_V1_EXECUTION_PLAN.md`, but that path was not present when the unified falsification document was drafted. #46 depends on certificate and bridge schemas that are not all present as stable schema files.
+
+Decision for now: do not add SHACL companion shapes or bridge validators until the schema locations are known. Add explicit deferred status where a schema or bridge plan is missing.
+
+Default recommendation: before #43 implementation, create a small reconciliation note that either restores `docs/bridges/BRIDGE_SCHEMAS_V1_EXECUTION_PLAN.md` or records the corrected canonical path.
+
+### Dependency-control calculus status
+
+#41 remains blocked on core governance object stability. Its dependency-control schemas should reference core objects rather than replace them:
+
+- authority chains;
+- agent action traces;
+- tool permission scopes;
+- off-history evidence;
+- monitor alerts;
+- release-delta reports;
+- evidence receipts;
+- cybernetic safety cases;
+- AgentPlane run capsules;
+- proof-pack exhibits.
+
+Decision for now: #41 must wait for #26 namespace disposition or explicitly reference both candidate namespaces with deferred status.
+
+Default recommendation: implement #41 only after #26 chooses the `cybernetic-governance` / `governance-fabric` mapping. Otherwise dependency-control schemas will hard-code an unstable namespace.
+
+### Agentic Ops status
+
+#50 depends on three artifacts already present on `main`:
+
+- `docs/integrations/AGENTIC_OPS_CMDP_UCO_PERSONA_POLICY.md`
+- `schemas/cybernetic-governance/agentic_persona_policy.v1.yaml`
+- `tools/cybernetic_governance/agentic_persona_substrategy_chooser.py`
+
+Decision for now: #50 can move as a fixture/validation tranche, but should avoid creating another broad schema family until #26/#41 settle the core object namespace.
+
+Default recommendation: split #50 into two phases:
+
+1. validate existing persona-policy YAML and substrategy chooser behavior with fixtures;
+2. defer new `agentic_*` telemetry schemas until the core governance namespace decision is made.
+
+### MFEL status
+
+#52 is independent enough to proceed before full schema freeze if it keeps its own namespace:
+
+```text
+schemas/mfel/*
+```
+
+Decision for now: MFEL can proceed as a public-safe standard tranche because it is a case-analysis and evidence-layer standard, not a replacement for core controlplane envelopes.
+
+Constraint: MFEL examples must remain sanitized or synthetic and must preserve the standard rule separating observed fact, derived fact, interpretation, hypothesis, and prohibited conclusion.
+
+### Updated unblock matrix
+
+| Issue | Current status | Unblock condition |
+| --- | --- | --- |
+| #26 | blocked: reconciliation | Decide `cybernetic-governance` versus `governance-fabric` namespace relationship. |
+| #27 | blocked behind #26 | Add fixtures and validators only after target schema namespace is fixed. |
+| #28 | blocked behind #26 | Define integration boundaries after schema namespace and object ownership are fixed. |
+| #41 | blocked behind #26 | Dependency-control schemas must reference stable governance objects. |
+| #43 | blocked by bridge/certificate paths | Restore or correct bridge execution-plan path; confirm certificate-family schema locations. |
+| #46 | blocked by #43/#47 | Add SHACL only after certificate and bridge schemas exist or are explicitly deferred. |
+| #47 | partially blocked | Doctrine may proceed; schema bump waits for certificate-family schema index. |
+| #50 | partially unblocked | Existing persona-policy and chooser fixtures may proceed; new telemetry schema family waits. |
+| #52 | unblocked | May proceed as independent MFEL namespace if public-safe examples and non-attribution constraints are preserved. |
+
+### Human decisions required
+
+| ID | Decision | Default recommendation |
+| --- | --- | --- |
+| HD-1 | Should `schemas/cybernetic-governance/*` become canonical, be retired, or map to `schemas/governance-fabric/*`? | Keep both with explicit mapping. |
+| HD-2 | Should interpretability artifact kinds be added to `composition_certificate.v1.json` or remain in standalone `interpretability_composition_manifest.v1.json`? | Keep standalone manifest until a concrete consumer requires base-certificate widening. |
+| HD-3 | Where do M0-M5 certificate-family schemas live? | Create a certificate-family index before any v1.3 schema mutation. |
+| HD-4 | Should #52 MFEL land before full schema freeze? | Yes, if isolated under `schemas/mfel/*` and public-safe. |
+| HD-5 | Can `cybernetic-governance-doctrine-v0-1` be deleted after sampled equivalence? | Not yet. Complete file-by-file audit first. |
+
+### Updated recommendation
+
+The v0 core envelope surface is sufficient for public review work, but the governance-extension surface is not fully reconciled.
+
+Do not delete retained schema branches or mutate broad schema families until the namespace and certificate-family decisions above are resolved. Proceed next with one of two safe tracks:
+
+1. close #2 by merging this reconciliation addendum and using it as the decision frame for #26/#47/#50; or
+2. implement #52 as an isolated MFEL standard tranche that does not depend on the unsettled governance schema namespace.

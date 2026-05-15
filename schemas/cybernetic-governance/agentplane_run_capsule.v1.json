@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/agentplane_run_capsule.v1.json",
+  "title": "AgentPlane Run Capsule",
+  "description": "Top-level governance evidence container for one governed AgentPlane run. References ProCybernetica governance objects without implementing AgentPlane runtime services.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "run_capsule_id", "agent_id", "workspace_ref", "authority_chain_ref", "run_goal", "autonomy_tier", "risk_tier", "tool_grant_refs", "action_trace_refs", "evidence_receipt_refs", "replay_status", "operator_readout_ref", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "run_capsule_id": {"type": "string", "minLength": 1},
+    "agent_id": {"type": "string", "minLength": 1},
+    "agent_version": {"type": "string"},
+    "workspace_ref": {"type": "string", "minLength": 1},
+    "authority_chain_ref": {"type": "string", "minLength": 1},
+    "run_goal": {"type": "string", "minLength": 1},
+    "autonomy_tier": {"enum": ["manual", "supervised", "bounded_autonomous", "autonomous", "blocked"]},
+    "risk_tier": {"enum": ["low", "medium", "high", "critical"]},
+    "tool_grant_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "action_trace_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "side_effect_assessment_refs": {"type": "array", "items": {"type": "string"}},
+    "monitor_alert_refs": {"type": "array", "items": {"type": "string"}},
+    "control_decision_refs": {"type": "array", "items": {"type": "string"}},
+    "off_history_evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "subagent_delegation_refs": {"type": "array", "items": {"type": "string"}},
+    "proof_pack_exhibit_refs": {"type": "array", "items": {"type": "string"}},
+    "replay_status": {"enum": ["not_replayable", "replay_ready", "replay_verified", "replay_failed", "evidence_only"]},
+    "operator_readout_ref": {"type": "string", "minLength": 1},
+    "promotion_decision_ref": {"type": "string"},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

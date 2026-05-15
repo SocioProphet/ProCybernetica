@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/agentplane_operator_readout.v1.json",
+  "title": "AgentPlane Operator Readout",
+  "description": "Operator-visible summary of a governed AgentPlane run.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "operator_readout_id", "run_capsule_ref", "summary", "authority_summary", "tool_grant_summary", "action_summary", "risk_summary", "evidence_receipt_refs", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "operator_readout_id": {"type": "string", "minLength": 1},
+    "run_capsule_ref": {"type": "string", "minLength": 1},
+    "summary": {"type": "string", "minLength": 1},
+    "authority_summary": {"type": "string", "minLength": 1},
+    "tool_grant_summary": {"type": "string", "minLength": 1},
+    "action_summary": {"type": "string", "minLength": 1},
+    "off_history_summary": {"type": "string"},
+    "monitor_alert_summary": {"type": "string"},
+    "risk_summary": {"type": "string", "minLength": 1},
+    "remaining_review_items": {"type": "array", "items": {"type": "string"}},
+    "authority_chain_ref": {"type": "string"},
+    "promotion_decision_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

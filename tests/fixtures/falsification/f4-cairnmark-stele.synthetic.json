@@ -1,0 +1,55 @@
+{
+  "fixture_set_version": "v1",
+  "publication_state": "public-synthetic",
+  "description": "Synthetic F4 fixture coverage for certificate v1.3 Cairnmark-to-Stele structural monitorability. These fixtures do not claim runtime telemetry.",
+  "fixtures": [
+    {
+      "fixture_id": "fix-f4-1-reasoning-not-direct-evidence",
+      "observable_id": "F4.1",
+      "fixture_kind": "coverage_marker",
+      "expected_result": "review_required",
+      "public_state": "public-synthetic",
+      "condition": "Reasoning trace references must be treated as rationale/proofpack references, not direct evidence receipts or silent authority.",
+      "detection_mechanism": "certificate_v13_schema_validation_and_human_review",
+      "revision_direction": "doctrine_revision; claim_hold",
+      "owner": "procybernetica-doctrine",
+      "non_claims": [
+        "Coverage marker only.",
+        "Does not expose private reasoning traces.",
+        "Does not claim runtime telemetry."
+      ]
+    },
+    {
+      "fixture_id": "fix-f4-2-cairnmark-stele-separation",
+      "observable_id": "F4.2",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "A candidate Cairnmark must not be accepted as a promoted Stele without adjudication, reasoning trace, and authority evidence.",
+      "detection_mechanism": "certificate_v13_schema_validation",
+      "revision_direction": "schema_revision; doctrine_revision",
+      "owner": "procybernetica-schema",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not adjudicate a live certificate.",
+        "Does not claim Atlas runtime behavior."
+      ]
+    },
+    {
+      "fixture_id": "fix-f4-3-defeasible-support-not-silent-authority",
+      "observable_id": "F4.3",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "Defeasible support must not change operational authority without explicit promotion_state and authority_layer evidence.",
+      "detection_mechanism": "certificate_v13_schema_validation_and_runtime_monitoring_later",
+      "revision_direction": "claim_hold; runtime_mitigation; schema_revision",
+      "owner": "maintainer-review",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Runtime monitoring remains future work.",
+        "Does not claim production authority change occurred."
+      ]
+    }
+  ]
+}

@@ -60,5 +60,9 @@
   "expected_validation_failure": {
     "rule": "composite_fragments_match_promotion_state",
     "reason": "The composite is promoted_stele but references m1b-witness-card-001 with promotion_state candidate."
-  }
+  },
+  "non_claims": [
+    "Invalid synthetic fixture: a promoted composite cannot contain a candidate fragment.",
+    "This fixture exists to test composite fragment promotion-state discipline."
+  ]
 }

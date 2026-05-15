@@ -123,4 +123,8 @@ This trace is represented by:
 
 ## Non-claims
 
-ProCybernetica does not own the civic ontology, runtime execution, public-value scoring, SocioSphere governance runtime, Delivery Excellence scoring runtime, Policy Fabric guardrail runtime, AgentPlane runtime evidence production, or Ontogenesis semantic release discipline. ProCybernetica supplies assurance evidence, risk/control doctrine, validation fixtures, and public conformance expectations.
+ProCybernetica does not own the civic ontology, runtime execution, public-value scoring, SocioSphere governance runtime, Delivery Excellence scoring runtime, Policy Fabric guardrail runtime, AgentPlane runtime evidence production, or Ontogenesis semantic release discipline.
+
+ProCybernetica does not own runtime execution.
+
+ProCybernetica supplies assurance evidence, risk/control doctrine, validation fixtures, and public conformance expectations.

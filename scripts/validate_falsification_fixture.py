@@ -35,7 +35,6 @@ REQUIRED_LEGACY_TRIGGER_FIELDS = {
     "fixture_kind",
     "observable_id",
     "observable_title",
-    "detection_window",
     "trigger_condition_met",
     "evidence",
     "revision_triggered",
@@ -83,8 +82,8 @@ def validate_legacy_trigger_fixture(path: Path, payload: dict[str, Any], known_i
         fail(f"{path} has unsupported legacy fixture_kind {payload['fixture_kind']!r}")
     if payload["observable_id"] not in known_ids:
         fail(f"{path} references unknown observable_id {payload['observable_id']}")
-    if not isinstance(payload["detection_window"], dict):
-        fail(f"{path} detection_window must be an object")
+    if "detection_window" in payload and not isinstance(payload["detection_window"], dict):
+        fail(f"{path} detection_window must be an object when present")
     if not isinstance(payload["evidence"], dict):
         fail(f"{path} evidence must be an object")
     if not isinstance(payload["trigger_condition_met"], bool):

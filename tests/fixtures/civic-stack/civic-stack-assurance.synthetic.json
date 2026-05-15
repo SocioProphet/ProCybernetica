@@ -1,0 +1,186 @@
+{
+  "fixture_set_version": "civic-stack-assurance.v1",
+  "publication_state": "public-synthetic",
+  "fixtures": [
+    {
+      "fixture_id": "civic-risk-control-binding-runtime-service",
+      "target_schema": "civic_risk_control_binding.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "binding_id": "civic-binding:runtime-service:synthetic",
+        "civic_layer": "TRM",
+        "object_family": "Runtime",
+        "object_ref": "runtime:synthetic:civic-service",
+        "risk_ref": "risk:runtime-policy-bypass",
+        "risk_severity": "high",
+        "control_ref": "control:runtime-attestation-required",
+        "control_objective": "Runtime execution must be attested before civic service admission.",
+        "control_status": "verified",
+        "resilience_target_ref": "resilience:runtime-continuity",
+        "policy_refs": ["policy-fabric:guardrail:runtime-attestation"],
+        "threat_model_refs": ["threat-model:runtime-bypass"],
+        "rational_grl_contribution_refs": ["risk-contribution:runtime-bypass-defeater"],
+        "evidence_pack_ref": "civic-evidence-pack:synthetic:runtime-service",
+        "evidence_receipt_refs": ["receipt:civic:risk-control-binding"],
+        "provenance_refs": ["provenance:civic:runtime-service"],
+        "non_claims": ["Synthetic binding does not operate a civic runtime."]
+      }
+    },
+    {
+      "fixture_id": "civic-evidence-pack-runtime-decision",
+      "target_schema": "civic_evidence_pack.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "evidence_pack_id": "civic-evidence-pack:synthetic:runtime-service",
+        "decision_target": "runtime_decision",
+        "civic_layer": "TRM",
+        "object_ref": "runtime:synthetic:civic-service",
+        "risk_control_binding_refs": ["civic-binding:runtime-service:synthetic"],
+        "artifact_entry_refs": ["artifact-entry:civic:runtime-attestation"],
+        "proof_pack_refs": ["proof-pack:synthetic:civic-runtime"],
+        "attestation_refs": ["attestation:runtime:synthetic"],
+        "runtime_assurance_refs": ["agentplane:run-capsule:synthetic-civic"],
+        "supply_chain_refs": ["slsa:synthetic:runtime-artifact"],
+        "policy_decision_refs": ["policy-decision:runtime-attestation-pass"],
+        "audit_signal_refs": ["audit-signal:civic:runtime-service"],
+        "evidence_receipt_refs": ["receipt:civic:evidence-pack"],
+        "redaction_status": "public_synthetic",
+        "known_gaps": ["Synthetic fixture only; no live runtime evidence."],
+        "non_claims": ["Evidence pack packages references only and does not score public value."]
+      }
+    },
+    {
+      "fixture_id": "civic-incident-control-failure",
+      "target_schema": "civic_incident_control_event.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "event_id": "incident:civic:control-failure:synthetic",
+        "event_kind": "control_failure",
+        "civic_layer": "TRM",
+        "affected_object_ref": "runtime:synthetic:civic-service",
+        "severity": "high",
+        "control_refs": ["control:runtime-attestation-required"],
+        "risk_control_binding_refs": ["civic-binding:runtime-service:synthetic"],
+        "evidence_pack_ref": "civic-evidence-pack:synthetic:runtime-service",
+        "sociosphere_consumption_status": "ready_for_ingest",
+        "remediation_status": "in_progress",
+        "policy_decision_refs": ["policy-decision:runtime-attestation-failed"],
+        "incident_record_ref": "incident-record:civic:control-failure:synthetic",
+        "evidence_receipt_refs": ["receipt:civic:incident-control-failure"],
+        "non_claims": ["Synthetic incident does not represent a live civic failure."]
+      }
+    },
+    {
+      "fixture_id": "civic-audit-signal-runtime-service",
+      "target_schema": "civic_audit_signal.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "audit_signal_id": "audit-signal:civic:runtime-service",
+        "audit_finding_ref": "audit-finding:runtime-attestation-coverage",
+        "scoreability_status": "scoreable",
+        "completeness": 0.82,
+        "dimensions": {
+          "evidence_completeness": 0.85,
+          "control_coverage": 0.80,
+          "provenance_completeness": 0.90,
+          "redaction_status": "public_synthetic",
+          "runtime_attestation_coverage": 0.80,
+          "policy_decision_coverage": 0.75,
+          "open_gap_count": 1
+        },
+        "delivery_excellence_score_ref": "delivery-excellence:score:civic-runtime-synthetic",
+        "evidence_pack_ref": "civic-evidence-pack:synthetic:runtime-service",
+        "evidence_receipt_refs": ["receipt:civic:audit-signal"],
+        "non_claims": ["Synthetic audit signal is scoreable by shape only; Delivery Excellence owns scoring runtime."]
+      }
+    },
+    {
+      "fixture_id": "civic-risk-contribution-defeater",
+      "target_schema": "civic_risk_contribution.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "risk_contribution_id": "risk-contribution:runtime-bypass-defeater",
+        "semantic_anchor_ref": "ontogenesis:rationalgrl:negative-contribution:defeater",
+        "contribution_kind": "defeater",
+        "source_ref": "threat:runtime-policy-bypass",
+        "target_ref": "goal:civic-runtime-admission",
+        "rationale": "Runtime policy bypass defeats the admission claim until attestation evidence is restored.",
+        "risk_control_binding_ref": "civic-binding:runtime-service:synthetic",
+        "threat_model_ref": "threat-model:runtime-bypass",
+        "policy_refs": ["policy-fabric:guardrail:runtime-attestation"],
+        "evidence_receipt_refs": ["receipt:civic:risk-contribution"],
+        "non_claims": ["Synthetic RationalGRL contribution does not define ontology semantics."]
+      }
+    },
+    {
+      "fixture_id": "civic-assurance-worked-trace",
+      "target_schema": "civic_assurance_trace.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "trace_id": "civic-assurance-trace:synthetic:runtime-service",
+        "steps": [
+          {"step_index": 0, "step_kind": "artifact_deployed", "object_ref": "artifact:civic-runtime:synthetic", "evidence_ref": "receipt:civic:artifact-deployed", "status": "pass"},
+          {"step_index": 1, "step_kind": "policy_checked", "object_ref": "policy-decision:runtime-attestation-pass", "evidence_ref": "receipt:civic:policy-checked", "status": "pass"},
+          {"step_index": 2, "step_kind": "runtime_attested", "object_ref": "attestation:runtime:synthetic", "evidence_ref": "receipt:civic:runtime-attested", "status": "pass"},
+          {"step_index": 3, "step_kind": "control_verified", "object_ref": "control:runtime-attestation-required", "evidence_ref": "receipt:civic:control-verified", "status": "pass"},
+          {"step_index": 4, "step_kind": "evidence_pack_emitted", "object_ref": "civic-evidence-pack:synthetic:runtime-service", "evidence_ref": "receipt:civic:evidence-pack", "status": "pass"},
+          {"step_index": 5, "step_kind": "score_updated", "object_ref": "delivery-excellence:score:civic-runtime-synthetic", "evidence_ref": "receipt:civic:audit-signal", "status": "warn"}
+        ],
+        "evidence_pack_ref": "civic-evidence-pack:synthetic:runtime-service",
+        "audit_signal_ref": "audit-signal:civic:runtime-service",
+        "incident_event_refs": ["incident:civic:control-failure:synthetic"],
+        "risk_control_binding_refs": ["civic-binding:runtime-service:synthetic"],
+        "rational_grl_contribution_refs": ["risk-contribution:runtime-bypass-defeater"],
+        "evidence_receipt_refs": ["receipt:civic:assurance-trace"],
+        "non_claims": ["Worked trace is public-synthetic and does not execute downstream civic runtime."]
+      }
+    },
+    {
+      "fixture_id": "civic-evidence-pack-invalid-no-binding",
+      "target_schema": "civic_evidence_pack.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "schema_validation_error",
+      "payload": {
+        "schema_version": "1.0",
+        "evidence_pack_id": "civic-evidence-pack:invalid:no-binding",
+        "decision_target": "runtime_decision",
+        "civic_layer": "TRM",
+        "object_ref": "runtime:synthetic:civic-service",
+        "risk_control_binding_refs": [],
+        "artifact_entry_refs": ["artifact-entry:civic:runtime-attestation"],
+        "proof_pack_refs": ["proof-pack:synthetic:civic-runtime"],
+        "evidence_receipt_refs": ["receipt:civic:invalid-no-binding"],
+        "redaction_status": "public_synthetic",
+        "non_claims": ["Invalid fixture intentionally omits risk/control binding refs."]
+      }
+    },
+    {
+      "fixture_id": "civic-assurance-trace-invalid-missing-step",
+      "target_schema": "civic_assurance_trace.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "worked_trace_requires_all_steps",
+      "payload": {
+        "schema_version": "1.0",
+        "trace_id": "civic-assurance-trace:invalid:missing-score",
+        "steps": [
+          {"step_index": 0, "step_kind": "artifact_deployed", "object_ref": "artifact:civic-runtime:synthetic", "evidence_ref": "receipt:civic:artifact-deployed", "status": "pass"},
+          {"step_index": 1, "step_kind": "policy_checked", "object_ref": "policy-decision:runtime-attestation-pass", "evidence_ref": "receipt:civic:policy-checked", "status": "pass"},
+          {"step_index": 2, "step_kind": "runtime_attested", "object_ref": "attestation:runtime:synthetic", "evidence_ref": "receipt:civic:runtime-attested", "status": "pass"},
+          {"step_index": 3, "step_kind": "control_verified", "object_ref": "control:runtime-attestation-required", "evidence_ref": "receipt:civic:control-verified", "status": "pass"},
+          {"step_index": 4, "step_kind": "evidence_pack_emitted", "object_ref": "civic-evidence-pack:synthetic:runtime-service", "evidence_ref": "receipt:civic:evidence-pack", "status": "pass"},
+          {"step_index": 5, "step_kind": "evidence_pack_emitted", "object_ref": "civic-evidence-pack:synthetic:runtime-service", "evidence_ref": "receipt:civic:evidence-pack-duplicate", "status": "warn"}
+        ],
+        "evidence_pack_ref": "civic-evidence-pack:synthetic:runtime-service",
+        "audit_signal_ref": "audit-signal:civic:runtime-service",
+        "evidence_receipt_refs": ["receipt:civic:invalid-trace"],
+        "non_claims": ["Invalid fixture intentionally omits score_updated step."]
+      }
+    }
+  ]
+}

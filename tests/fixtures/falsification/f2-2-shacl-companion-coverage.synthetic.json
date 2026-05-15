@@ -10,6 +10,9 @@
       "expected_result": "covered_with_shacl_plus_non_shacl_fallback",
       "public_state": "public-synthetic",
       "condition": "Certificate and bridge schemas have SHACL companion coverage or explicit non-SHACL fallback status.",
+      "detection_mechanism": "shacl_companion_coverage_validator",
+      "revision_direction": "schema_revision; non_shacl_fallback_validation",
+      "owner": "procybernetica-schema",
       "shacl_shape_refs": [
         "shacl/certificates/certificate-family-v1.3.shacl.ttl",
         "shacl/bridges/bridge-schemas-v1.shacl.ttl"

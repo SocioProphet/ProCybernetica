@@ -2,7 +2,7 @@
 
 This repository is the public codification surface for the existing ProCybernetica blueprint.
 
-The first job of the repository is preservation and normalization. The second job is reconciliation. The third job is executable implementation.
+The repository has reached a stable v0 public-review state after the bounded 20-turn integration lane. Capture and reconciliation remain preserved, but the repo now also exposes executable public conformance lanes.
 
 ## Public-first rule
 
@@ -16,15 +16,19 @@ Read:
 - `docs/PUBLICATION_BOUNDARY.md`
 - `docs/PUBLICATION_MATRIX.md`
 
-## Read order
+## Public-review read order
 
 Start here:
 
-1. `docs/BLUEPRINT_POSITIONING.md`
-2. `docs/BLUEPRINT_PROVENANCE.md`
-3. `docs/CAPTURE_STATUS.md`
-4. `docs/CORPUS_INDEX.md`
-5. `AGENTS.md`
+1. `docs/INTEGRATION_STATUS.md`
+2. `docs/PUBLIC_REVIEW_CHECKLIST.md`
+3. `docs/conformance/README.md`
+4. `docs/implementation/VERTICAL_SLICE_PLAN.md`
+5. `docs/BLUEPRINT_POSITIONING.md`
+6. `docs/BLUEPRINT_PROVENANCE.md`
+7. `docs/CAPTURE_STATUS.md`
+8. `docs/CORPUS_INDEX.md`
+9. `AGENTS.md`
 
 Then read the source captures by layer:
 
@@ -68,6 +72,8 @@ Then read the source captures by layer:
 ### Implementation practicum
 
 - `docs/source-captures/BOOK_XI_IMPLEMENTATION_PRACTICUM_CAPTURE.md`
+- `docs/implementation/VERTICAL_SLICE_PLAN.md`
+- `tests/fixtures/book-xi/slice-a-ingest-to-claims.synthetic.json`
 
 ### Mathematical and semantic runway
 
@@ -81,22 +87,21 @@ Then read the source captures by layer:
 - `docs/source-captures/DASHBOARD_ARTIFACT_INVENTORY_CAPTURE.md`
 - `docs/scoring/README.md`
 - `docs/dashboard/README.md`
+- `docs/assurance/CIVIC_STACK_ASSURANCE_BINDING.md`
 
 ## Current repository mode
 
-The repo is in capture and reconciliation mode.
+The repository is in v0 public-review mode.
 
-The main blueprint corpus is captured. The next work is to reconcile the captured sources into a canonical v0 specification before treating schemas, profiles, or runtime files as final.
-
-The cybernetic governance doctrine bundle is also in capture and reconciliation mode. It records the frontier governance runway but does not replace the existing v0 reconciliation sequence. Its immediate implementation target is the Tier 1 schema and validator bundle described in `docs/cybernetic-governance/PROGRAM_CAPTURE.md`.
+The main blueprint corpus is captured. The v0 schema/profile surface is normalized. Public-synthetic fixtures and validators are in CI. Remaining runtime implementation belongs in the owning upstream repositories.
 
 ## What not to do first
 
 Do not begin by expanding runtime code.
 
-Do not treat provisional schema files as final.
+Do not treat public-review readiness as production readiness.
 
-Do not hide public-safe material because it is incomplete or still being reconciled.
+Do not hide public-safe material because it is incomplete or still being improved.
 
 Do not ingest raw scoring/dashboard data without classification, but do publish schemas, methodology, summaries, validation checks, and public-safe fixtures.
 
@@ -106,11 +111,10 @@ Do not implement Superconscious runtime coupling from this doctrine branch while
 
 ## Correct next work
 
-1. Reconcile source terminology and enums.
-2. Produce canonical v0 envelope list.
-3. Produce canonical lifecycle and promotion profiles.
-4. Decide package naming and implementation sequence.
-5. Build the reference implementation from Volume IV and Book XI after reconciliation.
-6. Add the cybernetic governance Tier 1 schemas, fixtures, and validators.
-7. Integrate Prophet Platform, Agent Plane, GitHub workflows, and SourceOS evidence.
-8. Publish public-safe scoring/dashboard artifacts or substitutes under the publication matrix.
+1. Keep CI and fixture validation green.
+2. Use `docs/PUBLIC_REVIEW_CHECKLIST.md` before publishing or claiming conformance.
+3. Extend Book XI after Slice A only through bounded public-safe slices.
+4. Treat G7+ theorem/colimit/evidence-cocone work as a separate theorem-audit tranche.
+5. Push downstream runtime adapters into the owning repositories.
+6. Publish public-safe scoring/dashboard artifacts or substitutes under the publication matrix.
+7. Leave the CI Observation Ledger open by design.

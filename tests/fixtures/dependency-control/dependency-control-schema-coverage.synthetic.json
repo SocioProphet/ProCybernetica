@@ -1,0 +1,142 @@
+{
+  "fixture_set_version": "dependency-control.v1",
+  "publication_state": "public-synthetic",
+  "description": "Additional synthetic dependency-control fixtures ensuring all schema targets are exercised by the validator lane.",
+  "fixtures": [
+    {
+      "fixture_id": "dep-graph-baseline",
+      "category": "dependency-control-graph-baseline",
+      "target_schema": "dependency_control_graph.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "control:user_instruction can affect observable:monitor_alert through one typed dependency edge",
+        "what_was_observed": "graph edge is evidence-receipt backed",
+        "partition_hidden": [],
+        "shared_control_ancestry": [],
+        "cancellation_or_normalization": "none",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "graph_id": "dep-graph:fixture:base",
+        "scope_ref": "workspace:fixture:dependency-control",
+        "nodes": [
+          {
+            "node_id": "control:user_instruction",
+            "node_kind": "control",
+            "governance_ref": "trace:fixture:local-control"
+          },
+          {
+            "node_id": "observable:monitor_alert",
+            "node_kind": "observable",
+            "governance_ref": "alert:fixture:local-control"
+          }
+        ],
+        "edges": [
+          {
+            "edge_id": "edge:local-control-to-monitor",
+            "from_node": "control:user_instruction",
+            "to_node": "observable:monitor_alert",
+            "edge_kind": "affects",
+            "authority_chain_ref": "authority:fixture:local-control",
+            "evidence_receipt_ref": "receipt:fixture:local-control"
+          }
+        ],
+        "authority_chain_refs": ["authority:fixture:local-control"],
+        "agent_action_trace_refs": ["trace:fixture:local-control"],
+        "tool_permission_scope_refs": ["scope:fixture:local-control"],
+        "monitor_alert_refs": ["alert:fixture:local-control"],
+        "evidence_receipt_refs": ["receipt:fixture:local-control"],
+        "cybernetic_safety_case_ref": "safety-case:fixture:dependency-control",
+        "agentplane_run_capsule_refs": ["agentplane:run-capsule:fixture:local-control"],
+        "proof_pack_exhibit_refs": ["proof-pack:fixture:dependency-control"],
+        "implements_invariants": ["invariant_0_2_no_action_without_trace"],
+        "non_claims": ["Synthetic dependency graph fixture does not claim live runtime topology."]
+      }
+    },
+    {
+      "fixture_id": "dep-observability-partition",
+      "category": "observability-partition-visible-and-hidden",
+      "target_schema": "observability_partition.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "partition limits which effects can be reviewed publicly",
+        "what_was_observed": "monitor alert and evidence receipt are visible",
+        "partition_hidden": ["private prompt body", "private tool payload"],
+        "shared_control_ancestry": [],
+        "cancellation_or_normalization": "none",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "partition_id": "partition:fixture:public-review",
+        "scope_ref": "workspace:fixture:dependency-control",
+        "visible_refs": ["alert:fixture:local-control", "receipt:fixture:local-control"],
+        "hidden_refs": ["private:prompt-body", "private:tool-payload"],
+        "redacted_refs": ["redaction:fixture:prompt-body"],
+        "externally_observable_refs": ["observable:monitor_alert"],
+        "monitor_alert_refs": ["alert:fixture:local-control"],
+        "evidence_receipt_refs": ["receipt:fixture:partition"],
+        "safety_case_ref": "safety-case:fixture:dependency-control",
+        "partition_non_claims": ["Public partition does not reveal raw private payloads."]
+      }
+    },
+    {
+      "fixture_id": "dep-shared-ancestry-policy",
+      "category": "shared-dependency-ancestry-record",
+      "target_schema": "shared_dependency_ancestry.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "one policy ancestor can affect two monitor observables",
+        "what_was_observed": "shared ancestry is evidence-receipt backed",
+        "partition_hidden": [],
+        "shared_control_ancestry": ["policy:shared-parent"],
+        "cancellation_or_normalization": "none",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "ancestry_record_id": "ancestry:fixture:shared-policy",
+        "dependency_graph_ref": "dep-graph:fixture:base",
+        "shared_ancestor_ref": "policy:shared-parent",
+        "ancestor_kind": "policy",
+        "dependent_refs": ["alert:fixture:a", "alert:fixture:b"],
+        "ancestry_path_refs": ["path:policy-to-alert-a", "path:policy-to-alert-b"],
+        "authority_chain_refs": ["authority:fixture:shared-policy"],
+        "release_delta_report_refs": ["release-delta:fixture:shared-policy"],
+        "evidence_receipt_refs": ["receipt:fixture:shared-ancestry"],
+        "safety_case_ref": "safety-case:fixture:dependency-control",
+        "diagnosis": "Two alerts share a common policy ancestor in this synthetic fixture."
+      }
+    },
+    {
+      "fixture_id": "dep-ontology-delta-affects-edges",
+      "category": "ontology-dependency-delta-record",
+      "target_schema": "ontology_dependency_delta.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "a role-definition delta can affect dependency edge interpretation",
+        "what_was_observed": "ontology delta references affected edges and release delta evidence",
+        "partition_hidden": [],
+        "shared_control_ancestry": ["concept:tool-role"],
+        "cancellation_or_normalization": "none",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "ontology_delta_id": "ontology-delta:fixture:tool-role-v2",
+        "concept_ref": "concept:tool-role",
+        "concept_kind": "role",
+        "prior_version_ref": "concept:tool-role:v1",
+        "target_version_ref": "concept:tool-role:v2",
+        "affected_dependency_edge_refs": ["edge:tool-role-to-permission-scope"],
+        "affected_policy_refs": ["policy:tool-role-admissibility"],
+        "affected_schema_refs": ["tool_permission_scope.v1.json"],
+        "evidence_receipt_refs": ["receipt:fixture:ontology-delta"],
+        "release_delta_report_ref": "release-delta:fixture:ontology-delta",
+        "safety_case_ref": "safety-case:fixture:dependency-control",
+        "non_claims": ["Synthetic ontology delta fixture does not claim live ontology migration."]
+      }
+    }
+  ]
+}

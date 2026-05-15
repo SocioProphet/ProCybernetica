@@ -1,0 +1,130 @@
+schema_version: mfel.observation.v1
+case_id: mfel-corespotlight-plist-sanitized-001
+title: Sanitized Core Spotlight plist diagnostics correlation
+publication_state: public-sanitized
+source_class: macos_metadata
+redaction_boundary:
+  classification: public-sanitized
+  private_evidence_policy: Raw plist values that identify accounts, devices, local paths,
+    private bundle state, or user content are withheld.
+  public_substitute: sanitized_summary
+  withheld_fields:
+  - account_identifier
+  - device_identifier
+  - absolute_local_path
+  - raw_plist_value
+  - user_content_reference
+  redaction_rationale: The case demonstrates plist correlation discipline without publishing
+    private device state.
+subject:
+  subject_id: sanitized-corespotlight-plist-case
+  subject_kind: plist
+  scope: Core Spotlight plist diagnostic keys in a sanitized macOS metadata review
+  time_window: sanitized bounded review window
+observed_facts:
+- id: obs-cs-001
+  layer: observed_fact
+  statement: A sanitized Core Spotlight plist diagnostic record contained update-state
+    keys associated with local indexing activity.
+  source: plist_key
+  evidence_ref: sanitized://mfel/corespotlight/plist-update-state
+  confidence_bound: sanitized_summary
+- id: obs-cs-002
+  layer: observed_fact
+  statement: The public example withholds raw plist values that could identify a device,
+    account, absolute local path, or private content reference.
+  source: sanitized_case_note
+  evidence_ref: sanitized://mfel/corespotlight/redaction-boundary
+  confidence_bound: sanitized_summary
+- id: obs-cs-003
+  layer: observed_fact
+  statement: No signed external actor indicator or independent compromise artifact is included
+    in the public example.
+  source: sanitized_case_note
+  evidence_ref: sanitized://mfel/corespotlight/actor-evidence-absent
+  confidence_bound: sanitized_summary
+derived_facts:
+- id: drv-cs-001
+  layer: derived_fact
+  statement: The sanitized plist evidence supports an update-state observation, not a compromise
+    or attribution conclusion.
+  derivation: separate plist key observation from actor/compromise inference and mark missing
+    corroboration
+  input_refs:
+  - obs-cs-001
+  - obs-cs-003
+  confidence_bound: bounded
+interpretations:
+- id: int-cs-001
+  layer: interpretation
+  statement: Core Spotlight plist churn can be consistent with local indexing, cache refresh,
+    or OS service maintenance.
+  basis_refs:
+  - obs-cs-001
+  - drv-cs-001
+  confidence_bound: moderate
+  alternative_explanations:
+  - normal Core Spotlight service update
+  - cache rebuild
+  - FileProvider or CloudKit metadata churn
+  - unexplained state transition requiring private-evidence review
+hypotheses:
+- id: hyp-cs-local-maintenance
+  layer: hypothesis
+  statement: The sanitized plist record reflects local Core Spotlight maintenance or indexing
+    churn.
+  risk_level: moderate
+  supporting_refs:
+  - obs-cs-001
+  - drv-cs-001
+  - int-cs-001
+  negative_evidence:
+  - No independent compromise artifact is included.
+  missing_evidence:
+  - Raw private plist values are withheld.
+  status: supported
+- id: hyp-cs-coordinated-compromise
+  layer: hypothesis
+  statement: The sanitized plist record reflects coordinated compromise.
+  risk_level: high
+  supporting_refs:
+  - obs-cs-001
+  negative_evidence:
+  - No independent compromise artifact is included.
+  - No signed actor indicator is included.
+  - Local indexing churn remains a plausible alternative.
+  missing_evidence:
+  - Endpoint forensic trace
+  - Network or command evidence
+  - Independent corroboration across unrelated evidence sources
+  status: unsupported
+prohibited_conclusions:
+- id: pc-cs-001
+  layer: prohibited_conclusion
+  statement: Do not infer coordinated compromise from a sanitized Core Spotlight plist update-state
+    record alone.
+  reason: The public example lacks discriminating evidence and independent corroboration.
+negative_evidence:
+- No independent compromise artifact is included.
+- No signed actor indicator is included.
+missing_evidence:
+- Raw private plist values are withheld.
+- Endpoint forensic trace is absent from public example.
+- Independent corroboration is absent.
+non_claims:
+- This example does not describe a live incident.
+- This example does not claim coordinated compromise.
+- This example does not attribute activity to any actor.
+links:
+- from_ref: obs-cs-001
+  to_ref: drv-cs-001
+  relation: derives_from
+- from_ref: drv-cs-001
+  to_ref: hyp-cs-local-maintenance
+  relation: supports
+- from_ref: obs-cs-003
+  to_ref: hyp-cs-coordinated-compromise
+  relation: refutes
+- from_ref: pc-cs-001
+  to_ref: hyp-cs-coordinated-compromise
+  relation: prohibits

@@ -1,0 +1,129 @@
+schema_version: mfel.observation.v1
+case_id: mfel-notes-spotlight-indexing-sanitized-001
+title: Sanitized Notes Spotlight indexing correlation
+publication_state: public-sanitized
+source_class: macos_metadata
+redaction_boundary:
+  classification: public-sanitized
+  private_evidence_policy: Raw note titles, note body text, account identifiers, device
+    identifiers, and absolute local paths are withheld.
+  public_substitute: sanitized_summary
+  withheld_fields:
+  - note_title
+  - note_body
+  - account_identifier
+  - device_identifier
+  - absolute_local_path
+  redaction_rationale: The case demonstrates method and layer discipline without publishing
+    private notes content.
+subject:
+  subject_id: sanitized-notes-spotlight-case
+  subject_kind: metadata_cluster
+  scope: Notes-related Spotlight indexing artifacts in a sanitized macOS metadata review
+  time_window: sanitized bounded review window
+observed_facts:
+- id: obs-notes-001
+  layer: observed_fact
+  statement: A sanitized metadata record indicated a Notes-related item was indexed by
+    a Spotlight-family process.
+  source: sanitized_case_note
+  evidence_ref: sanitized://mfel/notes/spotlight-index-record
+  confidence_bound: sanitized_summary
+- id: obs-notes-002
+  layer: observed_fact
+  statement: The sanitized record did not expose note body text, note title, account
+    identifier, or absolute file path.
+  source: sanitized_case_note
+  evidence_ref: sanitized://mfel/notes/redaction-boundary
+  confidence_bound: sanitized_summary
+- id: obs-notes-003
+  layer: observed_fact
+  statement: No independent network-flow artifact is included in this public example.
+  source: sanitized_case_note
+  evidence_ref: sanitized://mfel/notes/network-evidence-absent
+  confidence_bound: sanitized_summary
+derived_facts:
+- id: drv-notes-001
+  layer: derived_fact
+  statement: The public artifact supports only a local indexing correlation, not a remote-transfer
+    conclusion.
+  derivation: classify observed metadata source and compare against missing independent
+    network-flow evidence
+  input_refs:
+  - obs-notes-001
+  - obs-notes-003
+  confidence_bound: bounded
+interpretations:
+- id: int-notes-001
+  layer: interpretation
+  statement: A Notes-related Spotlight record can be consistent with normal local indexing
+    behavior.
+  basis_refs:
+  - obs-notes-001
+  - drv-notes-001
+  confidence_bound: moderate
+  alternative_explanations:
+  - normal Core Spotlight indexing
+  - application metadata refresh
+  - iCloud/FileProvider synchronization side effect
+  - unexplained metadata churn requiring private-evidence review
+hypotheses:
+- id: hyp-notes-normal-indexing
+  layer: hypothesis
+  statement: The sanitized metadata cluster reflects normal local Notes/Spotlight indexing.
+  risk_level: moderate
+  supporting_refs:
+  - obs-notes-001
+  - drv-notes-001
+  - int-notes-001
+  negative_evidence:
+  - No independent network-flow artifact is present in the public example.
+  missing_evidence:
+  - Raw private logs and device-specific identifiers are withheld from the public case.
+  status: supported
+- id: hyp-notes-exfiltration
+  layer: hypothesis
+  statement: The sanitized metadata cluster reflects unauthorized remote exfiltration.
+  risk_level: suspicious
+  supporting_refs:
+  - obs-notes-001
+  negative_evidence:
+  - No independent network-flow artifact is included.
+  - No actor attribution evidence is included.
+  - Local indexing is a plausible alternative explanation.
+  missing_evidence:
+  - Authenticated endpoint evidence
+  - Packet or connection telemetry
+  - Corroborating access-control events
+  status: unsupported
+prohibited_conclusions:
+- id: pc-notes-001
+  layer: prohibited_conclusion
+  statement: Do not conclude remote exfiltration from a sanitized local indexing artifact
+    alone.
+  reason: The public example lacks discriminating evidence, network corroboration, and
+    actor attribution basis.
+negative_evidence:
+- No independent endpoint or network evidence is included.
+- No actor attribution evidence is included.
+missing_evidence:
+- Raw private logs are withheld.
+- Device-specific identifiers are withheld.
+- Network corroboration is absent from the public example.
+non_claims:
+- This example does not describe a live incident.
+- This example does not claim remote exfiltration.
+- This example does not attribute activity to any actor.
+links:
+- from_ref: obs-notes-001
+  to_ref: drv-notes-001
+  relation: derives_from
+- from_ref: drv-notes-001
+  to_ref: hyp-notes-normal-indexing
+  relation: supports
+- from_ref: obs-notes-003
+  to_ref: hyp-notes-exfiltration
+  relation: refutes
+- from_ref: pc-notes-001
+  to_ref: hyp-notes-exfiltration
+  relation: prohibits

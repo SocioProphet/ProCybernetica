@@ -1,0 +1,117 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pc: <https://schemas.socioprophet.ai/procybernetica/shacl#> .
+@prefix cert: <https://schemas.socioprophet.ai/certificates/> .
+
+# Certificate family SHACL companion shapes for #46.
+# These shapes cover SHACL-expressible structural requirements from
+# schemas/certificates/base-certificate.v1.3.json.
+# Non-SHACL invariants are documented in docs/shacl/CERTIFICATE_AND_BRIDGE_SHACL_COVERAGE.md.
+
+pc:BaseCertificateV13Shape
+  a sh:NodeShape ;
+  sh:targetClass cert:BaseCertificateV13 ;
+  pc:sourceSchema "schemas/certificates/base-certificate.v1.3.json" ;
+  pc:invariantCoverage "CI-1: manifest/full digest distinction is represented by subject artifact_content_sha256 and later non-SHACL digest verification" ;
+  pc:invariantCoverage "CI-4: promotion-state inheritance is partially represented by required promotion_state and certificate-specific shapes" ;
+  pc:invariantCoverage "CI-9: authority concentration presence is represented; numeric threshold enforcement is deferred to non-SHACL validator/Rego" ;
+  sh:property [
+    sh:path cert:schema_version ;
+    sh:hasValue "1.3.0" ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [
+    sh:path cert:certificate_kind ;
+    sh:in (
+      "m0-training-provenance"
+      "m1a-source-lock"
+      "m1b-witness-card"
+      "m1c-causal-triad"
+      "m1-5-attribution-graph"
+      "m1d-off-target-audit"
+      "m1-composite"
+      "m2-implementability"
+      "m3-cross-layer-robustness"
+      "m5-public-note"
+      "procybernetica-safety-case"
+    ) ;
+    sh:minCount 1 ;
+    sh:maxCount 1 ;
+  ] ;
+  sh:property [ sh:path cert:certificate_id ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path cert:ts_issued ; sh:datatype xsd:dateTime ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path cert:subject ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path cert:verdict_status ; sh:in ("undecided" "admitted" "rejected" "superseded" "review_required") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path cert:authority_layer ; sh:in ("draft" "grounded_schema" "human_review" "institutional_truth" "runtime_evidence" "public_note") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path cert:promotion_state ; sh:in ("candidate" "promoted_stele" "rejected" "superseded") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path cert:reasoning_trace_ref ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path cert:cadence_classification ; sh:in ("microbeat" "mesobeat" "macrobeats" "macrobeat" "event_driven" "unknown") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path cert:non_claims ; sh:minCount 1 ; ] .
+
+pc:M0TrainingProvenanceCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M0TrainingProvenanceCertificate ;
+  pc:certificateKind "m0-training-provenance" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:M1ASourceLockCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M1ASourceLockCertificate ;
+  pc:certificateKind "m1a-source-lock" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:M1BWitnessCardCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M1BWitnessCardCertificate ;
+  pc:certificateKind "m1b-witness-card" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:M1CCausalTriadCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M1CCausalTriadCertificate ;
+  pc:certificateKind "m1c-causal-triad" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:M15AttributionGraphCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M15AttributionGraphCertificate ;
+  pc:certificateKind "m1-5-attribution-graph" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:M1DOffTargetAuditCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M1DOffTargetAuditCertificate ;
+  pc:certificateKind "m1d-off-target-audit" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:M1CompositeCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M1CompositeCertificate ;
+  pc:certificateKind "m1-composite" ;
+  pc:nonShaclRule "composite_fragments_match_promotion_state" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:M2ImplementabilityCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M2ImplementabilityCertificate ;
+  pc:certificateKind "m2-implementability" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:M3CrossLayerRobustnessCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M3CrossLayerRobustnessCertificate ;
+  pc:certificateKind "m3-cross-layer-robustness" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:M5PublicNoteCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:M5PublicNoteCertificate ;
+  pc:certificateKind "m5-public-note" ;
+  sh:node pc:BaseCertificateV13Shape .
+
+pc:ProCyberneticaSafetyCaseCertificateShape
+  a sh:NodeShape ;
+  sh:targetClass cert:ProCyberneticaSafetyCaseCertificate ;
+  pc:certificateKind "procybernetica-safety-case" ;
+  sh:node pc:BaseCertificateV13Shape .

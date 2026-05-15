@@ -1,0 +1,8 @@
+# Standards ownership
+# Replace or extend with the appropriate ProCybernetica standards maintainers.
+
+/standards/ @SocioProphet
+/docs/standards/ @SocioProphet
+/schemas/procybernetica/ @SocioProphet
+/tests/governance/ @SocioProphet
+/.github/workflows/standards-validate.yml @SocioProphet

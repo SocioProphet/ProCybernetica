@@ -1,0 +1,97 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.procybernetica.local/procybernetica/colimit-witness.v0.1.schema.json",
+  "title": "ProCybernetica Colimit Witness v0.1",
+  "description": "Structural colimit-witness record for evidence cocones. Supports candidate/review/proved-elsewhere postures without silently asserting theorem discharge.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "colimit_witness_id",
+    "evidence_cocone_ref",
+    "apex_evidence_ref",
+    "universal_property_status",
+    "comparison_targets",
+    "mediator_witnesses",
+    "uniqueness_status",
+    "theorem_audit_refs",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "colimit_witness_id": {"type": "string", "minLength": 1},
+    "evidence_cocone_ref": {"type": "string", "minLength": 1},
+    "apex_evidence_ref": {"type": "string", "minLength": 1},
+    "universal_property_status": {
+      "enum": ["not_asserted", "structural_candidate", "review_required", "counterexample_found", "proved_elsewhere"]
+    },
+    "comparison_targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/comparison_target"}
+    },
+    "mediator_witnesses": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/mediator_witness"}
+    },
+    "uniqueness_status": {
+      "enum": ["not_asserted", "structural_candidate", "review_required", "counterexample_found", "proved_elsewhere"]
+    },
+    "naturality_status": {
+      "enum": ["not_asserted", "structural_candidate", "review_required", "counterexample_found", "proved_elsewhere"],
+      "default": "not_asserted"
+    },
+    "proof_ref": {"type": ["string", "null"]},
+    "counterexample_ref": {"type": ["string", "null"]},
+    "coherence_status": {"const": "not-asserted"},
+    "theorem_audit_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "enum": ["TBD-COL", "TBD-GROT"]}
+    },
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"universal_property_status": {"const": "proved_elsewhere"}}, "required": ["universal_property_status"]},
+      "then": {"required": ["proof_ref"]}
+    },
+    {
+      "if": {"properties": {"uniqueness_status": {"const": "proved_elsewhere"}}, "required": ["uniqueness_status"]},
+      "then": {"required": ["proof_ref"]}
+    },
+    {
+      "if": {"properties": {"naturality_status": {"const": "proved_elsewhere"}}, "required": ["naturality_status"]},
+      "then": {"required": ["proof_ref"]}
+    },
+    {
+      "if": {"properties": {"universal_property_status": {"const": "counterexample_found"}}, "required": ["universal_property_status"]},
+      "then": {"required": ["counterexample_ref"]}
+    }
+  ],
+  "$defs": {
+    "comparison_target": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["target_id", "target_kind", "target_ref"],
+      "properties": {
+        "target_id": {"type": "string", "minLength": 1},
+        "target_kind": {"enum": ["review_target", "evidence_pack", "certificate", "proof_pack", "manual_review", "future_formal_object"]},
+        "target_ref": {"type": "string", "minLength": 1}
+      }
+    },
+    "mediator_witness": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mediator_id", "comparison_target_ref", "apex_ref", "mediator_status", "witness_ref"],
+      "properties": {
+        "mediator_id": {"type": "string", "minLength": 1},
+        "comparison_target_ref": {"type": "string", "minLength": 1},
+        "apex_ref": {"type": "string", "minLength": 1},
+        "mediator_status": {"enum": ["not_asserted", "structural_candidate", "review_required", "counterexample_found", "proved_elsewhere"]},
+        "witness_ref": {"type": "string", "minLength": 1}
+      }
+    }
+  }
+}

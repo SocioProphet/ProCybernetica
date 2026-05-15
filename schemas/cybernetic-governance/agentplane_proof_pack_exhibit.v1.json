@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/agentplane_proof_pack_exhibit.v1.json",
+  "title": "AgentPlane Proof Pack Exhibit",
+  "description": "Reviewer-facing exhibit that cites an AgentPlane run capsule and operator readout for proof-pack packaging.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "proof_pack_exhibit_id", "run_capsule_ref", "operator_readout_ref", "exhibit_kind", "evidence_receipt_refs", "redaction_status", "known_excluded_claims", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "proof_pack_exhibit_id": {"type": "string", "minLength": 1},
+    "run_capsule_ref": {"type": "string", "minLength": 1},
+    "operator_readout_ref": {"type": "string", "minLength": 1},
+    "exhibit_kind": {"enum": ["run_capsule", "operator_readout", "policy_gated_dispatch", "tool_grant_evidence", "replay_evidence", "off_history_evidence", "final_disposition"]},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "redaction_status": {"enum": ["public", "public_synthetic", "public_sanitized", "withheld", "sealed"]},
+    "known_excluded_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "proof_pack_ref": {"type": "string"},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

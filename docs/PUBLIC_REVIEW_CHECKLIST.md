@@ -46,6 +46,7 @@ Only ongoing or explicitly out-of-scope items should remain open at the public-r
 - CI observation ledger issue remains open by design.
 - Future G7+ theorem/proof-pack colimit work remains a separate research/standards tranche.
 - Downstream runtime adapters belong in owning repos.
+- runtime implementation remains in owning upstream repos.
 
 ## Non-claims
 

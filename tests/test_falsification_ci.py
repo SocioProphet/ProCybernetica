@@ -17,9 +17,9 @@ FIXTURE_VALIDATOR = ROOT / "scripts" / "validate_falsification_fixture.py"
 
 def extract_json_block(path: Path) -> dict[str, Any]:
     text = path.read_text(encoding="utf-8")
-    match = re.search(r"```json\s*(\{.*?\})\s*```", text, flags=re.DOTALL)
+    match = re.search(r"```json\s*\n(?P<payload>.*?)\n```", text, flags=re.DOTALL)
     assert match, f"missing JSON block in {path}"
-    return json.loads(match.group(1))
+    return json.loads(match.group("payload"))
 
 
 def test_falsification_coverage_validator_passes() -> None:

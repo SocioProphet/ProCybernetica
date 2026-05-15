@@ -1,4 +1,4 @@
-.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci cybernetic-governance-fixtures cybernetic-governance-ci dependency-control-fixtures dependency-control-ci agentic-ops-fixtures agentic-ops-ci bridges-fixtures bridges-ci certificate-v13-fixtures certificate-v13-ci shacl-companions shacl-ci profiles-fixtures profiles-ci
+.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci cybernetic-governance-fixtures cybernetic-governance-ci dependency-control-fixtures dependency-control-ci agentic-ops-fixtures agentic-ops-ci bridges-fixtures bridges-ci certificate-v13-fixtures certificate-v13-ci shacl-companions shacl-ci profiles-fixtures profiles-ci v0-schemas-fixtures v0-schemas-ci
 
 test:
 	python -m pytest -q
@@ -59,3 +59,8 @@ profiles-fixtures:
 	python tools/cybernetic_governance/validate_profiles.py
 
 profiles-ci: profiles-fixtures
+
+v0-schemas-fixtures:
+	python tools/cybernetic_governance/validate_v0_schemas.py
+
+v0-schemas-ci: v0-schemas-fixtures

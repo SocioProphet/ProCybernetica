@@ -1,0 +1,130 @@
+schema_version: mfel.observation.v1
+case_id: mfel-qanon-rhetorical-construction-synthetic-001
+title: Synthetic QAnon-style anti-verification rhetorical construction
+publication_state: public-synthetic
+source_class: epistemic_threat
+redaction_boundary:
+  classification: public-synthetic
+  private_evidence_policy: No private messages, handles, group names, or user identifiers
+    are included.
+  public_substitute: synthetic_fixture
+  withheld_fields: []
+  redaction_rationale: The case is synthetic and exists to test rhetorical-analysis schema
+    discipline.
+subject:
+  subject_id: synthetic-rhetorical-artifact-001
+  subject_kind: rhetorical_artifact
+  scope: Synthetic anti-verification narrative pattern modeled after QAnon-style rhetoric
+  time_window: synthetic
+observed_facts:
+- id: obs-rhet-001
+  layer: observed_fact
+  statement: The synthetic text instructs the audience to distrust external verification
+    while implying hidden knowledge is available only inside the narrative community.
+  source: rhetorical_text
+  evidence_ref: synthetic://mfel/rhetoric/artifact-001
+  confidence_bound: synthetic
+- id: obs-rhet-002
+  layer: observed_fact
+  statement: The synthetic text frames failed predictions as evidence of deeper concealment
+    rather than as counterevidence.
+  source: rhetorical_text
+  evidence_ref: synthetic://mfel/rhetoric/artifact-001
+  confidence_bound: synthetic
+- id: obs-rhet-003
+  layer: observed_fact
+  statement: The synthetic fixture contains no real author, group, account, platform,
+    or private message.
+  source: synthetic_fixture
+  evidence_ref: synthetic://mfel/rhetoric/redaction-boundary
+  confidence_bound: synthetic
+derived_facts:
+- id: drv-rhet-001
+  layer: derived_fact
+  statement: 'The synthetic text contains an anti-verification loop: external refutation
+    is reframed as further support for the narrative.'
+  derivation: identify rhetorical move where failed prediction or external rebuttal is
+    treated as confirmation rather than refutation
+  input_refs:
+  - obs-rhet-001
+  - obs-rhet-002
+  confidence_bound: bounded
+interpretations:
+- id: int-rhet-001
+  layer: interpretation
+  statement: The artifact demonstrates a self-sealing rhetorical pattern that can degrade
+    evidence-seeking behavior.
+  basis_refs:
+  - obs-rhet-001
+  - obs-rhet-002
+  - drv-rhet-001
+  confidence_bound: moderate
+  alternative_explanations:
+  - fictional puzzle rhetoric
+  - satire
+  - ordinary in-group slang
+  - synthetic training fixture with no live influence context
+hypotheses:
+- id: hyp-rhet-anti-verification-pattern
+  layer: hypothesis
+  statement: The synthetic artifact exemplifies anti-verification rhetoric suitable for
+    evidence-bound training fixtures.
+  risk_level: moderate
+  supporting_refs:
+  - obs-rhet-001
+  - obs-rhet-002
+  - drv-rhet-001
+  - int-rhet-001
+  negative_evidence:
+  - The fixture is synthetic and contains no live group, account, or distribution data.
+  missing_evidence:
+  - No live audience behavior data is included.
+  status: supported
+- id: hyp-rhet-specific-actor-operation
+  layer: hypothesis
+  statement: The synthetic artifact was produced by a specific real-world actor or coordinated
+    operation.
+  risk_level: high
+  supporting_refs:
+  - obs-rhet-001
+  - obs-rhet-002
+  negative_evidence:
+  - The fixture is synthetic.
+  - No actor, account, platform, or distribution evidence is included.
+  - No provenance chain links the text to a real group.
+  missing_evidence:
+  - Public documented source
+  - Account-level evidence
+  - Distribution graph
+  - Independent corroboration
+  status: unsupported
+prohibited_conclusions:
+- id: pc-rhet-001
+  layer: prohibited_conclusion
+  statement: Do not attribute this synthetic rhetorical artifact to a real actor, movement,
+    account, or coordinated operation.
+  reason: The fixture is synthetic and contains no attribution basis.
+negative_evidence:
+- The fixture is synthetic.
+- No actor, account, platform, or distribution evidence is included.
+missing_evidence:
+- Public documented source is absent.
+- Account-level evidence is absent.
+- Distribution graph is absent.
+non_claims:
+- This example is synthetic.
+- This example is not a real extremist post.
+- This example does not attribute conduct to any real person or group.
+links:
+- from_ref: obs-rhet-001
+  to_ref: drv-rhet-001
+  relation: derives_from
+- from_ref: drv-rhet-001
+  to_ref: hyp-rhet-anti-verification-pattern
+  relation: supports
+- from_ref: obs-rhet-003
+  to_ref: hyp-rhet-specific-actor-operation
+  relation: refutes
+- from_ref: pc-rhet-001
+  to_ref: hyp-rhet-specific-actor-operation
+  relation: prohibits

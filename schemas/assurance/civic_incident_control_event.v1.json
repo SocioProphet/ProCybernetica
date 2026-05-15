@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/assurance/civic_incident_control_event.v1.json",
+  "title": "Civic Incident Control Event",
+  "description": "Incident, policy-violation, or control-failure event for SocioSphere civic-stack consumption.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "event_id", "event_kind", "civic_layer", "affected_object_ref", "severity", "control_refs", "evidence_pack_ref", "sociosphere_consumption_status", "remediation_status", "evidence_receipt_refs", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "event_id": {"type": "string", "minLength": 1},
+    "event_kind": {"enum": ["incident", "policy_violation", "control_failure", "runtime_assurance_failure", "supply_chain_failure", "audit_gap"]},
+    "civic_layer": {"enum": ["CGRM", "SRM", "DRM", "TRM", "OAC"]},
+    "affected_object_ref": {"type": "string", "minLength": 1},
+    "severity": {"enum": ["low", "medium", "high", "critical"]},
+    "control_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "risk_control_binding_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_pack_ref": {"type": "string", "minLength": 1},
+    "sociosphere_consumption_status": {"enum": ["not_exported", "ready_for_ingest", "ingested", "triaged", "closed"]},
+    "remediation_status": {"enum": ["open", "in_progress", "mitigated", "accepted_risk", "false_positive", "closed"]},
+    "policy_decision_refs": {"type": "array", "items": {"type": "string"}},
+    "incident_record_ref": {"type": "string"},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

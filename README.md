@@ -1,20 +1,37 @@
 # ProCybernetica
 
-ProCybernetica is the public codification surface for an existing cybernetic-control blueprint: doctrine, schemas, profiles, source captures, reconciliation records, conformance law, and reference implementation scaffolding for governed cybernetic systems.
+ProCybernetica is the public codification surface for an existing cybernetic-control blueprint: doctrine, schemas, profiles, source captures, reconciliation records, conformance law, assurance packaging, and reference validation scaffolding for governed cybernetic systems.
 
-This repository is being codified from the existing ProCybernetica Drive corpus. Drive remains the source archive. GitHub is the public, self-contained, executable-specification target.
+This repository was codified from the existing ProCybernetica Drive corpus. Drive remains the source archive. GitHub is now the public, self-contained, executable-specification target for the v0 public-review state.
 
-## Start here
+## Current status
 
-Read these first:
+Current mode: stable public-review state after the bounded 20-turn integration lane.
+
+The core public-review surface now includes:
+
+- estate integration maps;
+- reconciled v0 schemas and profiles;
+- cybernetic-governance schemas, fixtures, and validators;
+- certificate v1.3 and Cairnmark-to-Stele transition doctrine;
+- SHACL companion coverage;
+- Human Protection Layer reconciliation;
+- AgentPlane governance binding schemas;
+- proof-pack assurance schemas;
+- civic-stack assurance bindings;
+- lawful-learning conformance smoke;
+- Book XI Slice A public-synthetic ingest-to-claims fixture;
+- estate-alignment follow-up fixtures;
+- CI observation receipts.
+
+Start with:
 
 1. [`docs/START_HERE.md`](docs/START_HERE.md)
-2. [`docs/BLUEPRINT_POSITIONING.md`](docs/BLUEPRINT_POSITIONING.md)
-3. [`docs/BLUEPRINT_PROVENANCE.md`](docs/BLUEPRINT_PROVENANCE.md)
-4. [`docs/CAPTURE_STATUS.md`](docs/CAPTURE_STATUS.md)
-5. [`AGENTS.md`](AGENTS.md)
-
-The principal blueprint corpus is captured under [`docs/source-captures/`](docs/source-captures/). The next work is reconciliation and v0 contract normalization.
+2. [`docs/INTEGRATION_STATUS.md`](docs/INTEGRATION_STATUS.md)
+3. [`docs/PUBLIC_REVIEW_CHECKLIST.md`](docs/PUBLIC_REVIEW_CHECKLIST.md)
+4. [`docs/conformance/README.md`](docs/conformance/README.md)
+5. [`docs/implementation/VERTICAL_SLICE_PLAN.md`](docs/implementation/VERTICAL_SLICE_PLAN.md)
+6. [`AGENTS.md`](AGENTS.md)
 
 ## What ProCybernetica is
 
@@ -31,29 +48,25 @@ The repository starts from four core commitments:
 
 ## Repository mode
 
-Current mode: capture-complete enough for v0 reconciliation.
+The capture/reconciliation foundation is complete enough for public review. The repository now exposes executable public conformance lanes rather than only source captures.
 
-Correct sequence:
+The correct next sequence is:
 
-1. Capture source state.
-2. Reconcile doctrine across captured sources.
-3. Normalize vocabulary and canonical decisions.
-4. Freeze v0 schema names and package names.
-5. Build the reference implementation from the captured Volume IV kit and Book XI practicum.
-6. Add tests and conformance harness.
-7. Integrate Prophet Platform, Agent Plane, GitHub workflows, and SourceOS evidence.
-
-The existing `schemas/`, `profiles/`, and `procyber/` directories are provisional until reconciliation completes.
+1. Preserve public-review stability.
+2. Keep CI and fixture lanes green.
+3. Add future Book XI slices after Slice A.
+4. Add G7+ theorem-adjacent colimit/evidence-cocone work as a separate tranche.
+5. Push downstream runtime adapters into their owning repositories, not into ProCybernetica.
 
 ## Canonical program tracks
 
 ### 1. Doctrine as code
 
-The doctrinal corpus becomes concrete contracts: JSON Schemas, YAML profiles, semantic contracts, lifecycle profiles, replay envelopes, promotion decisions, policy envelopes, and conformance tests.
+The doctrinal corpus becomes concrete contracts: JSON Schemas, YAML profiles, semantic contracts, lifecycle profiles, replay envelopes, promotion decisions, policy envelopes, assurance schemas, SHACL companions, and conformance tests.
 
-### 2. Reference implementation kit
+### 2. Reference validation kit
 
-The first executable target is a compact implementation kit: schema bundle, validator, lifecycle supervisor, repository adapter, replay harness, promotion gate, planner registry, CLI, examples, and smoke tests.
+The public executable target is a compact validation kit: schema bundle, profile validators, fixture validators, proof-pack validators, HPL reconciliation checks, lawful-learning smoke checks, and Book XI Slice A validation.
 
 ### 3. Prophet Platform integration
 
@@ -61,16 +74,48 @@ Prophet Platform should consume ProCybernetica standards as its production runti
 
 ### 4. Agent and repository governance
 
-GitHub repositories, pull requests, agents, tool invocations, branches, merges, workflow runs, and deployments should be modeled as Fractal Nodes and governed by replay, policy, and promotion law.
+GitHub repositories, pull requests, agents, tool invocations, branches, merges, workflow runs, and deployments should be modeled as Fractal Nodes and governed by replay, policy, evidence, and promotion law.
 
 ### 5. Curriculum and standards publication
 
 The ProCybernetica books, preludes, blueprints, and implementation practicum become a public educational and standards surface for cybernetic systems engineering.
 
+## Public conformance
+
+The main conformance entrypoint is:
+
+```bash
+python -m pytest -q
+```
+
+Representative Makefile lanes include:
+
+```text
+v0-schemas-ci
+profiles-ci
+cybernetic-governance-ci
+dependency-control-ci
+agentic-ops-ci
+bridges-ci
+certificate-v13-ci
+shacl-ci
+agentplane-binding-ci
+proof-pack-ci
+lawful-learning-ci
+hpl-ci
+book-xi-slice-a-ci
+civic-stack-ci
+estate-alignment-followups-ci
+```
+
 ## Public-first trust posture
 
-This repository is public-first. The blueprint, doctrine, captures, schemas, profiles, examples, tests, methodology, and reference implementation should be public by default.
+This repository is public-first. The blueprint, doctrine, captures, schemas, profiles, examples, tests, methodology, validation checks, and reference fixtures should be public by default.
 
 The only narrow exclusions are credentials, secrets, customer/user private data, live private telemetry, sensitive deployment configuration, legally restricted third-party material, or evidence that must be sanitized before publication.
 
-The burden of justification is on withholding, not publishing. See [`docs/PUBLICATION_BOUNDARY.md`](docs/PUBLICATION_BOUNDARY.md) and [`docs/decisions/0001-public-first-transparency.md`](docs/decisions/0001-public-first-transparency.md).
+The burden of justification is on withholding, not publishing. See [`docs/PUBLICATION_BOUNDARY.md`](docs/PUBLICATION_BOUNDARY.md), [`docs/PUBLICATION_MATRIX.md`](docs/PUBLICATION_MATRIX.md), and [`docs/decisions/0001-public-first-transparency.md`](docs/decisions/0001-public-first-transparency.md).
+
+## Non-claims
+
+Public-review readiness is not production-readiness. This repository does not implement production runtime services, deployment services, model execution, agent execution, platform telemetry, ontology release mechanics, civic runtime, live policy enforcement, human-impacting authorization, or downstream runtime adapters. Those remain in the owning repositories.

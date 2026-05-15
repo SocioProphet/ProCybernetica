@@ -1,0 +1,223 @@
+{
+  "fixture_set_version": "proof-pack.v1",
+  "publication_state": "public-synthetic",
+  "fixtures": [
+    {
+      "fixture_id": "proof-pack-redaction-status-public-synthetic",
+      "target_schema": "proof_pack_redaction_status.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "redaction_status_id": "redaction:proof-pack:synthetic",
+        "classification": "public_synthetic",
+        "handling_controls": ["synthetic-only", "no-private-data", "no-secrets"],
+        "private_data_present": false,
+        "public_substitute": "synthetic_fixture",
+        "reviewer_visibility": "full",
+        "evidence_receipt_refs": ["receipt:proof-pack:redaction"],
+        "non_claims": ["Synthetic redaction status does not describe live customer evidence."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-artifact-entry-agentplane-exhibit",
+      "target_schema": "proof_pack_artifact_entry.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "artifact_entry_id": "artifact-entry:agentplane:normal-run",
+        "lane": "upstream_aligned_exhibit",
+        "artifact_type": "agentplane-proof-pack-exhibit",
+        "title": "Synthetic AgentPlane run capsule exhibit",
+        "evaluation_window": "synthetic-window",
+        "owner": "SocioProphet/ProCybernetica",
+        "location_ref": "fixture://agentplane-binding/agentplane-binding-fixtures.synthetic.json#ap-proof-pack-exhibit-normal",
+        "redaction_status_ref": "redaction:proof-pack:synthetic",
+        "evidence_refs": [
+          {"evidence_kind": "agentplane_proof_pack_exhibit", "ref": "proof-exhibit:normal"},
+          {"evidence_kind": "evidence_receipt", "ref": "receipt:proof-exhibit:normal"},
+          {"evidence_kind": "cybernetic_safety_case", "ref": "safety-case:proof-pack:synthetic"}
+        ],
+        "reviewer_note": "AgentPlane exhibit cites run capsule, operator readout, and receipt references.",
+        "non_claims": ["Synthetic artifact entry does not contain raw runtime evidence."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-product-efficacy-lane",
+      "target_schema": "proof_pack_evidence_lane.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "evidence_lane_id": "lane:product-efficacy",
+        "lane": "product_efficacy",
+        "artifact_entry_refs": ["artifact-entry:agentplane:normal-run"],
+        "coverage_status": "partial",
+        "evidence_receipt_refs": ["receipt:proof-pack:product-efficacy"],
+        "score_weight": 0.25,
+        "known_gaps": ["Synthetic fixture only; no live customer deployment evidence."],
+        "non_claims": ["Lane does not claim production efficacy."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-governance-control-lane",
+      "target_schema": "proof_pack_evidence_lane.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "evidence_lane_id": "lane:governance-control",
+        "lane": "governance_control",
+        "artifact_entry_refs": ["artifact-entry:agentplane:normal-run"],
+        "coverage_status": "partial",
+        "evidence_receipt_refs": ["receipt:proof-pack:governance-control"],
+        "score_weight": 0.30,
+        "known_gaps": ["Runtime policy enforcement is not claimed by this fixture."],
+        "non_claims": ["Lane packages governed evidence references only."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-claim-discipline-demo-readiness",
+      "target_schema": "proof_pack_claim_discipline.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "claim_discipline_id": "claim-discipline:demo-readiness",
+        "claimed_level": "demo_readiness",
+        "evidence_level_proven": "synthetic",
+        "evidence_refs": ["artifact-entry:agentplane:normal-run", "lane:governance-control"],
+        "known_excluded_claims": ["production readiness", "regulated readiness", "live customer adoption"],
+        "verdict": "partially_supported",
+        "evidence_receipt_refs": ["receipt:proof-pack:claim-discipline"],
+        "non_claims": ["Demo readiness does not imply production or regulated readiness."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-scorecard-synthetic",
+      "target_schema": "proof_pack_scorecard.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "scorecard_id": "scorecard:proof-pack:synthetic",
+        "proof_pack_ref": "proof-pack:synthetic:001",
+        "lane_scores": [
+          {"lane": "product_efficacy", "score": 0.55, "evidence_lane_ref": "lane:product-efficacy", "verdict": "warn", "reviewer_note": "Synthetic-only efficacy evidence."},
+          {"lane": "governance_control", "score": 0.75, "evidence_lane_ref": "lane:governance-control", "verdict": "pass", "reviewer_note": "Governance references are present."}
+        ],
+        "claim_discipline_refs": ["claim-discipline:demo-readiness"],
+        "overall_verdict": "conditional_accept",
+        "confidence_bound": "moderate",
+        "evidence_receipt_refs": ["receipt:proof-pack:scorecard"],
+        "known_gaps": ["No live customer evidence in public-synthetic fixture."],
+        "non_claims": ["Scorecard is a synthetic reviewer fixture."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-disposition-conditional-accept",
+      "target_schema": "proof_pack_disposition.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "disposition_id": "disposition:proof-pack:synthetic",
+        "proof_pack_ref": "proof-pack:synthetic:001",
+        "scorecard_ref": "scorecard:proof-pack:synthetic",
+        "final_disposition": "conditional_accept",
+        "rationale": "Synthetic packet demonstrates packaging completeness but excludes production and regulated readiness claims.",
+        "reviewer_ref": "reviewer:synthetic",
+        "promotion_decision_ref": "promotion:proof-pack:conditional-accept",
+        "certificate_ref": "certificate:M2:fixture:pattern-a",
+        "authority_chain_ref": "authority:proof-pack:synthetic",
+        "scorecard_snapshot_digest": "sha256:synthetic-proof-pack-scorecard",
+        "redaction_status_refs": ["redaction:proof-pack:synthetic"],
+        "evidence_receipt_refs": ["receipt:proof-pack:disposition"],
+        "known_excluded_claims": ["production readiness", "regulated readiness"],
+        "non_claims": ["Conditional accept fixture does not authorize deployment."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-manifest-valid",
+      "target_schema": "proof_pack_manifest.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "proof_pack_id": "proof-pack:synthetic:001",
+        "review_name": "Synthetic AgentPlane governance review",
+        "review_date": "2026-05-15",
+        "reviewer_ref": "reviewer:synthetic",
+        "deployment_context": "public-synthetic review context",
+        "product_or_capability_ref": "capability:agentplane-governed-run",
+        "weighting_model": "default_enterprise",
+        "primary_use_case": "governed agent run review",
+        "primary_risks": ["overclaim", "missing evidence", "unreviewed side effect"],
+        "artifact_entry_refs": ["artifact-entry:agentplane:normal-run"],
+        "evidence_lane_refs": ["lane:product-efficacy", "lane:governance-control"],
+        "redaction_status_refs": ["redaction:proof-pack:synthetic"],
+        "claim_discipline_refs": ["claim-discipline:demo-readiness"],
+        "scorecard_ref": "scorecard:proof-pack:synthetic",
+        "disposition_ref": "disposition:proof-pack:synthetic",
+        "agentplane_proof_pack_exhibit_refs": ["proof-exhibit:normal"],
+        "evidence_receipt_refs": ["receipt:proof-pack:manifest"],
+        "release_delta_report_refs": ["release-delta:proof-pack:synthetic"],
+        "cybernetic_safety_case_refs": ["safety-case:proof-pack:synthetic"],
+        "artifact_provenance_refs": ["provenance:proof-pack:synthetic"],
+        "known_excluded_claims": ["production readiness", "regulated readiness", "live customer adoption"],
+        "non_claims": ["Proof pack packages governed evidence references; it is not raw evidence storage."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-manifest-invalid-missing-redaction",
+      "target_schema": "proof_pack_manifest.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "schema_validation_error",
+      "payload": {
+        "schema_version": "1.0",
+        "proof_pack_id": "proof-pack:invalid:no-redaction",
+        "review_name": "Invalid missing redaction status",
+        "review_date": "2026-05-15",
+        "reviewer_ref": "reviewer:synthetic",
+        "deployment_context": "public-synthetic review context",
+        "artifact_entry_refs": ["artifact-entry:agentplane:normal-run"],
+        "evidence_lane_refs": ["lane:product-efficacy"],
+        "claim_discipline_refs": ["claim-discipline:demo-readiness"],
+        "scorecard_ref": "scorecard:proof-pack:synthetic",
+        "disposition_ref": "disposition:proof-pack:synthetic",
+        "evidence_receipt_refs": ["receipt:proof-pack:invalid"],
+        "known_excluded_claims": ["production readiness"],
+        "non_claims": ["Invalid fixture intentionally omits redaction_status_refs."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-claim-invalid-regulated-without-backing",
+      "target_schema": "proof_pack_claim_discipline.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "claim_level_requires_evidence_backing",
+      "payload": {
+        "schema_version": "1.0",
+        "claim_discipline_id": "claim-discipline:invalid-regulated",
+        "claimed_level": "regulated_readiness",
+        "evidence_level_proven": "synthetic",
+        "evidence_refs": ["artifact-entry:agentplane:normal-run"],
+        "known_excluded_claims": ["regulated readiness"],
+        "verdict": "supported",
+        "evidence_receipt_refs": ["receipt:proof-pack:invalid-regulated"],
+        "non_claims": ["Invalid fixture: regulated readiness cannot be supported by synthetic evidence only."]
+      }
+    },
+    {
+      "fixture_id": "proof-pack-artifact-invalid-no-governed-evidence",
+      "target_schema": "proof_pack_artifact_entry.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "artifact_entry_requires_governed_evidence_ref",
+      "payload": {
+        "schema_version": "1.0",
+        "artifact_entry_id": "artifact-entry:invalid:no-governed-evidence",
+        "lane": "product_efficacy",
+        "artifact_type": "freeform-note",
+        "title": "Invalid freeform note without governed evidence",
+        "owner": "SocioProphet/ProCybernetica",
+        "location_ref": "fixture://proof-pack/freeform-note",
+        "redaction_status_ref": "redaction:proof-pack:synthetic",
+        "evidence_refs": [{"evidence_kind": "other", "ref": "note:unbacked"}],
+        "reviewer_note": "Invalid fixture: no governed evidence object cited.",
+        "non_claims": ["Invalid fixture intentionally lacks governed evidence references."]
+      }
+    }
+  ]
+}

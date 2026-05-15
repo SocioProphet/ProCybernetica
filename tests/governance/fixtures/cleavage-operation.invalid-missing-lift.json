@@ -1,0 +1,31 @@
+{
+  "schema_version": "0.1.0",
+  "cleavage_operation_id": "cleavage:invalid:no-lift",
+  "cleavage_version": "cleavage-v0.1",
+  "source_base_context_ref": "base:repo-review",
+  "target_base_context_ref": "base:workspace-review",
+  "source_fiber_ref": "fiber:repo-review",
+  "target_fiber_ref": "fiber:workspace-review",
+  "base_morphism_ref": "base-morphism:repo-to-workspace-review",
+  "canonical_tokens": [
+    {
+      "token_id": "token:workspace-review:canonical:invalid",
+      "source_token_ref": "token:repo-review:canonical:1",
+      "projection_role": {
+        "scoped_authority_kind": "workspace-review-scope",
+        "sphere_target": "sphere:workspace",
+        "projection_ref": "projection:workspace-review"
+      },
+      "admissibility_role": {
+        "policy_constraint_ref": "policy:workspace-admissibility",
+        "constraint_kind": "schema-and-fixture-backed",
+        "admissibility_predicate": "has_projection_and_admissibility_roles"
+      },
+      "cleavage_version": "cleavage-v0.1"
+    }
+  ],
+  "theorem_audit_refs": ["TBD-CLEV", "TBD-GNF"],
+  "non_claims": [
+    "Invalid fixture: missing lift_witness must fail."
+  ]
+}

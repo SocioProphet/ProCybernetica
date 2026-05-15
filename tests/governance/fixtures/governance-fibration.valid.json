@@ -1,0 +1,78 @@
+{
+  "schema_version": "0.1.0",
+  "fibration_id": "fib:gov:demo:1",
+  "projection": "p:W_gov->B",
+  "base_category_ref": "base-category:governance-contexts:v0.1",
+  "description": "Public-synthetic governance fibration fixture for repository-to-workspace review context.",
+  "fiber_objects": [
+    {
+      "fiber_id": "fiber:repo-review",
+      "base_context_ref": "base:repo-review",
+      "label": "Repository review fiber",
+      "fiber_token_set": [
+        {
+          "token_id": "token:repo-review:canonical:1",
+          "source_token_ref": "token:repo-review:raw:1",
+          "projection_role": {
+            "scoped_authority_kind": "review-scope",
+            "sphere_target": "sphere:repository",
+            "projection_ref": "projection:repo-review"
+          },
+          "admissibility_role": {
+            "policy_constraint_ref": "policy:review-admissibility",
+            "constraint_kind": "schema-and-fixture-backed",
+            "admissibility_predicate": "has_projection_and_admissibility_roles"
+          },
+          "cleavage_version": "cleavage-v0.1"
+        }
+      ],
+      "policy_refs": ["policy:review-admissibility"],
+      "attestation_refs": ["attestation:fixture:repo-review"],
+      "retention_refs": ["retention:fixture:repo-review"]
+    },
+    {
+      "fiber_id": "fiber:workspace-review",
+      "base_context_ref": "base:workspace-review",
+      "label": "Workspace review fiber",
+      "fiber_token_set": [
+        {
+          "token_id": "token:workspace-review:canonical:1",
+          "source_token_ref": "token:repo-review:canonical:1",
+          "projection_role": {
+            "scoped_authority_kind": "workspace-review-scope",
+            "sphere_target": "sphere:workspace",
+            "projection_ref": "projection:workspace-review"
+          },
+          "admissibility_role": {
+            "policy_constraint_ref": "policy:workspace-admissibility",
+            "constraint_kind": "schema-and-fixture-backed",
+            "admissibility_predicate": "has_projection_and_admissibility_roles"
+          },
+          "cleavage_version": "cleavage-v0.1"
+        }
+      ],
+      "policy_refs": ["policy:workspace-admissibility"],
+      "attestation_refs": ["attestation:fixture:workspace-review"],
+      "retention_refs": ["retention:fixture:workspace-review"]
+    }
+  ],
+  "cartesian_lift_records": [
+    {
+      "lift_id": "lift:repo-to-workspace:1",
+      "source_base_context_ref": "base:repo-review",
+      "target_base_context_ref": "base:workspace-review",
+      "source_fiber_ref": "fiber:repo-review",
+      "target_fiber_ref": "fiber:workspace-review",
+      "base_morphism_ref": "base-morphism:repo-to-workspace-review",
+      "lift_witness": "fixture://governance/cleavage-operation.valid.json#lift-witness",
+      "cleavage_version": "cleavage-v0.1",
+      "canonical_token_refs": ["token:workspace-review:canonical:1"]
+    }
+  ],
+  "theorem_audit_refs": ["TBD-GROT", "TBD-CLEV", "TBD-GNF"],
+  "non_claims": [
+    "This fixture does not prove full fibration law.",
+    "This fixture does not provide colimit witnesses.",
+    "This fixture does not execute runtime reindexing."
+  ]
+}

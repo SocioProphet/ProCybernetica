@@ -30,8 +30,16 @@ This register prevents definitions, empirical measurements, assumptions, approxi
 | `TBD-RHO-M` | reversibility monotonicity | Theorem | Proposition | Monotonicity needs monotone-arrival assumptions. | State event-arrival hypothesis. | open |
 | `TBD-COP` | detector dependence | Theorem | Proposition under model assumption | Model-family assumptions affect dependence claims. | State model family and limits. | open |
 | `TBD-IG` | information-gain selector | Theorem | Definition relative to criterion | Optimality needs a named objective. | Name the information-gain criterion. | open |
-| `TBD-GROT` | governance fibration | Theorem | Theorem with proof obligation | Fibration requires lift and cleavage proof or axiom. | Discharge through governance-fibration and deterministic-cleavage standards. | open |
+| `TBD-GROT` | governance fibration | Theorem | Partially discharged theorem with open obligations | `procybernetica-governance-fibration-v0.1.md` defines the fibration standard and structural schema; full theorem status still requires downstream colimit/evidence-cocone tranche. | Keep open until cartesian lift, deterministic cleavage, canonical-form, and later evidence-cocone obligations are all discharged. | open |
+| `TBD-CLEV` | deterministic cleavage | Theorem | Theorem with proof obligation | Deterministic cleavage requires a specified lift-selection rule and a structural witness that every admitted cleavage operation records its cartesian lift. | Discharge through deterministic-cleavage standard, cleavage-operation schema, valid fixture, and missing-lift rejection test. | open |
+| `TBD-GNF` | governance-token normal form | Theorem | Theorem with uniqueness obligation | Canonical form is only theorem-like if uniqueness is claimed for normalized tokens after cleavage. | Discharge through canonical-forms standard and schema-level requirement that canonical tokens carry projection role, admissibility role, and cleavage version. | open |
 | `TBD-COL` | evidence aggregate | Theorem | Deferred theorem | Cocone is not a colimit until universal property is witnessed. | Require colimit witness natural in target. | open |
+
+## Explicit non-row: reindex coherence
+
+No `TBD-REINDEX` row is opened in this tranche because `schemas/procybernetica/reindex-operation.v0.1.schema.json` is structural only. It requires `coherence_status: "not-asserted"` and does not claim functoriality, coherence, or composition law.
+
+A future theorem-audit row is required before any document asserts reindex functoriality, cleavage compatibility, or compositional coherence.
 
 ## Acceptance rule
 

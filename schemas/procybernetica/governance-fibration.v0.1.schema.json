@@ -1,0 +1,130 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.procybernetica.local/procybernetica/governance-fibration.v0.1.schema.json",
+  "title": "ProCybernetica Governance Fibration v0.1",
+  "description": "Structural governance-fibration artifact for p: W_gov -> B. This schema records base-context anchoring, fiber tokens, and cartesian lift records without asserting colimit or runtime reindex execution.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "fibration_id",
+    "projection",
+    "base_category_ref",
+    "fiber_objects",
+    "cartesian_lift_records",
+    "theorem_audit_refs"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "fibration_id": {"type": "string", "minLength": 1},
+    "projection": {"const": "p:W_gov->B"},
+    "base_category_ref": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+    "fiber_objects": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/fiber_object"}
+    },
+    "cartesian_lift_records": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "#/$defs/cartesian_lift_record"}
+    },
+    "theorem_audit_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "enum": ["TBD-GROT", "TBD-CLEV", "TBD-GNF"]}
+    },
+    "non_claims": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": []
+    }
+  },
+  "$defs": {
+    "fiber_object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "fiber_id",
+        "base_context_ref",
+        "fiber_token_set",
+        "policy_refs",
+        "attestation_refs",
+        "retention_refs"
+      ],
+      "properties": {
+        "fiber_id": {"type": "string", "minLength": 1},
+        "base_context_ref": {"type": "string", "minLength": 1},
+        "label": {"type": "string"},
+        "fiber_token_set": {
+          "type": "array",
+          "minItems": 1,
+          "items": {"$ref": "#/$defs/canonical_token"}
+        },
+        "policy_refs": {"type": "array", "items": {"type": "string"}},
+        "attestation_refs": {"type": "array", "items": {"type": "string"}},
+        "retention_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "canonical_token": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["token_id", "projection_role", "admissibility_role", "cleavage_version"],
+      "properties": {
+        "token_id": {"type": "string", "minLength": 1},
+        "source_token_ref": {"type": ["string", "null"]},
+        "projection_role": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["scoped_authority_kind", "sphere_target", "projection_ref"],
+          "properties": {
+            "scoped_authority_kind": {"type": "string", "minLength": 1},
+            "sphere_target": {"type": "string", "minLength": 1},
+            "projection_ref": {"type": "string", "minLength": 1}
+          }
+        },
+        "admissibility_role": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["policy_constraint_ref", "constraint_kind"],
+          "properties": {
+            "policy_constraint_ref": {"type": "string", "minLength": 1},
+            "constraint_kind": {"type": "string", "minLength": 1},
+            "admissibility_predicate": {"type": ["string", "null"]}
+          }
+        },
+        "cleavage_version": {"type": "string", "minLength": 1},
+        "normal_form_digest": {
+          "type": ["string", "null"],
+          "pattern": "^sha256:[a-fA-F0-9]{64}$"
+        }
+      }
+    },
+    "cartesian_lift_record": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "lift_id",
+        "source_base_context_ref",
+        "target_base_context_ref",
+        "source_fiber_ref",
+        "target_fiber_ref",
+        "base_morphism_ref",
+        "lift_witness",
+        "cleavage_version"
+      ],
+      "properties": {
+        "lift_id": {"type": "string", "minLength": 1},
+        "source_base_context_ref": {"type": "string", "minLength": 1},
+        "target_base_context_ref": {"type": "string", "minLength": 1},
+        "source_fiber_ref": {"type": "string", "minLength": 1},
+        "target_fiber_ref": {"type": "string", "minLength": 1},
+        "base_morphism_ref": {"type": "string", "minLength": 1},
+        "lift_witness": {"type": "string", "minLength": 1},
+        "cleavage_version": {"type": "string", "minLength": 1},
+        "canonical_token_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    }
+  }
+}

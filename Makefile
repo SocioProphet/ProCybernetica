@@ -1,4 +1,4 @@
-.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci cybernetic-governance-fixtures cybernetic-governance-ci dependency-control-fixtures dependency-control-ci agentic-ops-fixtures agentic-ops-ci bridges-fixtures bridges-ci certificate-v13-fixtures certificate-v13-ci shacl-companions shacl-ci profiles-fixtures profiles-ci v0-schemas-fixtures v0-schemas-ci agentplane-binding-fixtures agentplane-binding-ci proof-pack-fixtures proof-pack-ci
+.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci cybernetic-governance-fixtures cybernetic-governance-ci dependency-control-fixtures dependency-control-ci agentic-ops-fixtures agentic-ops-ci bridges-fixtures bridges-ci certificate-v13-fixtures certificate-v13-ci shacl-companions shacl-ci profiles-fixtures profiles-ci v0-schemas-fixtures v0-schemas-ci agentplane-binding-fixtures agentplane-binding-ci proof-pack-fixtures proof-pack-ci lawful-learning-fixtures lawful-learning-ci
 
 test:
 	python -m pytest -q
@@ -74,3 +74,9 @@ proof-pack-fixtures:
 	python tools/cybernetic_governance/validate_proof_pack.py
 
 proof-pack-ci: proof-pack-fixtures
+
+lawful-learning-fixtures:
+	python tools/cybernetic_governance/validate_lawful_learning.py
+
+lawful-learning-ci: lawful-learning-fixtures
+	PYTHONPATH=. python -m pytest -q tests/test_lawful_learning_toy.py tests/test_lawful_learning_conformance.py

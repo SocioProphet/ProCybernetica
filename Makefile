@@ -1,4 +1,4 @@
-.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci
+.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci cybernetic-governance-fixtures cybernetic-governance-ci
 
 test:
 	python -m pytest -q
@@ -24,3 +24,8 @@ falsification-cross-reference:
 	python scripts/validate_falsification_coverage.py
 
 falsification-ci: falsification-static falsification-fixtures falsification-cross-reference
+
+cybernetic-governance-fixtures:
+	python tools/cybernetic_governance/validate_defensive_fixtures.py
+
+cybernetic-governance-ci: cybernetic-governance-fixtures

@@ -1,0 +1,138 @@
+{
+  "fixture_set_version": "agentic-ops.schema-records.v1",
+  "publication_state": "public-synthetic",
+  "records": [
+    {
+      "fixture_id": "agentic-uco-step-cost-valid",
+      "target_schema": "agentic_uco_step_cost.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "step_cost_id": "uco-step:fixture:1",
+        "run_ref": "agentplane:run:fixture:agentic-ops",
+        "step_index": 0,
+        "persona_policy_ref": "persona:regulated-enterprise-assistant",
+        "workload_signature_ref": "workload:regulated-plan-then-execute",
+        "uco": {
+          "prompt_tokens": 12000,
+          "completion_tokens": 800,
+          "cache_read_tokens": 4000,
+          "tool_call_units": 2,
+          "tool_call_latency_ms": 250.0,
+          "verification_tokens": 1000,
+          "replay_storage_bytes": 4096,
+          "semantic_memory_write_units": 0,
+          "estimated_dollars": 0.42
+        },
+        "authority_chain_ref": "authority:fixture:agentic-ops",
+        "agent_action_trace_ref": "trace:fixture:agentic-ops:0",
+        "evidence_receipt_refs": ["receipt:fixture:uco-step"]
+      }
+    },
+    {
+      "fixture_id": "agentic-task-budget-valid",
+      "target_schema": "agentic_task_budget.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "task_budget_id": "task-budget:fixture:regulated",
+        "persona_policy_ref": "persona:regulated-enterprise-assistant",
+        "workload_signature_ref": "workload:regulated-plan-then-execute",
+        "budget": {
+          "tokens_in_max": 200000,
+          "tokens_out_max": 8000,
+          "tool_calls_max": 40,
+          "wall_clock_seconds_max": 300,
+          "dollars_max": 5.0
+        },
+        "chance_constraints": {"dollars": {"epsilon": 0.01, "bound": 8.0}},
+        "authority_chain_ref": "authority:fixture:agentic-ops-budget",
+        "evidence_receipt_refs": ["receipt:fixture:task-budget"]
+      }
+    },
+    {
+      "fixture_id": "agentic-cmdp-trace-valid",
+      "target_schema": "agentic_cmdp_trace.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "cmdp_trace_id": "cmdp-trace:fixture:regulated",
+        "persona_policy_ref": "persona:regulated-enterprise-assistant",
+        "workload_signature_ref": "workload:regulated-plan-then-execute",
+        "steps": ["uco-step:fixture:1"],
+        "budget_outcome": "within_budget",
+        "degradation_event_refs": ["degradation:fixture:cap-steps"],
+        "loop_detector_signal_refs": ["loop-signal:fixture:regulated"],
+        "post_hoc_eval_ref": "posthoc:fixture:regulated",
+        "evidence_receipt_refs": ["receipt:fixture:cmdp-trace"],
+        "proof_pack_exhibit_refs": ["proof-pack:fixture:agentic-ops"]
+      }
+    },
+    {
+      "fixture_id": "agentic-degradation-event-valid",
+      "target_schema": "agentic_degradation_event.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "degradation_event_id": "degradation:fixture:cap-steps",
+        "cmdp_trace_ref": "cmdp-trace:fixture:regulated",
+        "trigger": {"metric": "tokens_consumed_fraction", "threshold": 0.7, "observed_value": 0.72},
+        "action": "cap_steps_remaining",
+        "reason": "regulated persona degradation ladder caps remaining steps after 70 percent token consumption",
+        "authority_chain_ref": "authority:fixture:agentic-ops-degradation",
+        "evidence_receipt_refs": ["receipt:fixture:degradation"]
+      }
+    },
+    {
+      "fixture_id": "loop-detector-signal-valid",
+      "target_schema": "loop_detector_signal.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "loop_signal_id": "loop-signal:fixture:regulated",
+        "cmdp_trace_ref": "cmdp-trace:fixture:regulated",
+        "signal_kind": "repeated_tool_args",
+        "threshold": 3,
+        "observed_value": 1,
+        "derived_from_autonomy_depth": 5,
+        "rationale": "threshold=max(3, autonomy_depth//2)=3 for autonomy_depth 5",
+        "evidence_receipt_refs": ["receipt:fixture:loop-signal"]
+      }
+    },
+    {
+      "fixture_id": "prefix-cache-prompt-plan-valid",
+      "target_schema": "prefix_cache_prompt_plan.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "prompt_plan_id": "prefix-plan:fixture:long-horizon",
+        "workload_signature_ref": "workload:long-horizon-internal",
+        "cache_strategy": "section_breakpoints",
+        "sections": ["system", "tool_definitions", "few_shot_examples", "persistent_task_spec", "retrieved_context", "trajectory_history", "current_step_request"],
+        "breakpoints": ["after_persistent_task_spec", "after_retrieved_context", "after_trajectory_history"],
+        "volatile_fields_excluded": true,
+        "canonical_tool_result_formatting": true,
+        "evidence_receipt_refs": ["receipt:fixture:prefix-plan"]
+      }
+    },
+    {
+      "fixture_id": "agentic-post-hoc-eval-valid",
+      "target_schema": "agentic_post_hoc_eval.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "post_hoc_eval_id": "posthoc:fixture:regulated",
+        "cmdp_trace_ref": "cmdp-trace:fixture:regulated",
+        "completion_verdict": "complete",
+        "budget_verdict": "within_budget",
+        "safety_verdict": "pass",
+        "persona_policy_ref": "persona:regulated-enterprise-assistant",
+        "task_budget_ref": "task-budget:fixture:regulated",
+        "degradation_event_refs": ["degradation:fixture:cap-steps"],
+        "loop_detector_signal_refs": ["loop-signal:fixture:regulated"],
+        "proof_pack_exhibit_refs": ["proof-pack:fixture:agentic-ops"],
+        "evidence_receipt_refs": ["receipt:fixture:posthoc"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,282 @@
+{
+  "fixture_set_version": "cybernetic-governance.defensive.v1",
+  "publication_state": "public-synthetic",
+  "description": "Synthetic defensive fixtures for the Tier 1 cybernetic-governance schema bundle. These fixtures validate schema shape and repository-local governance invariants only; they do not claim runtime enforcement.",
+  "fixtures": [
+    {
+      "fixture_id": "cg-valid-low-risk-action-approval",
+      "category": "low-risk-action-approval",
+      "target_schema": "authority_chain.v1.json",
+      "expected_result": "pass",
+      "invariant_refs": ["invariant_0_1_no_hidden_authority_lane"],
+      "payload": {
+        "schema_version": "1.0",
+        "authority_chain_id": "authority:fixture:low-risk-approval",
+        "subject_ref": "action:fixture:read-only-review",
+        "decision_scope": "read-only-review",
+        "authority_steps": [
+          {
+            "step_id": "step:operator-approval",
+            "authority_type": "operator",
+            "issuer_ref": "role:operator",
+            "policy_ref": "policy:low-risk-read-only",
+            "evidence_receipt_ref": "receipt:fixture:low-risk"
+          }
+        ],
+        "effective_authority": "allowed",
+        "implements_invariants": ["invariant_0_1_no_hidden_authority_lane"]
+      }
+    },
+    {
+      "fixture_id": "cg-valid-action-blocking",
+      "category": "action-blocking",
+      "target_schema": "off_history_evidence.v1.json",
+      "expected_result": "pass",
+      "invariant_refs": ["invariant_0_8_off_history_retained"],
+      "payload": {
+        "schema_version": "1.0",
+        "off_history_evidence_id": "off-history:fixture:block-write",
+        "proposed_action_ref": "action:fixture:blocked-write",
+        "disposition": "blocked",
+        "reason": "write action lacked approval and was preserved off-history",
+        "authority_chain_ref": "authority:fixture:blocked-write",
+        "policy_ref": "policy:write-approval-required",
+        "predicted_side_effect_class": "externally_visible",
+        "evidence_receipt_refs": ["receipt:fixture:block-write"],
+        "implements_invariants": ["invariant_0_8_off_history_retained"]
+      }
+    },
+    {
+      "fixture_id": "cg-valid-safe-completion-transformation",
+      "category": "safe-completion-transformation",
+      "target_schema": "off_history_evidence.v1.json",
+      "expected_result": "pass",
+      "invariant_refs": ["invariant_0_8_off_history_retained", "invariant_0_2_no_action_without_trace"],
+      "payload": {
+        "schema_version": "1.0",
+        "off_history_evidence_id": "off-history:fixture:safe-transform",
+        "proposed_action_ref": "action:fixture:unsafe-external-write",
+        "disposition": "transformed",
+        "reason": "unsafe write was transformed into a read-only summary",
+        "authority_chain_ref": "authority:fixture:safe-transform",
+        "policy_ref": "policy:safe-completion-transform",
+        "predicted_side_effect_class": "security_material",
+        "safe_alternative_ref": "action:fixture:read-only-summary",
+        "evidence_receipt_refs": ["receipt:fixture:safe-transform"],
+        "implements_invariants": ["invariant_0_8_off_history_retained", "invariant_0_2_no_action_without_trace"]
+      }
+    },
+    {
+      "fixture_id": "cg-valid-irreversible-action-approval",
+      "category": "irreversible-action-approval",
+      "target_schema": "tool_permission_scope.v1.json",
+      "expected_result": "pass",
+      "invariant_refs": ["invariant_0_7_irreversibility_requires_approval"],
+      "payload": {
+        "schema_version": "1.0",
+        "permission_scope_id": "scope:fixture:irreversible-approved",
+        "tool_ref": "tool:release-publisher",
+        "subject_ref": "agent:release-steward",
+        "allowed_operations": ["publish_release"],
+        "denied_operations": ["delete_evidence", "bypass_review"],
+        "authority_chain_ref": "authority:fixture:irreversible-approved",
+        "side_effect_limit": "irreversible",
+        "network_allowed": true,
+        "filesystem_write_allowed": true,
+        "credential_access_allowed": false,
+        "approval_required": true,
+        "evidence_receipt_refs": ["receipt:fixture:irreversible-approved"],
+        "implements_invariants": ["invariant_0_7_irreversibility_requires_approval"]
+      }
+    },
+    {
+      "fixture_id": "cg-valid-untrusted-external-content-handling",
+      "category": "untrusted-external-content-handling",
+      "target_schema": "tool_permission_scope.v1.json",
+      "expected_result": "pass",
+      "invariant_refs": ["invariant_0_1_no_hidden_authority_lane", "invariant_0_9_privacy_and_evidence_minimization"],
+      "payload": {
+        "schema_version": "1.0",
+        "permission_scope_id": "scope:fixture:external-content-read-only",
+        "tool_ref": "tool:external-content-reviewer",
+        "subject_ref": "agent:reviewer",
+        "allowed_operations": ["read", "summarize"],
+        "denied_operations": ["execute", "network_post", "credential_access", "write_filesystem"],
+        "authority_chain_ref": "authority:fixture:external-content-read-only",
+        "side_effect_limit": "fully_reversible",
+        "network_allowed": false,
+        "filesystem_write_allowed": false,
+        "credential_access_allowed": false,
+        "approval_required": false,
+        "evidence_receipt_refs": ["receipt:fixture:external-content-read-only"],
+        "implements_invariants": ["invariant_0_1_no_hidden_authority_lane", "invariant_0_9_privacy_and_evidence_minimization"]
+      }
+    },
+    {
+      "fixture_id": "cg-valid-governance-control-modification-blocked",
+      "category": "governance-control-modification-attempts",
+      "target_schema": "off_history_evidence.v1.json",
+      "expected_result": "pass",
+      "invariant_refs": ["invariant_0_8_off_history_retained", "invariant_0_5_separation_of_powers"],
+      "payload": {
+        "schema_version": "1.0",
+        "off_history_evidence_id": "off-history:fixture:governance-control-block",
+        "proposed_action_ref": "action:fixture:disable-monitor",
+        "disposition": "blocked",
+        "reason": "attempted governance-control modification without separation-of-powers approval",
+        "authority_chain_ref": "authority:fixture:governance-control-block",
+        "policy_ref": "policy:governance-control-modification",
+        "predicted_side_effect_class": "security_material",
+        "evidence_receipt_refs": ["receipt:fixture:governance-control-block"],
+        "implements_invariants": ["invariant_0_8_off_history_retained", "invariant_0_5_separation_of_powers"]
+      }
+    },
+    {
+      "fixture_id": "cg-invalid-prose-only-promotion",
+      "category": "invalid-prose-only-promotion",
+      "target_schema": "promotion_decision.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "schema_validation_error",
+      "invariant_refs": ["invariant_0_3_no_promotion_by_prose"],
+      "payload": {
+        "schema_version": "1.0",
+        "promotion_decision_id": "promotion:fixture:prose-only",
+        "subject_ref": "artifact:fixture:claim",
+        "prior_state": "draft",
+        "target_state": "promoted",
+        "decision": "allow",
+        "authority_chain_ref": "authority:fixture:prose-only",
+        "evidence_receipt_refs": [],
+        "non_claims": ["Invalid fixture: should fail because evidence receipts are absent."],
+        "implements_invariants": ["invariant_0_3_no_promotion_by_prose"]
+      }
+    },
+    {
+      "fixture_id": "cg-invalid-hidden-release-compensation",
+      "category": "hidden-release-compensation",
+      "target_schema": "release_delta_report.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "hidden_release_compensation",
+      "invariant_refs": ["invariant_0_11_release_delta_required"],
+      "payload": {
+        "schema_version": "1.0",
+        "release_delta_report_id": "release-delta:fixture:hidden-compensation",
+        "subject_ref": "release:fixture:v2",
+        "change_kind": "runtime",
+        "prior_ref": "release:fixture:v1",
+        "target_ref": "release:fixture:v2",
+        "delta_summary": "Material runtime delta is incorrectly declared green without counter-term analysis.",
+        "gate_color": "green",
+        "non_renormalizable_change": true,
+        "evidence_receipt_refs": ["receipt:fixture:hidden-compensation"],
+        "implements_invariants": ["invariant_0_11_release_delta_required"]
+      }
+    },
+    {
+      "fixture_id": "cg-invalid-missing-off-history-evidence",
+      "category": "missing-off-history-evidence",
+      "target_schema": "agent_action_trace.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "missing_off_history_evidence",
+      "invariant_refs": ["invariant_0_8_off_history_retained"],
+      "payload": {
+        "schema_version": "1.0",
+        "trace_id": "trace:fixture:material-action-no-off-history",
+        "actor_ref": "agent:fixture",
+        "action_type": "attempt_material_side_effect",
+        "target_ref": "system:fixture",
+        "authority_chain_ref": "authority:fixture:material-action",
+        "side_effect_class": "security_material",
+        "replay_class": "evidence_only",
+        "evidence_receipt_refs": ["receipt:fixture:material-action"],
+        "implements_invariants": ["invariant_0_8_off_history_retained"]
+      }
+    },
+    {
+      "fixture_id": "cg-invalid-publication-boundary-enforcement",
+      "category": "publication-boundary-enforcement",
+      "target_schema": "evidence_receipt.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "private_evidence_requires_redaction_ref",
+      "invariant_refs": ["invariant_0_9_privacy_and_evidence_minimization", "invariant_0_14_public_first_redaction_disciplined_assurance"],
+      "payload": {
+        "schema_version": "1.0",
+        "evidence_receipt_id": "receipt:fixture:private-no-redaction",
+        "evidence_kind": "private_log_summary",
+        "subject_ref": "case:fixture:private-log",
+        "schema_ref": "evidence_receipt.v1.json",
+        "content_digest": "sha256:private-fixture",
+        "evidence_tier": "E1_typed_occurrence",
+        "disclosure_class": "private",
+        "source_ref": "private://withheld",
+        "implements_invariants": ["invariant_0_9_privacy_and_evidence_minimization", "invariant_0_14_public_first_redaction_disciplined_assurance"]
+      }
+    },
+    {
+      "fixture_id": "cg-invalid-high-authority-concentration",
+      "category": "high-authority-concentration-snapshots",
+      "target_schema": "authority_graph_snapshot.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "high_authority_concentration_requires_mitigation",
+      "invariant_refs": ["invariant_0_5_separation_of_powers", "invariant_0_15_frontier_claims_require_metrics"],
+      "payload": {
+        "schema_version": "1.0",
+        "authority_graph_snapshot_id": "authority-graph:fixture:high-concentration",
+        "scope_ref": "workspace:fixture",
+        "nodes": [
+          {"node_ref": "role:single-operator", "role": "proposer", "autonomy_tier": "manual"},
+          {"node_ref": "role:single-operator", "role": "approver", "autonomy_tier": "manual"}
+        ],
+        "edges": [
+          {"from_ref": "role:single-operator", "to_ref": "artifact:frontier-change", "edge_type": "approves"}
+        ],
+        "authority_concentration_index": 0.95,
+        "separation_of_powers_status": "violated",
+        "role_collision_refs": ["role:single-operator"],
+        "evidence_receipt_refs": ["receipt:fixture:high-concentration"],
+        "implements_invariants": ["invariant_0_5_separation_of_powers", "invariant_0_15_frontier_claims_require_metrics"]
+      }
+    },
+    {
+      "fixture_id": "cg-valid-monitor-configuration-review",
+      "category": "monitor-configuration-review",
+      "target_schema": "meta_monitor_report.v1.json",
+      "expected_result": "pass",
+      "invariant_refs": ["invariant_0_12_monitors_are_monitored"],
+      "payload": {
+        "schema_version": "1.0",
+        "meta_monitor_report_id": "meta-monitor:fixture:policy-monitor-review",
+        "monitor_ref": "monitor:policy",
+        "report_state": "pass",
+        "calibration_status": "current",
+        "drift_status": "none_detected",
+        "active_sham_fixture_ref": "fixture:sham-policy-violation",
+        "held_out_fixture_ref": "fixture:held-out-monitor-case",
+        "evidence_receipt_refs": ["receipt:fixture:monitor-review"],
+        "implements_invariants": ["invariant_0_12_monitors_are_monitored"]
+      }
+    },
+    {
+      "fixture_id": "cg-invalid-safety-case-non-claim-enforcement",
+      "category": "safety-case-non-claim-enforcement",
+      "target_schema": "cybernetic_safety_case.v1.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "schema_validation_error",
+      "invariant_refs": ["invariant_0_10_claims_require_non_claims", "invariant_0_13_safety_case_before_frontier_promotion"],
+      "payload": {
+        "schema_version": "1.0",
+        "safety_case_id": "safety-case:fixture:no-non-claims",
+        "subject_ref": "artifact:fixture:frontier-claim",
+        "claim": "Invalid fixture: safety case omits non-claims.",
+        "scope": "schema validation fixture",
+        "non_claims": [],
+        "authority_chain_ref": "authority:fixture:safety-case",
+        "threat_model_ref": "threat-model:fixture",
+        "evidence_receipt_refs": ["receipt:fixture:safety-case"],
+        "residual_risk": "medium",
+        "promotion_decision_ref": "promotion:fixture:safety-case",
+        "implements_invariants": ["invariant_0_10_claims_require_non_claims", "invariant_0_13_safety_case_before_frontier_promotion"]
+      }
+    }
+  ]
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/assurance/civic_assurance_trace.v1.json",
+  "title": "Civic Assurance Trace",
+  "description": "Worked assurance trace for artifact deployed -> policy checked -> runtime attested -> control verified -> evidence pack emitted -> score updated.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "trace_id", "steps", "evidence_pack_ref", "audit_signal_ref", "evidence_receipt_refs", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "trace_id": {"type": "string", "minLength": 1},
+    "steps": {
+      "type": "array",
+      "minItems": 6,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["step_index", "step_kind", "object_ref", "evidence_ref"],
+        "properties": {
+          "step_index": {"type": "integer", "minimum": 0},
+          "step_kind": {"enum": ["artifact_deployed", "policy_checked", "runtime_attested", "control_verified", "evidence_pack_emitted", "score_updated"]},
+          "object_ref": {"type": "string", "minLength": 1},
+          "evidence_ref": {"type": "string", "minLength": 1},
+          "status": {"enum": ["pass", "warn", "fail", "review_required"]}
+        }
+      }
+    },
+    "evidence_pack_ref": {"type": "string", "minLength": 1},
+    "audit_signal_ref": {"type": "string", "minLength": 1},
+    "incident_event_refs": {"type": "array", "items": {"type": "string"}},
+    "risk_control_binding_refs": {"type": "array", "items": {"type": "string"}},
+    "rational_grl_contribution_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

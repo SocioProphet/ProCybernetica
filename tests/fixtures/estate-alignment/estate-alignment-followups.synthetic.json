@@ -1,0 +1,90 @@
+{
+  "fixture_set_version": "estate-alignment-followups.v1",
+  "publication_state": "public-synthetic",
+  "description": "Public-synthetic fixtures for estate-alignment follow-ups #15, #16, and #17. These fixtures reference external estate surfaces without duplicating or implementing their runtime schemas.",
+  "fixtures": [
+    {
+      "fixture_id": "ontogenesis-validated-claim-with-shacl-evidence",
+      "issue_ref": "#15",
+      "adapter_family": "ontogenesis",
+      "map_ref": "docs/integration/ontogenesis-governance-map.md",
+      "contract_surface": "Claim",
+      "external_owner": "SocioProphet/ontogenesis",
+      "payload": {
+        "claim_ref": "claim:estate:ontogenesis:validated-001",
+        "claim_status": "validated",
+        "ontology_ref": "ontogenesis://modules/epi@v0.1.0",
+        "shacl_report_ref": "ontogenesis://audit/shacl/run-001",
+        "ledger_ref": "ontogenesis://ledger/entry-001",
+        "signature_ref": "ontogenesis://signatures/entry-001",
+        "evidence_refs": ["evidence:ontogenesis:shacl-report", "evidence:ontogenesis:ledger-entry"],
+        "promotion_decision_ref": "promotion:estate:ontogenesis:validated-001"
+      },
+      "acceptance_checks": [
+        "validated claims include ontology refs",
+        "validated claims include validation evidence",
+        "ProCybernetica references Ontogenesis artifacts instead of duplicating ontology schemas"
+      ],
+      "non_claims": [
+        "This fixture does not implement Ontogenesis SHACL execution.",
+        "This fixture does not copy Ontogenesis ontology modules into ProCybernetica."
+      ]
+    },
+    {
+      "fixture_id": "foundry-model-governance-route-evidence",
+      "issue_ref": "#16",
+      "adapter_family": "foundry_model_governance",
+      "map_ref": "docs/integration/foundry-model-governance-map.md",
+      "contract_surface": "EvaluationResult/PromotionDecision",
+      "external_owner": "SocioProphet/model-governance-ledger",
+      "payload": {
+        "functional_surface_ref": "functional-model-surfaces://service-manifest/synthetic-model-service",
+        "model_route_ref": "model-router://route-binding/synthetic-local-first",
+        "model_governance_record_ref": "model-governance-ledger://record/synthetic-model-v1",
+        "guardrail_decision_ref": "guardrail-fabric://decision/synthetic-deny-egress",
+        "sourceos_model_carry_ref": "sourceos-model-carry://profile/synthetic-local-model",
+        "evaluation_result_ref": "evaluation:estate:foundry:route-001",
+        "promotion_decision_ref": "promotion:estate:foundry:route-001",
+        "foundry_maturity_ref": "functional-model-surfaces://maturity/M2",
+        "public_score_slice_ref": "score-slice:foundry:model-route-evidence"
+      },
+      "acceptance_checks": [
+        "Foundry maturity can be represented as a public score slice",
+        "model-route evidence can be represented as a public score slice",
+        "EvaluationResult and PromotionDecision examples can cite external model-governance surfaces"
+      ],
+      "non_claims": [
+        "This fixture does not implement a model router.",
+        "This fixture does not become a model-governance ledger."
+      ]
+    },
+    {
+      "fixture_id": "operator-workstation-command-surface-evidence",
+      "issue_ref": "#17",
+      "adapter_family": "operator_workstation",
+      "map_ref": "docs/integration/workstation-operator-surface-map.md",
+      "contract_surface": "CommandEnvelope/CapabilityDescriptor",
+      "external_owner": "SourceOS-Linux/TurtleTerm",
+      "payload": {
+        "operator_surface_ref": "operator-surface:turtleterm:synthetic",
+        "command_envelope_ref": "command:estate:operator:synthetic-001",
+        "capability_descriptor_ref": "capability:estate:operator:trusted-command",
+        "receipt_ref": "turtleterm://receipt/synthetic-command-001",
+        "replay_ref": "replay:estate:operator:synthetic-001",
+        "policy_ref": "policy:operator-surface:public-safe",
+        "approval_ref": "approval:operator:synthetic-human-review",
+        "dashboard_surface_ref": "dashboard:operator-review:synthetic",
+        "public_projection_ref": "surface-projection:operator-dashboard:synthetic"
+      },
+      "acceptance_checks": [
+        "operator/gateway surfaces preserve identity, scope, policy refs, evidence refs, replay/receipt path, approval posture, and public-safe projection",
+        "dashboards are treated as operator review surfaces",
+        "CommandEnvelope and CapabilityDescriptor examples can reference upstream operator surfaces without owning terminal/browser/runtime behavior"
+      ],
+      "non_claims": [
+        "This fixture does not implement terminal, browser, workstation, or UI runtime behavior.",
+        "This fixture does not define AgentTerm, TurtleTerm, BearBrowser, or SourceOS schemas."
+      ]
+    }
+  ]
+}

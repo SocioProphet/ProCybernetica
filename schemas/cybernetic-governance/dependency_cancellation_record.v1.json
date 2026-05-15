@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/dependency_cancellation_record.v1.json",
+  "title": "Dependency Cancellation Record",
+  "description": "Record of cancellation, normalization, masking, amplification, or compensation between dependency paths.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "cancellation_record_id", "dependency_graph_ref", "path_refs", "cancellation_kind", "result_state", "evidence_receipt_refs", "safety_case_ref"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "cancellation_record_id": {"type": "string", "minLength": 1},
+    "dependency_graph_ref": {"type": "string", "minLength": 1},
+    "path_refs": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+    "cancellation_kind": {"enum": ["cancels", "normalizes", "masks", "amplifies", "compensates", "unknown"]},
+    "result_state": {"enum": ["visible", "hidden", "normalized", "blocked", "amplified", "requires_review"]},
+    "release_delta_report_ref": {"type": "string"},
+    "off_history_evidence_ref": {"type": "string"},
+    "monitor_alert_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "safety_case_ref": {"type": "string", "minLength": 1},
+    "non_claims": {"type": "array", "items": {"type": "string"}}
+  }
+}

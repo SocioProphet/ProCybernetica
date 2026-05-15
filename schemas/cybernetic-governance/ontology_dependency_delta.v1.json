@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/ontology_dependency_delta.v1.json",
+  "title": "Ontology Dependency Delta",
+  "description": "Record of dependency topology changes caused by concept, role, tool, policy, capability, or schema meaning changes.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ontology_delta_id", "concept_ref", "prior_version_ref", "target_version_ref", "affected_dependency_edge_refs", "affected_policy_refs", "evidence_receipt_refs", "release_delta_report_ref", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "ontology_delta_id": {"type": "string", "minLength": 1},
+    "concept_ref": {"type": "string", "minLength": 1},
+    "concept_kind": {"enum": ["role", "tool", "capability", "policy", "schema", "evidence_type", "release_gate", "monitor", "other"]},
+    "prior_version_ref": {"type": "string", "minLength": 1},
+    "target_version_ref": {"type": "string", "minLength": 1},
+    "affected_dependency_edge_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "affected_policy_refs": {"type": "array", "items": {"type": "string"}},
+    "affected_schema_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "release_delta_report_ref": {"type": "string", "minLength": 1},
+    "safety_case_ref": {"type": "string"},
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  }
+}

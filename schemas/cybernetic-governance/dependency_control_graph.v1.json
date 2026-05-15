@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/dependency_control_graph.v1.json",
+  "title": "Dependency Control Graph",
+  "description": "Structural dependency-control graph for governed systems. Records control nodes, observable nodes, dependency edges, and references to core governance evidence objects without replacing them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "graph_id", "scope_ref", "nodes", "edges", "authority_chain_refs", "evidence_receipt_refs", "cybernetic_safety_case_ref", "implements_invariants"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "graph_id": {"type": "string", "minLength": 1},
+    "scope_ref": {"type": "string", "minLength": 1},
+    "nodes": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/node"}},
+    "edges": {"type": "array", "minItems": 1, "items": {"$ref": "#/$defs/edge"}},
+    "authority_chain_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "agent_action_trace_refs": {"type": "array", "items": {"type": "string"}},
+    "tool_permission_scope_refs": {"type": "array", "items": {"type": "string"}},
+    "off_history_evidence_refs": {"type": "array", "items": {"type": "string"}},
+    "monitor_alert_refs": {"type": "array", "items": {"type": "string"}},
+    "release_delta_report_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "cybernetic_safety_case_ref": {"type": "string", "minLength": 1},
+    "agentplane_run_capsule_refs": {"type": "array", "items": {"type": "string"}},
+    "proof_pack_exhibit_refs": {"type": "array", "items": {"type": "string"}},
+    "implements_invariants": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "non_claims": {"type": "array", "items": {"type": "string"}, "default": []}
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "node_kind", "governance_ref"],
+      "properties": {
+        "node_id": {"type": "string", "minLength": 1},
+        "node_kind": {"enum": ["control", "observable", "policy", "tool", "agent", "transport", "ontology", "evidence", "monitor", "release", "safety_case"]},
+        "governance_ref": {"type": "string", "minLength": 1},
+        "partition_ref": {"type": "string"}
+      }
+    },
+    "edge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["edge_id", "from_node", "to_node", "edge_kind", "evidence_receipt_ref"],
+      "properties": {
+        "edge_id": {"type": "string", "minLength": 1},
+        "from_node": {"type": "string", "minLength": 1},
+        "to_node": {"type": "string", "minLength": 1},
+        "edge_kind": {"enum": ["affects", "blocks", "delegates", "transports", "observes", "cancels", "normalizes", "feeds_back", "retypes"]},
+        "authority_chain_ref": {"type": "string"},
+        "evidence_receipt_ref": {"type": "string", "minLength": 1}
+      }
+    }
+  },
+  "examples": [{"schema_version": "1.0", "graph_id": "dep-graph:demo", "scope_ref": "workspace:demo", "nodes": [{"node_id": "control:user", "node_kind": "control", "governance_ref": "trace:demo"}, {"node_id": "observable:monitor", "node_kind": "observable", "governance_ref": "alert:demo"}], "edges": [{"edge_id": "edge:1", "from_node": "control:user", "to_node": "observable:monitor", "edge_kind": "affects", "evidence_receipt_ref": "receipt:demo"}], "authority_chain_refs": ["authority:demo"], "evidence_receipt_refs": ["receipt:demo"], "cybernetic_safety_case_ref": "safety-case:demo", "implements_invariants": ["invariant_0_2_no_action_without_trace"]}]
+}

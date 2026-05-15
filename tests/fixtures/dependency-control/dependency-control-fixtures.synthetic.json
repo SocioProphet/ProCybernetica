@@ -1,0 +1,239 @@
+{
+  "fixture_set_version": "dependency-control.v1",
+  "publication_state": "public-synthetic",
+  "description": "Synthetic fixtures for the structural dependency-control calculus. These records validate reachability, observability, shared ancestry, cancellation, transport propagation, ontology deltas, and adaptive feedback without claiming quantum hardware or live runtime behavior.",
+  "fixtures": [
+    {
+      "fixture_id": "dep-local-control-affects-observable",
+      "category": "local-control-affects-one-downstream-observable",
+      "target_schema": "control_reachability_record.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "control:user_instruction can affect observable:monitor_alert",
+        "what_was_observed": "monitor alert receipt recorded",
+        "partition_hidden": [],
+        "shared_control_ancestry": [],
+        "cancellation_or_normalization": "none",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "reachability_record_id": "reachability:fixture:local-control",
+        "dependency_graph_ref": "dep-graph:fixture:base",
+        "control_ref": "control:user_instruction",
+        "observable_ref": "observable:monitor_alert",
+        "reachability": "reachable",
+        "path_refs": ["edge:local-control-to-monitor"],
+        "authority_chain_ref": "authority:fixture:local-control",
+        "tool_permission_scope_ref": "scope:fixture:local-control",
+        "agent_action_trace_ref": "trace:fixture:local-control",
+        "evidence_receipt_refs": ["receipt:fixture:local-control"],
+        "safety_case_ref": "safety-case:fixture:dependency-control",
+        "diagnosis": "Local control affects exactly one downstream monitor observable in this synthetic case."
+      }
+    },
+    {
+      "fixture_id": "dep-local-control-blocked-by-authority",
+      "category": "local-control-blocked-by-authority-boundary",
+      "target_schema": "control_reachability_record.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "control:user_instruction cannot affect deployment action",
+        "what_was_observed": "blocked off-history branch preserved",
+        "partition_hidden": [],
+        "shared_control_ancestry": [],
+        "cancellation_or_normalization": "blocked",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "reachability_record_id": "reachability:fixture:blocked-authority",
+        "dependency_graph_ref": "dep-graph:fixture:base",
+        "control_ref": "control:user_instruction",
+        "observable_ref": "observable:deployment_action",
+        "reachability": "blocked",
+        "path_refs": ["edge:user-to-policy-boundary"],
+        "authority_chain_ref": "authority:fixture:blocked-authority",
+        "tool_permission_scope_ref": "scope:fixture:deployment-denied",
+        "agent_action_trace_ref": "trace:fixture:blocked-authority",
+        "off_history_evidence_ref": "off-history:fixture:blocked-authority",
+        "evidence_receipt_refs": ["receipt:fixture:blocked-authority"],
+        "safety_case_ref": "safety-case:fixture:dependency-control",
+        "diagnosis": "Authority boundary blocks deployment reachability and preserves the blocked branch off-history."
+      }
+    },
+    {
+      "fixture_id": "dep-subagent-delegation-propagates",
+      "category": "dependency-propagates-through-subagent-delegation",
+      "target_schema": "transport_dependency_channel.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "parent action can affect subagent observable through delegation channel",
+        "what_was_observed": "trace and authority preserved across channel",
+        "partition_hidden": [],
+        "shared_control_ancestry": ["control:parent-agent"],
+        "cancellation_or_normalization": "none",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "transport_channel_id": "transport:fixture:subagent-delegation",
+        "channel_kind": "subagent_delegation",
+        "source_ref": "agent:parent",
+        "target_ref": "agent:subagent",
+        "authority_preserved": true,
+        "trace_preserved": true,
+        "retry_semantics": "bounded",
+        "authority_chain_ref": "authority:fixture:subagent-delegation",
+        "agent_action_trace_ref": "trace:fixture:subagent-delegation",
+        "tool_permission_scope_ref": "scope:fixture:subagent-delegation",
+        "evidence_receipt_refs": ["receipt:fixture:subagent-delegation"],
+        "observability_partition_ref": "partition:fixture:subagent-visible",
+        "non_claims": ["Synthetic fixture does not execute an AgentPlane delegation."]
+      }
+    },
+    {
+      "fixture_id": "dep-transport-channel-propagates",
+      "category": "dependency-propagates-through-transport-channel",
+      "target_schema": "transport_dependency_channel.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "service call can affect downstream policy decision",
+        "what_was_observed": "transport preserves trace and evidence reference",
+        "partition_hidden": ["private payload body"],
+        "shared_control_ancestry": ["control:runtime-tool-call"],
+        "cancellation_or_normalization": "none",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "transport_channel_id": "transport:fixture:tritrpc",
+        "channel_kind": "tritrpc_call",
+        "source_ref": "service:gateway",
+        "target_ref": "service:policy-fabric",
+        "authority_preserved": true,
+        "trace_preserved": true,
+        "retry_semantics": "idempotent",
+        "authority_chain_ref": "authority:fixture:transport",
+        "agent_action_trace_ref": "trace:fixture:transport",
+        "tool_permission_scope_ref": "scope:fixture:transport",
+        "evidence_receipt_refs": ["receipt:fixture:transport"],
+        "observability_partition_ref": "partition:fixture:transport",
+        "non_claims": ["Synthetic fixture does not execute a TriTRPC call."]
+      }
+    },
+    {
+      "fixture_id": "dep-duplicated-policy-paths-normalize",
+      "category": "duplicated-policy-paths-cancel-or-normalize",
+      "target_schema": "dependency_cancellation_record.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "duplicated policy paths affect one release gate",
+        "what_was_observed": "normalization recorded with evidence receipt",
+        "partition_hidden": [],
+        "shared_control_ancestry": ["policy:shared-parent"],
+        "cancellation_or_normalization": "normalizes",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "cancellation_record_id": "cancel:fixture:policy-normalization",
+        "dependency_graph_ref": "dep-graph:fixture:base",
+        "path_refs": ["path:policy-a", "path:policy-b"],
+        "cancellation_kind": "normalizes",
+        "result_state": "normalized",
+        "release_delta_report_ref": "release-delta:fixture:policy-normalization",
+        "monitor_alert_refs": ["alert:fixture:normalization"],
+        "evidence_receipt_refs": ["receipt:fixture:policy-normalization"],
+        "safety_case_ref": "safety-case:fixture:dependency-control",
+        "non_claims": ["Normalization record does not prove runtime policy execution."]
+      }
+    },
+    {
+      "fixture_id": "dep-release-compensation-hides-delta",
+      "category": "release-compensation-hides-behavioral-delta",
+      "target_schema": "dependency_cancellation_record.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "release counter-term can hide behavior delta",
+        "what_was_observed": "hidden state requires review",
+        "partition_hidden": ["behavioral_delta_without_counterterm"],
+        "shared_control_ancestry": ["release:fixture:v2"],
+        "cancellation_or_normalization": "masks",
+        "feedback_closure": "requires_review"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "cancellation_record_id": "cancel:fixture:hidden-release-delta",
+        "dependency_graph_ref": "dep-graph:fixture:base",
+        "path_refs": ["path:weaker-policy", "path:counterterm-monitor-threshold"],
+        "cancellation_kind": "masks",
+        "result_state": "requires_review",
+        "release_delta_report_ref": "release-delta:fixture:hidden-delta",
+        "monitor_alert_refs": ["alert:fixture:hidden-delta"],
+        "evidence_receipt_refs": ["receipt:fixture:hidden-delta"],
+        "safety_case_ref": "safety-case:fixture:dependency-control",
+        "non_claims": ["Synthetic hidden-delta fixture does not claim live release regression."]
+      }
+    },
+    {
+      "fixture_id": "dep-blocked-branch-preserved-off-history",
+      "category": "blocked-dependency-branch-preserved-off-history",
+      "target_schema": "control_reachability_record.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "blocked branch cannot affect target observable",
+        "what_was_observed": "off-history evidence preserves the blocked branch",
+        "partition_hidden": [],
+        "shared_control_ancestry": [],
+        "cancellation_or_normalization": "blocked",
+        "feedback_closure": "open_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "reachability_record_id": "reachability:fixture:off-history-preserved",
+        "dependency_graph_ref": "dep-graph:fixture:base",
+        "control_ref": "control:unsafe-tool-request",
+        "observable_ref": "observable:filesystem-write",
+        "reachability": "blocked",
+        "path_refs": ["edge:unsafe-tool-request-to-policy"],
+        "authority_chain_ref": "authority:fixture:off-history-preserved",
+        "tool_permission_scope_ref": "scope:fixture:no-filesystem-write",
+        "agent_action_trace_ref": "trace:fixture:off-history-preserved",
+        "off_history_evidence_ref": "off-history:fixture:unsafe-tool-request",
+        "evidence_receipt_refs": ["receipt:fixture:off-history-preserved"],
+        "safety_case_ref": "safety-case:fixture:dependency-control",
+        "diagnosis": "Blocked dependency path is preserved as off-history rather than erased."
+      }
+    },
+    {
+      "fixture_id": "dep-monitor-feedback-closes-loop",
+      "category": "monitor-evidence-closes-loop-by-changing-future-control-scope",
+      "target_schema": "adaptive_feedback_loop.v1.json",
+      "expected_result": "pass",
+      "answers": {
+        "what_can_affect_what": "monitor evidence affects future tool permission scope",
+        "what_was_observed": "monitor alert changes future control scope",
+        "partition_hidden": [],
+        "shared_control_ancestry": ["monitor:fixture:policy"],
+        "cancellation_or_normalization": "none",
+        "feedback_closure": "closed_loop"
+      },
+      "payload": {
+        "schema_version": "1.0",
+        "feedback_loop_id": "feedback:fixture:monitor-scope-update",
+        "dependency_graph_ref": "dep-graph:fixture:base",
+        "feedback_state": "closed_loop",
+        "input_observable_refs": ["observable:monitor-alert"],
+        "monitor_alert_refs": ["alert:fixture:future-scope-change"],
+        "updated_control_refs": ["control:future-tool-grant"],
+        "updated_policy_refs": ["policy:future-tool-grant"],
+        "updated_tool_permission_scope_refs": ["scope:fixture:future-tool-grant"],
+        "release_delta_report_ref": "release-delta:fixture:future-scope-change",
+        "evidence_receipt_refs": ["receipt:fixture:feedback-closure"],
+        "safety_case_ref": "safety-case:fixture:dependency-control",
+        "diagnosis": "Monitor evidence closes the loop by changing a future tool permission scope."
+      }
+    }
+  ]
+}

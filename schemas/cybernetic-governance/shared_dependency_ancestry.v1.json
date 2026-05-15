@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/shared_dependency_ancestry.v1.json",
+  "title": "Shared Dependency Ancestry",
+  "description": "Record identifying observables, actions, releases, or monitors that share a control ancestor.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "ancestry_record_id", "dependency_graph_ref", "shared_ancestor_ref", "dependent_refs", "ancestry_path_refs", "evidence_receipt_refs", "safety_case_ref"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "ancestry_record_id": {"type": "string", "minLength": 1},
+    "dependency_graph_ref": {"type": "string", "minLength": 1},
+    "shared_ancestor_ref": {"type": "string", "minLength": 1},
+    "ancestor_kind": {"enum": ["policy", "prompt", "tool_grant", "release_delta", "transport_channel", "ontology_delta", "operator_decision", "model_selection", "monitor_config", "other"]},
+    "dependent_refs": {"type": "array", "minItems": 2, "items": {"type": "string"}},
+    "ancestry_path_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "authority_chain_refs": {"type": "array", "items": {"type": "string"}},
+    "release_delta_report_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "safety_case_ref": {"type": "string", "minLength": 1},
+    "diagnosis": {"type": "string"}
+  }
+}

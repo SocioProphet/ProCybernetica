@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/observability_partition.v1.json",
+  "title": "Observability Partition",
+  "description": "Record of what is visible, hidden, redacted, or externally observable under a governance review partition.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "partition_id", "scope_ref", "visible_refs", "hidden_refs", "evidence_receipt_refs", "safety_case_ref"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "partition_id": {"type": "string", "minLength": 1},
+    "scope_ref": {"type": "string", "minLength": 1},
+    "visible_refs": {"type": "array", "items": {"type": "string"}},
+    "hidden_refs": {"type": "array", "items": {"type": "string"}},
+    "redacted_refs": {"type": "array", "items": {"type": "string"}},
+    "externally_observable_refs": {"type": "array", "items": {"type": "string"}},
+    "monitor_alert_refs": {"type": "array", "items": {"type": "string"}},
+    "evidence_receipt_refs": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+    "safety_case_ref": {"type": "string", "minLength": 1},
+    "partition_non_claims": {"type": "array", "items": {"type": "string"}}
+  }
+}

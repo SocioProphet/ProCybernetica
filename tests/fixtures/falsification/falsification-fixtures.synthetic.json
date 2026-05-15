@@ -1,0 +1,167 @@
+{
+  "fixture_set_version": "v1",
+  "publication_state": "public-synthetic",
+  "description": "Synthetic falsification fixture coverage for fixture-backed observables. These fixtures validate registry structure only and do not claim runtime telemetry.",
+  "fixtures": [
+    {
+      "fixture_id": "fix-f2-4-positive-invariant-violation",
+      "observable_id": "F2.4",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "A positive fixture is marked valid while violating a named invariant.",
+      "detection_mechanism": "fixture_validation",
+      "revision_direction": "schema_revision; deployment_hold if runtime-bound",
+      "owner": "procybernetica-ci",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not validate a production schema lane.",
+        "Does not claim runtime deployment status."
+      ]
+    },
+    {
+      "fixture_id": "fix-f2-5-negative-wrong-reason",
+      "observable_id": "F2.5",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "A negative fixture passes or fails for a reason other than the intended invariant.",
+      "detection_mechanism": "fixture_validation",
+      "revision_direction": "schema_revision; ci-testable repair",
+      "owner": "procybernetica-ci",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not assert a live validator result.",
+        "Does not claim production schema completeness."
+      ]
+    },
+    {
+      "fixture_id": "fix-f3-1-soft-lane-promotion",
+      "observable_id": "F3.1",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "review_required",
+      "public_state": "public-synthetic",
+      "condition": "A soft-lane output is promoted without evidence, policy, audit, and promotion decision.",
+      "detection_mechanism": "fixture_validation_and_human_review",
+      "revision_direction": "claim_hold; doctrine_revision; schema_revision",
+      "owner": "procybernetica-doctrine",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not represent a real detector finding.",
+        "Does not claim an actual soft-lane promotion occurred."
+      ]
+    },
+    {
+      "fixture_id": "fix-f3-4-missing-evidence-level",
+      "observable_id": "F3.4",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "A promotion decision omits the evidence level or maturity class required for reliance.",
+      "detection_mechanism": "fixture_validation",
+      "revision_direction": "claim_hold; schema_revision",
+      "owner": "procybernetica-schema",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not assert a real promotion decision.",
+        "Does not claim certificate schema completeness."
+      ]
+    },
+    {
+      "fixture_id": "fix-f8-1-dependency-concentration",
+      "observable_id": "F8.1",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "review_required",
+      "public_state": "public-synthetic",
+      "condition": "Multiple promoted conclusions depend on one evidence source without independence disclosure or concentration warning.",
+      "detection_mechanism": "synthetic_dependency_fixture_and_runtime_monitoring",
+      "revision_direction": "schema_revision; claim_hold; runtime_mitigation",
+      "owner": "procybernetica-schema",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not claim live dependency telemetry.",
+        "Does not assert production capability-tier invocation data."
+      ]
+    },
+    {
+      "fixture_id": "fix-f8-2-silent-cancellation-contradiction",
+      "observable_id": "F8.2",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "Cancellation path hides a contradiction instead of producing a contradiction record or reversal trigger.",
+      "detection_mechanism": "fixture_validation_and_runtime_monitoring",
+      "revision_direction": "schema_revision; runtime_mitigation; deployment_hold",
+      "owner": "runtime-plane-owner",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not claim runtime cancellation telemetry exists.",
+        "Does not assert production policy behavior."
+      ]
+    },
+    {
+      "fixture_id": "fix-b1-human-reputation-without-consent",
+      "observable_id": "B1",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "Human actor maps to reputation or governance consequence without consent evidence.",
+      "detection_mechanism": "fixture_validation",
+      "revision_direction": "schema_revision; claim_hold; deployment_hold",
+      "owner": "procybernetica-schema",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not describe a real person.",
+        "Does not create a reputation record."
+      ]
+    },
+    {
+      "fixture_id": "fix-b2-candidate-proofpack-promoted-stele",
+      "observable_id": "B2",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "Candidate proof pack maps to promoted Stele certificate without promotion decision.",
+      "detection_mechanism": "fixture_validation",
+      "revision_direction": "schema_revision; claim_hold",
+      "owner": "procybernetica-schema",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not assert a real proof pack exists.",
+        "Does not claim certificate bridge implementation."
+      ]
+    },
+    {
+      "fixture_id": "fix-b3-undecided-certificate-admits",
+      "observable_id": "B3",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "Undecided certificate maps to Atlas admission instead of deny or review-required.",
+      "detection_mechanism": "fixture_validation",
+      "revision_direction": "schema_revision; deployment_hold",
+      "owner": "procybernetica-schema",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not claim Atlas bridge exists.",
+        "Does not authorize admission behavior."
+      ]
+    },
+    {
+      "fixture_id": "fix-b4-prohibited-pattern-admitted",
+      "observable_id": "B4",
+      "fixture_kind": "synthetic_case",
+      "expected_result": "fail",
+      "public_state": "public-synthetic",
+      "condition": "Pattern C or prohibited pattern maps to admit rather than deny.",
+      "detection_mechanism": "fixture_validation",
+      "revision_direction": "schema_revision; deployment_hold",
+      "owner": "procybernetica-schema",
+      "non_claims": [
+        "Synthetic fixture only.",
+        "Does not claim Pattern C bridge implementation.",
+        "Does not assert production admission behavior."
+      ]
+    }
+  ]
+}

@@ -41,8 +41,8 @@ VALID_FIXTURE_STATUSES = {
     "no_fixture_required",
 }
 
-RUNTIME_EVIDENCE_MARKERS = {"runtime-telemetry", "periodic-audit"}
-RUNTIME_FIXTURE_STATUSES = {"runtime_monitoring", "periodic_audit"}
+RUNTIME_EVIDENCE_MARKERS = {"runtime-telemetry"}
+RUNTIME_FIXTURE_STATUSES = {"runtime_monitoring"}
 FIXTURE_BACKED_STATUSES = {"fixture_required", "fixture_present"}
 
 
@@ -143,7 +143,7 @@ def main() -> int:
         evidence_class = str(obs["evidence_class"])
         has_runtime_evidence = any(marker in evidence_class for marker in RUNTIME_EVIDENCE_MARKERS)
         if has_runtime_evidence and obs["fixture_status"] not in RUNTIME_FIXTURE_STATUSES | FIXTURE_BACKED_STATUSES:
-            fail(f"{obs_id} has runtime/periodic evidence but is not marked monitoring, audit, or fixture-backed")
+            fail(f"{obs_id} has runtime evidence but is not marked runtime_monitoring or fixture-backed")
 
         if obs["fixture_status"] in FIXTURE_BACKED_STATUSES and obs_id not in backed_fixture_ids:
             fail(f"{obs_id} is fixture-backed but has no fixture under {FIXTURE_DIR}")

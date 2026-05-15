@@ -31,6 +31,18 @@ REQUIRED_FIXTURE_FIELDS = {
     "non_claims",
 }
 
+REQUIRED_LEGACY_TRIGGER_FIELDS = {
+    "fixture_kind",
+    "observable_id",
+    "observable_title",
+    "detection_window",
+    "trigger_condition_met",
+    "evidence",
+    "revision_triggered",
+    "revision_severity",
+    "revision_direction_documented",
+}
+
 VALID_EXPECTED_RESULTS = {"pass", "fail", "review_required", "deferred"}
 VALID_PUBLIC_STATES = {"public", "public-sanitized", "public-synthetic"}
 VALID_FIXTURE_KINDS = {
@@ -63,14 +75,36 @@ def known_observable_ids() -> set[str]:
     return {obs["id"] for obs in registry.get("observables", []) if isinstance(obs, dict) and "id" in obs}
 
 
+def validate_legacy_trigger_fixture(path: Path, payload: dict[str, Any], known_ids: set[str]) -> int:
+    missing = REQUIRED_LEGACY_TRIGGER_FIELDS - set(payload)
+    if missing:
+        fail(f"{path} legacy trigger fixture missing required fields: {sorted(missing)}")
+    if payload["fixture_kind"] != "falsification-observable-trigger":
+        fail(f"{path} has unsupported legacy fixture_kind {payload['fixture_kind']!r}")
+    if payload["observable_id"] not in known_ids:
+        fail(f"{path} references unknown observable_id {payload['observable_id']}")
+    if not isinstance(payload["detection_window"], dict):
+        fail(f"{path} detection_window must be an object")
+    if not isinstance(payload["evidence"], dict):
+        fail(f"{path} evidence must be an object")
+    if not isinstance(payload["trigger_condition_met"], bool):
+        fail(f"{path} trigger_condition_met must be boolean")
+    if not isinstance(payload["revision_triggered"], bool):
+        fail(f"{path} revision_triggered must be boolean")
+    return 1
+
+
 def validate_fixture_file(path: Path, known_ids: set[str]) -> int:
     try:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError as exc:
         fail(f"{path} contains malformed JSON: {exc}")
 
+    if payload.get("fixture_kind") == "falsification-observable-trigger":
+        return validate_legacy_trigger_fixture(path, payload, known_ids)
+
     if payload.get("fixture_set_version") != "v1":
-        fail(f"{path} must set fixture_set_version to v1")
+        fail(f"{path} must set fixture_set_version to v1 or use supported legacy trigger format")
     if payload.get("publication_state") not in VALID_PUBLIC_STATES:
         fail(f"{path} has invalid publication_state")
 

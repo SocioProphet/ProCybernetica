@@ -1,0 +1,57 @@
+@prefix sh: <http://www.w3.org/ns/shacl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix pc: <https://schemas.socioprophet.ai/procybernetica/shacl#> .
+@prefix bridge: <https://schemas.socioprophet.ai/bridges/> .
+
+# Bridge-schema SHACL companion shapes for #46.
+# These shapes cover SHACL-expressible structural requirements from the bridge schemas.
+# Cross-field rules remain in tools/cybernetic_governance/validate_bridges.py.
+
+pc:OpsHistoryToPneumachinalisBridgeShape
+  a sh:NodeShape ;
+  sh:targetClass bridge:OpsHistoryToPneumachinalisBridge ;
+  pc:sourceSchema "schemas/bridges/ops-history-to-pneumachinalis.v1.json" ;
+  pc:nonShaclRule "human_actor_requires_consent_for_reputation_microbeat" ;
+  sh:property [ sh:path bridge:schema_version ; sh:hasValue "1.0" ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:bridge_id ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:ops_history_ref ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:actor_kind ; sh:in ("machine" "service" "agent" "human" "unknown") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:action_ref ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:pneumachinalis_microbeat ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:capability_tier_invocation ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:evidence_receipt_refs ; sh:minCount 1 ; ] ;
+  sh:property [ sh:path bridge:non_claims ; sh:minCount 1 ; ] .
+
+pc:MasonmarkToCertificateBridgeShape
+  a sh:NodeShape ;
+  sh:targetClass bridge:MasonmarkToCertificateBridge ;
+  pc:sourceSchema "schemas/bridges/masonmark-to-certificate.v1.json" ;
+  pc:nonShaclRule "promotion_state_strict_inheritance" ;
+  pc:nonShaclRule "verifier_scores_consistent_with_verdict" ;
+  sh:property [ sh:path bridge:schema_version ; sh:hasValue "1.0" ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:bridge_id ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:masonmark_proofpack_ref ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:proofpack_state ; sh:in ("candidate" "verified" "rejected" "superseded" "undecided") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:pattern_class ; sh:in ("pattern_a" "pattern_b" "pattern_c" "unknown") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:certificate_projection ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:verifier_scores ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:capability_tier_invocation ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:evidence_receipt_refs ; sh:minCount 1 ; ] ;
+  sh:property [ sh:path bridge:non_claims ; sh:minCount 1 ; ] .
+
+pc:CertificateToAtlasBridgeShape
+  a sh:NodeShape ;
+  sh:targetClass bridge:CertificateToAtlasBridge ;
+  pc:sourceSchema "schemas/bridges/certificate-to-atlas.v1.json" ;
+  pc:nonShaclRule "undecided_fails_closed_to_deny" ;
+  pc:nonShaclRule "pattern_c_always_denies" ;
+  sh:property [ sh:path bridge:schema_version ; sh:hasValue "1.0" ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:bridge_id ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:certificate_ref ; sh:datatype xsd:string ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:certificate_family ; sh:in ("M0" "M1A" "M1B" "M1C" "M1_5" "M1D" "M1" "M2" "M3" "M5" "safety_case") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:promotion_state ; sh:in ("candidate" "promoted_stele" "rejected" "superseded" "undecided") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:pattern_class ; sh:in ("pattern_a" "pattern_b" "pattern_c" "unknown") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:atlas_disposition ; sh:in ("admit" "deny" "review_required") ; sh:minCount 1 ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:capability_tier_invocation ; sh:maxCount 1 ; ] ;
+  sh:property [ sh:path bridge:evidence_receipt_refs ; sh:minCount 1 ; ] ;
+  sh:property [ sh:path bridge:non_claims ; sh:minCount 1 ; ] .

@@ -1,0 +1,68 @@
+{
+  "fixture_set_version": "agentic-ops.persona-policies.v1",
+  "publication_state": "public-synthetic",
+  "personas": [
+    {
+      "persona_id": "regulated-enterprise-assistant",
+      "objectives": {"latency": 0.05, "throughput": 0.05, "cost_predictability": 0.15, "correctness": 0.30, "auditability": 0.30, "ops_simplicity": 0.05, "reproducibility": 0.05, "collaboration": 0.05},
+      "budget": {"tokens_in_max": 200000, "tokens_out_max": 8000, "tool_calls_max": 40, "wall_clock_seconds_max": 300, "dollars_max": 5.0},
+      "axes": {"autonomy_depth": 5, "reversibility": "compensable", "plan_mode": "plan_then_execute", "max_replans": 1, "verification_judge_rate": 1.0, "self_consistency_k": 3, "cascade_enabled": false},
+      "data_class_allowlist": ["internal", "sensitive", "regulated"],
+      "max_staleness_seconds": 0,
+      "expected_substrategies": ["plan_commit_before_execute", "llm_judge_every_output", "self_consistency_k_3_majority", "two_phase_commit_with_compensating_actions", "immutable_append_only_trajectory_log", "trajectory_hash_chain", "per_data_class_memory_isolation", "per_step_uco_attribution_emit"],
+      "expected_loop_threshold_for_autonomy_depth": 3
+    },
+    {
+      "persona_id": "interactive-product-assistant",
+      "objectives": {"latency": 0.30, "throughput": 0.20, "cost_predictability": 0.15, "correctness": 0.15, "auditability": 0.05, "ops_simplicity": 0.10, "reproducibility": 0.03, "collaboration": 0.02},
+      "budget": {"tokens_in_max": 60000, "tokens_out_max": 4000, "tool_calls_max": 8, "wall_clock_seconds_max": 60, "dollars_max": 1.0},
+      "axes": {"autonomy_depth": 3, "reversibility": "idempotent_only", "plan_mode": "plan_with_revision", "max_replans": 1, "verification_judge_rate": 0.2, "self_consistency_k": 1, "cascade_enabled": true},
+      "data_class_allowlist": ["public", "internal"],
+      "max_staleness_seconds": 300
+    },
+    {
+      "persona_id": "batch-throughput-worker",
+      "objectives": {"latency": 0.05, "throughput": 0.45, "cost_predictability": 0.20, "correctness": 0.10, "auditability": 0.05, "ops_simplicity": 0.05, "reproducibility": 0.05, "collaboration": 0.05},
+      "budget": {"tokens_in_max": 1000000, "tokens_out_max": 25000, "tool_calls_max": 250, "wall_clock_seconds_max": 3600, "dollars_max": 40.0},
+      "axes": {"autonomy_depth": 50, "reversibility": "idempotent_only", "plan_mode": "plan_with_revision", "max_replans": 3, "verification_judge_rate": 0.1, "self_consistency_k": 1, "cascade_enabled": true},
+      "data_class_allowlist": ["public", "internal"],
+      "max_staleness_seconds": 3600
+    },
+    {
+      "persona_id": "research-throughput",
+      "objectives": {"latency": 0.05, "throughput": 0.40, "cost_predictability": 0.05, "correctness": 0.15, "auditability": 0.05, "ops_simplicity": 0.05, "reproducibility": 0.20, "collaboration": 0.05},
+      "budget": {"tokens_in_max": 2000000, "tokens_out_max": 50000, "tool_calls_max": 500, "wall_clock_seconds_max": 7200, "dollars_max": 100.0},
+      "axes": {"autonomy_depth": 100, "reversibility": "unrestricted", "plan_mode": "react", "max_replans": 10, "verification_judge_rate": 0.1, "self_consistency_k": 1, "cascade_enabled": true},
+      "data_class_allowlist": ["public", "internal"],
+      "max_staleness_seconds": 3600,
+      "expected_rejects_data_class": "regulated"
+    },
+    {
+      "persona_id": "sre-operator",
+      "objectives": {"latency": 0.10, "throughput": 0.10, "cost_predictability": 0.15, "correctness": 0.25, "auditability": 0.20, "ops_simplicity": 0.10, "reproducibility": 0.05, "collaboration": 0.05},
+      "budget": {"tokens_in_max": 160000, "tokens_out_max": 8000, "tool_calls_max": 30, "wall_clock_seconds_max": 600, "dollars_max": 8.0},
+      "axes": {"autonomy_depth": 6, "reversibility": "idempotent_only", "plan_mode": "plan_then_execute", "max_replans": 1, "verification_judge_rate": 0.5, "self_consistency_k": 2, "cascade_enabled": false},
+      "data_class_allowlist": ["internal", "sensitive"],
+      "max_staleness_seconds": 30
+    },
+    {
+      "persona_id": "forensics-analyst",
+      "objectives": {"latency": 0.02, "throughput": 0.03, "cost_predictability": 0.10, "correctness": 0.30, "auditability": 0.35, "ops_simplicity": 0.05, "reproducibility": 0.10, "collaboration": 0.05},
+      "budget": {"tokens_in_max": 300000, "tokens_out_max": 12000, "tool_calls_max": 60, "wall_clock_seconds_max": 1200, "dollars_max": 12.0},
+      "axes": {"autonomy_depth": 4, "reversibility": "none", "plan_mode": "plan_then_execute", "max_replans": 1, "verification_judge_rate": 1.0, "self_consistency_k": 3, "cascade_enabled": false},
+      "data_class_allowlist": ["forensic", "sensitive"],
+      "max_staleness_seconds": 0
+    }
+  ],
+  "invalid_personas": [
+    {
+      "persona_id": "invalid-objective-sum",
+      "objectives": {"latency": 0.50, "throughput": 0.20, "cost_predictability": 0.20, "correctness": 0.20, "auditability": 0.10, "ops_simplicity": 0.05, "reproducibility": 0.05, "collaboration": 0.05},
+      "budget": {"tokens_in_max": 1000, "tokens_out_max": 100, "tool_calls_max": 1, "wall_clock_seconds_max": 10, "dollars_max": 0.1},
+      "axes": {"autonomy_depth": 1, "reversibility": "none", "plan_mode": "plan_then_execute", "max_replans": 0, "verification_judge_rate": 1.0, "self_consistency_k": 1, "cascade_enabled": false},
+      "data_class_allowlist": ["public"],
+      "max_staleness_seconds": 0,
+      "expected_error": "objective weights must sum to 1.0"
+    }
+  ]
+}

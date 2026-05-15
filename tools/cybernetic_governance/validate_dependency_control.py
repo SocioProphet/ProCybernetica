@@ -65,6 +65,11 @@ def fixture_files(path: Path) -> list[Path]:
     return [path]
 
 
+def safety_case_ref(payload: dict[str, Any]) -> str | None:
+    value = payload.get("safety_case_ref") or payload.get("cybernetic_safety_case_ref")
+    return value if isinstance(value, str) and value else None
+
+
 def validate_fixture_set(path: Path, schemas: dict[str, dict[str, Any]]) -> dict[str, Any]:
     fixture_set = load_json(path)
     results = []
@@ -90,8 +95,9 @@ def validate_fixture_set(path: Path, schemas: dict[str, dict[str, Any]]) -> dict
         if not payload.get("evidence_receipt_refs"):
             diagnostics.append("payload must map to evidence_receipt_refs")
 
-        if not payload.get("safety_case_ref") and target_schema not in {"transport_dependency_channel.v1.json"}:
-            diagnostics.append("payload must map to safety_case_ref")
+        resolved_safety_case_ref = safety_case_ref(payload)
+        if not resolved_safety_case_ref and target_schema not in {"transport_dependency_channel.v1.json"}:
+            diagnostics.append("payload must map to safety_case_ref or cybernetic_safety_case_ref")
 
         actual_result = "fail" if diagnostics else "pass"
         passed = actual_result == expected_result
@@ -107,7 +113,7 @@ def validate_fixture_set(path: Path, schemas: dict[str, dict[str, Any]]) -> dict
                 "passed": passed,
                 "answers": answers,
                 "evidence_receipt_refs": payload.get("evidence_receipt_refs", []),
-                "safety_case_ref": payload.get("safety_case_ref"),
+                "safety_case_ref": resolved_safety_case_ref,
                 "diagnostics": diagnostics,
             }
         )

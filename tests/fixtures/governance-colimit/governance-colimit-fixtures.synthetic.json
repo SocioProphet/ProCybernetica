@@ -1,0 +1,139 @@
+{
+  "fixture_set_version": "governance-colimit.g7.v1",
+  "publication_state": "public-synthetic",
+  "fixtures": [
+    {
+      "fixture_id": "valid-evidence-cocone-two-fibers",
+      "target_schema": "evidence-cocone.v0.1.schema.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "0.1.0",
+        "cocone_id": "cocone:governance:synthetic:001",
+        "fibration_ref": "fib:gov:demo:1",
+        "apex_evidence_ref": "evidence-apex:governance-review:001",
+        "description": "Synthetic evidence cocone combining repository and workspace review evidence into one apex review object.",
+        "source_objects": [
+          {
+            "source_id": "source:repo-review",
+            "base_context_ref": "base:repo-review",
+            "fiber_ref": "fiber:repo-review",
+            "evidence_ref": "receipt:repo-review:001",
+            "canonical_token_refs": ["token:repo-review:canonical:1"]
+          },
+          {
+            "source_id": "source:workspace-review",
+            "base_context_ref": "base:workspace-review",
+            "fiber_ref": "fiber:workspace-review",
+            "evidence_ref": "receipt:workspace-review:001",
+            "canonical_token_refs": ["token:workspace-review:canonical:1"]
+          }
+        ],
+        "evidence_legs": [
+          {
+            "leg_id": "leg:repo-to-apex",
+            "source_ref": "source:repo-review",
+            "source_evidence_ref": "receipt:repo-review:001",
+            "apex_evidence_ref": "evidence-apex:governance-review:001",
+            "leg_kind": "evidence_receipt",
+            "compatibility_witness_ref": "validator:governance-colimit:repo-leg",
+            "witness_kind": "validator_receipt"
+          },
+          {
+            "leg_id": "leg:workspace-to-apex",
+            "source_ref": "source:workspace-review",
+            "source_evidence_ref": "receipt:workspace-review:001",
+            "apex_evidence_ref": "evidence-apex:governance-review:001",
+            "leg_kind": "evidence_receipt",
+            "compatibility_witness_ref": "validator:governance-colimit:workspace-leg",
+            "witness_kind": "validator_receipt"
+          }
+        ],
+        "compatibility_status": "structurally_compatible",
+        "compatibility_witness_refs": ["validator:governance-colimit:repo-leg", "validator:governance-colimit:workspace-leg"],
+        "reindex_operation_refs": ["reindex:repo-to-workspace:1"],
+        "coherence_status": "not-asserted",
+        "theorem_audit_refs": ["TBD-GROT", "TBD-COL"],
+        "non_claims": [
+          "This cocone fixture does not assert a colimit.",
+          "This cocone fixture does not assert reindex coherence.",
+          "This cocone fixture does not discharge TBD-GROT or TBD-COL."
+        ]
+      }
+    },
+    {
+      "fixture_id": "valid-colimit-structural-candidate",
+      "target_schema": "colimit-witness.v0.1.schema.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "0.1.0",
+        "colimit_witness_id": "colimit-witness:governance:synthetic:001",
+        "evidence_cocone_ref": "cocone:governance:synthetic:001",
+        "apex_evidence_ref": "evidence-apex:governance-review:001",
+        "universal_property_status": "structural_candidate",
+        "comparison_targets": [
+          {
+            "target_id": "target:review-packet",
+            "target_kind": "proof_pack",
+            "target_ref": "proof-pack:synthetic:001"
+          }
+        ],
+        "mediator_witnesses": [
+          {
+            "mediator_id": "mediator:apex-to-proof-pack",
+            "comparison_target_ref": "target:review-packet",
+            "apex_ref": "evidence-apex:governance-review:001",
+            "mediator_status": "structural_candidate",
+            "witness_ref": "validator:governance-colimit:mediator"
+          }
+        ],
+        "uniqueness_status": "review_required",
+        "naturality_status": "not_asserted",
+        "proof_ref": null,
+        "counterexample_ref": null,
+        "coherence_status": "not-asserted",
+        "theorem_audit_refs": ["TBD-COL", "TBD-GROT"],
+        "non_claims": [
+          "This witness is a structural candidate only.",
+          "This witness does not prove a colimit.",
+          "This witness does not prove mediator uniqueness or naturality.",
+          "TBD-COL and TBD-GROT remain open."
+        ]
+      }
+    },
+    {
+      "fixture_id": "invalid-colimit-proved-elsewhere-without-proof-ref",
+      "target_schema": "colimit-witness.v0.1.schema.json",
+      "expected_result": "fail",
+      "expected_failure_reason": "schema_validation_error",
+      "payload": {
+        "schema_version": "0.1.0",
+        "colimit_witness_id": "colimit-witness:invalid:no-proof-ref",
+        "evidence_cocone_ref": "cocone:governance:synthetic:001",
+        "apex_evidence_ref": "evidence-apex:governance-review:001",
+        "universal_property_status": "proved_elsewhere",
+        "comparison_targets": [
+          {
+            "target_id": "target:review-packet",
+            "target_kind": "proof_pack",
+            "target_ref": "proof-pack:synthetic:001"
+          }
+        ],
+        "mediator_witnesses": [
+          {
+            "mediator_id": "mediator:apex-to-proof-pack",
+            "comparison_target_ref": "target:review-packet",
+            "apex_ref": "evidence-apex:governance-review:001",
+            "mediator_status": "structural_candidate",
+            "witness_ref": "validator:governance-colimit:mediator"
+          }
+        ],
+        "uniqueness_status": "review_required",
+        "naturality_status": "not_asserted",
+        "counterexample_ref": null,
+        "coherence_status": "not-asserted",
+        "theorem_audit_refs": ["TBD-COL", "TBD-GROT"],
+        "non_claims": ["Invalid fixture: proved_elsewhere requires proof_ref."]
+      }
+    }
+  ]
+}

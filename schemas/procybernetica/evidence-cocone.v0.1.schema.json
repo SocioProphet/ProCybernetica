@@ -1,0 +1,84 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.procybernetica.local/procybernetica/evidence-cocone.v0.1.schema.json",
+  "title": "ProCybernetica Evidence Cocone v0.1",
+  "description": "Structural evidence-cocone artifact over governance fibration objects. Records source evidence legs into an apex evidence object without asserting colimit or universal property.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "cocone_id",
+    "fibration_ref",
+    "apex_evidence_ref",
+    "source_objects",
+    "evidence_legs",
+    "compatibility_status",
+    "theorem_audit_refs",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {"const": "0.1.0"},
+    "cocone_id": {"type": "string", "minLength": 1},
+    "fibration_ref": {"type": "string", "minLength": 1},
+    "apex_evidence_ref": {"type": "string", "minLength": 1},
+    "description": {"type": "string"},
+    "source_objects": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"$ref": "#/$defs/source_object"}
+    },
+    "evidence_legs": {
+      "type": "array",
+      "minItems": 2,
+      "items": {"$ref": "#/$defs/evidence_leg"}
+    },
+    "compatibility_status": {
+      "enum": ["not_checked", "structurally_compatible", "review_required", "incompatible"]
+    },
+    "compatibility_witness_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": []
+    },
+    "reindex_operation_refs": {
+      "type": "array",
+      "items": {"type": "string"},
+      "default": []
+    },
+    "coherence_status": {"const": "not-asserted"},
+    "theorem_audit_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"type": "string", "enum": ["TBD-GROT", "TBD-COL"]}
+    },
+    "non_claims": {"type": "array", "minItems": 1, "items": {"type": "string"}}
+  },
+  "$defs": {
+    "source_object": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "base_context_ref", "fiber_ref", "evidence_ref"],
+      "properties": {
+        "source_id": {"type": "string", "minLength": 1},
+        "base_context_ref": {"type": "string", "minLength": 1},
+        "fiber_ref": {"type": "string", "minLength": 1},
+        "evidence_ref": {"type": "string", "minLength": 1},
+        "canonical_token_refs": {"type": "array", "items": {"type": "string"}}
+      }
+    },
+    "evidence_leg": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["leg_id", "source_ref", "source_evidence_ref", "apex_evidence_ref", "leg_kind", "compatibility_witness_ref"],
+      "properties": {
+        "leg_id": {"type": "string", "minLength": 1},
+        "source_ref": {"type": "string", "minLength": 1},
+        "source_evidence_ref": {"type": "string", "minLength": 1},
+        "apex_evidence_ref": {"type": "string", "minLength": 1},
+        "leg_kind": {"enum": ["inclusion", "projection", "review_map", "evidence_receipt", "proof_pack_exhibit", "manual_review"]},
+        "compatibility_witness_ref": {"type": "string", "minLength": 1},
+        "witness_kind": {"enum": ["schema_validation", "validator_receipt", "manual_review", "future_proof_object", "other"]}
+      }
+    }
+  }
+}

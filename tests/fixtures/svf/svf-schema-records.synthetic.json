@@ -1,0 +1,266 @@
+{
+  "fixture_set": "svf-schema-records.synthetic.v1",
+  "records": [
+    {
+      "fixture_id": "valid-action-schema-fixtures",
+      "target_schema": "svf_validation_action.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "action_id": "svf:action:procybernetica.schema-fixtures",
+        "version": "1.0.0",
+        "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+        "binding": {"kind": "python_module", "entrypoint": "tools.cybernetic_governance.validate_svf", "args": ["--json"]},
+        "capability": {
+          "side_effects": ["read_only"],
+          "network_mode": "network_none",
+          "credential_mode": "credential_none",
+          "filesystem_scope": ["schemas/cybernetic-governance", "tests/fixtures/svf"],
+          "backend": "local",
+          "timeout_seconds": 60
+        },
+        "artifact_contract": {"required_outputs": ["validator-json"], "digest_required": true},
+        "claim_scopes": ["schema_conformant", "fixtures_validated"],
+        "non_claims": ["Does not certify runtime services or downstream runner behavior."]
+      }
+    },
+    {
+      "fixture_id": "invalid-action-unsupported-binding-kind",
+      "target_schema": "svf_validation_action.v1.json",
+      "expected_result": "fail",
+      "payload": {
+        "schema_version": "1.0",
+        "action_id": "svf:action:bad.binding",
+        "version": "1.0.0",
+        "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+        "binding": {"kind": "arbitrary_shell", "entrypoint": "echo", "args": []},
+        "capability": {
+          "side_effects": ["read_only"],
+          "network_mode": "network_none",
+          "credential_mode": "credential_none",
+          "filesystem_scope": ["."],
+          "backend": "local",
+          "timeout_seconds": 60
+        },
+        "artifact_contract": {"required_outputs": [], "digest_required": true},
+        "claim_scopes": ["schema_conformant"],
+        "non_claims": []
+      }
+    },
+    {
+      "fixture_id": "invalid-action-missing-owner",
+      "target_schema": "svf_validation_action.v1.json",
+      "expected_result": "fail",
+      "payload": {
+        "schema_version": "1.0",
+        "action_id": "svf:action:missing.owner",
+        "version": "1.0.0",
+        "binding": {"kind": "make_target", "entrypoint": "svf-ci", "args": []},
+        "capability": {
+          "side_effects": ["read_only"],
+          "network_mode": "network_none",
+          "credential_mode": "credential_none",
+          "filesystem_scope": ["."],
+          "backend": "local",
+          "timeout_seconds": 60
+        },
+        "artifact_contract": {"required_outputs": [], "digest_required": true},
+        "claim_scopes": ["schema_conformant"],
+        "non_claims": []
+      }
+    },
+    {
+      "fixture_id": "invalid-action-unsupported-side-effect",
+      "target_schema": "svf_validation_action.v1.json",
+      "expected_result": "fail",
+      "payload": {
+        "schema_version": "1.0",
+        "action_id": "svf:action:bad.side-effect",
+        "version": "1.0.0",
+        "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+        "binding": {"kind": "make_target", "entrypoint": "svf-ci", "args": []},
+        "capability": {
+          "side_effects": ["write_everywhere"],
+          "network_mode": "network_none",
+          "credential_mode": "credential_none",
+          "filesystem_scope": ["."],
+          "backend": "local",
+          "timeout_seconds": 60
+        },
+        "artifact_contract": {"required_outputs": [], "digest_required": true},
+        "claim_scopes": ["schema_conformant"],
+        "non_claims": []
+      }
+    },
+    {
+      "fixture_id": "valid-policy-local-readonly",
+      "target_schema": "svf_validation_capability_policy.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "policy_id": "svf:policy:procybernetica.local-readonly",
+        "version": "1.0.0",
+        "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica"},
+        "actor_classes": ["coding_agent", "ci_runner", "workspace_runner"],
+        "allowed_backends": ["local"],
+        "max_side_effects": ["read_only"],
+        "network_modes": ["network_none"],
+        "credential_modes": ["credential_none"],
+        "filesystem_roots": ["schemas/cybernetic-governance", "tests/fixtures/svf", "tools/cybernetic_governance"],
+        "production_environment_allowed": false,
+        "human_approval_required": false,
+        "required_receipt_fields": ["run_digest", "plan_digest", "policy_digest", "input_digests", "output_digests"],
+        "non_claims": ["Does not authorize downstream runtime adapters."]
+      }
+    },
+    {
+      "fixture_id": "invalid-policy-production-allowed",
+      "target_schema": "svf_validation_capability_policy.v1.json",
+      "expected_result": "fail",
+      "payload": {
+        "schema_version": "1.0",
+        "policy_id": "svf:policy:bad.production",
+        "version": "1.0.0",
+        "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica"},
+        "actor_classes": ["coding_agent"],
+        "allowed_backends": ["local"],
+        "max_side_effects": ["read_only"],
+        "network_modes": ["network_none"],
+        "credential_modes": ["credential_none"],
+        "filesystem_roots": ["."],
+        "production_environment_allowed": true,
+        "human_approval_required": false,
+        "non_claims": []
+      }
+    },
+    {
+      "fixture_id": "valid-plan-svf-schema-fixtures",
+      "target_schema": "svf_validation_plan.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "plan_id": "svf:plan:procybernetica.svf-schema-fixtures",
+        "version": "1.0.0",
+        "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+        "applicability": {"repos": ["SocioProphet/ProCybernetica"], "planes": ["policy-fabric"], "change_classes": ["schema", "fixture", "policy"]},
+        "mode": "blocking",
+        "policy_ref": "svf:policy:procybernetica.local-readonly",
+        "actions": [
+          {"step_id": "validate-svf-fixtures", "action_ref": "svf:action:procybernetica.schema-fixtures", "required": true, "on_failure": "fail_plan", "inputs": {}}
+        ],
+        "success_criteria": {"required_steps_pass": true, "receipt_required": true, "accepted_statuses": ["pass"]},
+        "failure_taxonomy": ["schema_failure", "fixture_failure", "receipt_integrity_failure", "not_configured"],
+        "claim_scopes": ["schema_conformant", "fixtures_validated", "receipt_integrity_verified"],
+        "required_evidence": ["validator-json", "fixture-records"],
+        "non_claims": ["Does not certify Sociosphere runner implementation."]
+      }
+    },
+    {
+      "fixture_id": "invalid-plan-unsupported-claim-scope",
+      "target_schema": "svf_validation_plan.v1.json",
+      "expected_result": "fail",
+      "payload": {
+        "schema_version": "1.0",
+        "plan_id": "svf:plan:bad.claim",
+        "version": "1.0.0",
+        "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+        "applicability": {"repos": ["SocioProphet/ProCybernetica"], "planes": ["policy-fabric"], "change_classes": ["schema"]},
+        "mode": "blocking",
+        "policy_ref": "svf:policy:procybernetica.local-readonly",
+        "actions": [{"step_id": "bad", "action_ref": "svf:action:procybernetica.schema-fixtures", "required": true, "on_failure": "fail_plan"}],
+        "success_criteria": {"required_steps_pass": true, "receipt_required": true},
+        "failure_taxonomy": ["schema_failure"],
+        "claim_scopes": ["global_correctness"],
+        "non_claims": []
+      }
+    },
+    {
+      "fixture_id": "valid-run-svf-schema-fixtures",
+      "target_schema": "svf_validation_run.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "run_id": "svf:run:procybernetica.svf-schema-fixtures.001",
+        "plan_ref": "svf:plan:procybernetica.svf-schema-fixtures",
+        "plan_version": "1.0.0",
+        "policy_ref": "svf:policy:procybernetica.local-readonly",
+        "repo": "SocioProphet/ProCybernetica",
+        "ref": "main",
+        "commit_sha": "9ff300e7318d1130aade25738e61d3e6b53407e9",
+        "input_digests": [{"name": "svf-schema-records.synthetic.json", "algorithm": "sha256", "digest": "0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef"}],
+        "actor": {"actor_class": "ci_runner", "actor_id": "synthetic-fixture"},
+        "backend": "local",
+        "started_at": "2026-05-28T16:00:00Z",
+        "ended_at": "2026-05-28T16:00:01Z",
+        "status": "pass",
+        "action_results": [{"step_id": "validate-svf-fixtures", "action_ref": "svf:action:procybernetica.schema-fixtures", "status": "pass", "started_at": "2026-05-28T16:00:00Z", "ended_at": "2026-05-28T16:00:01Z", "diagnostics": [], "artifact_refs": ["validator-json"]}],
+        "logs": [],
+        "non_claims": ["Synthetic fixture only."]
+      }
+    },
+    {
+      "fixture_id": "invalid-run-missing-input-digests",
+      "target_schema": "svf_validation_run.v1.json",
+      "expected_result": "fail",
+      "payload": {
+        "schema_version": "1.0",
+        "run_id": "svf:run:bad.missing-input",
+        "plan_ref": "svf:plan:procybernetica.svf-schema-fixtures",
+        "plan_version": "1.0.0",
+        "policy_ref": "svf:policy:procybernetica.local-readonly",
+        "repo": "SocioProphet/ProCybernetica",
+        "ref": "main",
+        "actor": {"actor_class": "ci_runner", "actor_id": "synthetic-fixture"},
+        "backend": "local",
+        "started_at": "2026-05-28T16:00:00Z",
+        "ended_at": "2026-05-28T16:00:01Z",
+        "status": "pass",
+        "action_results": [{"step_id": "validate-svf-fixtures", "action_ref": "svf:action:procybernetica.schema-fixtures", "status": "pass", "started_at": "2026-05-28T16:00:00Z", "ended_at": "2026-05-28T16:00:01Z", "diagnostics": []}]
+      }
+    },
+    {
+      "fixture_id": "valid-receipt-svf-schema-fixtures",
+      "target_schema": "svf_validation_receipt.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "receipt_id": "svf:receipt:procybernetica.svf-schema-fixtures.001",
+        "run_ref": "svf:run:procybernetica.svf-schema-fixtures.001",
+        "run_digest": {"algorithm": "sha256", "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+        "plan_ref": "svf:plan:procybernetica.svf-schema-fixtures",
+        "plan_digest": {"algorithm": "sha256", "digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+        "policy_ref": "svf:policy:procybernetica.local-readonly",
+        "policy_digest": {"algorithm": "sha256", "digest": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"},
+        "input_digests": [{"name": "svf-schema-records.synthetic.json", "algorithm": "sha256", "digest": "dddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd"}],
+        "output_digests": [{"name": "validator-json", "algorithm": "sha256", "digest": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}],
+        "certified_claims": ["schema_conformant", "fixtures_validated"],
+        "non_certified_claims": ["Does not certify downstream runtime adapters."],
+        "verification": {"status": "verified", "verifier": "svf-validator.synthetic", "verified_at": "2026-05-28T16:00:02Z", "diagnostics": []},
+        "issued_at": "2026-05-28T16:00:02Z",
+        "provenance_refs": ["SocioProphet/ProCybernetica#100"],
+        "signature": {}
+      }
+    },
+    {
+      "fixture_id": "invalid-receipt-unsupported-certified-claim",
+      "target_schema": "svf_validation_receipt.v1.json",
+      "expected_result": "fail",
+      "payload": {
+        "schema_version": "1.0",
+        "receipt_id": "svf:receipt:bad.claim.001",
+        "run_ref": "svf:run:procybernetica.svf-schema-fixtures.001",
+        "run_digest": {"algorithm": "sha256", "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+        "plan_ref": "svf:plan:procybernetica.svf-schema-fixtures",
+        "plan_digest": {"algorithm": "sha256", "digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+        "policy_ref": "svf:policy:procybernetica.local-readonly",
+        "policy_digest": {"algorithm": "sha256", "digest": "cccccccccccccccccccccccccccccccc"},
+        "input_digests": [{"name": "fixture", "algorithm": "sha256", "digest": "dddddddddddddddddddddddddddddddd"}],
+        "output_digests": [{"name": "validator-json", "algorithm": "sha256", "digest": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}],
+        "certified_claims": ["global_correctness"],
+        "non_certified_claims": ["invalid fixture"],
+        "verification": {"status": "verified", "verifier": "svf-validator.synthetic", "verified_at": "2026-05-28T16:00:02Z"},
+        "issued_at": "2026-05-28T16:00:02Z"
+      }
+    }
+  ]
+}

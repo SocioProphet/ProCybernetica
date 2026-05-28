@@ -29,6 +29,8 @@ SCHEMA_FILES = [
     "svf_validation_receipt.v1.json",
 ]
 
+PLAN_LEVEL_CLAIMS = {"receipt_integrity_verified"}
+
 
 def load_json(path: Path) -> dict[str, Any]:
     return json.loads(path.read_text(encoding="utf-8"))
@@ -106,19 +108,20 @@ def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
                 "passed": not missing_actions and not policy_missing,
                 "diagnostics": [
                     *(f"missing action ref {action_ref}" for action_ref in missing_actions),
-                    *( [f"missing policy ref {plan['policy_ref']}"] if policy_missing else [] ),
+                    *([f"missing policy ref {plan['policy_ref']}"] if policy_missing else []),
                 ],
             }
         )
 
         action_claim_sets = [set(actions[step["action_ref"]]["claim_scopes"]) for step in plan["actions"] if step["action_ref"] in actions]
         supported_by_actions = set().union(*action_claim_sets) if action_claim_sets else set()
-        unsupported_plan_claims = sorted(set(plan["claim_scopes"]) - supported_by_actions)
+        allowed_plan_claims = supported_by_actions | PLAN_LEVEL_CLAIMS
+        unsupported_plan_claims = sorted(set(plan["claim_scopes"]) - allowed_plan_claims)
         checks.append(
             {
-                "check_id": f"plan-claims-supported-by-actions:{plan_id}",
+                "check_id": f"plan-claims-supported:{plan_id}",
                 "passed": not unsupported_plan_claims,
-                "diagnostics": [f"plan claim not supported by any action: {claim}" for claim in unsupported_plan_claims],
+                "diagnostics": [f"plan claim not supported by any action or plan-level verifier: {claim}" for claim in unsupported_plan_claims],
             }
         )
 
@@ -135,8 +138,8 @@ def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
                 "check_id": f"run-refs-resolve:{run_id}",
                 "passed": not plan_missing and not policy_missing and not unexpected_action_results,
                 "diagnostics": [
-                    *( [f"missing plan ref {run['plan_ref']}"] if plan_missing else [] ),
-                    *( [f"missing policy ref {run['policy_ref']}"] if policy_missing else [] ),
+                    *([f"missing plan ref {run['plan_ref']}"] if plan_missing else []),
+                    *([f"missing policy ref {run['policy_ref']}"] if policy_missing else []),
                     *(f"action result not declared by plan: {action_ref}" for action_ref in unexpected_action_results),
                 ],
             }
@@ -155,9 +158,9 @@ def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
                 "check_id": f"receipt-refs-and-claims:{receipt_id}",
                 "passed": not plan_missing and not run_missing and not policy_missing and not unsupported_claims,
                 "diagnostics": [
-                    *( [f"missing plan ref {receipt['plan_ref']}"] if plan_missing else [] ),
-                    *( [f"missing run ref {receipt['run_ref']}"] if run_missing else [] ),
-                    *( [f"missing policy ref {receipt['policy_ref']}"] if policy_missing else [] ),
+                    *([f"missing plan ref {receipt['plan_ref']}"] if plan_missing else []),
+                    *([f"missing run ref {receipt['run_ref']}"] if run_missing else []),
+                    *([f"missing policy ref {receipt['policy_ref']}"] if policy_missing else []),
                     *(f"receipt claim not declared by plan: {claim}" for claim in unsupported_claims),
                 ],
             }

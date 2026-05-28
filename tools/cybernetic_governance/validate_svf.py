@@ -20,6 +20,7 @@ from jsonschema import Draft202012Validator
 ROOT = Path(__file__).resolve().parents[2]
 SCHEMA_DIR = ROOT / "schemas" / "cybernetic-governance"
 FIXTURE_PATH = ROOT / "tests" / "fixtures" / "svf" / "svf-schema-records.synthetic.json"
+SEMANTIC_FIXTURE_PATH = ROOT / "tests" / "fixtures" / "svf" / "svf-semantic-records.synthetic.json"
 
 SCHEMA_FILES = [
     "svf_validation_action.v1.json",
@@ -78,25 +79,7 @@ def passing_payloads_by_schema(fixture: dict[str, Any], schema_name: str) -> lis
     ]
 
 
-def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
-    actions = {
-        payload["action_id"]: payload
-        for payload in passing_payloads_by_schema(fixture, "svf_validation_action.v1.json")
-    }
-    policies = {
-        payload["policy_id"]: payload
-        for payload in passing_payloads_by_schema(fixture, "svf_validation_capability_policy.v1.json")
-    }
-    plans = {
-        payload["plan_id"]: payload
-        for payload in passing_payloads_by_schema(fixture, "svf_validation_plan.v1.json")
-    }
-    runs = {
-        payload["run_id"]: payload
-        for payload in passing_payloads_by_schema(fixture, "svf_validation_run.v1.json")
-    }
-    receipts = passing_payloads_by_schema(fixture, "svf_validation_receipt.v1.json")
-
+def collect_semantic_checks(actions: dict[str, Any], policies: dict[str, Any], plans: dict[str, Any], runs: dict[str, Any], receipts: list[dict[str, Any]], prefix: str = "") -> list[dict[str, Any]]:
     checks: list[dict[str, Any]] = []
 
     for plan_id, plan in plans.items():
@@ -104,7 +87,7 @@ def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
         policy_missing = plan["policy_ref"] not in policies
         checks.append(
             {
-                "check_id": f"plan-refs-resolve:{plan_id}",
+                "check_id": f"{prefix}plan-refs-resolve:{plan_id}",
                 "passed": not missing_actions and not policy_missing,
                 "diagnostics": [
                     *(f"missing action ref {action_ref}" for action_ref in missing_actions),
@@ -119,7 +102,7 @@ def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
         unsupported_plan_claims = sorted(set(plan["claim_scopes"]) - allowed_plan_claims)
         checks.append(
             {
-                "check_id": f"plan-claims-supported:{plan_id}",
+                "check_id": f"{prefix}plan-claims-supported:{plan_id}",
                 "passed": not unsupported_plan_claims,
                 "diagnostics": [f"plan claim not supported by any action or plan-level verifier: {claim}" for claim in unsupported_plan_claims],
             }
@@ -135,7 +118,7 @@ def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
         ]
         checks.append(
             {
-                "check_id": f"run-refs-resolve:{run_id}",
+                "check_id": f"{prefix}run-refs-resolve:{run_id}",
                 "passed": not plan_missing and not policy_missing and not unexpected_action_results,
                 "diagnostics": [
                     *([f"missing plan ref {run['plan_ref']}"] if plan_missing else []),
@@ -155,7 +138,7 @@ def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
         unsupported_claims = sorted(set(receipt["certified_claims"]) - set(plan["claim_scopes"])) if plan else []
         checks.append(
             {
-                "check_id": f"receipt-refs-and-claims:{receipt_id}",
+                "check_id": f"{prefix}receipt-refs-and-claims:{receipt_id}",
                 "passed": not plan_missing and not run_missing and not policy_missing and not unsupported_claims,
                 "diagnostics": [
                     *([f"missing plan ref {receipt['plan_ref']}"] if plan_missing else []),
@@ -169,13 +152,90 @@ def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
     return checks
 
 
+def semantic_results(fixture: dict[str, Any]) -> list[dict[str, Any]]:
+    actions = {
+        payload["action_id"]: payload
+        for payload in passing_payloads_by_schema(fixture, "svf_validation_action.v1.json")
+    }
+    policies = {
+        payload["policy_id"]: payload
+        for payload in passing_payloads_by_schema(fixture, "svf_validation_capability_policy.v1.json")
+    }
+    plans = {
+        payload["plan_id"]: payload
+        for payload in passing_payloads_by_schema(fixture, "svf_validation_plan.v1.json")
+    }
+    runs = {
+        payload["run_id"]: payload
+        for payload in passing_payloads_by_schema(fixture, "svf_validation_run.v1.json")
+    }
+    receipts = passing_payloads_by_schema(fixture, "svf_validation_receipt.v1.json")
+    return collect_semantic_checks(actions, policies, plans, runs, receipts)
+
+
+def validate_payload(schema: dict[str, Any], payload: dict[str, Any]) -> list[str]:
+    errors = sorted(Draft202012Validator(schema).iter_errors(payload), key=lambda error: list(error.absolute_path))
+    return [f"/{'/'.join(str(part) for part in error.absolute_path)}: {error.message}" for error in errors]
+
+
+def semantic_fixture_results(schemas: dict[str, dict[str, Any]]) -> list[dict[str, Any]]:
+    if not SEMANTIC_FIXTURE_PATH.exists():
+        return [{"check_id": "semantic-fixture-file-present", "passed": False, "diagnostics": [str(SEMANTIC_FIXTURE_PATH)]}]
+
+    fixture = load_json(SEMANTIC_FIXTURE_PATH)
+    results: list[dict[str, Any]] = []
+    for record in fixture["semantic_records"]:
+        fixture_id = record["fixture_id"]
+        schema_errors: list[str] = []
+        for payload in record.get("actions", []):
+            schema_errors.extend(validate_payload(schemas["svf_validation_action.v1.json"], payload))
+        for payload in record.get("policies", []):
+            schema_errors.extend(validate_payload(schemas["svf_validation_capability_policy.v1.json"], payload))
+        for payload in record.get("plans", []):
+            schema_errors.extend(validate_payload(schemas["svf_validation_plan.v1.json"], payload))
+        for payload in record.get("runs", []):
+            schema_errors.extend(validate_payload(schemas["svf_validation_run.v1.json"], payload))
+        for payload in record.get("receipts", []):
+            schema_errors.extend(validate_payload(schemas["svf_validation_receipt.v1.json"], payload))
+
+        if schema_errors:
+            results.append(
+                {
+                    "check_id": f"semantic-fixture-schema-valid:{fixture_id}",
+                    "expected_result": record["expected_result"],
+                    "actual_result": "schema_fail",
+                    "passed": False,
+                    "diagnostics": schema_errors,
+                }
+            )
+            continue
+
+        actions = {payload["action_id"]: payload for payload in record.get("actions", [])}
+        policies = {payload["policy_id"]: payload for payload in record.get("policies", [])}
+        plans = {payload["plan_id"]: payload for payload in record.get("plans", [])}
+        runs = {payload["run_id"]: payload for payload in record.get("runs", [])}
+        checks = collect_semantic_checks(actions, policies, plans, runs, record.get("receipts", []), prefix=f"{fixture_id}:")
+        actual_result = "pass" if all(check["passed"] for check in checks) else "fail"
+        results.append(
+            {
+                "check_id": f"semantic-fixture-expected-result:{fixture_id}",
+                "expected_result": record["expected_result"],
+                "actual_result": actual_result,
+                "passed": actual_result == record["expected_result"],
+                "diagnostics": [diagnostic for check in checks if not check["passed"] for diagnostic in check["diagnostics"]],
+            }
+        )
+    return results
+
+
 def validate() -> dict[str, Any]:
     schemas = load_schemas()
     fixture = load_json(FIXTURE_PATH)
     schema_results = schema_record_results(schemas, fixture)
     semantic = semantic_results(fixture)
+    semantic_fixtures = semantic_fixture_results(schemas)
     expected_schema_coverage = {record["target_schema"] for record in fixture["records"]}
-    all_results = schema_results + semantic
+    all_results = schema_results + semantic + semantic_fixtures
     passed = (
         expected_schema_coverage == set(SCHEMA_FILES)
         and all(result.get("passed") for result in all_results)
@@ -185,6 +245,7 @@ def validate() -> dict[str, Any]:
         "passed": passed,
         "schema_record_count": len(schema_results),
         "semantic_check_count": len(semantic),
+        "semantic_fixture_count": len(semantic_fixtures),
         "schema_coverage": sorted(expected_schema_coverage),
         "results": all_results,
     }

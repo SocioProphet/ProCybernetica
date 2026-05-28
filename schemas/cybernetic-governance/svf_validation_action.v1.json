@@ -1,0 +1,80 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/svf_validation_action.v1.json",
+  "title": "SVF Validation Action",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "action_id",
+    "version",
+    "owner",
+    "binding",
+    "capability",
+    "artifact_contract",
+    "claim_scopes",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "action_id": {"type": "string", "pattern": "^svf:action:[a-z0-9][a-z0-9_.:-]*$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["plane", "repo", "maintainer"],
+      "properties": {
+        "plane": {"type": "string", "minLength": 1},
+        "repo": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+        "maintainer": {"type": "string", "minLength": 1}
+      }
+    },
+    "binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["kind", "entrypoint", "args"],
+      "properties": {
+        "kind": {"enum": ["local_command", "python_module", "make_target", "tool_contract", "placeholder"]},
+        "entrypoint": {"type": "string", "minLength": 1},
+        "args": {"type": "array", "items": {"type": "string"}},
+        "working_directory": {"type": "string"}
+      }
+    },
+    "capability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["side_effects", "network_mode", "credential_mode", "filesystem_scope", "backend", "timeout_seconds"],
+      "properties": {
+        "side_effects": {
+          "type": "array",
+          "minItems": 1,
+          "uniqueItems": true,
+          "items": {"enum": ["read_only", "write_temp", "write_workspace", "write_repo"]}
+        },
+        "network_mode": {"enum": ["network_none", "network_allowlisted"]},
+        "network_allowlist": {"type": "array", "items": {"type": "string"}, "default": []},
+        "credential_mode": {"enum": ["credential_none", "credential_read_scoped"]},
+        "credential_refs": {"type": "array", "items": {"type": "string"}, "default": []},
+        "filesystem_scope": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "backend": {"enum": ["local", "container", "cluster_sandbox", "qemu_sandbox", "browser_sandbox", "placeholder"]},
+        "timeout_seconds": {"type": "integer", "minimum": 1, "maximum": 86400}
+      }
+    },
+    "artifact_contract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_outputs", "digest_required"],
+      "properties": {
+        "required_outputs": {"type": "array", "items": {"type": "string"}},
+        "digest_required": {"type": "boolean"}
+      }
+    },
+    "claim_scopes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["schema_conformant", "fixtures_validated", "tests_passed", "semantic_roundtrip_preserved", "policy_boundary_preserved", "non_production_only", "runtime_smoke_passed", "artifact_integrity_verified", "receipt_integrity_verified"]}
+    },
+    "non_claims": {"type": "array", "items": {"type": "string"}}
+  }
+}

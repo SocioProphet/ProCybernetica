@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/svf_validation_plan.v1.json",
+  "title": "SVF Validation Plan",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "plan_id",
+    "version",
+    "owner",
+    "applicability",
+    "mode",
+    "policy_ref",
+    "actions",
+    "success_criteria",
+    "failure_taxonomy",
+    "claim_scopes",
+    "non_claims"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "plan_id": {"type": "string", "pattern": "^svf:plan:[a-z0-9][a-z0-9_.:-]*$"},
+    "version": {"type": "string", "pattern": "^[0-9]+\\.[0-9]+\\.[0-9]+$"},
+    "owner": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["plane", "repo", "maintainer"],
+      "properties": {
+        "plane": {"type": "string", "minLength": 1},
+        "repo": {"type": "string", "pattern": "^[A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+$"},
+        "maintainer": {"type": "string", "minLength": 1}
+      }
+    },
+    "applicability": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["repos", "planes", "change_classes"],
+      "properties": {
+        "repos": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "planes": {"type": "array", "minItems": 1, "items": {"type": "string"}},
+        "change_classes": {"type": "array", "minItems": 1, "items": {"enum": ["schema", "fixture", "documentation", "runtime", "policy", "ontology", "os_artifact", "agent_plane", "mixed"]}}
+      }
+    },
+    "mode": {"enum": ["advisory", "blocking"]},
+    "policy_ref": {"type": "string", "pattern": "^svf:policy:[a-z0-9][a-z0-9_.:-]*$"},
+    "actions": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["step_id", "action_ref", "required", "on_failure"],
+        "properties": {
+          "step_id": {"type": "string", "minLength": 1},
+          "action_ref": {"type": "string", "pattern": "^svf:action:[a-z0-9][a-z0-9_.:-]*$"},
+          "required": {"type": "boolean"},
+          "on_failure": {"enum": ["fail_plan", "mark_inconclusive", "continue_advisory"]},
+          "inputs": {"type": "object", "default": {}}
+        }
+      }
+    },
+    "success_criteria": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["required_steps_pass", "receipt_required"],
+      "properties": {
+        "required_steps_pass": {"type": "boolean"},
+        "receipt_required": {"type": "boolean"},
+        "accepted_statuses": {"type": "array", "items": {"enum": ["pass", "inconclusive"]}, "default": ["pass"]}
+      }
+    },
+    "failure_taxonomy": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["schema_failure", "fixture_failure", "policy_boundary_failure", "action_failure", "artifact_digest_failure", "receipt_integrity_failure", "not_configured", "timeout", "inconclusive"]}
+    },
+    "claim_scopes": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"enum": ["schema_conformant", "fixtures_validated", "tests_passed", "semantic_roundtrip_preserved", "policy_boundary_preserved", "non_production_only", "runtime_smoke_passed", "artifact_integrity_verified", "receipt_integrity_verified"]}
+    },
+    "required_evidence": {"type": "array", "items": {"type": "string"}, "default": []},
+    "non_claims": {"type": "array", "items": {"type": "string"}}
+  }
+}

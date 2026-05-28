@@ -22,7 +22,8 @@ The core public-review surface now includes:
 - lawful-learning conformance smoke;
 - Book XI Slice A public-synthetic ingest-to-claims fixture;
 - estate-alignment follow-up fixtures;
-- CI observation receipts.
+- CI observation receipts;
+- Sovereign Validation Fabric schema and fixture conformance.
 
 Start with:
 
@@ -106,6 +107,7 @@ hpl-ci
 book-xi-slice-a-ci
 civic-stack-ci
 estate-alignment-followups-ci
+svf-ci
 ```
 
 ## Public-first trust posture

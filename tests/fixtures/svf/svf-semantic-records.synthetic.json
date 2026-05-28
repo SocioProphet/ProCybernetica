@@ -1,0 +1,304 @@
+{
+  "fixture_set": "svf-semantic-records.synthetic.v1",
+  "semantic_records": [
+    {
+      "fixture_id": "semantic-pass-baseline-refs-and-claims",
+      "expected_result": "pass",
+      "actions": [
+        {
+          "schema_version": "1.0",
+          "action_id": "svf:action:semantic.baseline",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+          "binding": {"kind": "python_module", "entrypoint": "tools.cybernetic_governance.validate_svf", "args": ["--json"]},
+          "capability": {
+            "side_effects": ["read_only"],
+            "network_mode": "network_none",
+            "credential_mode": "credential_none",
+            "filesystem_scope": ["tests/fixtures/svf"],
+            "backend": "local",
+            "timeout_seconds": 60
+          },
+          "artifact_contract": {"required_outputs": ["validator-json"], "digest_required": true},
+          "claim_scopes": ["schema_conformant", "fixtures_validated"],
+          "non_claims": ["Semantic fixture only."]
+        }
+      ],
+      "policies": [
+        {
+          "schema_version": "1.0",
+          "policy_id": "svf:policy:semantic.local-readonly",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica"},
+          "actor_classes": ["ci_runner"],
+          "allowed_backends": ["local"],
+          "max_side_effects": ["read_only"],
+          "network_modes": ["network_none"],
+          "credential_modes": ["credential_none"],
+          "filesystem_roots": ["tests/fixtures/svf"],
+          "production_environment_allowed": false,
+          "human_approval_required": false,
+          "non_claims": ["Semantic fixture only."]
+        }
+      ],
+      "plans": [
+        {
+          "schema_version": "1.0",
+          "plan_id": "svf:plan:semantic.baseline",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+          "applicability": {"repos": ["SocioProphet/ProCybernetica"], "planes": ["policy-fabric"], "change_classes": ["schema"]},
+          "mode": "blocking",
+          "policy_ref": "svf:policy:semantic.local-readonly",
+          "actions": [{"step_id": "baseline", "action_ref": "svf:action:semantic.baseline", "required": true, "on_failure": "fail_plan"}],
+          "success_criteria": {"required_steps_pass": true, "receipt_required": true},
+          "failure_taxonomy": ["schema_failure"],
+          "claim_scopes": ["schema_conformant", "fixtures_validated"],
+          "non_claims": ["Semantic fixture only."]
+        }
+      ],
+      "runs": [
+        {
+          "schema_version": "1.0",
+          "run_id": "svf:run:semantic.baseline.001",
+          "plan_ref": "svf:plan:semantic.baseline",
+          "plan_version": "1.0.0",
+          "policy_ref": "svf:policy:semantic.local-readonly",
+          "repo": "SocioProphet/ProCybernetica",
+          "ref": "main",
+          "input_digests": [{"name": "semantic-fixture", "algorithm": "sha256", "digest": "11111111111111111111111111111111"}],
+          "actor": {"actor_class": "ci_runner", "actor_id": "semantic-fixture"},
+          "backend": "local",
+          "started_at": "2026-05-28T16:00:00Z",
+          "ended_at": "2026-05-28T16:00:01Z",
+          "status": "pass",
+          "action_results": [{"step_id": "baseline", "action_ref": "svf:action:semantic.baseline", "status": "pass", "started_at": "2026-05-28T16:00:00Z", "ended_at": "2026-05-28T16:00:01Z", "diagnostics": []}]
+        }
+      ],
+      "receipts": [
+        {
+          "schema_version": "1.0",
+          "receipt_id": "svf:receipt:semantic.baseline.001",
+          "run_ref": "svf:run:semantic.baseline.001",
+          "run_digest": {"algorithm": "sha256", "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+          "plan_ref": "svf:plan:semantic.baseline",
+          "plan_digest": {"algorithm": "sha256", "digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+          "policy_ref": "svf:policy:semantic.local-readonly",
+          "policy_digest": {"algorithm": "sha256", "digest": "cccccccccccccccccccccccccccccccc"},
+          "input_digests": [{"name": "semantic-fixture", "algorithm": "sha256", "digest": "dddddddddddddddddddddddddddddddd"}],
+          "output_digests": [{"name": "validator-json", "algorithm": "sha256", "digest": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}],
+          "certified_claims": ["schema_conformant"],
+          "non_certified_claims": ["Does not certify runner behavior."],
+          "verification": {"status": "verified", "verifier": "semantic-fixture", "verified_at": "2026-05-28T16:00:02Z"},
+          "issued_at": "2026-05-28T16:00:02Z"
+        }
+      ]
+    },
+    {
+      "fixture_id": "semantic-fail-plan-unknown-action-ref",
+      "expected_result": "fail",
+      "actions": [],
+      "policies": [
+        {
+          "schema_version": "1.0",
+          "policy_id": "svf:policy:semantic.unknown-action",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica"},
+          "actor_classes": ["ci_runner"],
+          "allowed_backends": ["local"],
+          "max_side_effects": ["read_only"],
+          "network_modes": ["network_none"],
+          "credential_modes": ["credential_none"],
+          "filesystem_roots": ["tests/fixtures/svf"],
+          "production_environment_allowed": false,
+          "human_approval_required": false,
+          "non_claims": []
+        }
+      ],
+      "plans": [
+        {
+          "schema_version": "1.0",
+          "plan_id": "svf:plan:semantic.unknown-action",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+          "applicability": {"repos": ["SocioProphet/ProCybernetica"], "planes": ["policy-fabric"], "change_classes": ["schema"]},
+          "mode": "blocking",
+          "policy_ref": "svf:policy:semantic.unknown-action",
+          "actions": [{"step_id": "missing", "action_ref": "svf:action:semantic.missing", "required": true, "on_failure": "fail_plan"}],
+          "success_criteria": {"required_steps_pass": true, "receipt_required": true},
+          "failure_taxonomy": ["schema_failure"],
+          "claim_scopes": ["schema_conformant"],
+          "non_claims": []
+        }
+      ],
+      "runs": [],
+      "receipts": []
+    },
+    {
+      "fixture_id": "semantic-fail-receipt-claim-outside-plan-scope",
+      "expected_result": "fail",
+      "actions": [
+        {
+          "schema_version": "1.0",
+          "action_id": "svf:action:semantic.receipt-claim",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+          "binding": {"kind": "placeholder", "entrypoint": "placeholder", "args": []},
+          "capability": {"side_effects": ["read_only"], "network_mode": "network_none", "credential_mode": "credential_none", "filesystem_scope": ["tests/fixtures/svf"], "backend": "placeholder", "timeout_seconds": 1},
+          "artifact_contract": {"required_outputs": [], "digest_required": true},
+          "claim_scopes": ["schema_conformant", "tests_passed"],
+          "non_claims": []
+        }
+      ],
+      "policies": [
+        {
+          "schema_version": "1.0",
+          "policy_id": "svf:policy:semantic.receipt-claim",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica"},
+          "actor_classes": ["ci_runner"],
+          "allowed_backends": ["placeholder"],
+          "max_side_effects": ["read_only"],
+          "network_modes": ["network_none"],
+          "credential_modes": ["credential_none"],
+          "filesystem_roots": ["tests/fixtures/svf"],
+          "production_environment_allowed": false,
+          "human_approval_required": false,
+          "non_claims": []
+        }
+      ],
+      "plans": [
+        {
+          "schema_version": "1.0",
+          "plan_id": "svf:plan:semantic.receipt-claim",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+          "applicability": {"repos": ["SocioProphet/ProCybernetica"], "planes": ["policy-fabric"], "change_classes": ["schema"]},
+          "mode": "blocking",
+          "policy_ref": "svf:policy:semantic.receipt-claim",
+          "actions": [{"step_id": "baseline", "action_ref": "svf:action:semantic.receipt-claim", "required": true, "on_failure": "fail_plan"}],
+          "success_criteria": {"required_steps_pass": true, "receipt_required": true},
+          "failure_taxonomy": ["schema_failure"],
+          "claim_scopes": ["schema_conformant"],
+          "non_claims": []
+        }
+      ],
+      "runs": [
+        {
+          "schema_version": "1.0",
+          "run_id": "svf:run:semantic.receipt-claim.001",
+          "plan_ref": "svf:plan:semantic.receipt-claim",
+          "plan_version": "1.0.0",
+          "policy_ref": "svf:policy:semantic.receipt-claim",
+          "repo": "SocioProphet/ProCybernetica",
+          "ref": "main",
+          "input_digests": [{"name": "semantic-fixture", "algorithm": "sha256", "digest": "11111111111111111111111111111111"}],
+          "actor": {"actor_class": "ci_runner", "actor_id": "semantic-fixture"},
+          "backend": "placeholder",
+          "started_at": "2026-05-28T16:00:00Z",
+          "ended_at": "2026-05-28T16:00:01Z",
+          "status": "pass",
+          "action_results": [{"step_id": "baseline", "action_ref": "svf:action:semantic.receipt-claim", "status": "pass", "started_at": "2026-05-28T16:00:00Z", "ended_at": "2026-05-28T16:00:01Z", "diagnostics": []}]
+        }
+      ],
+      "receipts": [
+        {
+          "schema_version": "1.0",
+          "receipt_id": "svf:receipt:semantic.receipt-claim.001",
+          "run_ref": "svf:run:semantic.receipt-claim.001",
+          "run_digest": {"algorithm": "sha256", "digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"},
+          "plan_ref": "svf:plan:semantic.receipt-claim",
+          "plan_digest": {"algorithm": "sha256", "digest": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"},
+          "policy_ref": "svf:policy:semantic.receipt-claim",
+          "policy_digest": {"algorithm": "sha256", "digest": "cccccccccccccccccccccccccccccccc"},
+          "input_digests": [{"name": "semantic-fixture", "algorithm": "sha256", "digest": "dddddddddddddddddddddddddddddddd"}],
+          "output_digests": [{"name": "validator-json", "algorithm": "sha256", "digest": "eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee"}],
+          "certified_claims": ["tests_passed"],
+          "non_certified_claims": ["Expected semantic failure."],
+          "verification": {"status": "verified", "verifier": "semantic-fixture", "verified_at": "2026-05-28T16:00:02Z"},
+          "issued_at": "2026-05-28T16:00:02Z"
+        }
+      ]
+    },
+    {
+      "fixture_id": "semantic-fail-run-action-not-declared-by-plan",
+      "expected_result": "fail",
+      "actions": [
+        {
+          "schema_version": "1.0",
+          "action_id": "svf:action:semantic.declared",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+          "binding": {"kind": "placeholder", "entrypoint": "placeholder", "args": []},
+          "capability": {"side_effects": ["read_only"], "network_mode": "network_none", "credential_mode": "credential_none", "filesystem_scope": ["tests/fixtures/svf"], "backend": "placeholder", "timeout_seconds": 1},
+          "artifact_contract": {"required_outputs": [], "digest_required": true},
+          "claim_scopes": ["schema_conformant"],
+          "non_claims": []
+        },
+        {
+          "schema_version": "1.0",
+          "action_id": "svf:action:semantic.undeclared",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+          "binding": {"kind": "placeholder", "entrypoint": "placeholder", "args": []},
+          "capability": {"side_effects": ["read_only"], "network_mode": "network_none", "credential_mode": "credential_none", "filesystem_scope": ["tests/fixtures/svf"], "backend": "placeholder", "timeout_seconds": 1},
+          "artifact_contract": {"required_outputs": [], "digest_required": true},
+          "claim_scopes": ["schema_conformant"],
+          "non_claims": []
+        }
+      ],
+      "policies": [
+        {
+          "schema_version": "1.0",
+          "policy_id": "svf:policy:semantic.undeclared-run-action",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica"},
+          "actor_classes": ["ci_runner"],
+          "allowed_backends": ["placeholder"],
+          "max_side_effects": ["read_only"],
+          "network_modes": ["network_none"],
+          "credential_modes": ["credential_none"],
+          "filesystem_roots": ["tests/fixtures/svf"],
+          "production_environment_allowed": false,
+          "human_approval_required": false,
+          "non_claims": []
+        }
+      ],
+      "plans": [
+        {
+          "schema_version": "1.0",
+          "plan_id": "svf:plan:semantic.undeclared-run-action",
+          "version": "1.0.0",
+          "owner": {"plane": "policy-fabric", "repo": "SocioProphet/ProCybernetica", "maintainer": "mdheller"},
+          "applicability": {"repos": ["SocioProphet/ProCybernetica"], "planes": ["policy-fabric"], "change_classes": ["schema"]},
+          "mode": "blocking",
+          "policy_ref": "svf:policy:semantic.undeclared-run-action",
+          "actions": [{"step_id": "declared", "action_ref": "svf:action:semantic.declared", "required": true, "on_failure": "fail_plan"}],
+          "success_criteria": {"required_steps_pass": true, "receipt_required": true},
+          "failure_taxonomy": ["schema_failure"],
+          "claim_scopes": ["schema_conformant"],
+          "non_claims": []
+        }
+      ],
+      "runs": [
+        {
+          "schema_version": "1.0",
+          "run_id": "svf:run:semantic.undeclared-run-action.001",
+          "plan_ref": "svf:plan:semantic.undeclared-run-action",
+          "plan_version": "1.0.0",
+          "policy_ref": "svf:policy:semantic.undeclared-run-action",
+          "repo": "SocioProphet/ProCybernetica",
+          "ref": "main",
+          "input_digests": [{"name": "semantic-fixture", "algorithm": "sha256", "digest": "11111111111111111111111111111111"}],
+          "actor": {"actor_class": "ci_runner", "actor_id": "semantic-fixture"},
+          "backend": "placeholder",
+          "started_at": "2026-05-28T16:00:00Z",
+          "ended_at": "2026-05-28T16:00:01Z",
+          "status": "pass",
+          "action_results": [{"step_id": "undeclared", "action_ref": "svf:action:semantic.undeclared", "status": "pass", "started_at": "2026-05-28T16:00:00Z", "ended_at": "2026-05-28T16:00:01Z", "diagnostics": []}]
+        }
+      ],
+      "receipts": []
+    }
+  ]
+}

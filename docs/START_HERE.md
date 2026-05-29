@@ -69,6 +69,10 @@ Then read the source captures by layer:
 - `docs/monitor/MONITOR_NETWORK_AS_QEC.md`
 - `docs/assurance/PCP_REPLAY_AUDIT.md`
 
+### Capability doctrine
+
+- `docs/capabilities/fraud-decision-intelligence-control-plane.md`
+
 ### Implementation practicum
 
 - `docs/source-captures/BOOK_XI_IMPLEMENTATION_PRACTICUM_CAPTURE.md`

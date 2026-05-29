@@ -4,7 +4,7 @@
   "title": "Collapse Decision",
   "type": "object",
   "additionalProperties": false,
-  "required": ["schema_version", "collapse_id", "source_observation_ref", "candidate_interpretants", "selected_interpretant_ref", "decision_basis", "authority_envelope_ref", "downstream_sink", "reversibility", "residual_uncertainty", "non_claims"],
+  "required": ["schema_version", "collapse_id", "source_observation_ref", "candidate_interpretants", "selected_interpretant_ref", "decision_basis", "authority_envelope_ref", "downstream_sink", "reversibility", "repair_event_refs", "residual_uncertainty", "non_claims"],
   "properties": {
     "schema_version": {"const": "1.0"},
     "collapse_id": {"type": "string", "pattern": "^rcg:collapse:[a-z0-9][a-z0-9_.:-]*$"},
@@ -15,7 +15,7 @@
     "authority_envelope_ref": {"type": "string", "pattern": "^rcg:authority:[a-z0-9][a-z0-9_.:-]*$"},
     "downstream_sink": {"enum": ["display", "suggest", "candidate_memory", "confirmed_memory", "graph_edge", "claim_proposal", "claim_promotion", "policy_binding", "reversible_action", "high_risk_action", "publish", "delete", "authorize_agent"]},
     "reversibility": {"enum": ["reversible", "partially_reversible", "irreversible", "unknown"]},
-    "repair_event_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcg:repair:[a-z0-9][a-z0-9_.:-]*$"}, "default": []},
+    "repair_event_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "pattern": "^rcg:repair:[a-z0-9][a-z0-9_.:-]*$"}},
     "residual_uncertainty": {"type": "array", "items": {"type": "string"}},
     "non_claims": {"type": "array", "items": {"type": "string"}}
   }

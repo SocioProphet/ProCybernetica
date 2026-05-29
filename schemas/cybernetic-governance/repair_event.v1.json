@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/repair_event.v1.json",
+  "title": "Repair Event",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "repair_id", "observation_ref", "repair_kind", "performed_by", "result", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "repair_id": {"type": "string", "pattern": "^rcg:repair:[a-z0-9][a-z0-9_.:-]*$"},
+    "observation_ref": {"type": "string", "pattern": "^rcg:observation:[a-z0-9][a-z0-9_.:-]*$"},
+    "repair_kind": {"enum": ["clarification", "rerun", "corroboration", "reparse", "source_inspection", "alternate_channel_confirmation", "provenance_check", "user_confirmation", "revalidation", "deferral"]},
+    "performed_by": {"type": "string", "minLength": 1},
+    "result": {"enum": ["ambiguity_reduced", "confirmed", "contested", "deferred", "failed", "not_performed"]},
+    "evidence_ref": {"type": "string"},
+    "non_claims": {"type": "array", "items": {"type": "string"}}
+  }
+}

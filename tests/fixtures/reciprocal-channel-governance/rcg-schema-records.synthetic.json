@@ -1,0 +1,144 @@
+{
+  "records": [
+    {
+      "fixture_id": "rcg-authority-asr-advisory-pass",
+      "target_schema": "channel_authority_envelope.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "envelope_id": "rcg:authority:asr.advisory",
+        "allowed_sinks": ["display", "suggest", "candidate_memory"],
+        "disallowed_sinks": ["confirmed_memory", "graph_edge", "claim_promotion", "policy_binding", "high_risk_action", "publish", "delete", "authorize_agent"],
+        "authority_basis": ["ASR output is a percept and may not authorize irreversible action without repair."],
+        "requires_repair_for": ["confirmed_memory", "graph_edge", "high_risk_action"],
+        "non_claims": ["Does not certify transcript truth."]
+      }
+    },
+    {
+      "fixture_id": "rcg-observation-asr-transcript-pass",
+      "target_schema": "channel_observation.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "observation_id": "rcg:observation:asr.power_babble",
+        "channel": {
+          "channel_id": "rcg:channel:asr.dictation",
+          "channel_class": "human_communication",
+          "substrate": "audio waveform",
+          "producer": "human speaker",
+          "consumer": "assistant transcript pipeline",
+          "capture_method": "speech-to-text",
+          "trust_boundary": "external_authenticated",
+          "known_confusability_modes": ["homophone", "near-homophone", "accent", "background-noise", "domain-term-collapse"]
+        },
+        "percept": {
+          "percept_kind": "transcript",
+          "rendering": "power babble",
+          "loss_profile": ["acoustic ambiguity", "semantic ambiguity"]
+        },
+        "confidence": {
+          "confidence_type": "acoustic",
+          "level": "medium",
+          "rationale": "Transcript is plausible but alternatives remain active."
+        },
+        "provenance_ref": "synthetic:conversation:rcg-asr-example",
+        "authority_envelope_ref": "rcg:authority:asr.advisory",
+        "promotion_state": "candidate",
+        "repair_protocols": ["preserve alternates", "ask only when downstream action depends on exact phrase"],
+        "non_claims": ["Not a confirmed user term."]
+      }
+    },
+    {
+      "fixture_id": "rcg-interpretant-asr-alternative-pass",
+      "target_schema": "interpretant_candidate.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "interpretant_id": "rcg:interpretant:power_babel.term",
+        "observation_ref": "rcg:observation:asr.power_babble",
+        "interpretant_kind": "claim",
+        "candidate_rendering": "power Babel",
+        "confusable_with": ["power babble", "probable", "power bubble"],
+        "evidence_basis": ["phonetic similarity", "active discussion about communication confusion"],
+        "confidence_level": "medium",
+        "non_claims": ["Candidate only; not promoted to doctrine."]
+      }
+    },
+    {
+      "fixture_id": "rcg-repair-user-confirmation-pass",
+      "target_schema": "repair_event.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "repair_id": "rcg:repair:user.confirmed_phrase",
+        "observation_ref": "rcg:observation:asr.power_babble",
+        "repair_kind": "user_confirmation",
+        "performed_by": "human operator",
+        "result": "confirmed",
+        "evidence_ref": "synthetic:conversation:user-correction",
+        "non_claims": ["Does not authorize unrelated memory writes."]
+      }
+    },
+    {
+      "fixture_id": "rcg-collapse-candidate-memory-pass",
+      "target_schema": "collapse_decision.v1.json",
+      "expected_result": "pass",
+      "payload": {
+        "schema_version": "1.0",
+        "collapse_id": "rcg:collapse:asr.term.candidate_memory",
+        "source_observation_ref": "rcg:observation:asr.power_babble",
+        "candidate_interpretants": ["rcg:interpretant:power_babel.term"],
+        "selected_interpretant_ref": "rcg:interpretant:power_babel.term",
+        "decision_basis": ["selected only for candidate memory because user confirmation is not yet durable doctrine"],
+        "authority_envelope_ref": "rcg:authority:asr.advisory",
+        "downstream_sink": "candidate_memory",
+        "reversibility": "reversible",
+        "repair_event_refs": ["rcg:repair:user.confirmed_phrase"],
+        "residual_uncertainty": ["scope of term remains local to current doctrine discussion"],
+        "non_claims": ["No confirmed memory or graph edge is created by this fixture."]
+      }
+    },
+    {
+      "fixture_id": "rcg-observation-missing-provenance-fail",
+      "target_schema": "channel_observation.v1.json",
+      "expected_result": "fail",
+      "payload": {
+        "schema_version": "1.0",
+        "observation_id": "rcg:observation:bad.no_provenance",
+        "channel": {
+          "channel_id": "rcg:channel:model.summary",
+          "channel_class": "model_output",
+          "substrate": "text",
+          "producer": "model",
+          "consumer": "memory writer",
+          "capture_method": "summarization",
+          "trust_boundary": "same_workspace",
+          "known_confusability_modes": ["summary omission"]
+        },
+        "percept": {"percept_kind": "summary", "rendering": "repo is complete", "loss_profile": ["omitted source coverage"]},
+        "confidence": {"confidence_type": "model_heuristic", "level": "medium"},
+        "authority_envelope_ref": "rcg:authority:summary.advisory",
+        "promotion_state": "candidate",
+        "non_claims": []
+      }
+    },
+    {
+      "fixture_id": "rcg-collapse-delete-without-repair-fail",
+      "target_schema": "collapse_decision.v1.json",
+      "expected_result": "fail",
+      "payload": {
+        "schema_version": "1.0",
+        "collapse_id": "rcg:collapse:bad.delete",
+        "source_observation_ref": "rcg:observation:asr.power_babble",
+        "candidate_interpretants": ["rcg:interpretant:power_babel.term"],
+        "selected_interpretant_ref": "rcg:interpretant:power_babel.term",
+        "decision_basis": ["bad synthetic example"],
+        "authority_envelope_ref": "rcg:authority:asr.advisory",
+        "downstream_sink": "delete",
+        "reversibility": "irreversible",
+        "residual_uncertainty": ["unrepaired ASR ambiguity"],
+        "non_claims": []
+      }
+    }
+  ]
+}

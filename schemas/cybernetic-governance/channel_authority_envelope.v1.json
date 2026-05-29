@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.ai/cybernetic-governance/channel_authority_envelope.v1.json",
+  "title": "Channel Authority Envelope",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "envelope_id", "allowed_sinks", "disallowed_sinks", "authority_basis", "non_claims"],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "envelope_id": {"type": "string", "pattern": "^rcg:authority:[a-z0-9][a-z0-9_.:-]*$"},
+    "allowed_sinks": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/sink"}},
+    "disallowed_sinks": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/sink"}},
+    "authority_basis": {"type": "array", "minItems": 1, "items": {"type": "string", "minLength": 1}},
+    "requires_repair_for": {"type": "array", "uniqueItems": true, "items": {"$ref": "#/$defs/sink"}, "default": []},
+    "non_claims": {"type": "array", "items": {"type": "string"}}
+  },
+  "$defs": {
+    "sink": {"enum": ["display", "suggest", "candidate_memory", "confirmed_memory", "graph_edge", "claim_proposal", "claim_promotion", "policy_binding", "reversible_action", "high_risk_action", "publish", "delete", "authorize_agent"]}
+  }
+}

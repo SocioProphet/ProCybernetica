@@ -1,0 +1,16 @@
+{
+  "loop_id": "govloop.fixture",
+  "service_id": "svc.platform.cybernetic-governance",
+  "state": "observe",
+  "decision_authority": "policy-guardrail",
+  "escalation_boundary": {
+    "trigger": "policy-conflict",
+    "target_authority": "human-operator",
+    "max_latency_ms": 300000
+  },
+  "override_rules": [],
+  "receipt_requirements": [
+    "policy-decision-receipt",
+    "governance-feedback-receipt"
+  ]
+}

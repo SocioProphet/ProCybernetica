@@ -1,0 +1,205 @@
+{
+  "fixture_set_id": "effective-authority.synthetic.v0_1",
+  "schema_version": "effective-authority/v0.1",
+  "description": "Public-synthetic fixtures for the Effective Authority Architecture. No private logs, tokens, payloads, or user data are represented.",
+  "fixtures": [
+    {
+      "fixture_id": "zone-a-policy-fabric-node-pass",
+      "target_def": "EffectiveAuthorityNode",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "effective_authority_node",
+        "node_id": "repo:SocioProphet/policy-fabric",
+        "node_class": "repository",
+        "display_name": "Policy Fabric",
+        "zone": "A",
+        "owner_repo": "SocioProphet/policy-fabric",
+        "authority_classes": ["policy_evaluator", "default_deny_ruleset"],
+        "evidence_level": "E1",
+        "status": "declared",
+        "provenance_ref": "issue:SocioProphet/ProCybernetica#106"
+      }
+    },
+    {
+      "fixture_id": "zone-b-workspace-console-node-pass",
+      "target_def": "EffectiveAuthorityNode",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "effective_authority_node",
+        "node_id": "repo:SocioProphet/prophet-workspace",
+        "node_class": "repository",
+        "display_name": "Prophet Workspace",
+        "zone": "B",
+        "owner_repo": "SocioProphet/prophet-workspace",
+        "authority_classes": ["active_authority_console", "user_review_surface"],
+        "evidence_level": "E1",
+        "status": "declared",
+        "provenance_ref": "issue:SocioProphet/ProCybernetica#106"
+      }
+    },
+    {
+      "fixture_id": "zone-c-agentplane-tool-grant-pass",
+      "target_def": "ToolGrant",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "tool_grant",
+        "grant_id": "grant:agentplane:synthetic:view-once",
+        "tool_name": "view",
+        "actor_node_id": "repo:SocioProphet/agentplane",
+        "scope": ["fixture-only", "read-only"],
+        "approval_mode": "explicit_once",
+        "input_hash": "sha256:synthetic",
+        "expires_at": "2026-06-02T13:30:00Z",
+        "revocation_ref": "revocation:synthetic:view-once"
+      }
+    },
+    {
+      "fixture_id": "zone-d-agent-machine-runtime-boundary-pass",
+      "target_def": "RuntimeBoundaryContract",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "runtime_boundary_contract",
+        "runtime_id": "runtime:SourceOS-Linux/agent-machine:synthetic-vm",
+        "runtime_class": "vm",
+        "owner_repo": "SourceOS-Linux/agent-machine",
+        "image_digest": "sha256:synthetic-rootfs",
+        "mounts": ["/workspace:ro"],
+        "egress_policy_ref": "egress-policy:default-deny-synthetic",
+        "token_injection_allowed": false,
+        "clipboard_bridge_allowed": false,
+        "browser_bridge_allowed": false,
+        "ssh_key_access_allowed": false
+      }
+    },
+    {
+      "fixture_id": "zone-d-bear-browser-control-channel-pass",
+      "target_def": "ControlChannel",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "control_channel",
+        "channel_id": "control:SourceOS-Linux/BearBrowser:browser-bridge",
+        "channel_class": "browser_bridge",
+        "owner_repo": "SourceOS-Linux/BearBrowser",
+        "pairing_required": true,
+        "ledger_required": true,
+        "live_indicator_required": true
+      }
+    },
+    {
+      "fixture_id": "zone-e-sherlock-observation-channel-pass",
+      "target_def": "ObservationChannel",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "observation_channel",
+        "channel_id": "observe:SocioProphet/sherlock-search:semantic-index",
+        "channel_class": "semantic_index",
+        "owner_repo": "SocioProphet/sherlock-search",
+        "user_visible": true,
+        "revocable": true,
+        "retention_class": "user-configurable"
+      }
+    },
+    {
+      "fixture_id": "zone-f-homebrew-egress-event-pass",
+      "target_def": "EgressEvent",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "egress_event",
+        "event_id": "egress:SourceOS-Linux/homebrew-tap:synthetic-update-check",
+        "ts": "2026-06-02T13:00:00Z",
+        "actor_node_id": "repo:SourceOS-Linux/homebrew-tap",
+        "destination": "https://github.com/SourceOS-Linux/homebrew-tap",
+        "purpose": "content-pinned update manifest lookup",
+        "payload_class": "metadata",
+        "policy_decision": "permit",
+        "policy_ref": "policy:default-deny-allowset:synthetic"
+      }
+    },
+    {
+      "fixture_id": "zone-g-proof-conversation-integrity-pass",
+      "target_def": "ConversationIntegrityEvent",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "conversation_integrity_event",
+        "event_id": "conversation:research-proof:synthetic-turn",
+        "conversation_id": "research-proof-synthetic",
+        "branch_id": "main",
+        "event_class": "turn",
+        "content_hash": "sha256:synthetic-turn",
+        "prior_hash": "sha256:synthetic-prior",
+        "ts": "2026-06-02T13:00:00Z"
+      }
+    },
+    {
+      "fixture_id": "stop-proof-pass",
+      "target_def": "StopProof",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "stop_proof",
+        "proof_id": "stop-proof:browser-bridge:synthetic",
+        "feature_id": "feature:browser-bridge",
+        "ts": "2026-06-02T13:05:00Z",
+        "verifier": "procybernetica.synthetic.validator",
+        "stopped_services": ["bear-browser-bridge.service"],
+        "disabled_timers": ["bear-browser-bridge-reconnect.timer"],
+        "revoked_grants": ["grant:browser-bridge:synthetic"],
+        "removed_egress_routes": ["egress:bridge.claude-like.example.invalid"],
+        "stopped_runtimes": ["runtime:browser-bridge-worker"],
+        "signature_ref": "sig:synthetic-stop-proof",
+        "passed": true
+      }
+    },
+    {
+      "fixture_id": "repo-hardening-manifest-pass",
+      "target_def": "RepoHardeningManifest",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "repo_hardening_manifest",
+        "schema_version": "effective-authority/v0.1",
+        "repo": "SocioProphet/ProCybernetica",
+        "zone": "A",
+        "authority_classes": ["doctrine", "schema", "validator"],
+        "observation_channels": [],
+        "control_channels": [],
+        "egress_classes": [],
+        "background_workers": [],
+        "runtime_subjects": [],
+        "connector_surfaces": [],
+        "policy_sources": ["repo"],
+        "ledger_sinks": ["model-governance-ledger"],
+        "ci_validators": ["effective-authority-ci"],
+        "owner": "ProCybernetica standards lane",
+        "maturity": "draft"
+      }
+    },
+    {
+      "fixture_id": "negative-egress-missing-payload-class-fails",
+      "target_def": "EgressEvent",
+      "expected_result": "fail",
+      "expected_failure_reason": "schema_validation_error",
+      "payload": {
+        "record_type": "egress_event",
+        "event_id": "egress:negative:missing-payload-class",
+        "ts": "2026-06-02T13:00:00Z",
+        "actor_node_id": "repo:negative/example",
+        "destination": "https://example.invalid",
+        "purpose": "negative fixture",
+        "policy_decision": "permit"
+      }
+    },
+    {
+      "fixture_id": "negative-authority-edge-without-policy-fails",
+      "target_def": "AuthorityEdge",
+      "expected_result": "fail",
+      "expected_failure_reason": "schema_validation_error",
+      "payload": {
+        "record_type": "authority_edge",
+        "edge_id": "edge:negative:no-policy",
+        "source_node_id": "repo:negative/source",
+        "target_node_id": "repo:negative/target",
+        "edge_class": "can_act",
+        "fail_closed": true
+      }
+    }
+  ]
+}

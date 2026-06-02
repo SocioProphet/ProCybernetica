@@ -54,6 +54,53 @@
       }
     },
     {
+      "fixture_id": "zone-c-agentplane-authority-edge-pass",
+      "target_def": "AuthorityEdge",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "authority_edge",
+        "edge_id": "edge:agentplane:tool-grant-ledger",
+        "source_node_id": "repo:SocioProphet/agentplane",
+        "target_node_id": "ledger:SocioProphet/model-governance-ledger",
+        "edge_class": "can_write",
+        "policy_source": {
+          "source_id": "policy:effective-authority:v0.1",
+          "source_type": "repo_manifest",
+          "signature_ref": "sig:synthetic-policy"
+        },
+        "fail_closed": true,
+        "provenance_ref": "issue:SocioProphet/ProCybernetica#106"
+      }
+    },
+    {
+      "fixture_id": "zone-c-connector-grant-pass",
+      "target_def": "ConnectorGrant",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "connector_grant",
+        "grant_id": "connector-grant:prophet-workspace:synthetic-github-read",
+        "connector": "GitHub",
+        "allowed_operations": ["read_repository_metadata", "read_issue_metadata"],
+        "object_scope": ["SocioProphet/ProCybernetica"],
+        "payload_class": "metadata",
+        "expires_at": "2026-06-02T14:00:00Z"
+      }
+    },
+    {
+      "fixture_id": "zone-c-token-injection-event-pass",
+      "target_def": "TokenInjectionEvent",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "token_injection_event",
+        "event_id": "token-injection:synthetic:agent-worker",
+        "target_runtime": "runtime:SocioProphet/agentplane:synthetic-worker",
+        "scope": ["fixture-only"],
+        "purpose": "synthetic validator coverage",
+        "expires_at": "2026-06-02T14:00:00Z",
+        "revoked": false
+      }
+    },
+    {
       "fixture_id": "zone-d-agent-machine-runtime-boundary-pass",
       "target_def": "RuntimeBoundaryContract",
       "expected_result": "pass",
@@ -128,6 +175,56 @@
         "content_hash": "sha256:synthetic-turn",
         "prior_hash": "sha256:synthetic-prior",
         "ts": "2026-06-02T13:00:00Z"
+      }
+    },
+    {
+      "fixture_id": "policy-ledger-entry-pass",
+      "target_def": "PolicyLedgerEntry",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "policy_ledger_entry",
+        "entry_id": "policy-ledger:synthetic:feature-toggle",
+        "ts": "2026-06-02T13:00:00Z",
+        "policy_key": "feature.browser_bridge.enabled",
+        "prior_value": true,
+        "new_value": false,
+        "channel": "user",
+        "signature_ref": "sig:synthetic-policy-ledger"
+      }
+    },
+    {
+      "fixture_id": "background-worker-record-pass",
+      "target_def": "BackgroundWorkerRecord",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "background_worker_record",
+        "worker_id": "worker:synthetic:plugin-sync",
+        "owner_repo": "SocioProphet/agentplane",
+        "purpose": "synthetic background worker registry coverage",
+        "schedule_class": "timer",
+        "enabled": false,
+        "next_run": "disabled",
+        "last_run": "2026-06-02T13:00:00Z",
+        "policy_source": {
+          "source_id": "policy:effective-authority:v0.1",
+          "source_type": "repo_manifest",
+          "signature_ref": "sig:synthetic-worker-policy"
+        }
+      }
+    },
+    {
+      "fixture_id": "shared-plane-membership-event-pass",
+      "target_def": "SharedPlaneMembershipEvent",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "shared_plane_membership_event",
+        "event_id": "shared-plane:synthetic:grant",
+        "plane_id": "plane:synthetic:workspace",
+        "principal": "repo:SocioProphet/prophet-workspace",
+        "action": "grant",
+        "grantor": "user:synthetic-owner",
+        "ts": "2026-06-02T13:00:00Z",
+        "signature_ref": "sig:synthetic-shared-plane"
       }
     },
     {

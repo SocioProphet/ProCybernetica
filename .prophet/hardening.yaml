@@ -1,0 +1,23 @@
+schema_version: effective-authority/v0.1
+repo: SocioProphet/ProCybernetica
+zone: A
+owner: ProCybernetica standards lane
+maturity: draft
+
+authority_classes:
+  - doctrine
+  - schema
+  - validator
+  - evidence_taxonomy
+observation_channels: []
+control_channels: []
+egress_classes: []
+background_workers: []
+runtime_subjects: []
+connector_surfaces: []
+policy_sources:
+  - repo
+ledger_sinks:
+  - model-governance-ledger
+ci_validators:
+  - effective-authority-ci

@@ -1,0 +1,377 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/effective-authority/effective_authority_bundle.v0_1.json",
+  "title": "Effective Authority Bundle v0.1",
+  "description": "Public-review schema bundle for the ProCybernetica Effective Authority Architecture.",
+  "oneOf": [
+    {"$ref": "#/$defs/EffectiveAuthorityNode"},
+    {"$ref": "#/$defs/AuthorityEdge"},
+    {"$ref": "#/$defs/ObservationChannel"},
+    {"$ref": "#/$defs/ControlChannel"},
+    {"$ref": "#/$defs/EgressEvent"},
+    {"$ref": "#/$defs/PolicyLedgerEntry"},
+    {"$ref": "#/$defs/ToolGrant"},
+    {"$ref": "#/$defs/ConnectorGrant"},
+    {"$ref": "#/$defs/TokenInjectionEvent"},
+    {"$ref": "#/$defs/RuntimeBoundaryContract"},
+    {"$ref": "#/$defs/BackgroundWorkerRecord"},
+    {"$ref": "#/$defs/SharedPlaneMembershipEvent"},
+    {"$ref": "#/$defs/ConversationIntegrityEvent"},
+    {"$ref": "#/$defs/StopProof"},
+    {"$ref": "#/$defs/RepoHardeningManifest"}
+  ],
+  "$defs": {
+    "EvidenceLevel": {
+      "type": "string",
+      "enum": ["E0", "E1", "E2", "E3", "E4"]
+    },
+    "EstateZone": {
+      "type": "string",
+      "enum": ["A", "B", "C", "D", "E", "F", "G"]
+    },
+    "NonEmptyString": {
+      "type": "string",
+      "minLength": 1
+    },
+    "Timestamp": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "StringList": {
+      "type": "array",
+      "items": {"type": "string"},
+      "uniqueItems": true
+    },
+    "NodeClass": {
+      "type": "string",
+      "enum": [
+        "human_user",
+        "organization",
+        "device",
+        "daemon",
+        "agent",
+        "model_provider",
+        "model_route",
+        "plugin",
+        "skill",
+        "connector",
+        "browser_bridge",
+        "vm_guest",
+        "container",
+        "scheduled_task",
+        "token",
+        "filesystem_scope",
+        "egress_route",
+        "policy_flag",
+        "semantic_index",
+        "memory_store",
+        "shared_plane",
+        "conversation_branch",
+        "runtime_grant",
+        "repository"
+      ]
+    },
+    "EdgeClass": {
+      "type": "string",
+      "enum": [
+        "can_observe",
+        "can_act",
+        "can_read",
+        "can_write",
+        "can_execute",
+        "can_egress",
+        "can_schedule",
+        "can_mutate_policy",
+        "can_spawn",
+        "can_bridge",
+        "can_impersonate",
+        "can_index",
+        "can_summarize",
+        "can_retain_memory"
+      ]
+    },
+    "PayloadClass": {
+      "type": "string",
+      "enum": [
+        "none",
+        "metadata",
+        "telemetry",
+        "policy",
+        "schema",
+        "fixture",
+        "model_request",
+        "model_response",
+        "tool_input",
+        "tool_output",
+        "file_content",
+        "credential_material",
+        "semantic_index",
+        "personal_data",
+        "private_telemetry",
+        "unknown"
+      ]
+    },
+    "PolicySource": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "source_type", "signature_ref"],
+      "properties": {
+        "source_id": {"$ref": "#/$defs/NonEmptyString"},
+        "source_type": {
+          "type": "string",
+          "enum": ["user_grant", "repo_manifest", "org_policy", "signed_config", "system_invariant", "runtime_contract", "emergency_override"]
+        },
+        "signature_ref": {"$ref": "#/$defs/NonEmptyString"},
+        "ledger_ref": {"type": "string"},
+        "expires_at": {"type": "string"}
+      }
+    },
+    "EffectiveAuthorityNode": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "node_id", "node_class", "display_name", "zone", "owner_repo", "evidence_level"],
+      "properties": {
+        "record_type": {"const": "effective_authority_node"},
+        "node_id": {"$ref": "#/$defs/NonEmptyString"},
+        "node_class": {"$ref": "#/$defs/NodeClass"},
+        "display_name": {"$ref": "#/$defs/NonEmptyString"},
+        "zone": {"$ref": "#/$defs/EstateZone"},
+        "owner_repo": {"$ref": "#/$defs/NonEmptyString"},
+        "authority_classes": {"$ref": "#/$defs/StringList"},
+        "evidence_level": {"$ref": "#/$defs/EvidenceLevel"},
+        "status": {"type": "string", "enum": ["declared", "observed", "active", "disabled", "deprecated"]},
+        "provenance_ref": {"type": "string"}
+      }
+    },
+    "AuthorityEdge": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "edge_id", "source_node_id", "target_node_id", "edge_class", "policy_source", "fail_closed"],
+      "properties": {
+        "record_type": {"const": "authority_edge"},
+        "edge_id": {"$ref": "#/$defs/NonEmptyString"},
+        "source_node_id": {"$ref": "#/$defs/NonEmptyString"},
+        "target_node_id": {"$ref": "#/$defs/NonEmptyString"},
+        "edge_class": {"$ref": "#/$defs/EdgeClass"},
+        "policy_source": {"$ref": "#/$defs/PolicySource"},
+        "fail_closed": {"type": "boolean"},
+        "provenance_ref": {"type": "string"}
+      }
+    },
+    "ObservationChannel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "channel_id", "channel_class", "owner_repo", "user_visible", "revocable"],
+      "properties": {
+        "record_type": {"const": "observation_channel"},
+        "channel_id": {"$ref": "#/$defs/NonEmptyString"},
+        "channel_class": {
+          "type": "string",
+          "enum": ["microphone", "camera", "screen", "clipboard", "accessibility", "filesystem", "semantic_index", "browser_dom", "terminal_pty", "cloud_document", "notification", "contacts", "calendar", "location", "memory_store"]
+        },
+        "owner_repo": {"$ref": "#/$defs/NonEmptyString"},
+        "user_visible": {"type": "boolean"},
+        "revocable": {"type": "boolean"},
+        "retention_class": {"type": "string"}
+      }
+    },
+    "ControlChannel": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "channel_id", "channel_class", "owner_repo", "pairing_required", "ledger_required"],
+      "properties": {
+        "record_type": {"const": "control_channel"},
+        "channel_id": {"$ref": "#/$defs/NonEmptyString"},
+        "channel_class": {
+          "type": "string",
+          "enum": ["ssh", "browser_bridge", "mcp", "websocket", "native_host", "local_socket", "vsock", "extension_bridge", "ble_nearby", "scheduler", "ci_webhook", "cloud_connector", "agent_to_agent"]
+        },
+        "owner_repo": {"$ref": "#/$defs/NonEmptyString"},
+        "pairing_required": {"type": "boolean"},
+        "ledger_required": {"type": "boolean"},
+        "live_indicator_required": {"type": "boolean"}
+      }
+    },
+    "EgressEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "event_id", "ts", "actor_node_id", "destination", "purpose", "payload_class", "policy_decision"],
+      "properties": {
+        "record_type": {"const": "egress_event"},
+        "event_id": {"$ref": "#/$defs/NonEmptyString"},
+        "ts": {"$ref": "#/$defs/Timestamp"},
+        "actor_node_id": {"$ref": "#/$defs/NonEmptyString"},
+        "destination": {"$ref": "#/$defs/NonEmptyString"},
+        "purpose": {"$ref": "#/$defs/NonEmptyString"},
+        "payload_class": {"$ref": "#/$defs/PayloadClass"},
+        "policy_decision": {"type": "string", "enum": ["permit", "deny", "fail_closed"]},
+        "policy_ref": {"type": "string"}
+      }
+    },
+    "PolicyLedgerEntry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "entry_id", "ts", "policy_key", "new_value", "channel", "signature_ref"],
+      "properties": {
+        "record_type": {"const": "policy_ledger_entry"},
+        "entry_id": {"$ref": "#/$defs/NonEmptyString"},
+        "ts": {"$ref": "#/$defs/Timestamp"},
+        "policy_key": {"$ref": "#/$defs/NonEmptyString"},
+        "prior_value": {},
+        "new_value": {},
+        "channel": {"type": "string", "enum": ["user", "repo", "org", "runtime", "ci", "emergency"]},
+        "signature_ref": {"$ref": "#/$defs/NonEmptyString"}
+      }
+    },
+    "ToolGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "grant_id", "tool_name", "actor_node_id", "scope", "approval_mode", "expires_at", "revocation_ref"],
+      "properties": {
+        "record_type": {"const": "tool_grant"},
+        "grant_id": {"$ref": "#/$defs/NonEmptyString"},
+        "tool_name": {"$ref": "#/$defs/NonEmptyString"},
+        "actor_node_id": {"$ref": "#/$defs/NonEmptyString"},
+        "scope": {"$ref": "#/$defs/StringList"},
+        "approval_mode": {"type": "string", "enum": ["explicit_once", "explicit_session", "inherited_policy", "denied"]},
+        "input_hash": {"type": "string"},
+        "expires_at": {"$ref": "#/$defs/Timestamp"},
+        "revocation_ref": {"$ref": "#/$defs/NonEmptyString"}
+      }
+    },
+    "ConnectorGrant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "grant_id", "connector", "allowed_operations", "object_scope", "expires_at"],
+      "properties": {
+        "record_type": {"const": "connector_grant"},
+        "grant_id": {"$ref": "#/$defs/NonEmptyString"},
+        "connector": {"$ref": "#/$defs/NonEmptyString"},
+        "allowed_operations": {"$ref": "#/$defs/StringList"},
+        "object_scope": {"$ref": "#/$defs/StringList"},
+        "payload_class": {"$ref": "#/$defs/PayloadClass"},
+        "expires_at": {"$ref": "#/$defs/Timestamp"}
+      }
+    },
+    "TokenInjectionEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "event_id", "target_runtime", "scope", "purpose", "expires_at", "revoked"],
+      "properties": {
+        "record_type": {"const": "token_injection_event"},
+        "event_id": {"$ref": "#/$defs/NonEmptyString"},
+        "target_runtime": {"$ref": "#/$defs/NonEmptyString"},
+        "scope": {"$ref": "#/$defs/StringList"},
+        "purpose": {"$ref": "#/$defs/NonEmptyString"},
+        "expires_at": {"$ref": "#/$defs/Timestamp"},
+        "revoked": {"type": "boolean"}
+      }
+    },
+    "RuntimeBoundaryContract": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "runtime_id", "runtime_class", "owner_repo", "image_digest", "mounts", "egress_policy_ref", "token_injection_allowed"],
+      "properties": {
+        "record_type": {"const": "runtime_boundary_contract"},
+        "runtime_id": {"$ref": "#/$defs/NonEmptyString"},
+        "runtime_class": {"type": "string", "enum": ["vm", "container", "native_process", "browser_extension", "agent_worker"]},
+        "owner_repo": {"$ref": "#/$defs/NonEmptyString"},
+        "image_digest": {"type": "string"},
+        "mounts": {"$ref": "#/$defs/StringList"},
+        "egress_policy_ref": {"$ref": "#/$defs/NonEmptyString"},
+        "token_injection_allowed": {"type": "boolean"},
+        "clipboard_bridge_allowed": {"type": "boolean"},
+        "browser_bridge_allowed": {"type": "boolean"},
+        "ssh_key_access_allowed": {"type": "boolean"}
+      }
+    },
+    "BackgroundWorkerRecord": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "worker_id", "owner_repo", "purpose", "schedule_class", "enabled", "policy_source"],
+      "properties": {
+        "record_type": {"const": "background_worker_record"},
+        "worker_id": {"$ref": "#/$defs/NonEmptyString"},
+        "owner_repo": {"$ref": "#/$defs/NonEmptyString"},
+        "purpose": {"$ref": "#/$defs/NonEmptyString"},
+        "schedule_class": {"type": "string", "enum": ["timer", "event", "manual", "continuous"]},
+        "enabled": {"type": "boolean"},
+        "next_run": {"type": "string"},
+        "last_run": {"type": "string"},
+        "policy_source": {"$ref": "#/$defs/PolicySource"}
+      }
+    },
+    "SharedPlaneMembershipEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "event_id", "plane_id", "principal", "action", "grantor", "ts", "signature_ref"],
+      "properties": {
+        "record_type": {"const": "shared_plane_membership_event"},
+        "event_id": {"$ref": "#/$defs/NonEmptyString"},
+        "plane_id": {"$ref": "#/$defs/NonEmptyString"},
+        "principal": {"$ref": "#/$defs/NonEmptyString"},
+        "action": {"type": "string", "enum": ["grant", "revoke", "mutate", "tombstone"]},
+        "grantor": {"$ref": "#/$defs/NonEmptyString"},
+        "ts": {"$ref": "#/$defs/Timestamp"},
+        "signature_ref": {"$ref": "#/$defs/NonEmptyString"}
+      }
+    },
+    "ConversationIntegrityEvent": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "event_id", "conversation_id", "branch_id", "event_class", "content_hash", "prior_hash", "ts"],
+      "properties": {
+        "record_type": {"const": "conversation_integrity_event"},
+        "event_id": {"$ref": "#/$defs/NonEmptyString"},
+        "conversation_id": {"$ref": "#/$defs/NonEmptyString"},
+        "branch_id": {"$ref": "#/$defs/NonEmptyString"},
+        "event_class": {"type": "string", "enum": ["turn", "tool_call", "artifact_mutation", "summary", "compaction", "tombstone"]},
+        "content_hash": {"$ref": "#/$defs/NonEmptyString"},
+        "prior_hash": {"type": "string"},
+        "ts": {"$ref": "#/$defs/Timestamp"}
+      }
+    },
+    "StopProof": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "proof_id", "feature_id", "ts", "verifier", "stopped_services", "disabled_timers", "revoked_grants", "removed_egress_routes", "signature_ref", "passed"],
+      "properties": {
+        "record_type": {"const": "stop_proof"},
+        "proof_id": {"$ref": "#/$defs/NonEmptyString"},
+        "feature_id": {"$ref": "#/$defs/NonEmptyString"},
+        "ts": {"$ref": "#/$defs/Timestamp"},
+        "verifier": {"$ref": "#/$defs/NonEmptyString"},
+        "stopped_services": {"$ref": "#/$defs/StringList"},
+        "disabled_timers": {"$ref": "#/$defs/StringList"},
+        "revoked_grants": {"$ref": "#/$defs/StringList"},
+        "removed_egress_routes": {"$ref": "#/$defs/StringList"},
+        "stopped_runtimes": {"$ref": "#/$defs/StringList"},
+        "signature_ref": {"$ref": "#/$defs/NonEmptyString"},
+        "passed": {"type": "boolean"}
+      }
+    },
+    "RepoHardeningManifest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["record_type", "schema_version", "repo", "zone", "authority_classes", "observation_channels", "control_channels", "egress_classes", "background_workers", "runtime_subjects", "connector_surfaces", "policy_sources", "ledger_sinks", "ci_validators", "owner", "maturity"],
+      "properties": {
+        "record_type": {"const": "repo_hardening_manifest"},
+        "schema_version": {"const": "effective-authority/v0.1"},
+        "repo": {"$ref": "#/$defs/NonEmptyString"},
+        "zone": {"$ref": "#/$defs/EstateZone"},
+        "authority_classes": {"$ref": "#/$defs/StringList"},
+        "observation_channels": {"$ref": "#/$defs/StringList"},
+        "control_channels": {"$ref": "#/$defs/StringList"},
+        "egress_classes": {"$ref": "#/$defs/StringList"},
+        "background_workers": {"$ref": "#/$defs/StringList"},
+        "runtime_subjects": {"$ref": "#/$defs/StringList"},
+        "connector_surfaces": {"$ref": "#/$defs/StringList"},
+        "policy_sources": {"$ref": "#/$defs/StringList"},
+        "ledger_sinks": {"$ref": "#/$defs/StringList"},
+        "ci_validators": {"$ref": "#/$defs/StringList"},
+        "owner": {"$ref": "#/$defs/NonEmptyString"},
+        "maturity": {"type": "string", "enum": ["draft", "partial", "enforced", "verified"]}
+      }
+    }
+  }
+}

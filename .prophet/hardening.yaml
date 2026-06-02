@@ -9,6 +9,7 @@ authority_classes:
   - schema
   - validator
   - evidence_taxonomy
+  - estate_alignment
 observation_channels: []
 control_channels: []
 egress_classes: []
@@ -17,7 +18,9 @@ runtime_subjects: []
 connector_surfaces: []
 policy_sources:
   - repo
+  - signed_config
 ledger_sinks:
   - model-governance-ledger
+  - policy-fabric
 ci_validators:
   - effective-authority-ci

@@ -51,11 +51,8 @@ def load_schema() -> dict[str, Any]:
     return schema
 
 
-def validate_against_def(schema: dict[str, Any], def_name: str, payload: dict[str, Any]) -> list[str]:
-    defs = schema.get("$defs", {})
-    if def_name not in defs:
-        return [f"unknown target definition: {def_name}"]
-    validator = Draft202012Validator(defs[def_name])
+def schema_errors(schema: dict[str, Any], payload: dict[str, Any]) -> list[str]:
+    validator = Draft202012Validator(schema)
     return [error.message for error in sorted(validator.iter_errors(payload), key=str)]
 
 
@@ -84,10 +81,14 @@ def validate_fixture_set(path: Path) -> dict[str, Any]:
         if payload.get("record_type"):
             observed_record_types.add(str(payload["record_type"]))
 
-        messages = validate_against_def(schema, str(target_def), payload)
-        if messages:
+        if target_def not in schema.get("$defs", {}):
             observed_failures.append("schema_validation_error")
-            diagnostics.extend(messages)
+            diagnostics.append(f"unknown target definition: {target_def}")
+        else:
+            messages = schema_errors(schema, payload)
+            if messages:
+                observed_failures.append("schema_validation_error")
+                diagnostics.extend(messages)
 
         observed_failures = sorted(set(observed_failures))
         actual_result = "fail" if observed_failures else "pass"

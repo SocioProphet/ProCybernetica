@@ -23,7 +23,8 @@ The core public-review surface now includes:
 - Book XI Slice A public-synthetic ingest-to-claims fixture;
 - estate-alignment follow-up fixtures;
 - CI observation receipts;
-- Sovereign Validation Fabric schema and fixture conformance.
+- Sovereign Validation Fabric schema and fixture conformance;
+- Effective Authority Architecture hardening doctrine.
 
 Start with:
 
@@ -32,7 +33,8 @@ Start with:
 3. [`docs/PUBLIC_REVIEW_CHECKLIST.md`](docs/PUBLIC_REVIEW_CHECKLIST.md)
 4. [`docs/conformance/README.md`](docs/conformance/README.md)
 5. [`docs/implementation/VERTICAL_SLICE_PLAN.md`](docs/implementation/VERTICAL_SLICE_PLAN.md)
-6. [`AGENTS.md`](AGENTS.md)
+6. [`docs/security/EFFECTIVE_AUTHORITY_ARCHITECTURE.md`](docs/security/EFFECTIVE_AUTHORITY_ARCHITECTURE.md)
+7. [`AGENTS.md`](AGENTS.md)
 
 ## What ProCybernetica is
 
@@ -58,6 +60,7 @@ The correct next sequence is:
 3. Add future Book XI slices after Slice A.
 4. Add G7+ theorem-adjacent colimit/evidence-cocone work as a separate tranche.
 5. Push downstream runtime adapters into their owning repositories, not into ProCybernetica.
+6. Promote effective-authority hardening from doctrine to schemas, fixtures, validators, and downstream manifests.
 
 ## Canonical program tracks
 
@@ -77,7 +80,11 @@ Prophet Platform should consume ProCybernetica standards as its production runti
 
 GitHub repositories, pull requests, agents, tool invocations, branches, merges, workflow runs, and deployments should be modeled as Fractal Nodes and governed by replay, policy, evidence, and promotion law.
 
-### 5. Curriculum and standards publication
+### 5. Effective Authority hardening
+
+SourceOS, Bear Browser, Prophet Platform, AgentPlane, model/control-plane repos, workspace/search/world-model surfaces, and research/proof repos should converge on one Effective Authority Architecture: every repo declares what it can observe, what it can act on, what can leave the machine or workspace boundary, and what proves disabled machinery actually stopped.
+
+### 6. Curriculum and standards publication
 
 The ProCybernetica books, preludes, blueprints, and implementation practicum become a public educational and standards surface for cybernetic systems engineering.
 

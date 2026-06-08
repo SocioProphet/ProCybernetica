@@ -1,0 +1,138 @@
+{
+  "fixture_set_id": "ioes_conformance_v0_1_synthetic",
+  "schema_version": "0.1",
+  "fixtures": [
+    {
+      "fixture_id": "kept_learning_artifact_conformant",
+      "expected_result": "pass",
+      "payload": {
+        "record_type": "IOESConformanceRecord",
+        "schema_version": "0.1",
+        "record_id": "ioes_conf_kept_learning_artifact_001",
+        "subject_ref": "alexandrian:sla_lesson_stewardship_001",
+        "control_node_ref": "procybernetica:ioes_learning_artifact_promotion_control",
+        "ioes_impact_classes": [
+          "learning_canon",
+          "stewardship_assignment",
+          "succession",
+          "ecological_dependency",
+          "delivery_outcome",
+          "policy_state"
+        ],
+        "declared_boundaries": {
+          "observes": true,
+          "infers": true,
+          "proposes": true,
+          "mutates": false,
+          "exports": false,
+          "remembers": true,
+          "repairs": true
+        },
+        "authority_refs": [
+          "authority:alexandrian_keeper_acceptance_001"
+        ],
+        "policy_refs": [
+          "policy-fabric:ioes-protected-value-veto.valid"
+        ],
+        "evidence_refs": [
+          "alexandrian:evb_stewardship_media_transitions_001",
+          "regis:kept-learning-artifact.ioes-records.valid",
+          "delivery:ioes_delivery_kept_learning_artifact_001"
+        ],
+        "consent_refs": [
+          "consent:keeper_acceptance_001"
+        ],
+        "stewardship_refs": [
+          "regis:stewardship_edge_learning_artifact_001",
+          "regis:keeper_log_learning_artifact_001"
+        ],
+        "succession_refs": [
+          "regis:succession_learning_artifact_001"
+        ],
+        "gaia_refs": [
+          "regis:gaia_dependency_learning_artifact_001"
+        ],
+        "learning_refs": [
+          "alexandrian:sla_lesson_stewardship_001"
+        ],
+        "delivery_refs": [
+          "delivery:ioes_delivery_kept_learning_artifact_001"
+        ],
+        "replay_posture": "replayable",
+        "repair_posture": "repair_path_defined",
+        "contest_posture": "contest_path_defined",
+        "human_protection": {
+          "person_not_score": true,
+          "stewardship_not_ownership": true,
+          "mentorship_not_control": true,
+          "nba_not_command": true,
+          "delivery_metrics_not_human_worth": true,
+          "projection_not_person": true
+        },
+        "status": "conformant",
+        "non_claims": [
+          "This record is not a person score.",
+          "Stewardship is not ownership.",
+          "Delivery metrics do not measure human worth."
+        ]
+      }
+    },
+    {
+      "fixture_id": "productivity_only_nonconformant",
+      "expected_result": "fail",
+      "expected_failure_reason": "ioes_semantic_error",
+      "payload": {
+        "record_type": "IOESConformanceRecord",
+        "schema_version": "0.1",
+        "record_id": "ioes_conf_productivity_only_001",
+        "subject_ref": "delivery:productivity_only_record_001",
+        "control_node_ref": "procybernetica:ioes_delivery_metric_control",
+        "ioes_impact_classes": [
+          "delivery_outcome",
+          "policy_state"
+        ],
+        "declared_boundaries": {
+          "observes": true,
+          "infers": true,
+          "proposes": false,
+          "mutates": true,
+          "exports": true,
+          "remembers": true,
+          "repairs": false
+        },
+        "authority_refs": [
+          "authority:delivery_dashboard_default"
+        ],
+        "policy_refs": [
+          "policy-fabric:ioes-protected-value-veto.valid"
+        ],
+        "evidence_refs": [
+          "tracker:tickets"
+        ],
+        "consent_refs": [],
+        "stewardship_refs": [],
+        "succession_refs": [],
+        "gaia_refs": [],
+        "learning_refs": [],
+        "delivery_refs": [
+          "delivery:ioes_delivery_productivity_only_rejected_001"
+        ],
+        "replay_posture": "not_replayable_requires_review",
+        "repair_posture": "missing",
+        "contest_posture": "missing",
+        "human_protection": {
+          "person_not_score": false,
+          "stewardship_not_ownership": true,
+          "mentorship_not_control": true,
+          "nba_not_command": true,
+          "delivery_metrics_not_human_worth": false,
+          "projection_not_person": true
+        },
+        "status": "conformant",
+        "non_claims": [
+          "This fixture is expected to fail IOES semantic conformance."
+        ]
+      }
+    }
+  ]
+}

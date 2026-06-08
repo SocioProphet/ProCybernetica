@@ -1,0 +1,101 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/procybernetica/schemas/ioes/ioes_conformance_record.v0_1.json",
+  "title": "IOESConformanceRecord v0.1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "record_type",
+    "schema_version",
+    "record_id",
+    "subject_ref",
+    "control_node_ref",
+    "ioes_impact_classes",
+    "authority_refs",
+    "policy_refs",
+    "evidence_refs",
+    "replay_posture",
+    "repair_posture",
+    "contest_posture",
+    "human_protection",
+    "status",
+    "non_claims"
+  ],
+  "properties": {
+    "record_type": {"const": "IOESConformanceRecord"},
+    "schema_version": {"const": "0.1"},
+    "record_id": {"type": "string", "minLength": 1},
+    "subject_ref": {"type": "string", "minLength": 1},
+    "control_node_ref": {"type": "string", "minLength": 1},
+    "ioes_impact_classes": {
+      "type": "array",
+      "items": {
+        "enum": [
+          "identity_continuity",
+          "consent_state",
+          "developmental_state",
+          "stewardship_assignment",
+          "stewardship_transfer",
+          "succession",
+          "ecological_dependency",
+          "learning_canon",
+          "human_digital_twin_state",
+          "projection_state",
+          "delivery_outcome",
+          "policy_state",
+          "execution_evidence"
+        ]
+      },
+      "minItems": 1,
+      "uniqueItems": true
+    },
+    "declared_boundaries": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["observes", "infers", "proposes", "mutates", "exports", "remembers", "repairs"],
+      "properties": {
+        "observes": {"type": "boolean"},
+        "infers": {"type": "boolean"},
+        "proposes": {"type": "boolean"},
+        "mutates": {"type": "boolean"},
+        "exports": {"type": "boolean"},
+        "remembers": {"type": "boolean"},
+        "repairs": {"type": "boolean"}
+      }
+    },
+    "authority_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "policy_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "evidence_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true},
+    "consent_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "stewardship_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "succession_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "gaia_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "learning_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "delivery_refs": {"type": "array", "items": {"type": "string", "minLength": 1}, "uniqueItems": true},
+    "replay_posture": {"enum": ["replayable", "partially_replayable", "not_replayable_requires_review"]},
+    "repair_posture": {"enum": ["repair_path_defined", "rollback_defined", "review_required", "missing"]},
+    "contest_posture": {"enum": ["contest_path_defined", "review_required", "not_applicable", "missing"]},
+    "human_protection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "person_not_score",
+        "stewardship_not_ownership",
+        "mentorship_not_control",
+        "nba_not_command",
+        "delivery_metrics_not_human_worth",
+        "projection_not_person"
+      ],
+      "properties": {
+        "person_not_score": {"type": "boolean"},
+        "stewardship_not_ownership": {"type": "boolean"},
+        "mentorship_not_control": {"type": "boolean"},
+        "nba_not_command": {"type": "boolean"},
+        "delivery_metrics_not_human_worth": {"type": "boolean"},
+        "projection_not_person": {"type": "boolean"}
+      }
+    },
+    "status": {"enum": ["candidate", "conformant", "nonconformant", "needs_review"]},
+    "non_claims": {"type": "array", "items": {"type": "string", "minLength": 1}, "minItems": 1, "uniqueItems": true}
+  }
+}

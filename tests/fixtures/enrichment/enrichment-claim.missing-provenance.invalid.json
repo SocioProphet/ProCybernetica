@@ -1,0 +1,12 @@
+{
+  "_invalid_reason": "missing provenance_root — required field absent; also missing relations",
+  "schema_version": "v0.1",
+  "id": "holo:claim:asset/a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2/scene-0001",
+  "kind": "enrichment_claim",
+  "archetypes": ["Claim"],
+  "traits": { "label": "beach", "modality": "scene" },
+  "memories": { "provenance": ["prov:enrich:run-x"] },
+  "policy_envelope": "policy:claims/internal",
+  "state_projection": "state:claim/scene-0001@v1",
+  "version": "v1"
+}

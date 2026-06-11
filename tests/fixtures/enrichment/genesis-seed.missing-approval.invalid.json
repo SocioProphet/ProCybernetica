@@ -1,0 +1,18 @@
+{
+  "_invalid_reason": "missing approval_profile — required field absent",
+  "schema_version": "v0.1",
+  "seed_id": "seed:enrichment/photo-v1",
+  "archetype": "enrichment_twin",
+  "ontology_slice": ["Asset", "Scene"],
+  "organs_allowed": ["vision_analyzer"],
+  "retrieval_profile": {
+    "graph": true, "hybrid": false, "multimodal": false,
+    "self_reflective": false, "recursive": false
+  },
+  "memory_profile": {
+    "episodic": "read", "semantic": "read", "procedural": "read", "provenance": "append_only"
+  },
+  "policy_profile": ["policy:enrichment/base"],
+  "provider_profile": ["provider:model_router"],
+  "federation_profile": "same_domain_only"
+}

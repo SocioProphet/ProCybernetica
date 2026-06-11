@@ -1,0 +1,115 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/genesis_seed.schema.json",
+  "title": "GenesisSeed",
+  "description": "Compile-time formation record for a mission archetype. A GenesisSeed defines role, ontology slice, policy defaults, organ affordances, memory rules, and approval gates. Binding a seed to a concrete actor, trust domain, and runtime produces a live twin (Inception). See docs/architecture/enrichment-twin-mission-spec.md for the enrichment_twin archetype example.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "seed_id",
+    "archetype",
+    "ontology_slice",
+    "organs_allowed",
+    "retrieval_profile",
+    "memory_profile",
+    "policy_profile",
+    "provider_profile",
+    "federation_profile",
+    "approval_profile"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "v0.1"
+    },
+    "seed_id": {
+      "type": "string",
+      "pattern": "^seed:[a-z0-9_/-]+$",
+      "description": "Globally unique seed identifier. Format: seed:<domain>/<name>-<version>"
+    },
+    "archetype": {
+      "type": "string",
+      "minLength": 1,
+      "description": "Mission archetype this seed instantiates (e.g. enrichment_twin, analyst_twin, coordinator_twin)"
+    },
+    "ontology_slice": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Ontology classes this twin may reason over"
+    },
+    "goal_schema": {
+      "type": "string",
+      "description": "Schema ref for the goal structure injected at Inception time"
+    },
+    "organs_allowed": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Exhaustive list of organ identifiers the twin may invoke"
+    },
+    "retrieval_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["graph", "hybrid", "multimodal", "self_reflective", "recursive"],
+      "properties": {
+        "graph":          { "type": "boolean" },
+        "hybrid":         { "type": "boolean" },
+        "multimodal":     { "type": "boolean" },
+        "self_reflective":{ "type": "boolean" },
+        "recursive":      { "type": "boolean" }
+      }
+    },
+    "memory_profile": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["episodic", "semantic", "procedural", "provenance"],
+      "properties": {
+        "episodic":   { "$ref": "#/$defs/memory_mode" },
+        "semantic":   { "$ref": "#/$defs/memory_mode" },
+        "procedural": { "$ref": "#/$defs/memory_mode" },
+        "provenance": { "$ref": "#/$defs/memory_mode" }
+      }
+    },
+    "policy_profile": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^policy:" },
+      "description": "Policy refs that govern this twin's actuation"
+    },
+    "provider_profile": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "pattern": "^provider:" },
+      "description": "Provider refs (model-router, memory-mesh, entity graph, etc.) the twin may call"
+    },
+    "federation_profile": {
+      "type": "string",
+      "enum": ["same_domain_only", "trusted_peer_domains", "open_federation"],
+      "description": "Permitted federation scope"
+    },
+    "approval_profile": {
+      "type": "object",
+      "additionalProperties": {
+        "$ref": "#/$defs/approval_requirement"
+      },
+      "description": "Map of actuation class → approval requirement. Each key names an actuation class; value declares whether approval is required or auto-permitted."
+    }
+  },
+  "$defs": {
+    "memory_mode": {
+      "type": "string",
+      "enum": [
+        "none",
+        "read",
+        "read_write",
+        "read_write_scoped",
+        "append_only"
+      ]
+    },
+    "approval_requirement": {
+      "type": "string",
+      "enum": ["required", "auto_permitted", "policy_delegated"]
+    }
+  }
+}

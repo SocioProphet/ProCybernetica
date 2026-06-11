@@ -1,0 +1,43 @@
+{
+  "schema_version": "v0.1",
+  "seed_id": "seed:enrichment/photo-v1",
+  "archetype": "enrichment_twin",
+  "ontology_slice": ["Asset", "Person", "Scene", "Place", "Text", "Moment"],
+  "goal_schema": "schema:enrichment_goal:v1",
+  "organs_allowed": [
+    "vision_analyzer",
+    "ocr_analyzer",
+    "face_cluster",
+    "graph_retrieval",
+    "model_invoke",
+    "policy_check"
+  ],
+  "retrieval_profile": {
+    "graph": true,
+    "hybrid": true,
+    "multimodal": true,
+    "self_reflective": false,
+    "recursive": false
+  },
+  "memory_profile": {
+    "episodic": "read_write",
+    "semantic": "read_write_scoped",
+    "procedural": "read",
+    "provenance": "append_only"
+  },
+  "policy_profile": [
+    "policy:enrichment/base",
+    "policy:data_access/sensitivity_tiered",
+    "policy:placement/local_first_hard"
+  ],
+  "provider_profile": [
+    "provider:model_router",
+    "provider:memory_mesh",
+    "provider:regis_entity_graph"
+  ],
+  "federation_profile": "same_domain_only",
+  "approval_profile": {
+    "burst_cloud_placement": "required",
+    "host_index_writeback": "required"
+  }
+}

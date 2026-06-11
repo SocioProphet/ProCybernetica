@@ -1,0 +1,35 @@
+{
+  "schema_version": "v0.1",
+  "id": "holo:claim:asset/a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2/scene-0007",
+  "kind": "enrichment_claim",
+  "archetypes": ["Claim", "EvidenceBearingObject"],
+  "traits": {
+    "label": "beach",
+    "confidence": 0.83,
+    "modality": "scene",
+    "sensitivity_class": "internal",
+    "superseded_by": null,
+    "supersedes": null
+  },
+  "relations": [
+    {
+      "type": "derived_from",
+      "target": "holo:asset:a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2"
+    },
+    {
+      "type": "produced_by",
+      "target": "holo:twin:enrichment/twin-2026-06-11-local-0001"
+    },
+    {
+      "type": "governed_by",
+      "target": "holo:policy:enrichment/base"
+    }
+  ],
+  "memories": {
+    "provenance": ["prov:enrich:run-2026-06-11-local-0001"]
+  },
+  "policy_envelope": "policy:claims/internal",
+  "provenance_root": "prov:enrich:run-2026-06-11-local-0001",
+  "state_projection": "state:claim/holo:claim:asset/a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2c3d4e5f6a1b2/scene-0007@v1",
+  "version": "v1"
+}

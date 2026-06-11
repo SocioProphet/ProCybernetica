@@ -1,0 +1,135 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/enrichment_claim_hologram.schema.json",
+  "title": "EnrichmentClaimHologram",
+  "description": "A claim hologram produced by an Enrichment Twin. Extends the canonical ProCybernetica claim pattern with enrichment-specific fields: asset binding, sensitivity class, modality, confidence, and a provenance root that records analyzer, model, locus, and scheduling rationale. Every output is a governed claim — never a raw fact. See docs/architecture/enrichment-twin-mission-spec.md §4.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "id",
+    "kind",
+    "archetypes",
+    "traits",
+    "relations",
+    "memories",
+    "policy_envelope",
+    "provenance_root",
+    "state_projection",
+    "version"
+  ],
+  "properties": {
+    "schema_version": {
+      "const": "v0.1"
+    },
+    "id": {
+      "type": "string",
+      "pattern": "^holo:claim:asset/[^/]+/[a-z0-9_-]+-[0-9]+$",
+      "description": "Hologram id. Format: holo:claim:asset/<asset_hash>/<modality>-<seq>"
+    },
+    "kind": {
+      "const": "enrichment_claim"
+    },
+    "archetypes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "description": "Ontology archetypes this hologram participates in. Must include 'Claim'; typically also 'EvidenceBearingObject'."
+    },
+    "traits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["label", "modality"],
+      "properties": {
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Human-readable claim label (e.g. 'beach', 'invoice', 'John Smith')"
+        },
+        "confidence": {
+          "type": "number",
+          "minimum": 0.0,
+          "maximum": 1.0,
+          "description": "Model confidence score [0,1]. Required for all non-structural claims."
+        },
+        "modality": {
+          "type": "string",
+          "enum": ["scene", "object", "face_cluster", "text_ocr", "location", "moment", "document_structure", "perceptual_hash"],
+          "description": "Analysis modality that produced this claim"
+        },
+        "sensitivity_class": {
+          "type": "string",
+          "enum": ["public", "internal", "sensitive"],
+          "description": "Sensitivity class governing eligible placement loci. If absent, treated as 'sensitive'."
+        },
+        "superseded_by": {
+          "type": ["string", "null"],
+          "description": "If non-null, this claim has been superseded by the referenced hologram id. Retained for provenance; hidden from default projection."
+        },
+        "supersedes": {
+          "type": ["string", "null"],
+          "description": "If non-null, this claim supersedes the referenced hologram id."
+        }
+      }
+    },
+    "relations": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["type", "target"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["derived_from", "produced_by", "governed_by", "co_located_with", "supersedes", "superseded_by"]
+          },
+          "target": {
+            "type": "string",
+            "minLength": 1
+          }
+        }
+      },
+      "description": "Must include at least derived_from (asset), produced_by (twin), governed_by (policy)"
+    },
+    "memories": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["provenance"],
+      "properties": {
+        "provenance": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "type": "string", "pattern": "^prov:" }
+        },
+        "episodic": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^mem:episodic:" }
+        },
+        "semantic": {
+          "type": "array",
+          "items": { "type": "string", "pattern": "^mem:semantic:" }
+        }
+      }
+    },
+    "policy_envelope": {
+      "type": "string",
+      "pattern": "^policy:",
+      "description": "Policy ref governing this claim's access and projection"
+    },
+    "provenance_root": {
+      "type": "string",
+      "pattern": "^prov:enrich:",
+      "description": "Primary provenance ref. The referenced provenance_record must include: analyzer_id, analyzer_version, model_id, model_version, asset_hash, execution_locus, scheduled_because, sensitivity_class."
+    },
+    "state_projection": {
+      "type": "string",
+      "pattern": "^state:claim/",
+      "description": "Current state projection ref"
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^v[0-9]+$"
+    }
+  }
+}

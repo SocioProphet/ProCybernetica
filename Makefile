@@ -1,4 +1,4 @@
-.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci cybernetic-governance-fixtures cybernetic-governance-ci dependency-control-fixtures dependency-control-ci agentic-ops-fixtures agentic-ops-ci bridges-fixtures bridges-ci certificate-v13-fixtures certificate-v13-ci shacl-companions shacl-ci profiles-fixtures profiles-ci v0-schemas-fixtures v0-schemas-ci agentplane-binding-fixtures agentplane-binding-ci proof-pack-fixtures proof-pack-ci lawful-learning-fixtures lawful-learning-ci hpl-reconciliation hpl-ci book-xi-slice-a-fixtures book-xi-slice-a-ci civic-stack-fixtures civic-stack-ci estate-alignment-followups estate-alignment-followups-ci integration-closeout integration-closeout-ci governance-colimit-fixtures governance-colimit-ci svf-fixtures svf-ci reciprocal-channel-governance-fixtures reciprocal-channel-governance-ci effective-authority-fixtures effective-authority-ci ioes-conformance-fixtures ioes-conformance-ci enrichment-twin-fixtures enrichment-twin-ci
+.PHONY: test governance-fabric-tier1-ci governance-fabric-tier2-ci governance-fabric-ci triune-ci falsification-static falsification-fixtures falsification-cross-reference falsification-ci cybernetic-governance-fixtures cybernetic-governance-ci dependency-control-fixtures dependency-control-ci agentic-ops-fixtures agentic-ops-ci bridges-fixtures bridges-ci certificate-v13-fixtures certificate-v13-ci shacl-companions shacl-ci profiles-fixtures profiles-ci v0-schemas-fixtures v0-schemas-ci agentplane-binding-fixtures agentplane-binding-ci proof-pack-fixtures proof-pack-ci lawful-learning-fixtures lawful-learning-ci hpl-reconciliation hpl-ci book-xi-slice-a-fixtures book-xi-slice-a-ci civic-stack-fixtures civic-stack-ci estate-alignment-followups estate-alignment-followups-ci integration-closeout integration-closeout-ci governance-colimit-fixtures governance-colimit-ci svf-fixtures svf-ci reciprocal-channel-governance-fixtures reciprocal-channel-governance-ci effective-authority-fixtures effective-authority-ci ioes-conformance-fixtures ioes-conformance-ci enrichment-twin-fixtures enrichment-twin-path-content-conflict enrichment-twin-ci
 
 test:
 	python -m pytest -q
@@ -134,4 +134,7 @@ ioes-conformance-ci: ioes-conformance-fixtures
 enrichment-twin-fixtures:
 	python tools/cybernetic_governance/validate_enrichment_twin.py
 
-enrichment-twin-ci: enrichment-twin-fixtures
+enrichment-twin-path-content-conflict:
+	python -m pytest -q tests/test_enrichment_path_content_conflict.py
+
+enrichment-twin-ci: enrichment-twin-fixtures enrichment-twin-path-content-conflict

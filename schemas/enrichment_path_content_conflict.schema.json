@@ -1,0 +1,74 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/enrichment_path_content_conflict.schema.json",
+  "title": "EnrichmentPathContentConflict",
+  "description": "Content-addressing decision record for the enrichment cache. Classifies whether a filesystem observation change should trigger re-enrichment. The key insight: asset_hash (content) is the enrichment cache key, not the path. A file move with the same content hash is a no-op for enrichment; a content change on any path requires re-enrichment. See enrichment-twin-mission-spec.md §6.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "decision_id",
+    "before",
+    "after",
+    "conflict_kind",
+    "re_enrich_required",
+    "cache_key_changed",
+    "rationale"
+  ],
+  "properties": {
+    "schema_version": { "const": "v0.1" },
+    "decision_id": {
+      "type": "string",
+      "pattern": "^pcc:[a-z0-9_-]+$"
+    },
+    "before": { "$ref": "#/$defs/assetObservation" },
+    "after":  { "$ref": "#/$defs/assetObservation" },
+    "conflict_kind": {
+      "type": "string",
+      "enum": [
+        "no_change",
+        "path_moved_content_same",
+        "path_same_content_changed",
+        "path_moved_content_changed",
+        "asset_added",
+        "asset_removed"
+      ],
+      "description": "Canonical conflict classification. no_change and path_moved_content_same never trigger re-enrichment. All others do."
+    },
+    "re_enrich_required": {
+      "type": "boolean",
+      "description": "True iff the enrichment cache entry for this asset must be invalidated and re-computed."
+    },
+    "cache_key_changed": {
+      "type": "boolean",
+      "description": "True iff the cache key (asset_hash, analyzer_version, model_version) changed. Always matches re_enrich_required for content-driven changes."
+    },
+    "rationale": {
+      "type": "string",
+      "minLength": 1
+    }
+  },
+  "$defs": {
+    "assetObservation": {
+      "type": ["object", "null"],
+      "additionalProperties": false,
+      "required": ["path", "asset_hash"],
+      "properties": {
+        "path": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Filesystem path at time of observation. Path is informational only — it is NOT the cache key."
+        },
+        "asset_hash": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{64}$",
+          "description": "SHA-256 of asset content. This IS the cache key for enrichment."
+        },
+        "observed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    }
+  }
+}

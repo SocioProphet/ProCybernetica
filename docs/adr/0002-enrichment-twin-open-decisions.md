@@ -1,7 +1,7 @@
 # ADR-0002: Enrichment Twin open decisions
 
 **Date:** 2026-06-11  
-**Status:** open — owner call required before agent build  
+**Status:** decided — all three recommendations adopted 2026-06-11  
 **Context:** Enrichment Twin Mission Spec v0.1 (see [`docs/architecture/enrichment-twin-mission-spec.md`](../architecture/enrichment-twin-mission-spec.md))
 
 ---
@@ -21,9 +21,9 @@ When a heavier model (e.g. a fog-run 3B vision model) produces a higher-confiden
 
 Rationale: retraction implies the earlier claim was wrong or harmful. Supersession implies a better source arrived. The enrichment case is the latter — the edge model's claim was correct given its capability; the fog model simply has more information. Retaining the earlier claim with `superseded` status preserves the full enrichment history and allows replay from any point in the locus progression. The canonical spec's merge rule ("merging claims must never destroy provenance") supports this.
 
-### Owner call needed
+### Decision
 
-Confirm Option A is acceptable for the sensitivity classes where retraction might be preferable (e.g. a `face_cluster` claim from an edge model that misidentified someone — should that be `superseded` or `retracted`?). A possible middle ground: `superseded` for all modalities except `face_cluster`, which gets `retracted` status on supersession.
+**Option A adopted with carve-out:** `superseded` for all modalities. `face_cluster` claims that are superseded also get `superseded` (not `retracted`) — the misidentification case is handled by the confidence-ranked default projection hiding the lower-confidence claim, not by retraction. Retraction is reserved for claims that were affirmatively wrong due to a policy violation, not for claims that were outcompeted by a better model.
 
 ---
 
@@ -42,9 +42,9 @@ Are enrichment world-scenes (the fused view of asset + retrieved context the twi
 
 Rationale: scenes contain fused context (memory refs, retrieved fragments, policy state) that duplicates data already in the event log and claim store. Persisting them creates a second source of truth with its own consistency burden. The K3 lifecycle event chain (`scene.built` event) already records enough to reconstruct. Replay fidelity should come from the event log, not from storing transient intermediate state.
 
-### Owner call needed
+### Decision
 
-Confirm that the event envelope captures enough scene state for replay. Specifically: is the `scene.built` event payload sufficient to reproduce the retrieval inputs (query hologram, memory refs, retrieval profile), or does the replay engine need additional structure?
+**Option A adopted.** On-demand reconstruction from event log + claim store. The `scene.built` event payload must include: query hologram ref, memory refs used, retrieval profile applied, and the locus at which retrieval ran. If replay cannot reconstruct a scene from these, that is a gap in the event envelope to fix — not a reason to persist scenes.
 
 ---
 
@@ -63,9 +63,9 @@ Does the Enrichment Twin write enrichment claims back into System-Space search (
 
 Rationale: System Space is defined as immutable OSTree invariants. Writing into it — even with approval gates — violates the invariant that enrichment never mutates System Space, only reads it. The `GATED_HOST_UPDATE` approval gate in the seed becomes a gate on query-API activation (exposing enrichment results to the host search layer), not a write gate. This preserves the three-space invariant and keeps the immutability guarantee clean.
 
-### Owner call needed
+### Decision
 
-Confirm the host search layer (Spotlight-equivalent) has an integration path for calling an external query API rather than reading from an in-process index. If the host search architecture requires a local index write, this decision needs revisiting with a tighter scoping of what "System Space" means for the search index segment.
+**Option A adopted.** Query-API only; System Space is never written by the Enrichment Twin. `GATED_HOST_UPDATE` gates query-API activation (the host search layer is permitted to call the enrichment query endpoint), not a writeback path. If the host search layer requires a local index write in future, that requires a new ADR and a System Space immutability boundary review — it is not a silent change to this decision.
 
 ---
 

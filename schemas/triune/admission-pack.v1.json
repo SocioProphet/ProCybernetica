@@ -1,0 +1,144 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/triune/admission-pack.v1.json",
+  "title": "ProCybernetica Triune AdmissionPack v1",
+  "description": "Faithful-admission gate record for a Triune cluster candidate. Admission requires structural validation, policy dry-run with hash-bound evidence, epsilon gate pass, host approval, reversal plan, and ledger entry. No state above 'proposed' is valid without host approval.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "pack_id",
+    "candidate_id",
+    "candidate_name",
+    "candidate_status",
+    "execution_status",
+    "proof_refs",
+    "policy",
+    "decision",
+    "reversal_plan",
+    "non_claims",
+    "ledger_entry"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "pack_id": { "$ref": "#/$defs/id" },
+    "candidate_id": { "$ref": "#/$defs/id" },
+    "candidate_name": { "type": "string", "minLength": 1 },
+    "candidate_status": {
+      "enum": [
+        "observed",
+        "candidate",
+        "dry_run",
+        "proposed",
+        "approved",
+        "admitted",
+        "revoked",
+        "synthetic_fixture"
+      ]
+    },
+    "execution_status": {
+      "enum": ["synthetic_fixture", "live", "pending_evidence"]
+    },
+    "proof_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event_ir_ref"],
+      "properties": {
+        "event_ir_ref": { "type": "string" },
+        "policy_dry_run_ref": { "type": "string" },
+        "sbom_ref": { "type": "string" },
+        "signature_ref": { "type": "string" },
+        "image_ref": { "type": "string" },
+        "network_policy_ref": { "type": "string" }
+      }
+    },
+    "policy": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["dry_run_result"],
+      "properties": {
+        "dry_run_result": { "enum": ["pass", "fail", "pending", "non_claim"] },
+        "dry_run_output_hash": {
+          "type": "string",
+          "description": "SHA-256 hex digest of the dry-run output file."
+        },
+        "dry_run_evidence_ref": {
+          "type": "string",
+          "description": "Reference to the hashable, replayable dry-run evidence artifact. Required when dry_run_result=pass."
+        },
+        "checked_policies": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "violations": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "epsilon_gate": {
+      "$ref": "epsilon-gate.v1.json"
+    },
+    "decision": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["gate_result"],
+      "properties": {
+        "gate_result": { "enum": ["pass", "fail", "pending", "non_claim"] },
+        "host_approval": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["approval_kind", "approved_by", "approved_at"],
+          "properties": {
+            "approval_kind": { "type": "string", "minLength": 1 },
+            "approved_by": { "type": "string", "minLength": 1 },
+            "approved_at": { "$ref": "#/$defs/timestamp" },
+            "evidence_ref": { "type": "string" }
+          }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "reversal_plan": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["steps", "revocation_evidence_ref"],
+      "properties": {
+        "steps": {
+          "type": "array",
+          "items": { "type": "string" },
+          "minItems": 1
+        },
+        "revocation_evidence_ref": { "type": "string" },
+        "tested": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "ledger_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event", "recorded_at", "recorded_by"],
+      "properties": {
+        "event": { "type": "string", "minLength": 1 },
+        "recorded_at": { "$ref": "#/$defs/timestamp" },
+        "recorded_by": { "type": "string", "minLength": 1 },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}

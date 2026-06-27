@@ -1,0 +1,19 @@
+# Default-deny NetworkPolicy baseline for Triune Inception lab.
+# Apply this before any workload admission.
+# This is a reference example only — not proof of live deployment.
+---
+apiVersion: networking.k8s.io/v1
+kind: NetworkPolicy
+metadata:
+  name: default-deny-all
+  namespace: default
+  labels:
+    procybernetica.io/policy-baseline: "true"
+    procybernetica.io/triune-lab: "true"
+spec:
+  podSelector: {}
+  policyTypes:
+    - Ingress
+    - Egress
+  # No ingress rules = deny all ingress
+  # No egress rules = deny all egress

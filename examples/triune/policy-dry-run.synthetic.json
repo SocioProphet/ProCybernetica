@@ -1,0 +1,17 @@
+{
+  "dry_run_id": "synthetic-dry-run-i4-2026-05-13",
+  "execution_status": "synthetic_fixture",
+  "result": "pass",
+  "checked_policies": [
+    "default-deny-networkpolicy",
+    "signed-images-required",
+    "no-privileged-pods",
+    "no-host-pid",
+    "resource-limits-required"
+  ],
+  "violations": [],
+  "non_claims": [
+    "Synthetic dry-run fixture only.",
+    "Does not prove a live cluster policy engine executed."
+  ]
+}

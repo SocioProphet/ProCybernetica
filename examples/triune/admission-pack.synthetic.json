@@ -1,0 +1,61 @@
+{
+  "schema_version": "1.0.0",
+  "pack_id": "synthetic-admission-pack-i4-2026-05-13",
+  "candidate_id": "synthetic-i4",
+  "candidate_name": "synthetic-inception-i4",
+  "candidate_status": "proposed",
+  "execution_status": "synthetic_fixture",
+  "proof_refs": {
+    "event_ir_ref": "synthetic://triune/i4/event-ir",
+    "policy_dry_run_ref": "synthetic://triune/i4/proofs/policy-dry-run",
+    "sbom_ref": "synthetic://triune/i4/sbom/spdx",
+    "signature_ref": "synthetic://triune/i4/signatures/herald-agent",
+    "image_ref": "synthetic://triune/i4/images/herald-agent",
+    "network_policy_ref": "synthetic://triune/policies/default-deny"
+  },
+  "policy": {
+    "dry_run_result": "pass",
+    "dry_run_output_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "dry_run_evidence_ref": "synthetic://triune/i4/evidence/policy-dry-run.json",
+    "checked_policies": [
+      "default-deny-networkpolicy",
+      "signed-images-required",
+      "no-privileged-pods",
+      "no-host-pid",
+      "resource-limits-required"
+    ],
+    "violations": []
+  },
+  "decision": {
+    "gate_result": "pass",
+    "notes": "Synthetic gate pass. No host approval included — candidate_status is proposed, not approved or admitted."
+  },
+  "reversal_plan": {
+    "steps": [
+      "Remove ClusterMesh peer or KubeFed member.",
+      "Revoke service credentials.",
+      "Restore deny-all egress.",
+      "Quarantine or stop workloads.",
+      "Record revocation ledger entry.",
+      "Preserve evidence for replay."
+    ],
+    "revocation_evidence_ref": "synthetic://triune/i4/evidence/revocation-plan.json",
+    "tested": false,
+    "notes": "Synthetic reversal plan. Not yet executed."
+  },
+  "non_claims": [
+    "This is a synthetic fixture only.",
+    "This file does not prove a live cluster policy engine executed.",
+    "No host approval is included; this pack cannot be used for approved or admitted state.",
+    "dry_run_output_hash is a placeholder; it does not represent a real dry-run artifact."
+  ],
+  "ledger_entry": {
+    "event": "synthetic_admission_pack_created",
+    "recorded_at": "2026-05-13T00:00:00Z",
+    "recorded_by": "synthetic-operator",
+    "evidence_refs": [
+      "synthetic://triune/i4/evidence/policy-dry-run.json"
+    ],
+    "notes": "Synthetic ledger entry for conformance testing."
+  }
+}

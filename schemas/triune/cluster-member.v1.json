@@ -1,0 +1,156 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/triune/cluster-member.v1.json",
+  "title": "ProCybernetica Triune ClusterMember v1",
+  "description": "Canonical identity and governance record for a member of the Triune cluster formation. May represent an operator workstation (genesys), a bastion host (k3-a, k3-b), or an Inception VM (inception-i1 through i3). Must not embed kubeconfig contents.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "cluster_member_id",
+    "cluster_name",
+    "member_role",
+    "trust_domain",
+    "status",
+    "execution_status",
+    "control_plane",
+    "networking",
+    "policy_baseline",
+    "governance_refs",
+    "safety_status",
+    "non_claims",
+    "ledger_entry"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "cluster_member_id": { "$ref": "#/$defs/id" },
+    "cluster_name": { "type": "string", "minLength": 1 },
+    "member_role": {
+      "enum": [
+        "operator_workstation",
+        "bastion",
+        "inception_control_plane",
+        "faithful_candidate",
+        "observer"
+      ]
+    },
+    "trust_domain": { "type": "string", "minLength": 1 },
+    "status": {
+      "enum": [
+        "observed",
+        "candidate",
+        "dry_run",
+        "proposed",
+        "approved",
+        "admitted",
+        "revoked",
+        "quarantined",
+        "synthetic_fixture"
+      ]
+    },
+    "execution_status": {
+      "enum": [
+        "synthetic_fixture",
+        "live",
+        "pending_evidence",
+        "revoked"
+      ]
+    },
+    "control_plane": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["engine", "version_ref", "kubeconfig_ref"],
+      "properties": {
+        "engine": { "type": "string", "minLength": 1 },
+        "version_ref": { "type": "string" },
+        "installer_digest_ref": { "type": "string" },
+        "kubeconfig_ref": {
+          "type": "string",
+          "description": "Opaque path or ID reference. Must not contain kubeconfig contents."
+        },
+        "api_server_ref": { "type": "string" },
+        "notes": { "type": "string" }
+      }
+    },
+    "networking": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["cni", "default_deny_applied"],
+      "properties": {
+        "cni": { "type": "string" },
+        "default_deny_applied": { "type": "boolean" },
+        "isolation": { "type": "string" },
+        "clustermesh_id_ref": { "type": "string" },
+        "policy_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "policy_baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["deny_all_ingress", "deny_all_egress", "no_privileged_pods", "no_host_pid"],
+      "properties": {
+        "deny_all_ingress": { "type": "boolean" },
+        "deny_all_egress": { "type": "boolean" },
+        "no_privileged_pods": { "type": "boolean" },
+        "no_host_pid": { "type": "boolean" },
+        "signed_images_required": { "type": "boolean" },
+        "signed_images_status": { "type": "string" },
+        "resource_limits_required": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    "governance_refs": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "admission_pack_ref": { "type": "string" },
+        "epsilon_gate_ref": { "type": "string" },
+        "ledger_ref": { "type": "string" },
+        "runbook_ref": { "type": "string" },
+        "reversal_plan_ref": { "type": "string" }
+      }
+    },
+    "safety_status": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["production_attachment_allowed", "customer_network_allowed"],
+      "properties": {
+        "production_attachment_allowed": { "type": "boolean" },
+        "customer_network_allowed": { "type": "boolean" },
+        "public_ingress_allowed": { "type": "boolean" },
+        "notes": { "type": "string" }
+      }
+    },
+    "non_claims": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "ledger_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event", "recorded_at", "recorded_by"],
+      "properties": {
+        "event": { "type": "string", "minLength": 1 },
+        "recorded_at": { "$ref": "#/$defs/timestamp" },
+        "recorded_by": { "type": "string", "minLength": 1 },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "hostname": { "type": "string" },
+    "machine_identity_ref": { "type": "string" },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}

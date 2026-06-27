@@ -1,0 +1,96 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/triune/epsilon-gate.v1.json",
+  "title": "ProCybernetica Triune EpsilonGate v1",
+  "description": "FPGL epsilon-gate measurement record. Captures micro/meso/macro boundary measurements and pass/fail determination for faithful admission gating. gate_result=pass requires dry_run_output_hash and dry_run_evidence_ref.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "gate_id",
+    "candidate_id",
+    "alpha",
+    "measurements",
+    "boundary_axes",
+    "gate_result",
+    "execution_status",
+    "non_claims",
+    "ledger_entry"
+  ],
+  "properties": {
+    "schema_version": { "type": "string", "const": "1.0.0" },
+    "gate_id": { "$ref": "#/$defs/id" },
+    "candidate_id": { "$ref": "#/$defs/id" },
+    "alpha": {
+      "type": "number",
+      "minimum": 0,
+      "maximum": 1,
+      "description": "Base epsilon threshold. Default: 0.00730"
+    },
+    "measurements": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["micro", "meso", "macro_median", "macro_p95"],
+      "properties": {
+        "micro": { "type": "number", "minimum": 0 },
+        "meso": { "type": "number", "minimum": 0 },
+        "macro_median": { "type": "number", "minimum": 0 },
+        "macro_p95": { "type": "number", "minimum": 0 }
+      }
+    },
+    "boundary_axes": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["network_escape", "privilege_drift", "identity_ambiguity", "lambda_b"],
+      "properties": {
+        "network_escape": { "type": "number", "minimum": 0 },
+        "privilege_drift": { "type": "number", "minimum": 0 },
+        "identity_ambiguity": { "type": "number", "minimum": 0 },
+        "lambda_b": { "type": "number", "minimum": 0 }
+      }
+    },
+    "gate_result": {
+      "enum": ["pass", "fail", "pending", "non_claim"]
+    },
+    "dry_run_output_hash": {
+      "type": "string",
+      "description": "SHA-256 hex digest of the policy dry-run output. Required when gate_result=pass."
+    },
+    "dry_run_evidence_ref": {
+      "type": "string",
+      "description": "Reference to the hashable, replayable dry-run evidence artifact. Required when gate_result=pass."
+    },
+    "epsilon_gate_passed": {
+      "type": "boolean",
+      "description": "Convenience boolean. True only when gate_result=pass AND dry_run_output_hash AND dry_run_evidence_ref are present."
+    },
+    "execution_status": {
+      "enum": ["synthetic_fixture", "live", "pending_evidence"]
+    },
+    "non_claims": {
+      "type": "array",
+      "items": { "type": "string" },
+      "minItems": 1
+    },
+    "ledger_entry": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["event", "recorded_at", "recorded_by"],
+      "properties": {
+        "event": { "type": "string", "minLength": 1 },
+        "recorded_at": { "$ref": "#/$defs/timestamp" },
+        "recorded_by": { "type": "string", "minLength": 1 },
+        "evidence_refs": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "notes": { "type": "string" }
+      }
+    },
+    "notes": { "type": "string" }
+  },
+  "$defs": {
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}

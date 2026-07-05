@@ -1,0 +1,45 @@
+schema_version: "0.1.0"
+lab_id: synthetic-triune-lab
+execution_status: synthetic_fixture
+
+operator_workstation:
+  name: genesys
+  role: herald_dashboard_ledger
+  non_claims:
+    - Synthetic inventory only.
+
+twin_bastion:
+  hosts:
+    - name: k3-a
+      role: bastion
+      trust_domain: lab_airgapped
+    - name: k3-b
+      role: bastion
+      trust_domain: lab_airgapped
+
+inception_clusters:
+  - name: inception-i1
+    cluster_member_id: synthetic-i1
+    k3s_role: server
+  - name: inception-i2
+    cluster_member_id: synthetic-i2
+    k3s_role: server
+  - name: inception-i3
+    cluster_member_id: synthetic-i3
+    k3s_role: server
+
+network:
+  isolation: vlan_42_or_equivalent
+  default_deny_required: true
+
+federation:
+  default_mode: cilium_clustermesh
+  alternate_mode: kubefed_documentation_only
+
+policy:
+  host_approval_required: true
+  production_attachment_allowed: false
+
+non_claims:
+  - This file is a synthetic lab inventory template.
+  - This file does not prove live deployment.

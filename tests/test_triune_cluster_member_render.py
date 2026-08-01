@@ -105,3 +105,18 @@ def test_ledger_entry_uses_canonical_shape() -> None:
     entry = _render("inception-i1")["ledger_entry"]
     assert set(entry) == {"event_id", "event_type", "created_at"}
     assert entry["event_type"] == "cluster_member_record_created"
+
+
+def test_non_mapping_inventory_is_refused(tmp_path: Path) -> None:
+    """Fail closed: an empty file parses as None and a list/scalar root parses as a
+    non-mapping; either would crash resolve_member() on .get(). load_inventory must
+    refuse with a clear error instead."""
+    empty = tmp_path / "empty.yaml"
+    empty.write_text("", encoding="utf-8")
+    with pytest.raises(ValueError, match="must be a YAML mapping"):
+        load_inventory(empty)
+
+    list_root = tmp_path / "list.yaml"
+    list_root.write_text("- a\n- b\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="must be a YAML mapping"):
+        load_inventory(list_root)

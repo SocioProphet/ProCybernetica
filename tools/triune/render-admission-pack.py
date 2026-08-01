@@ -153,6 +153,16 @@ def build_pack(args: argparse.Namespace) -> dict:
             raise FileNotFoundError(f"dry-run output not found: {dry_run_path}")
         dry_run_hash = compute_hash(dry_run_path)
         dr = load_dry_run(dry_run_path)
+        # Fail closed: the pack is hash-bound to this artifact, so the CLI's
+        # --dry-run-result must not contradict the artifact's own recorded result.
+        # Otherwise a pack could claim `pass` while the hash-bound evidence says `fail`.
+        output_result = dr.get("result")
+        if output_result is not None and output_result != dry_run_result:
+            raise ValueError(
+                f"--dry-run-result={dry_run_result!r} contradicts the dry-run output's own "
+                f"result={output_result!r} in {dry_run_path}; refusing to emit an "
+                "inconsistent, hash-bound pack"
+            )
         checked_policies = dr.get("checked_policies", [])
         violations = dr.get("violations", [])
         if not dry_run_id:

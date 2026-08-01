@@ -51,7 +51,16 @@ def load_schema() -> dict:
 
 
 def load_inventory(path: Path) -> dict:
-    return yaml.safe_load(path.read_text(encoding="utf-8"))
+    # Fail closed: an empty file parses as None and a list/scalar root parses as a
+    # non-mapping; resolve_member() would then crash on inventory.get(...). Refuse
+    # early with a clear error instead of emitting a traceback (or worse, a record).
+    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(
+            f"inventory {str(path)!r} must be a YAML mapping at its root; got "
+            f"{type(data).__name__} (an empty file parses as null). Refusing to render."
+        )
+    return data
 
 
 def resolve_member(inventory: dict, member_name: str) -> dict:
@@ -218,10 +227,10 @@ def main() -> None:
     parser.add_argument("--operator", default="operator", help="Operator identity (reserved).")
     args = parser.parse_args()
 
-    inventory = load_inventory(Path(args.input))
     try:
+        inventory = load_inventory(Path(args.input))
         entry = resolve_member(inventory, args.member)
-    except ValueError as exc:
+    except (ValueError, FileNotFoundError) as exc:
         print(f"ERROR: {exc}", file=sys.stderr)
         sys.exit(1)
 

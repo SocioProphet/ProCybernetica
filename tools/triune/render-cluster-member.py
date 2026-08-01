@@ -52,9 +52,12 @@ def load_schema() -> dict:
 
 def load_inventory(path: Path) -> dict:
     # Fail closed: an empty file parses as None and a list/scalar root parses as a
-    # non-mapping; resolve_member() would then crash on inventory.get(...). Refuse
-    # early with a clear error instead of emitting a traceback (or worse, a record).
-    data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    # non-mapping; resolve_member() would then crash on inventory.get(...). Malformed
+    # YAML raises yaml.YAMLError. Convert both into a clear error, never a traceback.
+    try:
+        data = yaml.safe_load(path.read_text(encoding="utf-8"))
+    except yaml.YAMLError as exc:
+        raise ValueError(f"inventory {str(path)!r} is not valid YAML: {exc}") from exc
     if not isinstance(data, dict):
         raise ValueError(
             f"inventory {str(path)!r} must be a YAML mapping at its root; got "

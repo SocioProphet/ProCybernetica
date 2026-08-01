@@ -153,6 +153,12 @@ def build_pack(args: argparse.Namespace) -> dict:
             raise FileNotFoundError(f"dry-run output not found: {dry_run_path}")
         dry_run_hash = compute_hash(dry_run_path)
         dr = load_dry_run(dry_run_path)
+        # Fail closed: a list/scalar JSON root would crash dr.get(...) below.
+        if not isinstance(dr, dict):
+            raise ValueError(
+                f"dry-run output {str(dry_run_path)!r} must be a JSON object at its root; "
+                f"got {type(dr).__name__}. Refusing to render."
+            )
         # Fail closed: the pack is hash-bound to this artifact, so the CLI's
         # --dry-run-result must not contradict the artifact's own recorded result.
         # Otherwise a pack could claim `pass` while the hash-bound evidence says `fail`.

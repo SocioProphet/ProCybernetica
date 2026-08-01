@@ -120,3 +120,12 @@ def test_non_mapping_inventory_is_refused(tmp_path: Path) -> None:
     list_root.write_text("- a\n- b\n", encoding="utf-8")
     with pytest.raises(ValueError, match="must be a YAML mapping"):
         load_inventory(list_root)
+
+
+def test_malformed_yaml_is_refused(tmp_path: Path) -> None:
+    """Fail closed on invalid YAML syntax: yaml.YAMLError is converted to a clear
+    ValueError, not leaked as a traceback."""
+    bad = tmp_path / "bad.yaml"
+    bad.write_text("key: [unterminated\n", encoding="utf-8")
+    with pytest.raises(ValueError, match="not valid YAML"):
+        load_inventory(bad)

@@ -119,6 +119,14 @@ def test_flag_result_contradicting_output_result_is_refused() -> None:
         build_pack(_Args(dry_run_result="fail"))
 
 
+def test_non_object_dry_run_output_is_refused(tmp_path: Path) -> None:
+    """Fail closed: a list/scalar JSON root would crash dr.get(...); refuse clearly."""
+    bad = tmp_path / "dry-run-list.json"
+    bad.write_text(json.dumps(["not", "an", "object"]), encoding="utf-8")
+    with pytest.raises(ValueError, match="must be a JSON object"):
+        build_pack(_Args(dry_run_output=str(bad)))
+
+
 def test_dry_run_without_checked_policies_is_refused(tmp_path: Path) -> None:
     dr = json.loads(DRY_RUN_FIXTURE.read_text(encoding="utf-8"))
     dr["checked_policies"] = []

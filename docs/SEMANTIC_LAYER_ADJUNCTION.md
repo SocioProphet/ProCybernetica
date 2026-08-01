@@ -1,8 +1,8 @@
 # Design note — the layer adjunction: `lift ⊣ ground`
 
-Status: DESIGN (code to follow) · Scope: an addition to `tools/semantic_algebra.py`
+Status: IMPLEMENTED (with both-ways P1-P6 tests) · Scope: `procyber/semantic/semantic_algebra.py`
 Motivation: Kant's schematism, made plural and principled. This note is spec + proof
-obligations; it deliberately does not ship code, because an adjunction earns its keep
+obligations; the implementation now ships here with a both-ways proof, because an adjunction earns its keep
 only with a both-ways proof and that deserves its own change.
 
 ---

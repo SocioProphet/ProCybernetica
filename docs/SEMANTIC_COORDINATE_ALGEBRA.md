@@ -1,6 +1,6 @@
 # Semantic Coordinate Algebra — provenance register & conformance
 
-Status: v0.1 · stdlib-only kernel in `tools/semantic_algebra.py`
+Status: SPEC_VERSION 0.2.0 · stdlib-only kernel in `procyber/semantic/semantic_algebra.py`
 
 This document is the **provenance register** the module docstring points at. It
 doubles as the clean-room warrant: every generating element of the algebra traces
@@ -23,7 +23,7 @@ third-party formal language or metalanguage. Any such comparison lives only in t
 internal design register (`SP-DES-*`), **never** in this repo or its public README,
 and no element above was derived from a third party's dictionary, definitions, or
 grammar prose. (This constraint is enforced, not merely asserted — see
-`tools/check_cleanroom.py`.)
+`procyber/semantic/check_cleanroom.py`.)
 
 ## 2. Why an algebra (the measured failure it fixes)
 
@@ -52,7 +52,7 @@ is structurally impossible. See `bind_tiered` and its rejection test.
 grounds general-first and admits a lower-tier candidate **only** if its `ground`
 role is the upper anchor actually landed on. That structural rule — not a tunable
 cosine threshold — is the abstraction-level bar, and it is what the S5 gate
-(`tools/abstraction_level_gate.py`) measures.
+(`procyber/semantic/abstraction_level_gate.py`) measures.
 
 ## 5. Attribution posture
 

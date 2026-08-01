@@ -20,6 +20,14 @@ import yaml
 from jsonschema import Draft202012Validator
 
 ROOT = Path(__file__).resolve().parents[2]
+
+# Make the repo root importable so `procyber.lawful_learning.toy` resolves regardless of
+# how the validator is invoked. When run as a subprocess (see the conformance tests),
+# sys.path[0] is this script's directory, not the repo root, so the `procyber` package is
+# otherwise unimportable without an installed distribution or an external PYTHONPATH.
+if str(ROOT) not in sys.path:
+    sys.path.insert(0, str(ROOT))
+
 SCHEMA_DIR = ROOT / "schemas" / "lawful-learning"
 EXAMPLE_DIR = ROOT / "examples" / "lawful-learning"
 

@@ -296,7 +296,7 @@ def distribute(
 # --------------------------------------------------------------------------- #
 
 
-def distance(a: Term, b: Term) -> int:
+def distance(a: "Term | Abstain", b: "Term | Abstain") -> int:
     """Structural edit distance between two terms at the same layer.
 
     Zero iff identical. Terms differing in one role are at distance 1, which is

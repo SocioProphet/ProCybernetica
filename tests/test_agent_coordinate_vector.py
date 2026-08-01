@@ -7,7 +7,6 @@ test, not merely by a happy-path pass.
 
 from __future__ import annotations
 
-import copy
 import json
 import pathlib
 

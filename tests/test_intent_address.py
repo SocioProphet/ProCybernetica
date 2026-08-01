@@ -9,12 +9,13 @@ from __future__ import annotations
 
 import pytest
 
-from procyber.semantic.semantic_algebra import BOTTOM, LayerError
+from procyber.semantic.semantic_algebra import BOTTOM, LayerError, SemanticAddress
 from procyber.semantic.intent_address import (
     COLUMNS,
     INTENT_PRIMARY,
     META_ROW,
     build_intent_addresses,
+    column_anchor,
     column_fill,
     intent_distance,
     route,
@@ -23,6 +24,29 @@ from procyber.semantic.intent_address import (
 
 def _addrs():
     return build_intent_addresses()
+
+
+# -- robustness: guards flagged in review ----------------------------------- #
+
+
+def test_unknown_column_raises_valueerror_not_keyerror():
+    with pytest.raises(ValueError, match="unknown column"):
+        column_anchor("teleport")
+
+
+def test_route_skips_abstaining_addresses_without_crashing():
+    addrs = _addrs()
+    addrs["ghost"] = SemanticAddress(term=BOTTOM, iri="intent://ghost")  # term is BOTTOM
+    # must not raise on `.layer`; still routes the real sense intent
+    assert route("sense", addrs) == addrs["file_ingest"].term
+
+
+def test_route_abstains_when_there_are_no_topic_terms():
+    addrs = {
+        META_ROW: _addrs()[META_ROW],  # only the second-order meta row...
+        "ghost": SemanticAddress(term=BOTTOM, iri="intent://ghost"),  # ...and an abstainer
+    }
+    assert route("sense", addrs) is BOTTOM  # nothing to route within -> honest ⊥
 
 
 # -- coverage & shape ------------------------------------------------------- #

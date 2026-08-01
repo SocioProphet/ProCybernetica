@@ -14,7 +14,7 @@ for transmitting event shape to a counterparty while withholding the descriptor
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional
+from typing import Dict, List
 
 SCHEMA_VERSION = "v0.2"
 

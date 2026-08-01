@@ -29,7 +29,7 @@ as data (the canon lives in Noetica) and does not import from Noetica.
 
 from __future__ import annotations
 
-from typing import Dict, List, Optional, Tuple
+from typing import Dict, List, Tuple
 
 from procyber.semantic.semantic_algebra import (
     ACT,
@@ -42,7 +42,6 @@ from procyber.semantic.semantic_algebra import (
     TRD,
     SemanticAddress,
     Term,
-    TermSet,
     add,
     bind_tiered,
     distance,
@@ -72,8 +71,15 @@ COLUMNS: Dict[str, Tuple[str, str]] = {
 
 
 def column_anchor(column: str) -> Term:
-    """The layer-1 anchor for a column: substrate primitive x polarity marker."""
-    substrate, polarity = COLUMNS[column]
+    """The layer-1 anchor for a column: substrate primitive x polarity marker.
+
+    Raises ValueError (not KeyError) for an unknown column — a public helper used to
+    interpret external queries names the valid columns on refusal.
+    """
+    try:
+        substrate, polarity = COLUMNS[column]
+    except KeyError:
+        raise ValueError(f"unknown column {column!r}; valid columns: {sorted(COLUMNS)}") from None
     return mul(prim(SUBSTRATE_PRIM[substrate]), prim(POLARITY_PRIM[polarity]))
 
 
@@ -162,10 +168,14 @@ def route(query_column: str, addresses: Dict[str, SemanticAddress]) -> "Term | o
     `addresses` — which is exactly what makes the `sense` wiring gap show up as an
     honest abstention rather than a mis-route.
     """
+    # Guard abstaining addresses: `addr.term is BOTTOM` has no `.layer`, so skip them
+    # rather than raise; and if there are no layer-2 topics to route within, abstain.
     topic_terms = [
         addr.term for name, addr in addresses.items()
-        if name != META_ROW and addr.term.layer == 2  # layer-2 topic rows
+        if name != META_ROW and addr.term is not BOTTOM and addr.term.layer == 2
     ]
+    if not topic_terms:
+        return BOTTOM
     upper = add(*[column_anchor(c) for c in COLUMNS])
     lower = add(*topic_terms)
     return bind_tiered(column_anchor(query_column), upper, lower)

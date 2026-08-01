@@ -23,7 +23,7 @@ and shown to catch it; that is the gate's own teeth-both-ways evidence.
 from __future__ import annotations
 
 from dataclasses import dataclass
-from typing import Callable, List, Optional, Sequence
+from typing import Callable, List, Sequence
 
 from procyber.semantic.semantic_algebra import BOTTOM, Term, TermSet, bind_tiered
 

@@ -16,7 +16,7 @@ from __future__ import annotations
 
 from typing import Dict, Tuple
 
-from procyber.semantic.semantic_algebra import VERDICT_ORDER, meet
+from procyber.semantic.semantic_algebra import meet
 
 #: A 2x2 cell: value at each corner of the unit square in the (t, u) index lattice.
 Corner = Tuple[int, int]

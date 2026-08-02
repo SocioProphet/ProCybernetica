@@ -8,7 +8,6 @@ deterministic (forensic reproducibility), and its fixed point is step-size indep
 import pytest
 
 from procyber.lawful_learning.loop import (
-    LoopResult,
     alternating_fit,
     run_lifecycle,
     _violation,
@@ -59,9 +58,19 @@ def test_deterministic_digest_forensic_reproducibility():
     assert a.digest == b.digest and a.digest != ""
 
 
-def test_invalid_eta_is_rejected():
+def test_invalid_inputs_are_rejected():
     with pytest.raises(ValueError):
-        alternating_fit([1.0, 2.0], eta=0.0)
+        alternating_fit([1.0, 2.0], eta=0.0)          # eta out of range
+    with pytest.raises(ValueError):
+        alternating_fit([])                           # empty data (no ZeroDivisionError)
+    with pytest.raises(ValueError):
+        alternating_fit([1.0, 2.0], gate0=1.5)        # gate outside [0, 1]
+
+
+def test_survives_extreme_beta_without_overflow():
+    # the sigmoid argument is clamped; a huge beta must not raise OverflowError
+    r = alternating_fit([5.0, 1.0, 4.0, 2.0], beta=1e6)
+    assert r.converged
 
 
 def test_lifecycle_is_end_to_end_and_auditable():

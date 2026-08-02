@@ -77,6 +77,10 @@ def alternating_fit(
     """Fit values to *data* under a gated monotonicity law by alternating descent."""
     if not 0.0 < eta <= 1.0:
         raise ValueError("eta must be in (0, 1]")
+    if len(data) == 0:
+        raise ValueError("data must be non-empty")
+    if not 0.0 <= gate0 <= 1.0:
+        raise ValueError("gate0 must be in [0, 1] (the theta-step is a convex combination)")
     y = [float(v) for v in data]
     mono = monotone_projection_pava(y)  # the law's projection target (fixed)
     w = float(gate0)
@@ -88,12 +92,17 @@ def alternating_fit(
         fitted = [(1.0 - w) * y[i] + w * mono[i] for i in range(len(y))]
         viol = _violation(fitted)
         fit_cost = _mse(fitted, y)
-        # gate-step: damped fixed-point toward the law/fit balance
-        target = sigmoid(beta * (viol - fit_cost))
+        # gate-step: damped fixed-point toward the law/fit balance. Clamp the sigmoid
+        # argument: toy.sigmoid is 1/(1+exp(-x)) and overflows for large-magnitude x, and
+        # this loop is a general primitive, not only for tiny toy datasets.
+        arg = max(-60.0, min(60.0, beta * (viol - fit_cost)))
+        target = sigmoid(arg)
         w_new = (1.0 - eta) * w + eta * target
         delta = abs(w_new - w)
+        # `delta` is stored UNROUNDED so `trajectory[-1].delta` agrees exactly with the
+        # `delta < tol` convergence check (rounding could inflate a near-threshold value).
         trajectory.append(
-            LoopStep(it, round(w, 12), round(fit_cost, 12), round(viol, 12), round(delta, 12))
+            LoopStep(it, round(w, 12), round(fit_cost, 12), round(viol, 12), delta)
         )
         w = w_new
         if it > 0 and delta < tol:

@@ -36,6 +36,7 @@ FRAMEWORK_FILES: Tuple[str, ...] = (
     "procyber/semantic/boundary_transition_actants.py",
     "procyber/semantic/abstraction_level_gate.py",
     "procyber/semantic/intent_address.py",
+    "procyber/semantic/octave_calibration.py",
     "procyber/semantic/spectral_grounding.py",
     "docs/SEMANTIC_COORDINATE_ALGEBRA.md",
     "docs/SEMANTIC_LAYER_ADJUNCTION.md",

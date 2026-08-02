@@ -47,3 +47,25 @@ def test_the_guard_excludes_itself(tmp_path: Path):
 def test_framework_manifest_excludes_the_guard_and_its_test():
     # self-exclusion by construction: the manifest must not list the guard/its test.
     assert not any("check_cleanroom" in rel for rel in FRAMEWORK_FILES)
+
+
+def test_manifest_covers_every_shipped_kernel_module():
+    """A module added without being registered must FAIL, not pass silently.
+
+    The manifest is hand-maintained, so the failure mode is a new kernel module
+    that the clean-room never scans while the check still reports OK. That is a
+    green control not covering the artifact — the exact thing this suite exists
+    to prevent. Discovered live: market_paradigm.py shipped and the scan count
+    did not move.
+    """
+    pkg = Path(__file__).resolve().parents[1] / "procyber" / "semantic"
+    shipped = {
+        f"procyber/semantic/{p.name}"
+        for p in pkg.glob("*.py")
+        if p.name not in {"__init__.py", "check_cleanroom.py"}
+    }
+    unregistered = shipped - set(FRAMEWORK_FILES)
+    assert not unregistered, (
+        "kernel modules missing from FRAMEWORK_FILES (clean-room would skip them): "
+        f"{sorted(unregistered)}"
+    )

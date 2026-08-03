@@ -78,6 +78,7 @@ FRAMEWORK_FILES: Tuple[str, ...] = (
     "procyber/semantic/intent_address.py",
     "procyber/semantic/spectral_grounding.py",
     "procyber/semantic/market_paradigm.py",
+    "procyber/semantic/internal_model.py",
     "docs/SEMANTIC_COORDINATE_ALGEBRA.md",
     "docs/SEMANTIC_LAYER_ADJUNCTION.md",
     "docs/SEMANTIC_CONTROL_ARCHITECTURE.md",

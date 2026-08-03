@@ -35,7 +35,7 @@ merge and filter paths into two composable operations with one shared reconcilia
 | `keter` | charter / mandate — given, never computed | — | admission receipt; the work order |
 | `chochmah` | hypothesis generation; high recall, low precision | generate | retrieval expansion |
 | `binah` | elaboration — candidate to fully-typed plan | structure | planner |
-| `daat` | internal model **+ the share/withhold balance** | hold | **unbuilt** (see §5) |
+| `daat` | internal model **+ the share/withhold balance** | hold | `semantic_algebra` + `internal_model` |
 | `chesed` | expansive — admit, generalise, glue | **pushout** | `semantic_algebra.pushout` |
 | `gevurah` | restrictive — constrain, falsify, redact, deny | **pullback** | `semantic_algebra.pullback` |
 | `tiferet` | reconciliation of the two arms | **meet** | `semantic_algebra.meet` |
@@ -107,13 +107,16 @@ receiving the subject.
 - `spectral_grounding` — supermodularity = `meet`, per-cell clipping = half-space
   `pullback`, proven both ways
 - `market_paradigm` — cross-source superset; see `SEMANTIC_MARKET_PARADIGM.md`
+- `internal_model` — the `daat` organ: five admit rules, five withhold rules, and the
+  equilibrium between them. The admit arm is the maximum over applicable rules (the
+  best case for sharing); the withhold arm is the minimum (the most restrictive
+  ceiling governs); the decision is their `meet`. Because `meet` is the lattice
+  minimum and absorbs `BOTTOM`, **an admit signal cannot authorise a share on its
+  own, and an arm that was never evaluated abstains rather than defaulting open** —
+  both fall out of the algebra rather than needing a special case.
 
 **Not built:**
 
-- **`daat`** — the internal model holding the share/withhold equilibrium. The
-  intended rule is that a share is emitted only where the meet of the admit and
-  withhold arms clears, never on an admit signal alone. This is the largest gap: the
-  axis is declarable today but nothing computes it.
 - **`yesod` chokepoint** — a single serialisation path for outbound boundary
   objects, with a build-time check that no second path exists. Partial.
 - **anti-forgetting probe** — incorporation of foreign experience gated on a

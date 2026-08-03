@@ -1,0 +1,116 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/control_node.schema.json",
+  "title": "ProCybernetica ControlNode registry",
+  "description": "Closes ADR-0002 (Governed Cognition as an Emergent Functor) §8 GAP-3 / prophet-workspace#85, L2 (Fractal Control Fabric). ADR-0002's Layer 2 names 11 control-node types and states that repos, agents, services, gateways, and hosts are 'treated as lawful control nodes' — but they were prose, not a typed, enforceable set. This contract makes the 11 first-class as a CLOSED enum and binds each lawful control node to (a) exactly one of the 11 node_type control functions, (b) the concrete estate resource it governs (repo/agent/service/gateway/host), and (c) its lawful-promotion obligations (which membrane gates the resource must cross to act). The 11 types are the canonical set enumerated in docs/ORIENTATION_FOR_ENGINEERS.md and ADR-0002 L2; this schema does not fork the rich NodeDescriptor (node_descriptor.schema.json) — a ControlNode may point at a full descriptor via descriptor_ref. A resource may embody more than one control function (e.g. a receipt-gateway is both Observability and Execution) as separate ControlNode records over the same resource.ref; what is forbidden is the SAME control function claimed twice for one resource (enforced cross-record by tools/cybernetic_governance/validate_control_node.py).",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "nodes"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "kind": { "const": "ControlNodeRegistry" },
+    "registry_id": { "$ref": "#/$defs/id" },
+    "nodes": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/control_node" }
+    }
+  },
+  "$defs": {
+    "control_node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["node_id", "node_type", "resource", "obligations"],
+      "properties": {
+        "node_id": {
+          "$ref": "#/$defs/id",
+          "description": "Lawful identity of this control node. Unique across the registry (duplicate identity is rejected — see validate_control_node.py CN-T4)."
+        },
+        "node_type": {
+          "description": "The control function this node performs. CLOSED enum of the 11 ProCybernetica Fractal-Control-Fabric control-node types (ADR-0002 L2; docs/ORIENTATION_FOR_ENGINEERS.md). PascalCase tokens map to the prose names: WorldModel='World Model', ValueJudgment='Value Judgment', BehaviorGeneration='Behavior Generation'.",
+          "enum": [
+            "Identity",
+            "Lifecycle",
+            "Interfaces",
+            "Memory",
+            "WorldModel",
+            "ValueJudgment",
+            "BehaviorGeneration",
+            "Execution",
+            "Learning",
+            "Coordination",
+            "Observability"
+          ]
+        },
+        "resource": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["kind", "ref"],
+          "description": "The concrete estate resource this node governs. ADR-0002 L2: 'repos/agents/services/gateways/hosts are treated as lawful control nodes.'",
+          "properties": {
+            "kind": {
+              "enum": ["repo", "agent", "service", "gateway", "host"]
+            },
+            "ref": {
+              "type": "string",
+              "minLength": 1,
+              "description": "Stable reference to the resource, e.g. 'agent-registry' (repo), 'prophet-platform/apps/receipt-gateway' (service/gateway)."
+            }
+          }
+        },
+        "obligations": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["membrane_gates"],
+          "description": "Lawful-promotion obligations: which governance-membrane gates (ADR-0002 L3) this node's resource MUST cross to take a state-changing action. A control node that governs a resource with no declared obligation is rejected (CN-T3) — no lawful control node may act ungated.",
+          "properties": {
+            "membrane_gates": {
+              "type": "array",
+              "minItems": 1,
+              "uniqueItems": true,
+              "description": "CLOSED enum of the estate's real membrane gates (ADR-0002 L3/§7). An obligation naming a gate that does not exist is rejected (CN-T6).",
+              "items": {
+                "enum": [
+                  "capability-membrane",
+                  "pr-merge-gate",
+                  "purpose-admissibility",
+                  "region-residency",
+                  "policy-fabric-pre-dispatch",
+                  "autonomy-admission",
+                  "image-promotion-gate",
+                  "promotion-decision",
+                  "proof-artifact-publish",
+                  "inference-receipt"
+                ]
+              }
+            }
+          }
+        },
+        "node_class": {
+          "description": "Optional cross-reference to the NodeDescriptor node_class of the governed resource (node_descriptor.schema.json). Consume-not-fork: kept in lockstep with that enum.",
+          "enum": [
+            "repository",
+            "agent",
+            "process",
+            "planner",
+            "executor",
+            "sensor",
+            "gateway",
+            "operator",
+            "robot",
+            "service",
+            "host",
+            "artifact_store"
+          ]
+        },
+        "descriptor_ref": {
+          "anyOf": [{ "$ref": "#/$defs/id" }, { "type": "null" }],
+          "description": "Optional node_id of the full ProCybernetica NodeDescriptor for this resource (node_descriptor.schema.json). This contract deliberately stays thin and does not duplicate the descriptor's constitutional blocks."
+        },
+        "created_at": { "$ref": "#/$defs/timestamp" }
+      }
+    },
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" },
+    "timestamp": { "type": "string", "format": "date-time" }
+  }
+}

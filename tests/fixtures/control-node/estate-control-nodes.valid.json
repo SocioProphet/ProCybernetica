@@ -1,0 +1,51 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "ControlNodeRegistry",
+  "registry_id": "procyber:control-node-registry:adr-0002-gap3",
+  "nodes": [
+    {
+      "node_id": "cn:agent-registry:identity",
+      "node_type": "Identity",
+      "resource": { "kind": "repo", "ref": "agent-registry" },
+      "obligations": { "membrane_gates": ["capability-membrane", "pr-merge-gate"] },
+      "node_class": "repository",
+      "descriptor_ref": null,
+      "created_at": "2026-08-03T00:00:00Z"
+    },
+    {
+      "node_id": "cn:policy-fabric:value-judgment",
+      "node_type": "ValueJudgment",
+      "resource": { "kind": "service", "ref": "policy-fabric" },
+      "obligations": { "membrane_gates": ["purpose-admissibility", "region-residency"] },
+      "node_class": "service"
+    },
+    {
+      "node_id": "cn:receipt-gateway:observability",
+      "node_type": "Observability",
+      "resource": { "kind": "gateway", "ref": "prophet-platform/apps/receipt-gateway" },
+      "obligations": { "membrane_gates": ["proof-artifact-publish", "inference-receipt"] },
+      "node_class": "gateway"
+    },
+    {
+      "node_id": "cn:receipt-gateway:execution",
+      "node_type": "Execution",
+      "resource": { "kind": "gateway", "ref": "prophet-platform/apps/receipt-gateway" },
+      "obligations": { "membrane_gates": ["capability-membrane"] },
+      "node_class": "gateway"
+    },
+    {
+      "node_id": "cn:sp-orchestrator:coordination",
+      "node_type": "Coordination",
+      "resource": { "kind": "service", "ref": "sp-orchestrator" },
+      "obligations": { "membrane_gates": ["pr-merge-gate", "promotion-decision"] },
+      "node_class": "service"
+    },
+    {
+      "node_id": "cn:gaia-world-model:world-model",
+      "node_type": "WorldModel",
+      "resource": { "kind": "service", "ref": "gaia-world-model" },
+      "obligations": { "membrane_gates": ["proof-artifact-publish"] },
+      "node_class": "service"
+    }
+  ]
+}

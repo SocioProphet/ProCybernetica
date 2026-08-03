@@ -1,0 +1,18 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "ControlNodeRegistry",
+  "nodes": [
+    {
+      "node_id": "cn:agent-registry:identity",
+      "node_type": "Identity",
+      "resource": { "kind": "repo", "ref": "agent-registry" },
+      "obligations": { "membrane_gates": ["capability-membrane"] }
+    },
+    {
+      "node_id": "cn:agent-registry:identity",
+      "node_type": "Lifecycle",
+      "resource": { "kind": "repo", "ref": "agent-registry" },
+      "obligations": { "membrane_gates": ["pr-merge-gate"] }
+    }
+  ]
+}

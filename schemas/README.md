@@ -31,6 +31,7 @@ The canonical v0 schema files are:
 - `claim.schema.json` — public claim object for practicum and evidence surfaces.
 - `provenance_record.schema.json` — source and evidence lineage record.
 - `capability_descriptor.schema.json` — high-level capability gateway descriptor.
+- `control_node.schema.json` — Fractal-Control-Fabric ControlNode registry: binds each lawful control node to one of the 11 control-node types (closed enum), the concrete resource it governs (repo/agent/service/gateway/host), and its lawful-promotion obligations (which membrane gates apply). Closes ADR-0002 §8 GAP-3 / prophet-workspace#85. Validated by `tools/cybernetic_governance/validate_control_node.py` (`make control-node-ci`).
 
 ## Validation lane
 

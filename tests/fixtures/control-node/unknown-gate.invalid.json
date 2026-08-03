@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "ControlNodeRegistry",
+  "nodes": [
+    {
+      "node_id": "cn:policy-fabric:value-judgment",
+      "node_type": "ValueJudgment",
+      "resource": { "kind": "service", "ref": "policy-fabric" },
+      "obligations": { "membrane_gates": ["purpose-admissibility", "made-up-gate"] }
+    }
+  ]
+}

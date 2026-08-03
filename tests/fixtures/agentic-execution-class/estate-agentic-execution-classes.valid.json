@@ -1,0 +1,101 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "AgenticExecutionClassRegistry",
+  "registry_id": "procyber:agentic-execution-class-registry:ibm-open-stack-v5",
+  "bindings": [
+    {
+      "binding_id": "aec:grounding-safe-read:retrieval",
+      "execution_class": "grounding_safe_read",
+      "agent_class": "app_helper",
+      "control_node_type": "Memory",
+      "semantic_sublayer": "retrieval_semantics",
+      "coordinate_axis": "yesod",
+      "autonomy": "Autonomous reads/search; source/config changes gated",
+      "risk_tier": "high",
+      "source_block": "Retrieval / knowledge / search (Watson Discovery)",
+      "rationale": "Trusted retrieval is a Memory/context node; retrieval semantics rest on yesod, the foundation/transmission axis that turns content into agent context."
+    },
+    {
+      "binding_id": "aec:grounding-safe-read:metrics",
+      "execution_class": "grounding_safe_read",
+      "agent_class": "app_helper",
+      "control_node_type": "Observability",
+      "semantic_sublayer": "metrics_semantics",
+      "coordinate_axis": "hod",
+      "autonomy": "Read-only answers; metric changes gated",
+      "risk_tier": "medium_high",
+      "source_block": "Conversational analytics (watsonx BI)",
+      "rationale": "Trusted metric lookup is an Observability node; metrics semantics rest on hod, the measurement/precision axis."
+    },
+    {
+      "binding_id": "aec:grounding-safe-read:graph-krr",
+      "execution_class": "grounding_safe_read",
+      "agent_class": "app_helper",
+      "control_node_type": "WorldModel",
+      "semantic_sublayer": "graph_krr",
+      "coordinate_axis": "daat",
+      "autonomy": "Read/query by default; schema/rule updates gated",
+      "risk_tier": "high",
+      "source_block": "Cross-cutting knowledge layer (Graph / KR&R)",
+      "rationale": "Explicit relations and multi-hop reasoning are the WorldModel node; graph/KR&R rests on daat, the knowledge axis."
+    },
+    {
+      "binding_id": "aec:policy-audit-oversight:glossary",
+      "execution_class": "policy_audit_oversight",
+      "agent_class": "system_core",
+      "control_node_type": "ValueJudgment",
+      "semantic_sublayer": "glossary_ontology",
+      "coordinate_axis": "binah",
+      "autonomy": "Read + propose; steward-approved semantic and policy changes",
+      "risk_tier": "critical",
+      "source_block": "Model governance (watsonx.governance); Metadata/semantics (watsonx.data intelligence)",
+      "rationale": "Policy/audit oversight is the ValueJudgment node run by system_core; the glossary/ontology sub-layer rests on binah, the structured-understanding axis that carries canonical class/property semantics."
+    },
+    {
+      "binding_id": "aec:tool-with-approval:orchestrate",
+      "execution_class": "tool_with_approval",
+      "agent_class": "app_helper",
+      "control_node_type": "Execution",
+      "autonomy": "Low-risk actions may auto-run; privileged or cross-system actions gated",
+      "risk_tier": "critical",
+      "source_block": "Agent runtime & orchestration (watsonx Orchestrate)"
+    },
+    {
+      "binding_id": "aec:tool-autonomous-safe-write:rpa",
+      "execution_class": "tool_autonomous_safe_write",
+      "agent_class": "intelligence_automation",
+      "control_node_type": "BehaviorGeneration",
+      "autonomy": "Pre-approved safe actions auto-run; destructive or broad writes gated",
+      "risk_tier": "high",
+      "source_block": "RPA / task automation (Robotic Process Automation Platform)"
+    },
+    {
+      "binding_id": "aec:inter-agent-coordination:event-backbone",
+      "execution_class": "inter_agent_coordination",
+      "agent_class": "intelligence_automation",
+      "control_node_type": "Coordination",
+      "autonomy": "Approved publishers/consumers run autonomously within scoped topics",
+      "risk_tier": "high",
+      "source_block": "Messaging & event backbone (MQ + Event Streams + Event Endpoint Management + Event Processing)"
+    },
+    {
+      "binding_id": "aec:human-workflow-system:baw",
+      "execution_class": "human_workflow_system",
+      "agent_class": "app_helper",
+      "control_node_type": "Lifecycle",
+      "autonomy": "Agents can propose or start cases; human-task checkpoints govern completion",
+      "risk_tier": "critical",
+      "source_block": "Workflow / case automation (Business Automation Workflow + App Engine + Workstream services)"
+    },
+    {
+      "binding_id": "aec:acp-client-ide:code-assistant",
+      "execution_class": "acp_client_ide",
+      "agent_class": "third_party",
+      "control_node_type": "Interfaces",
+      "autonomy": "Propose patches and run analysis; apply/merge gated by developer workflow",
+      "risk_tier": "high",
+      "source_block": "Developer AI & modernization (watsonx Code Assistant)",
+      "rationale": "An IDE/client agent's trust boundary is the client/editor session — the Interfaces node; a coding copilot maps to the third_party agent_class under branch protection and PR gates."
+    }
+  ]
+}

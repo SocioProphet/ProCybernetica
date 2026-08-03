@@ -1,0 +1,45 @@
+name: agentic-execution-class
+
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "schemas/agentic_execution_class.schema.json"
+      - "schemas/control_node.schema.json"
+      - "contracts/AgentCoordinateVector.v0.1.json"
+      - "tools/cybernetic_governance/validate_agentic_execution_class.py"
+      - "tests/fixtures/agentic-execution-class/**"
+      - "tests/test_agentic_execution_class.py"
+      - ".github/workflows/agentic-execution-class.yml"
+  push:
+    branches: [main]
+    paths:
+      - "schemas/agentic_execution_class.schema.json"
+      - "schemas/control_node.schema.json"
+      - "contracts/AgentCoordinateVector.v0.1.json"
+      - "tools/cybernetic_governance/validate_agentic_execution_class.py"
+      - "tests/fixtures/agentic-execution-class/**"
+      - "tests/test_agentic_execution_class.py"
+      - ".github/workflows/agentic-execution-class.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  agentic-execution-class:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install package and test dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e . pytest
+      # Teeth both ways: the estate registry validates; unknown execution class / undeclared ontology
+      # node / unknown agent_class / semantic sub-layer not in the map / unknown coordinate axis /
+      # dangling semantic binding / duplicate identity / duplicate triple are rejected. The consumed
+      # estate enums (AgentCoordinateVector; ControlNode #124 when present) are reconciled, not forked.
+      - name: Validate Agentic Execution Class registries (prophet-workspace#108 item 4)
+        run: make agentic-execution-class-ci

@@ -1,0 +1,108 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.socioprophet.org/procybernetica/agentic_execution_class.schema.json",
+  "title": "Agentic Execution Class registry",
+  "description": "Integrates the IBM open-stack v5 'agentic execution' model (ibm_open_stack_inventory_v5_agentic_execution_remounted.xlsx: sheets Execution_Class_Legend, Semantic_SubLayer_Map, Agentic_Execution_Model) into the estate Agent Ontology, per prophet-workspace#108 (item 4). Consume-not-fork: it does not restate the ontology — it BINDS the v5 execution classes to already-owned estate types. Each binding maps exactly one of the seven v5 execution classes to (a) a ProCybernetica ControlNode node_type — the Agent-Ontology / Fractal-Control-Fabric node the class acts as (schemas/control_node.schema.json, ADR-0002 L2, ProCybernetica#124), and (b) an AgentPassport agent_class — the host-level typed agent authorized to run it (sourceos-spec schemas/AgentPassport.json, T0-1; five-class model realized as OWL/SHACL in ontogenesis T1, ontogenesis#140). A binding MAY additionally bind one of the four v5 semantic sub-layers (Semantic_SubLayer_Map) to the estate semantic coordinate — an AgentCoordinateVector sefirotic axis (contracts/AgentCoordinateVector.v0.1.json) — as a both-or-neither semantic block. Teeth both ways are carried by tools/cybernetic_governance/validate_agentic_execution_class.py: a binding onto a valid node + a valid agent_class VERIFIES; a binding referencing an undeclared ontology node, an unknown agent_class, or a semantic sub-layer not in the map is REJECTED. Runtime execution routing per class (dispatch, gate selection, autonomy enforcement) is out of scope here and filed as follow-up @mdheller.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "kind", "bindings"],
+  "properties": {
+    "schema_version": { "type": "string", "minLength": 1 },
+    "kind": { "const": "AgenticExecutionClassRegistry" },
+    "registry_id": { "$ref": "#/$defs/id" },
+    "bindings": {
+      "type": "array",
+      "minItems": 1,
+      "items": { "$ref": "#/$defs/execution_class_binding" }
+    }
+  },
+  "$defs": {
+    "execution_class_binding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["binding_id", "execution_class", "agent_class", "control_node_type"],
+      "description": "Binds one v5 execution class to the estate ontology node + agent_class it runs as. The optional semantic block binds a v5 semantic sub-layer to an estate semantic coordinate axis.",
+      "properties": {
+        "binding_id": {
+          "$ref": "#/$defs/id",
+          "description": "Lawful identity of this binding. Unique across the registry (AEC-T6)."
+        },
+        "execution_class": {
+          "description": "The v5 execution class this binding types (Execution_Class_Legend). CLOSED enum of the seven classes. Tokens map to the legend prose: grounding_safe_read='Grounding + safe read tools'; tool_with_approval='Tool with approval'; tool_autonomous_safe_write='Tool with autonomous safe-write'; inter_agent_coordination='Inter-agent coordination'; policy_audit_oversight='Policy / audit oversight'; human_workflow_system='Human workflow system'; acp_client_ide='ACP client / IDE'.",
+          "enum": [
+            "grounding_safe_read",
+            "tool_with_approval",
+            "tool_autonomous_safe_write",
+            "inter_agent_coordination",
+            "policy_audit_oversight",
+            "human_workflow_system",
+            "acp_client_ide"
+          ]
+        },
+        "control_node_type": {
+          "description": "The Agent-Ontology node this execution class acts as: one of the 11 ProCybernetica Fractal-Control-Fabric control-node types (schemas/control_node.schema.json, ADR-0002 L2, ProCybernetica#124). Consume-not-fork: kept in lockstep with that contract's node_type enum; the validator reconciles the two (AEC-T2) whenever control_node.schema.json is present. Referencing a token outside this closed set is rejected — 'an execution class referencing an undeclared ontology node is REJECTED'.",
+          "enum": [
+            "Identity",
+            "Lifecycle",
+            "Interfaces",
+            "Memory",
+            "WorldModel",
+            "ValueJudgment",
+            "BehaviorGeneration",
+            "Execution",
+            "Learning",
+            "Coordination",
+            "Observability"
+          ]
+        },
+        "agent_class": {
+          "description": "The AgentPassport host-level typed agent authorized to run this execution class (sourceos-spec schemas/AgentPassport.json, T0-1; realized as OWL/SHACL in ontogenesis T1 / ontogenesis#140). CLOSED five-class enum, consumed verbatim. An unknown agent_class (e.g. 'anySource', which the estate never admits) is rejected (AEC-T3).",
+          "enum": [
+            "system_core",
+            "intelligence_automation",
+            "app_helper",
+            "legacy_bridge",
+            "third_party"
+          ]
+        },
+        "semantic_sublayer": {
+          "description": "Optional. One of the four v5 semantic sub-layers (Semantic_SubLayer_Map). Both-or-neither with coordinate_axis (dependentRequired). Tokens map to the map prose: glossary_ontology='Glossary / ontology'; metrics_semantics='Metrics semantics'; retrieval_semantics='Retrieval semantics'; graph_krr='Graph / KR&R'. A sub-layer not in the map is rejected (AEC-T4).",
+          "enum": [
+            "glossary_ontology",
+            "metrics_semantics",
+            "retrieval_semantics",
+            "graph_krr"
+          ]
+        },
+        "coordinate_axis": {
+          "description": "Optional. The estate semantic coordinate the sub-layer binds to: one of the eleven AgentCoordinateVector sefirotic axes (contracts/AgentCoordinateVector.v0.1.json). Both-or-neither with semantic_sublayer. Reconciled against that contract's coordinate set by the validator (AEC-T5).",
+          "enum": [
+            "keter", "chochmah", "binah", "daat", "chesed", "gevurah",
+            "tiferet", "netzach", "hod", "yesod", "malchut"
+          ]
+        },
+        "autonomy": {
+          "type": "string",
+          "description": "Optional free-text autonomy posture carried from the v5 Suggested Autonomy column (e.g. 'Autonomous reads; config changes gated'). Descriptive provenance only; not enforced here (runtime enforcement is the deferred follow-up)."
+        },
+        "risk_tier": {
+          "description": "Optional risk tier carried from the v5 Risk Tier column.",
+          "enum": ["critical", "high", "medium_high", "medium"]
+        },
+        "source_block": {
+          "type": "string",
+          "description": "Optional provenance: the v5 capability plane / IBM offer this binding was derived from (Agentic_Execution_Model), e.g. 'Agent runtime & orchestration (watsonx Orchestrate)'."
+        },
+        "rationale": {
+          "type": "string",
+          "description": "Optional human-readable note explaining the node/agent_class/coordinate choice."
+        }
+      },
+      "dependentRequired": {
+        "semantic_sublayer": ["coordinate_axis"],
+        "coordinate_axis": ["semantic_sublayer"]
+      }
+    },
+    "id": { "type": "string", "minLength": 1, "pattern": "^[A-Za-z0-9._:/@#-]+$" }
+  }
+}

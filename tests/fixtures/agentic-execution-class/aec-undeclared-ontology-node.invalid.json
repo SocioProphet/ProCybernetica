@@ -1,0 +1,13 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "AgenticExecutionClassRegistry",
+  "registry_id": "procyber:aec:undeclared-node",
+  "bindings": [
+    {
+      "binding_id": "aec:bad:node",
+      "execution_class": "tool_with_approval",
+      "agent_class": "app_helper",
+      "control_node_type": "Consciousness"
+    }
+  ]
+}

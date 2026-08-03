@@ -32,6 +32,7 @@ The canonical v0 schema files are:
 - `provenance_record.schema.json` — source and evidence lineage record.
 - `capability_descriptor.schema.json` — high-level capability gateway descriptor.
 - `control_node.schema.json` — Fractal-Control-Fabric ControlNode registry: binds each lawful control node to one of the 11 control-node types (closed enum), the concrete resource it governs (repo/agent/service/gateway/host), and its lawful-promotion obligations (which membrane gates apply). Closes ADR-0002 §8 GAP-3 / prophet-workspace#85. Validated by `tools/cybernetic_governance/validate_control_node.py` (`make control-node-ci`).
+- `agentic_execution_class.schema.json` — Agentic Execution Class registry: integrates the IBM open-stack v5 "agentic execution" model into the estate Agent Ontology (consume-not-fork). Binds each of the seven v5 execution classes to a ProCybernetica ControlNode node_type (the ontology node, #124), an AgentPassport agent_class (sourceos-spec, T0-1 / ontogenesis#140), and — for the four v5 semantic sub-layers — an AgentCoordinateVector sefirotic axis. Closes prophet-workspace#108 (item 4). Validated by `tools/cybernetic_governance/validate_agentic_execution_class.py` (`make agentic-execution-class-ci`).
 
 ## Validation lane
 

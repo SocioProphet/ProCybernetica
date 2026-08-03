@@ -1,0 +1,14 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "AgenticExecutionClassRegistry",
+  "registry_id": "procyber:aec:dangling-semantic",
+  "bindings": [
+    {
+      "binding_id": "aec:bad:dangling",
+      "execution_class": "grounding_safe_read",
+      "agent_class": "app_helper",
+      "control_node_type": "Memory",
+      "semantic_sublayer": "retrieval_semantics"
+    }
+  ]
+}

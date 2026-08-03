@@ -40,6 +40,8 @@ FRAMEWORK_FILES: Tuple[str, ...] = (
     "procyber/semantic/market_paradigm.py",
     "docs/SEMANTIC_COORDINATE_ALGEBRA.md",
     "docs/SEMANTIC_LAYER_ADJUNCTION.md",
+    "docs/SEMANTIC_CONTROL_ARCHITECTURE.md",
+    "docs/SEMANTIC_MARKET_PARADIGM.md",
     "contracts/AgentCoordinateVector.v0.1.json",
     "contracts/BoundaryTransition.v0.2.json",
     "contracts/examples/agent-coordinate-vector-michael-agent.example.json",

@@ -69,3 +69,19 @@ def test_manifest_covers_every_shipped_kernel_module():
         "kernel modules missing from FRAMEWORK_FILES (clean-room would skip them): "
         f"{sorted(unregistered)}"
     )
+
+
+def test_manifest_covers_every_kernel_doc():
+    """Same gap, different artifact class: an unregistered doc is an unscanned doc.
+
+    The kernel's docs share the `SEMANTIC_` prefix precisely so one glob makes
+    this check total. A doc added outside that family would not be caught here,
+    which is why the prefix is a convention rather than a preference.
+    """
+    docs = Path(__file__).resolve().parents[1] / "docs"
+    shipped = {f"docs/{p.name}" for p in docs.glob("SEMANTIC_*.md")}
+    unregistered = shipped - set(FRAMEWORK_FILES)
+    assert not unregistered, (
+        "kernel docs missing from FRAMEWORK_FILES (clean-room would skip them): "
+        f"{sorted(unregistered)}"
+    )

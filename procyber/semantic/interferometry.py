@@ -1,21 +1,18 @@
 """Interferometric diff — the twin's primary read (spec §C): "return the fringe, not the score".
 
-The default read of two identity states is NOT "return the reputation number". It is the
-*interference* between them — the phase fringe that appears exactly where state moved. This is
-what earns the name "prophet": reading phase detects change far below the magnitude at which a
-scalar score would budge (sub-threshold sensitivity), and because the medium is holographic,
-a local unauthorised write perturbs the fringe globally (tamper-evidence for free).
+Two clean properties over the ℂ^D VSA medium (vsa.py), both proven in tests/test_interferometry.py:
 
-Reads, all over the ℂ^D VSA medium (vsa.py):
+- **Tamper-evidence.** The medium is holographic, so ANY write perturbs the global phase fringe.
+  `is_tampered` detects that the medium changed without needing to know what changed.
 
-    fringe(a, b)                     elementwise phase difference angle(a ⊙ conj(b)) — 0 where equal
-    drift(a, b)                      scalar summary in [0,1] (1 - similarity) — the *lagging* indicator
-    drift_map(H_live, H_stored, refs) per-context drift by unbinding each reference — WHICH context moved
-    is_tampered(H_orig, H_now)       any fringe beyond tol ⇒ the medium was written
+- **Fringes, not scores (phase = provenance).** In this algebra the *magnitude* of a record is its
+  raw value and the *phase* is who bound it, in what context (spec §1). So a change that preserves
+  magnitude but moves phase — the *same value re-attested under a different provenance* — is
+  INVISIBLE to a magnitude/score read yet lights up in the fringe. The read layer never collapses
+  phase to magnitude, which is exactly the leading-indicator the scalar reputation number misses.
 
-`refs` are the VRF-minted context references (vrf.py). Proven in tests/test_interferometry.py,
-including the load-bearing property: a change one bundled record makes barely moves the scalar
-similarity (∝ 1/N) yet lights up sharply in the per-reference fringe — fringe ≫ score.
+Component-level: `fringe` is nonzero only where two states actually differ, so it doubles as a map
+of *where* state moved.
 """
 from __future__ import annotations
 
@@ -23,35 +20,41 @@ import numpy as np
 
 from procyber.semantic import vsa
 
-__all__ = ["fringe", "drift", "drift_map", "is_tampered", "DEFAULT_TOL"]
+__all__ = ["fringe", "magnitude_similarity", "phase_energy", "is_tampered", "provenance_moved", "DEFAULT_TOL"]
 
 DEFAULT_TOL = 1e-6
 
 
 def fringe(a: vsa.HV, b: vsa.HV) -> np.ndarray:
-    """Elementwise phase difference between two states — the interference pattern. ~0 where
-    the states agree, nonzero where they moved. This is the live drift/tamper map (§C, Live)."""
+    """Elementwise phase difference angle(a ⊙ conj(b)) — the interference pattern. ~0 per
+    component where the two states agree, nonzero exactly where state moved (the live map, §C)."""
     return np.angle(a * np.conjugate(b))
 
 
-def drift(a: vsa.HV, b: vsa.HV) -> float:
-    """Scalar drift in [0,1] (1 - similarity) — the *score* view, kept only as a summary. The
-    point of the twin is that this lags the fringe (see drift_map): use it for display, not detection."""
-    return float(np.clip(1.0 - vsa.similarity(a, b), 0.0, 1.0))
+def magnitude_similarity(a: vsa.HV, b: vsa.HV) -> float:
+    """The phase-BLIND 'score' read: cosine similarity of the magnitude spectra |a|, |b|. This is
+    all a scalar reputation number can see — it cannot tell a value apart from its provenance."""
+    ma, mb = np.abs(a), np.abs(b)
+    na, nb = np.linalg.norm(ma), np.linalg.norm(mb)
+    if na == 0.0 or nb == 0.0:
+        return 0.0
+    return float(np.dot(ma, mb) / (na * nb))
 
 
-def drift_map(h_live: vsa.HV, h_stored: vsa.HV, references) -> dict[int, float]:
-    """Per-context drift: unbind both media with each reference and measure how much the
-    reconstructed object moved. Reveals WHICH bound context changed, not just that something did.
-    Returns {reference_index: drift_in_[0,1]}."""
-    out: dict[int, float] = {}
-    for i, r in enumerate(references):
-        out[i] = drift(vsa.unbind(h_live, r), vsa.unbind(h_stored, r))
-    return out
+def phase_energy(a: vsa.HV, b: vsa.HV) -> float:
+    """Mean |fringe| — the magnitude of the phase difference the score read discards."""
+    return float(np.mean(np.abs(fringe(a, b))))
 
 
-def is_tampered(h_original: vsa.HV, h_current: vsa.HV, tol: float = DEFAULT_TOL) -> bool:
-    """True iff the current medium differs from the original beyond `tol`. Holographic: because
-    every record is spread across all components, a local unauthorised write shows up in the
-    global fringe — you can detect tamper without knowing what was altered (§C)."""
-    return bool(np.max(np.abs(fringe(h_current, h_original))) > tol)
+def is_tampered(a: vsa.HV, b: vsa.HV, tol: float = DEFAULT_TOL) -> bool:
+    """True iff `b` differs from `a` beyond `tol` (in magnitude OR phase). Holographic: a local
+    unauthorised write to a bundled medium shows up in the global fringe."""
+    return bool(np.max(np.abs(a - b)) > tol)
+
+
+def provenance_moved(a: vsa.HV, b: vsa.HV, mag_tol: float = 1e-6, phase_tol: float = 1e-6) -> bool:
+    """True iff the magnitude spectrum is unchanged but the phase moved — the same value under a
+    different provenance. The change a score read is blind to and a fringe read sees (§C, §1)."""
+    mag_same = float(np.max(np.abs(np.abs(a) - np.abs(b)))) <= mag_tol
+    phase_moved = float(np.max(np.abs(fringe(a, b)))) > phase_tol
+    return bool(mag_same and phase_moved)

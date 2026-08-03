@@ -13,61 +13,56 @@ def _medium(n: int, seed: int):
     rng = np.random.default_rng(seed)
     objs = [vsa.random_hv(D, rng) for _ in range(n)]
     refs = [vsa.random_hv(D, rng) for _ in range(n)]
-    H = vsa.bundle_bound(list(zip(objs, refs)))
-    return H, objs, refs, rng
+    return vsa.bundle_bound(list(zip(objs, refs))), objs, refs, rng
 
 
 def test_no_fringe_on_identical_states():
-    H, _, refs, _ = _medium(5, 1)
+    H, _, _, _ = _medium(5, 1)
     assert np.max(np.abs(itf.fringe(H, H))) < 1e-9
-    assert itf.drift(H, H) < 1e-9
     assert itf.is_tampered(H, H) is False
-    assert all(d < 1e-9 for d in itf.drift_map(H, H, refs).values())
-
-
-def test_drift_map_localizes_the_changed_context():
-    H, objs, refs, rng = _medium(5, 2)
-    objs2 = list(objs)
-    objs2[2] = vsa.random_hv(D, rng)  # change only context #2's attestation
-    H2 = vsa.bundle_bound(list(zip(objs2, refs)))
-    dm = itf.drift_map(H, H2, refs)
-    changed = max(dm, key=dm.get)
-    assert changed == 2, f"drift_map pointed at {changed}, not the changed context 2 ({dm})"
-    assert dm[2] > 3 * max(dm[i] for i in dm if i != 2), f"change not isolated: {dm}"
-
-
-def test_subthreshold_fringe_beats_score():
-    # THE thesis: one changed record among N barely moves the scalar similarity (∝ 1/N) yet
-    # lights up sharply in the per-reference fringe. The prophet reads fringes, not scores.
-    N = 32
-    H, objs, refs, rng = _medium(N, 3)
-    objs2 = list(objs)
-    objs2[7] = vsa.random_hv(D, rng)
-    H2 = vsa.bundle_bound(list(zip(objs2, refs)))
-    scalar = vsa.similarity(H, H2)          # the "score" read
-    fringe_at_change = itf.drift_map(H, H2, refs)[7]  # the phase read
-    assert scalar > 0.9, f"scalar moved too much to make the point: {scalar:.3f}"
-    assert fringe_at_change > 0.4, f"fringe failed to detect the sub-threshold change: {fringe_at_change:.3f}"
-    assert fringe_at_change > 4 * (1.0 - scalar), "fringe not sharper than the score"
+    assert itf.provenance_moved(H, H) is False
 
 
 def test_tamper_is_evident():
     H, objs, refs, rng = _medium(8, 4)
     objs2 = list(objs)
-    objs2[0] = vsa.random_hv(D, rng)
-    H_tampered = vsa.bundle_bound(list(zip(objs2, refs)))
-    assert itf.is_tampered(H, H_tampered) is True
+    objs2[0] = vsa.random_hv(D, rng)  # one record rewritten
+    assert itf.is_tampered(H, vsa.bundle_bound(list(zip(objs2, refs)))) is True
     assert itf.is_tampered(H, H) is False
 
 
+def test_fringes_not_scores__same_value_different_provenance():
+    # THE thesis: an attestation of the SAME value under a DIFFERENT provenance (reference) has
+    # identical magnitude — a score read sees no change — but a nonzero phase fringe. Phase is
+    # who bound it; magnitude is the raw value. The prophet reads the fringe.
+    rng = np.random.default_rng(3)
+    value = vsa.random_hv(D, rng)
+    prov_A = vsa.random_hv(D, rng)
+    prov_B = vsa.random_hv(D, rng)
+    record_A = vsa.bind(value, prov_A)
+    record_B = vsa.bind(value, prov_B)
+    assert itf.magnitude_similarity(record_A, record_B) == \
+        __import__("pytest").approx(1.0, abs=1e-9), "magnitudes must be identical (score is blind)"
+    assert itf.phase_energy(record_A, record_B) > 0.5, "the fringe must see the provenance change"
+    assert itf.provenance_moved(record_A, record_B) is True
+
+
+def test_fringe_is_local_to_where_state_moved():
+    # A change confined to a slice of components leaves the fringe ~0 elsewhere — a map of *where*.
+    rng = np.random.default_rng(5)
+    a = vsa.random_hv(D, rng)
+    b = a.copy()
+    b[100:110] = vsa.random_hv(10, rng)  # move only 10 components
+    f = np.abs(itf.fringe(a, b))
+    assert np.max(f[:100]) < 1e-9 and np.max(f[110:]) < 1e-9
+    assert np.max(f[100:110]) > 1e-6
+
+
 def test_reads_over_vrf_minted_references():
-    # Integration: the references are VRF-minted (vrf.py), and the diff still localises.
+    # Integration with vrf.py: same value under two VRF-minted context references ⇒ provenance moved.
     sk, _ = vrf.keygen(seed=bytes(range(32)))
     rng = np.random.default_rng(9)
-    contexts = [f"ctx-{i}".encode() for i in range(4)]
-    refs = [vrf.context_reference(vrf.mint(sk, c)) for c in contexts]
-    objs = [vsa.random_hv(D, rng) for _ in contexts]
-    H = vsa.bundle_bound(list(zip(objs, refs)))
-    objs2 = list(objs); objs2[1] = vsa.random_hv(D, rng)
-    H2 = vsa.bundle_bound(list(zip(objs2, refs)))
-    assert max(itf.drift_map(H, H2, refs), key=itf.drift_map(H, H2, refs).get) == 1
+    value = vsa.random_hv(D, rng)
+    r1 = vrf.context_reference(vrf.mint(sk, b"ctx-1"))
+    r2 = vrf.context_reference(vrf.mint(sk, b"ctx-2"))
+    assert itf.provenance_moved(vsa.bind(value, r1), vsa.bind(value, r2)) is True

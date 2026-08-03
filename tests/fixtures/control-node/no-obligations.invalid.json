@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "ControlNodeRegistry",
+  "nodes": [
+    {
+      "node_id": "cn:ungated-service:execution",
+      "node_type": "Execution",
+      "resource": { "kind": "service", "ref": "ungated-service" },
+      "obligations": { "membrane_gates": [] }
+    }
+  ]
+}

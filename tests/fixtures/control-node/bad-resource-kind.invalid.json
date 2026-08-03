@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "ControlNodeRegistry",
+  "nodes": [
+    {
+      "node_id": "cn:some-db:memory",
+      "node_type": "Memory",
+      "resource": { "kind": "database", "ref": "some-db" },
+      "obligations": { "membrane_gates": ["proof-artifact-publish"] }
+    }
+  ]
+}

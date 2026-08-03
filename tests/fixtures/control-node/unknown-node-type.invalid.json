@@ -1,0 +1,12 @@
+{
+  "schema_version": "0.1.0",
+  "kind": "ControlNodeRegistry",
+  "nodes": [
+    {
+      "node_id": "cn:some-service:consciousness",
+      "node_type": "Consciousness",
+      "resource": { "kind": "service", "ref": "some-service" },
+      "obligations": { "membrane_gates": ["capability-membrane"] }
+    }
+  ]
+}

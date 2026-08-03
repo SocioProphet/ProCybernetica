@@ -19,11 +19,17 @@ to any third-party formal language. (A formal language and its algebra are a
 | roles `ground` / `differentia` / `mode` | the three positions of the ternary product | Aristotle (genus + differentia) + Spinoza (mode) | *Categories*; *Ethics* Pt I def. 5 |
 
 Nothing in the generating set is taken from, or requires permission of, any
-third-party formal language or metalanguage. Any such comparison lives only in the
-internal design register (`SP-DES-*`), **never** in this repo or its public README,
-and no element above was derived from a third party's dictionary, definitions, or
-grammar prose. (This constraint is enforced, not merely asserted — see
-`procyber/semantic/check_cleanroom.py`.)
+third-party formal language or metalanguage, and no element above was derived from a
+third party's dictionary, definitions, or grammar prose.
+
+The prior-art comparison is **published here**, not hidden: see
+`SEMANTIC_PRIOR_ART_COMPARISON.md` and `SEMANTIC_IP_POSITION.md`. Truthful comparison
+with prior art is lawful nominative reference, and a documented record of what was
+examined and deliberately declined evidences independent creation better than silence
+does. What is actually controlled — mechanically, in CI, by
+`procyber/semantic/check_cleanroom.py` — is copied *expression* (dictionary markers,
+coordinate tokens past a citation threshold) and third-party marks used to name any
+artifact of ours.
 
 ## 2. Why an algebra (the measured failure it fixes)
 
@@ -58,4 +64,5 @@ cosine threshold — is the abstraction-level bar, and it is what the S5 gate
 
 Legally owed: none, provided no third-party protected expression is used.
 Publicly cited: **Peirce, Spinoza, Aristotle, Tesnière** — the actual provenance.
-Marks of third parties are not used to name anything in this system.
+Marks of third parties are not used to *name* anything in this system; they are used
+freely in prose to compare against prior art. See `SEMANTIC_IP_POSITION.md` §9-10.

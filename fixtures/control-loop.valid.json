@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "loop_id": "controlloop.mlops.drift-guard",
+  "service_id": "svc.platform.cybernetic-governance",
+  "control_node_type": "value-judgment-node",
+  "objective": {
+    "statement": "Keep the served model's population-stability index within its SLO band by retraining when drift crosses threshold.",
+    "objective_kind": "maintain-slo",
+    "bounded_by": ["slo.model.psi<=0.15", "invariant_0_7_irreversibility_requires_approval"]
+  },
+  "sensor": {
+    "sensor_id": "sensor.drift.psi",
+    "signal_kind": "model-drift",
+    "observable_ref": "channel_observation:psi:2026-08-03T18:00Z",
+    "threshold": {"comparator": "gt", "value": 0.15, "unit": "psi"},
+    "observed_value": 0.22
+  },
+  "world_model_ref": "dependency_control_graph:serving-plane@2026-08-03",
+  "value_judgment": {
+    "policy_ref": "policy.mlops.retrain-guardrail.v1",
+    "decision_authority": "policy-guardrail",
+    "gate_result": "allow"
+  },
+  "actuator": {
+    "actuator_id": "actuator.retrain.serving-model",
+    "remediation_kind": "retrain",
+    "reversibility": "reversible",
+    "fired": true
+  },
+  "audit_receipt": {
+    "evidence_receipt_ref": "receipt:controlloop:drift-guard:2026-08-03T18:05Z",
+    "content_digest": "sha256:2b0c...fixture"
+  },
+  "binds_upward": {
+    "control_nodes_ref": "ProCybernetica#124",
+    "rcs_adr_ref": "prophet-workspace#113",
+    "crown_ref": "hellgraph#52",
+    "agent_cognition_er_ref": "prophet-workspace#115"
+  },
+  "implements_invariants": [
+    "invariant_0_2_no_action_without_trace",
+    "invariant_0_5_separation_of_powers",
+    "invariant_0_6_monitor_independence"
+  ]
+}

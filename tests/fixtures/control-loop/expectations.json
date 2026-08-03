@@ -1,0 +1,35 @@
+{
+  "accept_closed_loop.json": {
+    "verdict": "accept",
+    "check_id": "closed-loop-sense-model-judge-act-receipt-verifies"
+  },
+  "accept_monitor_only_not_fired.json": {
+    "verdict": "accept",
+    "check_id": "monitor-only-below-threshold-does-not-over-reject"
+  },
+  "reject_no_value_judgment.json": {
+    "verdict": "reject",
+    "reason": "NO_VALUE_JUDGMENT_GATE",
+    "check_id": "loop-with-no-value-judgment-gate-is-rejected"
+  },
+  "reject_fired_no_receipt.json": {
+    "verdict": "reject",
+    "reason": "NO_AUDIT_RECEIPT_ON_FIRED",
+    "check_id": "fired-remediation-without-audit-receipt-is-rejected"
+  },
+  "reject_control_max_objective.json": {
+    "verdict": "reject",
+    "reason": "UNCONSTITUTIONAL_OBJECTIVE_CROWN_K1",
+    "check_id": "control-max-domination-objective-is-rejected-crown-k1"
+  },
+  "reject_spurious_action.json": {
+    "verdict": "reject",
+    "reason": "SPURIOUS_ACTION_NO_THRESHOLD_CROSS",
+    "check_id": "remediation-fired-without-threshold-cross-is-rejected"
+  },
+  "reject_judge_denied_but_fired.json": {
+    "verdict": "reject",
+    "reason": "JUDGE_DENIED_BUT_FIRED",
+    "check_id": "remediation-fired-after-judge-denied-is-rejected"
+  }
+}

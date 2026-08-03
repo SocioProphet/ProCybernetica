@@ -11,7 +11,12 @@ CHECKS = [
         ROOT / "contracts" / "governance-loop.schema.json",
         ROOT / "fixtures" / "governance-loop.valid.json",
         "svc.platform.cybernetic-governance",
-    )
+    ),
+    (
+        ROOT / "contracts" / "control-loop.schema.json",
+        ROOT / "fixtures" / "control-loop.valid.json",
+        "svc.platform.cybernetic-governance",
+    ),
 ]
 
 REQUIRED_KEYS = {"$schema", "$id", "title", "type", "properties"}

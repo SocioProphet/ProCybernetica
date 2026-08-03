@@ -15,7 +15,8 @@ authors = [
 dependencies = [
   "jsonschema>=4.21",
   "PyYAML>=6.0",
-  "numpy>=1.24,<3"  # procyber.semantic.vsa — the continuous ℂ^D VSA/HRR twin substrate
+  "numpy>=1.24,<3",  # procyber.semantic.vsa — the continuous ℂ^D VSA/HRR twin substrate
+  "cryptography>=41,<47"  # procyber.semantic.vrf — Ed25519 (FIPS 186-5) verifiable references
 ]
 
 [project.scripts]

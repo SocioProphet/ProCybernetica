@@ -150,3 +150,10 @@ agentic-execution-class-fixtures:
 
 agentic-execution-class-ci: agentic-execution-class-fixtures
 	PYTHONPATH=. python -m pytest -q tests/test_agentic_execution_class.py
+
+control-loop-fixtures:
+	python tools/cybernetic_governance/validate_control_loop.py
+
+control-loop-ci: control-loop-fixtures
+	python tools/validate_contract_schemas.py
+	PYTHONPATH=. python -m pytest -q tests/test_control_loop_contract.py

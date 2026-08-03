@@ -1,0 +1,34 @@
+{
+  "schema_version": "1.0",
+  "loop_id": "controlloop.mlops.override-judge",
+  "service_id": "svc.platform.cybernetic-governance",
+  "control_node_type": "task-executor-node",
+  "objective": {
+    "statement": "Retrain on drift, but act after the policy gate denied the remediation.",
+    "objective_kind": "maintain-slo",
+    "bounded_by": ["slo.model.psi<=0.15"]
+  },
+  "sensor": {
+    "sensor_id": "sensor.drift.psi",
+    "signal_kind": "model-drift",
+    "observable_ref": "channel_observation:psi:2026-08-03T18:00Z",
+    "threshold": {"comparator": "gt", "value": 0.15, "unit": "psi"},
+    "observed_value": 0.22
+  },
+  "world_model_ref": "dependency_control_graph:serving-plane@2026-08-03",
+  "value_judgment": {
+    "policy_ref": "policy.mlops.retrain-guardrail.v1",
+    "decision_authority": "policy-guardrail",
+    "gate_result": "deny"
+  },
+  "actuator": {
+    "actuator_id": "actuator.retrain.serving-model",
+    "remediation_kind": "retrain",
+    "reversibility": "reversible",
+    "fired": true
+  },
+  "audit_receipt": {
+    "evidence_receipt_ref": "receipt:controlloop:override:2026-08-03T18:05Z"
+  },
+  "implements_invariants": ["invariant_0_5_separation_of_powers"]
+}

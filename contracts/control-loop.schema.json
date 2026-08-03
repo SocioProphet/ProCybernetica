@@ -1,0 +1,191 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://socioprophet.org/schemas/procybernetica/control-loop.schema.json",
+  "title": "Governed Closed-Loop Control Contract",
+  "description": "A ControlLoop is the governed unit of self-maintaining (Day-0/1/2) AIOps autonomy. It seats under the ProCybernetica ControlNodes (#124 Fractal-Control-Fabric node types) and the RCS/4D ADR-0003 (prophet-workspace#113): the loop is sense(Sensory) -> model(WorldModel) -> judge(ValueJudgment) -> act(TaskExecutor) -> receipt. This is a measurement/design contract: it certifies whether a proposed automated loop is constitutionally admissible; it does NOT execute remediation. Teeth live in tools/cybernetic_governance/validate_control_loop.py.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema_version",
+    "loop_id",
+    "service_id",
+    "objective",
+    "sensor",
+    "world_model_ref",
+    "value_judgment",
+    "actuator",
+    "audit_receipt",
+    "implements_invariants"
+  ],
+  "properties": {
+    "schema_version": {"const": "1.0"},
+    "loop_id": {
+      "type": "string",
+      "pattern": "^controlloop\\.[a-z0-9][a-z0-9.-]*$"
+    },
+    "service_id": {
+      "type": "string",
+      "const": "svc.platform.cybernetic-governance"
+    },
+    "control_node_type": {
+      "type": "string",
+      "description": "Which of the 11 Fractal-Control-Fabric ControlNode types (#124) this loop instantiates.",
+      "enum": [
+        "sensor-node",
+        "world-model-node",
+        "value-judgment-node",
+        "task-planner-node",
+        "task-executor-node",
+        "knowledge-db-node",
+        "monitor-node",
+        "coordinator-node",
+        "escalation-node",
+        "boundary-node",
+        "receipt-node"
+      ]
+    },
+    "objective": {
+      "type": "object",
+      "description": "The coherent control objective. Crown/Telos K1 (hellgraph#52): a control-max / domination objective is UNCONSTITUTIONAL and rejected by the validator.",
+      "additionalProperties": false,
+      "required": ["statement", "objective_kind", "bounded_by"],
+      "properties": {
+        "statement": {"type": "string", "minLength": 1},
+        "objective_kind": {
+          "type": "string",
+          "description": "domination / control-max / unbounded-optimization objectives are inadmissible (Crown K1) and MUST be rejected.",
+          "enum": [
+            "restore-to-setpoint",
+            "maintain-slo",
+            "reduce-drift",
+            "improve-conformance",
+            "minimize-toil",
+            "control-max",
+            "domination",
+            "unbounded-optimization"
+          ]
+        },
+        "bounded_by": {
+          "type": "array",
+          "minItems": 1,
+          "description": "The invariants / setpoints that bound the objective. An objective with no bound is not coherent.",
+          "items": {"type": "string", "minLength": 1}
+        }
+      }
+    },
+    "sensor": {
+      "type": "object",
+      "description": "sense(): the drift / conformance / flow signal. Day-2 MLOps drift+quality+bias, process-mining conformance, or a telemetry/flow signal.",
+      "additionalProperties": false,
+      "required": ["sensor_id", "signal_kind", "observable_ref", "threshold"],
+      "properties": {
+        "sensor_id": {"type": "string", "minLength": 1},
+        "signal_kind": {
+          "type": "string",
+          "enum": ["model-drift", "data-quality", "bias", "conformance", "flow", "slo", "anomaly"]
+        },
+        "observable_ref": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Ref to a channel_observation / monitor_alert record carrying the measured value."
+        },
+        "threshold": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["comparator", "value"],
+          "description": "The condition that must be crossed for the actuator to be permitted to fire. No crossing => no action (anti-spurious tooth).",
+          "properties": {
+            "comparator": {"type": "string", "enum": ["gt", "gte", "lt", "lte", "ne"]},
+            "value": {"type": "number"},
+            "unit": {"type": "string"}
+          }
+        },
+        "observed_value": {
+          "type": "number",
+          "description": "The measured value on this cycle. If present, the validator enforces that a fired actuator's signal actually crossed threshold."
+        }
+      }
+    },
+    "world_model_ref": {
+      "type": "string",
+      "minLength": 1,
+      "description": "model(): ref to the WorldModel / KnowledgeDB state the judgment is taken against (RCS ADR-0003). Binds to a dependency_control_graph / world-model node."
+    },
+    "value_judgment": {
+      "type": "object",
+      "description": "judge(): the policy gate. A ControlLoop with NO value_judgment gate is REJECTED (no ungoverned autonomy). Separation of powers: the judge is not the actuator (invariant_0_5).",
+      "additionalProperties": false,
+      "required": ["policy_ref", "decision_authority", "gate_result"],
+      "properties": {
+        "policy_ref": {"type": "string", "minLength": 1},
+        "decision_authority": {
+          "type": "string",
+          "enum": ["policy-guardrail", "workspace-controller", "human-operator", "governance-board"]
+        },
+        "gate_result": {
+          "type": "string",
+          "enum": ["allow", "deny", "escalate", "defer"]
+        },
+        "escalation_boundary": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["trigger", "target_authority"],
+          "properties": {
+            "trigger": {"type": "string", "minLength": 1},
+            "target_authority": {"type": "string", "minLength": 1},
+            "max_latency_ms": {"type": "integer", "minimum": 0}
+          }
+        }
+      }
+    },
+    "actuator": {
+      "type": "object",
+      "description": "act(): the remediation (TaskExecutor). fired=true means the remediation actually ran on this cycle. A fired actuator requires (a) the judge allowed it and (b) the sensor crossed threshold and (c) an audit_receipt exists.",
+      "additionalProperties": false,
+      "required": ["actuator_id", "remediation_kind", "reversibility", "fired"],
+      "properties": {
+        "actuator_id": {"type": "string", "minLength": 1},
+        "remediation_kind": {
+          "type": "string",
+          "enum": ["rollback", "rescale", "repin", "retrain", "reroute", "quarantine", "open-pr", "notify-only"]
+        },
+        "reversibility": {
+          "type": "string",
+          "enum": ["reversible", "irreversible-requires-approval"]
+        },
+        "fired": {"type": "boolean"}
+      }
+    },
+    "audit_receipt": {
+      "oneOf": [
+        {"type": "null"},
+        {
+          "type": "object",
+          "additionalProperties": false,
+          "required": ["evidence_receipt_ref"],
+          "description": "receipt: ref to an evidence_receipt.v1 record. An automated remediation (actuator.fired=true) with a null/absent receipt is REJECTED (invariant_0_2 no action without trace).",
+          "properties": {
+            "evidence_receipt_ref": {"type": "string", "minLength": 1},
+            "content_digest": {"type": "string", "minLength": 1}
+          }
+        }
+      ]
+    },
+    "binds_upward": {
+      "type": "object",
+      "description": "Explicit upward bindings (bind-upward, consume-not-fork). Governance provenance for reviewers.",
+      "additionalProperties": false,
+      "properties": {
+        "control_nodes_ref": {"type": "string", "description": "ProCybernetica ControlNodes #124"},
+        "rcs_adr_ref": {"type": "string", "description": "RCS/4D ADR-0003, prophet-workspace#113"},
+        "crown_ref": {"type": "string", "description": "Crown / Telos-Truth-Engine, hellgraph#52"},
+        "agent_cognition_er_ref": {"type": "string", "description": "agent-cognition ER, prophet-workspace#115"}
+      }
+    },
+    "implements_invariants": {
+      "type": "array",
+      "minItems": 1,
+      "items": {"$ref": "https://schemas.socioprophet.ai/cybernetic-governance/enums.v1.json#/$defs/constitutional_invariant_id"}
+    }
+  }
+}

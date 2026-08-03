@@ -1,0 +1,32 @@
+{
+  "schema_version": "1.0",
+  "loop_id": "controlloop.conformance.observe-only",
+  "service_id": "svc.platform.cybernetic-governance",
+  "control_node_type": "monitor-node",
+  "objective": {
+    "statement": "Watch process-mining conformance; below threshold, observe and do not act.",
+    "objective_kind": "improve-conformance",
+    "bounded_by": ["conformance.fitness>=0.9"]
+  },
+  "sensor": {
+    "sensor_id": "sensor.conformance.fitness",
+    "signal_kind": "conformance",
+    "observable_ref": "channel_observation:fitness:2026-08-03T18:00Z",
+    "threshold": {"comparator": "lt", "value": 0.9, "unit": "fitness"},
+    "observed_value": 0.97
+  },
+  "world_model_ref": "dependency_control_graph:process-map@2026-08-03",
+  "value_judgment": {
+    "policy_ref": "policy.process.conformance-guardrail.v1",
+    "decision_authority": "policy-guardrail",
+    "gate_result": "defer"
+  },
+  "actuator": {
+    "actuator_id": "actuator.reroute.process",
+    "remediation_kind": "notify-only",
+    "reversibility": "reversible",
+    "fired": false
+  },
+  "audit_receipt": null,
+  "implements_invariants": ["invariant_0_6_monitor_independence", "invariant_0_12_monitors_are_monitored"]
+}

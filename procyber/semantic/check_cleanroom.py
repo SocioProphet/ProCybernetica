@@ -83,6 +83,7 @@ FRAMEWORK_FILES: Tuple[str, ...] = (
     "procyber/semantic/vrf.py",
     "procyber/semantic/interferometry.py",
     "procyber/semantic/twin.py",
+    "procyber/semantic/dynamics.py",
     "docs/SEMANTIC_COORDINATE_ALGEBRA.md",
     "docs/SEMANTIC_LAYER_ADJUNCTION.md",
     "docs/SEMANTIC_CONTROL_ARCHITECTURE.md",

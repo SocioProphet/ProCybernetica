@@ -85,6 +85,8 @@ FRAMEWORK_FILES: Tuple[str, ...] = (
     "procyber/semantic/twin.py",
     "procyber/semantic/dynamics.py",
     "procyber/semantic/semantic_hash.py",
+    "procyber/semantic/serialization_channel.py",
+    "procyber/semantic/retention_probe.py",
     "docs/SEMANTIC_COORDINATE_ALGEBRA.md",
     "docs/SEMANTIC_LAYER_ADJUNCTION.md",
     "docs/SEMANTIC_CONTROL_ARCHITECTURE.md",

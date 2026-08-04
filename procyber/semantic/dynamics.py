@@ -4,15 +4,16 @@ how associations between entities STRENGTHEN with repetition, CONSOLIDATE from a
 into a durable one, and FADE-BUT-PERSIST without reinforcement.
 
 Construction (clean-room; the science is public and long-standing):
-- **Two-timescale Hebbian plasticity.** Each directed association carries a fast variable and a
-  slow variable. A co-occurrence potentiates the fast variable (a saturating jump toward 1); the
-  slow variable integrates the *fast* one, so it consolidates only under repeated co-occurrence.
-  This is the complementary fast/slow split of the complementary-learning-systems account
-  (McClelland, McNaughton & O'Reilly, 1995) and the cascade model of synaptic memory
-  (Fusi, Drew & Abbott, 2005); Hebbian potentiation is Hebb (1949).
+- **Two-timescale Hebbian plasticity.** A reinforcement carries a fast variable and a slow one.
+  It potentiates the fast variable (a saturating jump toward 1); the slow variable integrates the
+  *fast* one, so it consolidates only under repetition. This is the complementary fast/slow split
+  of the complementary-learning-systems account (McClelland, McNaughton & O'Reilly, 1995) and the
+  cascade model of synaptic memory (Fusi, Drew & Abbott, 2005); Hebbian potentiation is Hebb (1949).
+  The law is exposed as `potentiate` / `relax` / `combine` so both edge weights (here) and node
+  strengths (the living twin medium) share one construction.
 - **Graceful forgetting.** Between reinforcements both variables decay, the fast one much faster
-  than the slow one, so a single co-occurrence leaves only a transient trace while a consolidated
-  association persists long after — graceful degradation at the edge, never a cliff.
+  than the slow one, so a single reinforcement leaves only a transient trace while a consolidated
+  one persists long after — graceful degradation at the edge, never a cliff.
 - **Bounded spreading activation** for read (Collins & Loftus, 1975): seeds are pinned, activation
   propagates along effective-weight edges under a contraction (damping < 1) for a fixed number of
   hops, and the most-activated nodes are returned. Bounded and terminating by construction — a
@@ -36,12 +37,29 @@ from typing import Dict, Hashable, Iterable, List, Sequence, Tuple
 Entity = Hashable
 Edge = Tuple[Entity, Entity]
 
-__all__ = ["AssociativeMemory"]
+__all__ = ["AssociativeMemory", "combine", "potentiate", "relax"]
 
 
-def _noisy_or(x: float, y: float) -> float:
-    """Combine the fast and slow variables into one effective weight in [0,1], monotone in both."""
-    return x + y - x * y
+def combine(fast: float, slow: float) -> float:
+    """Combine the fast and slow variables into one effective weight in [0,1] (noisy-OR), monotone
+    in both — recent OR consolidated reads as strong."""
+    return fast + slow - fast * slow
+
+
+def potentiate(fast: float, slow: float, *, fast_gain: float, slow_gain: float) -> Tuple[float, float]:
+    """One reinforcement event under the two-timescale law: the fast variable jumps toward 1
+    (saturating), and the slow variable integrates the *new* fast so it consolidates only under
+    repetition. Reusable for both edge weights and node strengths."""
+    f = fast + fast_gain * (1.0 - fast)
+    s = slow + slow_gain * f * (1.0 - slow)
+    return f, s
+
+
+def relax(fast: float, slow: float, *, fast_decay: float, slow_decay: float, steps: int = 1) -> Tuple[float, float]:
+    """Decay `steps` ticks with no reinforcement — fast much faster than slow (fade-but-persist)."""
+    if steps <= 0:
+        return fast, slow
+    return fast * (1.0 - fast_decay) ** steps, slow * (1.0 - slow_decay) ** steps
 
 
 @dataclass
@@ -74,10 +92,10 @@ class AssociativeMemory:
         if a == b:
             return
         for i, j in ((a, b), (b, a)):
-            f = self._fast.get((i, j), 0.0)
-            s = self._slow.get((i, j), 0.0)
-            f = f + self.fast_gain * (1.0 - f)       # fast jumps toward 1 (saturating)
-            s = s + self.slow_gain * f * (1.0 - s)   # slow consolidates only while fast is high
+            f, s = potentiate(
+                self._fast.get((i, j), 0.0), self._slow.get((i, j), 0.0),
+                fast_gain=self.fast_gain, slow_gain=self.slow_gain,
+            )
             self._fast[(i, j)] = f
             self._slow[(i, j)] = s
             self._out.setdefault(i, set()).add(j)
@@ -86,11 +104,11 @@ class AssociativeMemory:
         """Advance time `steps` with no reinforcement: decay both variables (fast >> slow)."""
         if steps <= 0:
             return
-        fk = (1.0 - self.fast_decay) ** steps
-        sk = (1.0 - self.slow_decay) ** steps
         for e in list(self._fast):
-            self._fast[e] *= fk
-            self._slow[e] *= sk
+            self._fast[e], self._slow[e] = relax(
+                self._fast[e], self._slow[e],
+                fast_decay=self.fast_decay, slow_decay=self.slow_decay, steps=steps,
+            )
 
     # ---- inspection ----
     def fast(self, a: Entity, b: Entity) -> float:
@@ -101,7 +119,7 @@ class AssociativeMemory:
 
     def effective(self, a: Entity, b: Entity) -> float:
         """Read-time association strength (fast ⊕ slow, noisy-OR, in [0,1])."""
-        return _noisy_or(self._fast.get((a, b), 0.0), self._slow.get((a, b), 0.0))
+        return combine(self._fast.get((a, b), 0.0), self._slow.get((a, b), 0.0))
 
     def consolidated_associations(self, threshold: float = 0.25) -> List[Tuple[Entity, Entity, float]]:
         """Durable associations (slow variable ≥ `threshold`), strongest first — the long-term

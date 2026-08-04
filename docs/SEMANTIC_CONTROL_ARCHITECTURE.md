@@ -41,7 +41,7 @@ merge and filter paths into two composable operations with one shared reconcilia
 | `tiferet` | reconciliation of the two arms | **meet** | `semantic_algebra.meet` |
 | `netzach` | continuity — durable commitment, retry | persist | outbox (external) |
 | `hod` | measurement, instrumentation, when to stop | measure | resource contract (external) |
-| `yesod` | the single serialisation channel | serialise | **partial** (see §5) |
+| `yesod` | the single serialisation channel | serialise | `serialization_channel` |
 | `malchut` | world-effect and its receipt | effect | side-effect boundary (external) |
 
 Two readings that drive the design:
@@ -114,14 +114,21 @@ receiving the subject.
   minimum and absorbs `BOTTOM`, **an admit signal cannot authorise a share on its
   own, and an arm that was never evaluated abstains rather than defaulting open** —
   both fall out of the algebra rather than needing a special case.
+- `serialization_channel` — the `yesod` chokepoint. `emit` is the only function that
+  produces a `WireEnvelope`, and it **refuses unless the caller presents a share
+  decision that clears**. `daat` decides, `yesod` transmits, and transmission is not
+  reachable without a decision — an agent cannot route around its own equilibrium by
+  serialising somewhere else, because there is nowhere else. The invariant is checked
+  against the real tree by `single_channel_violations`, not asserted in prose.
+- `retention_probe` — incorporation gated on a retained-task probe. `incorporate`
+  probes, applies, probes again, and **returns the original object** when a retained
+  task regresses beyond tolerance, so a rollback is "return what you already had"
+  rather than an undo that has to be correct. An empty probe refuses rather than
+  clearing, because a gate that passes everything is worse than no gate: it looks
+  like one.
 
 **Not built:**
 
-- **`yesod` chokepoint** — a single serialisation path for outbound boundary
-  objects, with a build-time check that no second path exists. Partial.
-- **anti-forgetting probe** — incorporation of foreign experience gated on a
-  retained-task probe with an exercised rollback. Absent; until the rollback runs in
-  CI the guard would be decorative.
 - **depth budget** for the fibration (§3).
 - **`hod` / `malchut` wiring** — resource contract declared per fibre, and the
   effect receipt carrying the coordinate vector. External to this kernel.
